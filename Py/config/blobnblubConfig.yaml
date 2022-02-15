@@ -1,0 +1,158 @@
+behaviors:
+  BrainBlob:
+    trainer_type: ppo
+
+    hyperparameters:
+      # Hyperparameters common to PPO and SAC
+      batch_size: 2048
+      buffer_size: 20580
+      learning_rate: 1.0e-3
+      learning_rate_schedule: linear
+
+      # PPO-specific hyperparameters
+      # Replaces the "PPO-specific hyperparameters" section above
+      beta: 1.0e-3
+      epsilon: 0.3
+
+      lambd: 0.95
+      num_epoch: 3
+
+    # Configuration of the neural network (common to PPO/SAC)
+    network_settings:
+      vis_encode_type: resnet
+      normalize: false
+      hidden_units: 128
+      num_layers: 2
+      memory:
+        memory_size: 64
+        sequence_length: 16
+
+
+
+    # Trainer configurations common to all trainers
+    max_steps: 2.0e7
+    time_horizon: 256
+
+    summary_freq: 10000
+    keep_checkpoints: 5
+    checkpoint_interval: 50000
+    threaded: true
+    init_path: null
+
+
+
+    reward_signals:
+      # environment reward (default)
+      extrinsic:
+        strength: 1.0
+        gamma: 0.99
+
+
+
+  BrainBlyb:
+    trainer_type: ppo
+
+    hyperparameters:
+      # Hyperparameters common to PPO and SAC
+      batch_size: 2048
+      buffer_size: 20580
+      learning_rate: 1.0e-3
+      learning_rate_schedule: linear
+
+      # PPO-specific hyperparameters
+      # Replaces the "PPO-specific hyperparameters" section above
+      beta: 1.0e-3
+      epsilon: 0.3
+
+      lambd: 0.95
+      num_epoch: 3
+
+    # Configuration of the neural network (common to PPO/SAC)
+    network_settings:
+      vis_encode_type: resnet
+      normalize: false
+      hidden_units: 128
+      num_layers: 2
+      memory:
+        memory_size: 64
+        sequence_length: 16
+
+
+
+    # Trainer configurations common to all trainers
+    max_steps: 2.0e7
+    time_horizon: 256
+
+    summary_freq: 10000
+    keep_checkpoints: 5
+    checkpoint_interval: 50000
+    threaded: true
+    init_path: null
+
+
+
+    reward_signals:
+      # environment reward (default)
+      extrinsic:
+        strength: 1.0
+        gamma: 0.99
+
+
+
+
+
+
+
+
+  BrainBlub:
+    trainer_type: ppo
+
+    hyperparameters:
+      # Hyperparameters common to PPO and SAC
+      batch_size: 2048
+      buffer_size: 20580
+      learning_rate: 1.0e-3
+      learning_rate_schedule: linear
+
+      # PPO-specific hyperparameters
+      # Replaces the "PPO-specific hyperparameters" section above
+      beta: 1.0e-3
+      epsilon: 0.3
+
+      lambd: 0.95
+      num_epoch: 3
+
+    # Configuration of the neural network (common to PPO/SAC)
+    network_settings:
+      vis_encode_type: resnet
+      normalize: false
+      hidden_units: 128
+      num_layers: 3
+
+      memory:
+        memory_size: 64
+        sequence_length: 32
+
+
+
+    # Trainer configurations common to all trainers
+    max_steps: 1.0e6
+    time_horizon: 256
+
+    summary_freq: 10000
+    keep_checkpoints: 5
+    checkpoint_interval: 50000
+    threaded: true
+    init_path: null
+
+
+
+    reward_signals:
+      # environment reward (default)
+      extrinsic:
+        strength: 1.0
+        gamma: 0.99
+
+
+
+
