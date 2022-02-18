@@ -24,12 +24,17 @@ GameObject box;
 GameObject extBooper;
 int smellMask;
 Vector2 closest;
+Smeller_Blub smeller;
 
+void Awake(){
+smeller = gameObject.GetComponent<Smeller_Blub>();
+bctrl = gameObject.GetComponent<BrainBlubControls>();
+}
 void Start() 
 {
     box = GameObject.Find("box");
     rb = GetComponent<Rigidbody2D>();
-    bctrl = gameObject.GetComponent<BrainBlubControls>();
+    
     energy = bctrl.energy;
     thisRay = GetComponent<RayPerceptionSensorComponent2D>();
     thisRay.RayLength = bctrl.lookDistance;
@@ -43,7 +48,7 @@ MaxScaledSmellDistance = Mathf.Sqrt( Mathf.Pow((bctrl.lookDistance/4.0f),2.0f) +
 }
 
 float MaxScaledSmellDistance;
-float latestLookDistance;
+public float latestLookDistance;
 public override void OnEpisodeBegin()
 {
 
@@ -59,6 +64,10 @@ List<float> closestX = new List<float>();
 List<float> closestY = new List<float>();
 float scaledSmellDistance, smellReward;
 Vector2 scaledClosest;
+
+    Vector2[] scaledPreyDistance; 
+     Vector2[] scaledMateDistance; 
+     
 
 // int obsCount;
 // float cumSmellReward;
@@ -90,11 +99,11 @@ if(latestLookDistance != bctrl.lookDistance){
 MaxScaledSmellDistance = Mathf.Sqrt( Mathf.Pow((bctrl.lookDistance/4.0f),2.0f) + Mathf.Pow((bctrl.lookDistance/4.0f),2.0f) );
 latestLookDistance = bctrl.lookDistance;
 }
- scaledSmellDistance = closest.magnitude /MaxScaledSmellDistance;
+ scaledSmellDistance = closest.magnitude / MaxScaledSmellDistance;
 
 Vector2 scaledClosest =closest/MaxScaledSmellDistance;
 
- smellReward = (1.0f-scaledSmellDistance)/4096f;
+ smellReward = (1.0f-scaledSmellDistance)/2048f;
 
 
 
@@ -126,7 +135,8 @@ if(closestX.Count >= 1000 || closestY.Count >= 1000){
     
 }
 */
-
+scaledPreyDistance = smeller.scaledPreyDistance;
+scaledMateDistance = smeller.scaledMateDistance;
  v = rb.velocity.magnitude/1000.0f;
  angV = rb.angularVelocity/1000.0f;
 sensor.AddObservation(scaledClosest);
@@ -137,7 +147,11 @@ sensor.AddObservation(angV);
 
 sensor.AddObservation(bctrl.energy/bctrl.energyToReproduce);
 sensor.AddObservation(bctrl.age);
+for (int i = 0; i < 8; i++){
+sensor.AddObservation(scaledPreyDistance[i]);
+sensor.AddObservation(scaledMateDistance[i]);
 
+}
 
 
 

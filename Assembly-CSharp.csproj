@@ -97,6 +97,7 @@
      <Compile Include="Assets/Scripts/BlubControls.cs" />
      <Compile Include="Assets/SettingsMenu.cs" />
      <Compile Include="Assets/BlobGenome.cs" />
+     <Compile Include="Assets/Smeller_Blub.cs" />
      <None Include="Assets/CodeMonkey/README.txt" />
     <Reference Include="UnityEngine">
         <HintPath>/Applications/2020.3.17f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
