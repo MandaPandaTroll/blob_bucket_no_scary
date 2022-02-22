@@ -321,7 +321,7 @@ GameObject[] blibs;
 
         for(int i = 0; i < sampleSize; i++)
         {   
-            int n = 0;
+            
             rowDataTemp = new string[26];
             rowDataTemp[0] = totalTime.ToString();
             rowDataTemp[1] = unitName[i];

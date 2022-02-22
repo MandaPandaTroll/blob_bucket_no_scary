@@ -519,7 +519,7 @@ System.Random rndA = new System.Random();
 
                     //Reproduction
                     energy = (energy/2.0f);
-                    protein = protein/2;
+                    protein = (protein/2)-1;
                     
                 
                 float x = energy/10000f;

@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 public class BlybGenome : MonoBehaviour
 {
-    float e;
+    
     public float pythagDist;
     float age;
     public List<string> lineageID = new List<string>();
@@ -103,7 +103,7 @@ public string[,] extA, extB;
     
     void Awake(){
         
-        e = 2.71828f;
+        
 
         firstTranslation = false;
        

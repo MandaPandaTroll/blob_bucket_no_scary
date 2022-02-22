@@ -136,13 +136,18 @@ int countNutes;
             
            if (grandNutes < totNutes/2)
            {
-                    int x = Random.Range(0,nutgrid.gridArray.GetLength(0));
-                    int y = Random.Range(0,nutgrid.gridArray.GetLength(1));
+               do{
+                   for(int x = 0; x < nutgrid.gridArray.GetLength(0); x++){
+                       for(int y = 0; y < nutgrid.gridArray.GetLength(0); y++){
+                           int thisVal = nutgrid.GetValue(x,y);
+                           nutgrid.SetValue(x, y,thisVal + 1);
 
-                    int thisVal = nutgrid.GetValue(x,y);
-                        
-                        nutgrid.SetValue(x, y,thisVal + 500);
-                        if(grandNutes > totNutes){FixedUpdate();}
+                       }
+                   }
+                    
+
+                         
+               }while(grandNutes < totNutes+100);
                     
                 
             }

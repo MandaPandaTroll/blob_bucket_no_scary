@@ -46,7 +46,7 @@ GameObject[] blobs;
     public int maxSampleSize;
     public float sampleRate;
 
-   string TE3 = "t_0";
+   
     string filename;
 
     // Start is called before the first frame update
@@ -309,7 +309,7 @@ GameObject[] blobs;
 
         for(int i = 0; i < sampleSize; i++)
         {   
-            int n = 0;
+            
             rowDataTemp = new string[26];
             rowDataTemp[0] = totalTime.ToString();
             rowDataTemp[1] = unitName[i];

@@ -9,11 +9,12 @@ public class Smeller_Blub : MonoBehaviour
     Vector2 n0 = Vector2.zero;
     Vector2[] preyPositions; 
     Vector2[] matePositions; 
-    
+
+
 
     public Vector2[] scaledPreyDistance; 
     public Vector2[] scaledMateDistance; 
-    
+
     Collider2D[] smellCircleResults;
     int smellMask;
     
@@ -25,19 +26,19 @@ public class Smeller_Blub : MonoBehaviour
     {
 
         blub = gameObject.GetComponent<BrainBlub>();
-        smellMask = LayerMask.GetMask("Prey", "Predator", "ApexPred");
+        smellMask = LayerMask.GetMask("Prey", "Predator", "Predator2", "ApexPred");
         
         latestLookDistance = blub.latestLookDistance;
         smellDistance= latestLookDistance/4f;
 
 
-    preyPositions = new Vector2[9]{n0,n0,n0,n0,n0,n0,n0,n0,n0}; 
+        preyPositions = new Vector2[9]{n0,n0,n0,n0,n0,n0,n0,n0,n0}; 
     matePositions = new Vector2[9]{n0,n0,n0,n0,n0,n0,n0,n0,n0}; 
-    
+
 
     scaledPreyDistance = new Vector2[9]{n0,n0,n0,n0,n0,n0,n0,n0,n0}; 
     scaledMateDistance = new Vector2[9]{n0,n0,n0,n0,n0,n0,n0,n0,n0}; 
-    
+
         
     }
 
@@ -55,18 +56,29 @@ public class Smeller_Blub : MonoBehaviour
 
             smellCircleResults = Physics2D.OverlapCircleAll(here, smellDistance,smellMask);
             if (smellCircleResults.Length > 0){
-                int nPrey = 0, nMate = 0 ;
+                int nPrey = 0, nMate = 0;
                 for(int i = 0; i < smellCircleResults.Length;i++)
                     {
-                        if(smellCircleResults[i].gameObject.tag == "Predator" || smellCircleResults[i].gameObject.tag == "Predator2" && nPrey < 8){
-
+                        if(smellCircleResults[i].gameObject.tag == "Predator" && nPrey < 8){
                             preyPositions[nPrey] = smellCircleResults[i].transform.position;
-                            nPrey +=1;
+                            nPrey += 1;
                         }
+
+                        if(smellCircleResults[i].gameObject.tag == "Predator2" && nPrey < 8){
+                            preyPositions[nPrey] = smellCircleResults[i].transform.position;
+                            nPrey += 1;
+                        }
+
+                        if(smellCircleResults[i].gameObject.tag == "Carcass" && nPrey < 8){
+                            preyPositions[nPrey] = smellCircleResults[i].transform.position;
+                            nPrey += 1;
+                        }
+                        
                         if(smellCircleResults[i].gameObject.tag == "ApexPred" && nMate < 8){
                             matePositions[nMate] = smellCircleResults[i].transform.position;
                             nMate += 1;
                         }
+                        
                         
          
                     }
@@ -90,7 +102,15 @@ public class Smeller_Blub : MonoBehaviour
                         }
                     }
                     
-                    
+                    if(nApex > 0){
+                    for(int i = 0; i < 8; i++){
+                        if(apexPredPositions[i] != n0){
+                            scaledApexPredDistance[i] = (apexPredPositions[i] - here)/smellDistance;
+                            
+                            }else{scaledApexPredDistance[i] = n0;}
+                        }
+                    }
+
                     
                     
 

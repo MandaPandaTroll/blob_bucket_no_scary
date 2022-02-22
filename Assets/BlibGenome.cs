@@ -186,11 +186,15 @@ void OnCollisionEnter2D(Collision2D col){
             }
             
         }
+        /*
         string debugChar;
         if (AorB == 0){debugChar ="A";}else{debugChar = "B";}
         string debugLocus = System.String.Join("",giveLocus);
        // //Debug.Log("Chromosome: " + debugChar + ":" + cNum + " Locus: " + locus + " -> " + debugLocus);
+       */
+       
         BlibGenome mateGenome = col.gameObject.GetComponent<BlibGenome>();
+        
         
         
         //A-Compare
