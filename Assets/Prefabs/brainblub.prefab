@@ -256,7 +256,7 @@ MonoBehaviour:
   sizeGene: 4
   lookDistance: 150
   energyToReproduce: 20000
-  lifeLength: 1024
+  lifeLength: 512
   intron1: 100
   intron2: 100
   intron3: 100
@@ -276,7 +276,7 @@ MonoBehaviour:
   deadLayer: 9
   basalMet: 0.1
   protein: 0
-  proteinToReproduce: 2048
+  proteinToReproduce: 1024
   NH4: 0
 --- !u!114 &-518505787406799334
 MonoBehaviour:

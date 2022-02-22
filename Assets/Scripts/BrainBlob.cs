@@ -112,7 +112,7 @@ latestLookDistance = ((genome.lookDistAllele1+genome.lookDistAllele2)/2f);
  smellReward = (1.0f-scaledSmellDistance)/2048f;
   
 protein = bctrl.protein;
-float e2r = genome.energyToReproduce;
+float e2r = bctrl.energyToReproduce;
 float ObsAge = bctrl.age;
 if(ObsAge <0f )
 {ObsAge = 0f;}

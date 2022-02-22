@@ -157,7 +157,7 @@ void Awake(){
 
         e2repAllele1 = genome.e2repAllele1;
         e2repAllele2 = genome.e2repAllele2;
-        energyToReproduce = (e2repAllele1 + e2repAllele2)/2f;
+        energyToReproduce = maxEnergy/2.0f;
 
         lookDistAllele1 = genome.lookDistAllele1;
         lookDistAllele2 = genome.lookDistAllele2;
@@ -516,7 +516,7 @@ void Awake(){
 
         e2repAllele1 = 1f + genome.e2repAllele1;
         e2repAllele2 = 1f + genome.e2repAllele2;
-        energyToReproduce = (e2repAllele1 + e2repAllele2)/2f;
+        energyToReproduce = maxEnergy/2.0f;
 
         lookDistAllele1 = 1f + genome.lookDistAllele1;
         lookDistAllele2 = 1f + genome.lookDistAllele2;

@@ -1145,7 +1145,7 @@ nGRN_A = 0; nGRN_B = 0; nRED_A = 0; nRED_B = 0;
 
     e2repAllele1 = Mathf.Pow(2,nREP_A);
     e2repAllele2 = Mathf.Pow(2,nREP_B);
-    energyToReproduce = (e2repAllele1 + e2repAllele2)/2f;
+    
 
     lookDistAllele1 = Mathf.Pow(2f,nLKDISTA_A);
     lookDistAllele2 = Mathf.Pow(2f,nLKDISTA_B);
