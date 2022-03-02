@@ -476,6 +476,7 @@ void Awake(){
                 newSize = new Vector3(sigmoid,sigmoid,sigmoid);
                 transform.localScale = newSize;
                 maxEnergy = sigmoid*25000f;
+                energyToReproduce = maxEnergy /2.0f;
 
 
                      

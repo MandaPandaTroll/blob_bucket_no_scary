@@ -11,7 +11,7 @@ public class Smeller_Blob : MonoBehaviour
     Vector2[] matePositions; 
     Vector2[] apexPredPositions;
 
-    Vector2[] carcassPositions; 
+    
 
     public Vector2[] scaledPreyDistance; 
     public Vector2[] scaledMateDistance; 
@@ -37,12 +37,12 @@ public class Smeller_Blob : MonoBehaviour
         preyPositions = new Vector2[9]{n0,n0,n0,n0,n0,n0,n0,n0,n0}; 
     matePositions = new Vector2[9]{n0,n0,n0,n0,n0,n0,n0,n0,n0}; 
     apexPredPositions = new Vector2[9]{n0,n0,n0,n0,n0,n0,n0,n0,n0}; 
-    carcassPositions = new Vector2[9]{n0,n0,n0,n0,n0,n0,n0,n0,n0}; 
+    
 
     scaledPreyDistance = new Vector2[9]{n0,n0,n0,n0,n0,n0,n0,n0,n0}; 
     scaledMateDistance = new Vector2[9]{n0,n0,n0,n0,n0,n0,n0,n0,n0}; 
     scaledApexPredDistance = new Vector2[9]{n0,n0,n0,n0,n0,n0,n0,n0,n0}; 
-    scaledCarcassDistance = new Vector2[9]{n0,n0,n0,n0,n0,n0,n0,n0,n0}; 
+    
         
     }
 
@@ -51,7 +51,7 @@ public class Smeller_Blob : MonoBehaviour
     {
         latestLookDistance = blob.latestLookDistance;
         here = gameObject.transform.position;
-        smellDistance= latestLookDistance/4f;
+        smellDistance= latestLookDistance;
         Smell();
 
     }
@@ -60,7 +60,7 @@ public class Smeller_Blob : MonoBehaviour
 
             smellCircleResults = Physics2D.OverlapCircleAll(here, smellDistance,smellMask);
             if (smellCircleResults.Length > 0){
-                int nPrey = 0, nMate = 0, nApex = 0, nCarcass = 0;
+                int nPrey = 0, nMate = 0, nApex = 0;
                 for(int i = 0; i < smellCircleResults.Length;i++)
                     {
                         if(smellCircleResults[i].gameObject.tag == "Prey" && nPrey < 8){

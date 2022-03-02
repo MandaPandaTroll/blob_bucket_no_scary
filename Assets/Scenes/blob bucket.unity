@@ -1185,9 +1185,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6bd4133b54884e9b85ea955802985c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initBlob: 100
+  initBlob: 10
   extraBlob: 1
-  minBlob: 10
+  minBlob: 3
   brainblob: {fileID: 1711403674044451826, guid: 62f3ae1229ce147e085f49742d4f03cd, type: 3}
 --- !u!114 &1883381886
 MonoBehaviour:
@@ -1201,10 +1201,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3b243e301ee9401a834a5dedfa9deae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initBlub: 20
+  initBlub: 1
   extraBlub: 1
   blub: {fileID: 2899908468288829811, guid: 85d9ad2e1ee97449ba7a451adfb4fe78, type: 3}
-  minBlub: 5
+  minBlub: 2
 --- !u!114 &1883381887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1217,10 +1217,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e09c4ea668b25499390c530b02010ef1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initBlyb: 100
+  initBlyb: 10
   extraBlyb: 1
   blyb: {fileID: 9185934289686911736, guid: b502b5fe1709f4524936c88a0c2bb425, type: 3}
-  minBlyb: 10
+  minBlyb: 3
 --- !u!114 &1883381888
 MonoBehaviour:
   m_ObjectHideFlags: 0

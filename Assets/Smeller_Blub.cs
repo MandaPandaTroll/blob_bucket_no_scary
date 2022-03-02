@@ -102,14 +102,7 @@ public class Smeller_Blub : MonoBehaviour
                         }
                     }
                     
-                    if(nApex > 0){
-                    for(int i = 0; i < 8; i++){
-                        if(apexPredPositions[i] != n0){
-                            scaledApexPredDistance[i] = (apexPredPositions[i] - here)/smellDistance;
-                            
-                            }else{scaledApexPredDistance[i] = n0;}
-                        }
-                    }
+                    
 
                     
                     
