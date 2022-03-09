@@ -299,8 +299,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   box: {fileID: 1136253243}
   diffRate: 1
+  statNutes: 0
+  statTot: 0
   cellScale: 4
-  initConc: 8
+  initConc: 16
 --- !u!4 &314230637
 Transform:
   m_ObjectHideFlags: 0
@@ -1155,7 +1157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   linChars: 
   initLineage: 
-  initBlib: 2000
+  initBlib: 1000
   extraBlib: 1
   minBlib: 1
   blib: {fileID: 3468846596000450122, guid: 6d4cc741cc2fc4e00ad7702559757827, type: 3}

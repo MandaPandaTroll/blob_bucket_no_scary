@@ -5,6 +5,9 @@ using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using System.Linq;
 
+
+// Reward signals and behaviour.
+
 public class BrainBlub : Agent
 {
 

@@ -1,3 +1,6 @@
+// Returns matrices with positions, which are used as sensor inputs.
+
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

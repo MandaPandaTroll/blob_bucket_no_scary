@@ -4,7 +4,7 @@ using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 
-
+// Reward signals and behaviour.
 
 public class BrainBlyb : Agent
 {

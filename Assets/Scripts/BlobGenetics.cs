@@ -1,6 +1,6 @@
 //prints genetic data to .csv file
 //original code by smkplus
-//modified by tabacwoman november 2021
+//modified by tabacwoman march 2022
 
 
 using UnityEngine;

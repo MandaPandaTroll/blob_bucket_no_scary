@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-//Displays pops and time
-//tabacwoman november 2021
+//Displays data and time
+//tabacwoman march 2022
 public class TimeDisplay : MonoBehaviour
 {
 
@@ -20,11 +20,12 @@ public class TimeDisplay : MonoBehaviour
     float ratio;
     float time;
     float tScale;
-
+    int grandNutes;
+    int totNutes;
     GameObject cam;
     CamCntrl camCntrl;
     float camSpeed;     
-    
+    Testing testing;
     
     // Start is called before the first frame update
     void Start()
@@ -35,16 +36,17 @@ public class TimeDisplay : MonoBehaviour
         Graph = PopGraph.GetComponent<Graph>();
         cam = GameObject.Find("Main Camera");
         camCntrl = cam.GetComponent<CamCntrl>();
-        
-
+        testing = GameObject.Find("Testing").GetComponent<Testing>();
+        grandNutes = testing.statNutes;
+        totNutes = testing.statTot;
     }
 
     // Update is called once per frame
     void Update()
     {   
        
-        
-        
+        totNutes = testing.statTot;
+        grandNutes = testing.statNutes;
         camSpeed = camCntrl.camSpeed;
         
         float timeToDisplay = Mathf.Round(Time.time);
@@ -64,12 +66,15 @@ public class TimeDisplay : MonoBehaviour
                     string blubString = blubs.ToString();
                     string camSpeedString = camSpeed.ToString();
                     string timeScaleString = tScale.ToString();
+                    string nuteString = ((float)grandNutes/(float)totNutes).ToString();
+                    
                  //Change the m_Text text to the message below
                  m_Text.text = "t = " + timeString + "\n"  + 
                  "Blibs = " + blibString + "\n" + 
                  "Blobs = " + blobString + "\n" + 
-                 "blybs = " + blybString + "\n" + 
+                 "Blybs = " + blybString + "\n" + 
                  "Blubs = " + blubString + "\n" + 
+                 "Nutes Grand/Tot = " + nuteString + "\n" + 
                  
                  "camSpeed = " + camSpeedString + "\n" + 
                  "timeScale = " + timeScaleString+"x" ;

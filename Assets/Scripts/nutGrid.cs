@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey.Utils;
 
+
+// This script provides the grid that holds the free nutrient values
 public class nutGrid
 {
 

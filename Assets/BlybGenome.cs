@@ -1,3 +1,6 @@
+// This script contains genetic information and converts the sequences to numeric values for the organism's phenotype. It also handles gene transfer and mutations.
+
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,7 +32,7 @@ public class BlybGenome : MonoBehaviour
        public string[] receiveLocus = new string[27];
 
     
-    public BlybGenome mother;
+    public BlybGenome mother; //Could be used to debug if genome is being properly transferred to offspring.
    private float nGRN_A, nGRN_B,
         nRED_A,nRED_B,
         nLLY_A, nLLY_B, 
@@ -40,6 +43,7 @@ public class BlybGenome : MonoBehaviour
         nLIF_A, nLIF_B,
         nTHICC_A, nTHICC_B;
 
+        //Current chromosomal loci
     int [,] sites = new int[9,19] {
         {0,27,54,81,108,135,162,189,216,243,270,297,324,351,378,405,432,459,486} , {0,27,54,81,108,135,162,189,216,243,270,297,324,351,378,405,432,459,486} , {0,27,54,81,108,135,162,189,216,243,270,297,324,351,378,405,432,459,486},
 
@@ -53,8 +57,8 @@ public class BlybGenome : MonoBehaviour
         //START_REDGRN_STOP = yellow
         
 public string[,] extA, extB;
+//Chromosome A
 
-           
     public string[,] A = new string[9,486] 
         // 0: L0 ->                                                                                                                             27 | L1 ->                                                                                                                             54 | L2 ->                                                                                                                             81 | L3 ->                                                                                                                            108 | L4 ->                                                                                                                            135 | L5 ->                                                                                                                            162 | L6 ->                                                                                                                            189 | L7 ->                                                                                                                            216 | L8 ->                                                                                                                            243 | L9 ->                                                                                                                             270| L10 ->                                                                                                                            297| L11 ->                                                                                                                            324| L12 ->                                                                                                                           351 | L13 ->                                                                                                                           378 | L14 ->                                                                                                                           405 | L15 ->                                                                                                                           432 | L16 ->                                                                                                                           459 | L17 ->                                                                                                                           486 |
            {{"A", "T", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "A", "A", "A", "A", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "C", "T", "G", "C", "T", "G", "T", "A", "T", "A", "A", "A", "T", "A", "G", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "G", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A"  },
@@ -75,6 +79,7 @@ public string[,] extA, extB;
         // 8: L0 ->                                                                                                                             27 | L1 ->                                                                                                                             54 | L2 ->                                                                                                                             81 | L3 ->                                                                                                                            108 | L4 ->                                                                                                                            135 | L5 ->                                                                                                                            162 | L6 ->                                                                                                                            189 | L7 ->                                                                                                                            216 | L8 ->                                                                                                                            243 | L9 ->                                                                                                                             270| L10 ->                                                                                                                            297| L11 ->                                                                                                                            324| L12 ->                                                                                                                           351 | L13 ->                                                                                                                           378 | L14 ->                                                                                                                           405 | L15 ->                                                                                                                           432 | L16 ->                                                                                                                           459 | L17 ->                                                                                                                           486 |
             {"A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A" }};
     
+    //Chromosome B
     public string[,] B = new string[9,486] 
         // 0: L0 ->                                                                                                                             27 | L1 ->                                                                                                                             54 | L2 ->                                                                                                                             81 | L3 ->                                                                                                                            108 | L4 ->                                                                                                                            135 | L5 ->                                                                                                                            162 | L6 ->                                                                                                                            189 | L7 ->                                                                                                                            216 | L8 ->                                                                                                                            243 | L9 ->                                                                                                                             270| L10 ->                                                                                                                            297| L11 ->                                                                                                                            324| L12 ->                                                                                                                           351 | L13 ->                                                                                                                           378 | L14 ->                                                                                                                           405 | L15 ->                                                                                                                           432 | L16 ->                                                                                                                           459 | L17 ->                                                                                                                           486 |
            {{"A", "T", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "A", "A", "A", "A", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "C", "T", "G", "C", "T", "G", "T", "A", "T", "A", "A", "A", "T", "A", "G", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "G", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A"  },
@@ -112,6 +117,7 @@ public string[,] extA, extB;
         
         chromoPairs = A.GetLength(0);
         basePairs = A.GetLength(1);
+//Get relevant amino acid sequences from database.
         redSeq = GeneDatabase.red;
         greenSeq = GeneDatabase.green;
         blueSeq = GeneDatabase.blue;
@@ -129,17 +135,17 @@ public string[,] extA, extB;
         
 
         tempS = null;
-        codon = new string[3]{"","",""};
-         allelesA = "";
-         allelesB = "";
-         thisAlleleA = "";
-         thisAlleleB = "";
+        codon = new string[3]{"","",""}; // Holds groups of 3 DNA bases to decode into amino acids.
+         allelesA = ""; //Holds all alleles on chromosome A.
+         allelesB = ""; //Holds all alleles on chromosome B.
+         thisAlleleA = ""; //Holds current allele being read.
+         thisAlleleB = ""; //Holds current allele being read.
 
-         nAllelesA = 0;
-         stopA = "";
-         nAllelesB = 0;
+         nAllelesA = 0; //Allele count.
+         stopA = ""; //Can hold a symbol to mark stop codons in the amino acid sequence.
+         nAllelesB = 0; //Allele count.
          stopB = "";
-         isGene = false;
+         isGene = false; // Is true if start codon is read (ATG), is false if stop codon is read(TGA,TAA, etc).
         TranslateGenome();
         
         
@@ -161,8 +167,8 @@ public string[,] extA, extB;
             
         
         
-        tempS = null;
-        codon = new string[3]{"","",""};
+        tempS = null; //Holds current base being read.
+        codon = new string[3]{"","",""}; 
          allelesA = "";
          allelesB = "";
          thisAlleleA = "";
@@ -175,7 +181,7 @@ public string[,] extA, extB;
          isGene = false;
 
 
-        
+        // Creates completely random genome.
         if(randGenome == true){
             for(int i = 0; i < chromoPairs;i++){
                 for(int j = 0; j < basePairs;j++){
@@ -203,6 +209,8 @@ public string[,] extA, extB;
 
 public int loSite, cNum, locus;
 private int AorB, mate_loSite,mate_cNum;
+
+// Horizontal gene transfer.
 void OnCollisionEnter2D(Collision2D col){
         if (col.gameObject.tag == this.gameObject.tag){
 
@@ -314,10 +322,10 @@ void OnCollisionEnter2D(Collision2D col){
                 
     }
     void Mutate() {
-    
+    string randChar = "A";
     AorB = UnityEngine.Random.Range(0,2);
-    int duplicationRoll = UnityEngine.Random.Range(0,4096);
-    int transLocRoll = UnityEngine.Random.Range(0,8192);
+    int duplicationRoll = UnityEngine.Random.Range(0,8192); // "Faces" of duplication die.
+    int transLocRoll = UnityEngine.Random.Range(0,4096); // "Faces" of translocation die.
 
     string[] triNu = new string[3];
     string[] tranString_origin = new string[27];
@@ -325,10 +333,10 @@ void OnCollisionEnter2D(Collision2D col){
     int siteCroms = sites.GetLength(0);
     int siteLocs = sites.GetLength(1);
     
-    int[] triIndex = new int[2]{UnityEngine.Random.Range(0,chromoPairs),UnityEngine.Random.Range(3,basePairs-6)};
+    int[] triIndex = new int[2]{UnityEngine.Random.Range(0,chromoPairs),UnityEngine.Random.Range(3,basePairs-6)}; //The 3 nucleobases to duplicate and their location.
     
     if(transLocRoll == 64){
-        string [] oNu = new string[3];
+
         string origin ="", destination ="";
         int tAorB = UnityEngine.Random.Range(0,2);
 
@@ -466,23 +474,32 @@ void OnCollisionEnter2D(Collision2D col){
             } 
     }
     
-    string randChar;
-    numMutations = UnityEngine.Random.Range(1,4);
+    // Substitution point mutation below.
+    numMutations = UnityEngine.Random.Range(0,6);
     for (int i = 0; i < numMutations; i++){
     
     int index0 = UnityEngine.Random.Range(0, chromoPairs);
     int index1 = UnityEngine.Random.Range(0, basePairs);
     int randBase = UnityEngine.Random.Range(0,2);
-    int pointTypeRoll = UnityEngine.Random.Range(1,101);
+    int pointTypeRoll = UnityEngine.Random.Range(0,10);
     string pointType;
     string pyrOrPur;
-        if (pointTypeRoll < 10){pointType = "trv";}else{pointType = "trt";}
+
+    /* pointTypeRoll decides if the point mutation is going to result in
+     a base of the same nucleotide group
+     ( A <-> G | C <-> T , 10x more likely) - Transition (trt)
+
+     or a base of the other nucleotide group 
+    ( A <-> T | C <-> G )                   - Transversion (trv)
+
+    Purines: Adenine (A), Guanine(G)
+    Pyrimidines: Cytosine (C), Thymine (T)
+
+    */
+        if (pointTypeRoll == 9){pointType = "trv";}else{pointType = "trt";}
 
         
-        if (randBase == 1){randChar = "A";}
-        else if (randBase == 2){randChar = "C";}
-        else if (randBase == 3){randChar = "G";}
-        else {randChar = "T";}
+        
 
         if (AorB == 0){
             if(A[index0,index1] == "A" || A[index0,index1] == "G"){
@@ -602,6 +619,9 @@ string tempS = "";
 
 
 int codonCount = 0;
+
+//The code below functions as a rudimentary ribosome, translating DNA into proteins, which are used to calculate numeric values of phenotypic traits.
+
  void TranslateGenome() {
 
      bool translating = true;
@@ -1021,6 +1041,9 @@ mutate = false;
 
     //Debug.Log( "numBasesB = " + numBasesB + " nAllelesB = " + nAllelesB + " StopsB = " + stopB);
 
+
+//Code below counts numbers of amino acid sequences that correspond to defined traits.
+
 nGRN_A = 0; nGRN_B = 0; nRED_A = 0; nRED_B = 0;
      nLLY_A = 0; nLLY_B = 0; nMVV_A = 0; nMVV_B = 0;
       nTRN_A = 0; nTRN_B = 0; nREP_A = 0; nREP_B = 0;
@@ -1120,8 +1143,11 @@ nGRN_A = 0; nGRN_B = 0; nRED_A = 0; nRED_B = 0;
     thisA = null;
     thisB = null;
 
+
+// Code below controls how the number of sequences translate to numeric values for the traits.
+
     redAllele1 = nRED_A/8f;
-    redAllele2 = nRED_B/16f;
+    redAllele2 = nRED_B/8f;
     redGene = (redAllele1 + redAllele2)/2f;
     
 
@@ -1145,7 +1171,7 @@ nGRN_A = 0; nGRN_B = 0; nRED_A = 0; nRED_B = 0;
 
     e2repAllele1 = Mathf.Pow(2,nREP_A);
     e2repAllele2 = Mathf.Pow(2,nREP_B);
-    energyToReproduce = (e2repAllele1 + e2repAllele2)/2f;
+
 
     lookDistAllele1 = Mathf.Pow(2f,nLKDISTA_A);
     lookDistAllele2 = Mathf.Pow(2f,nLKDISTA_B);

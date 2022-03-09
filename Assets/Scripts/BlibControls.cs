@@ -1,5 +1,5 @@
 //Behaviour and genetics
-//tabacwoman november 2021
+//tabacwoman march 2022
 
 
 using System.Collections;
@@ -430,7 +430,7 @@ List <string> codon;
 
        
         // rAgeC = 10 + (L/a)^2 
-            int rAgeC = (int)(Mathf.Pow((10f*lifeLength/age),2f));
+            int rAgeC = 1+ (int)(Mathf.Pow((10f*lifeLength/age),2f));
          int  rAgeDice = Random.Range(1,rAgeC);
         
                     

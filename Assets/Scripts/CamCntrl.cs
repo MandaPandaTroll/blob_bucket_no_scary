@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
+//Camera controls.
 public class CamCntrl : MonoBehaviour
 {
 public float camSpeed = 50f;

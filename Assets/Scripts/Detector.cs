@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Deprecated. Its purpuse was to simulate density dependent growth before the nutrient cycle was added.
+
 public class Detector : MonoBehaviour
 {
 

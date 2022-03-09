@@ -5,6 +5,8 @@ using UnityEngine;
 public class GeneDatabase 
 {
 
+// Database for amino acid sequences of phenotypic relevance.
+
 /* 
 —————————————————————————Codon List————————————————————————–––––|
                                                                 |
@@ -103,7 +105,7 @@ LIF = CTT - ATT - TTT
       TTA - ––– - –––
       TTG - ––– - –––
 
-       "C", "T", "T", "A", "T", "T", "T", "T", "T"
+"A", "T", "G", "C", "T", "T", "A", "T", "T", "T", "T", "T", "C", "T", "T", "A", "T", "T", "T", "T", "T", "A", "A", "A", "T", "G", "A"
 
            L     K     D     I     S     T     A
 LKDISTA = CTT - AAA - GAT - ATT - TCT - ACT - CGT

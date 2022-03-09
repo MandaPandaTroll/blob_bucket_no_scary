@@ -4,14 +4,14 @@ behaviors:
 
     hyperparameters:
       # Hyperparameters common to PPO and SAC
-      batch_size: 2048
-      buffer_size: 20580
+      batch_size: 512
+      buffer_size: 2048
       learning_rate: 1.0e-3
       learning_rate_schedule: linear
 
       # PPO-specific hyperparameters
       # Replaces the "PPO-specific hyperparameters" section above
-      beta: 1.0e-3
+      beta: 5.0e-3
       epsilon: 0.3
 
       lambd: 0.95
@@ -20,9 +20,10 @@ behaviors:
     # Configuration of the neural network (common to PPO/SAC)
     network_settings:
       vis_encode_type: resnet
-      normalize: false
-      hidden_units: 128
+      normalize: true
+      hidden_units: 256
       num_layers: 2
+      use recurrent: true
       memory:
         memory_size: 128
         sequence_length: 64
@@ -30,8 +31,8 @@ behaviors:
 
 
     # Trainer configurations common to all trainers
-    max_steps: 1.0e7
-    time_horizon: 512
+    max_steps: 1.0e6
+    time_horizon: 128
 
     summary_freq: 10000
     keep_checkpoints: 5
@@ -136,7 +137,7 @@ behaviors:
 
 
     # Trainer configurations common to all trainers
-    max_steps: 1.0e6
+    max_steps: 5.0e6
     time_horizon: 512
 
     summary_freq: 10000
@@ -152,4 +153,5 @@ behaviors:
       extrinsic:
         strength: 1.0
         gamma: 0.99
+
 

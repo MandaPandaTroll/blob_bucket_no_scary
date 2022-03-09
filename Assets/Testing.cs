@@ -4,6 +4,9 @@ using UnityEngine;
 using CodeMonkey.Utils;
 
 
+/* This script defines how nutrients are distributed across the map.
+There is some inexplicable loss of nutrients, which means that nutrients must be added for the total amount to stay roughly the same within the system*/
+
 public class Testing : MonoBehaviour
 {
     public nutGrid nutgrid;
@@ -11,6 +14,8 @@ public class Testing : MonoBehaviour
     float diffusionTimer;
     public float diffRate;
     int grandNutes;
+    public int statNutes;
+    public int statTot;
     GameObject[] blobs;
     GameObject[] blybs;
     GameObject[] blubs;
@@ -47,6 +52,7 @@ public class Testing : MonoBehaviour
 int countNutes;
     private void FixedUpdate()
     {
+        
         diffusionTimer += Time.deltaTime;
         if (diffusionTimer >= diffRate)
         { grandNutes = 0;
@@ -134,20 +140,21 @@ int countNutes;
             
           // Debug.Log("totNutes = " + totNutes + " , countNutes = " + countNutes + " , grandNutes = " + grandNutes);
             
-           if (grandNutes < totNutes/2)
+           if (grandNutes < (totNutes - (totNutes/20)))
            {
-               do{
+               
                    for(int x = 0; x < nutgrid.gridArray.GetLength(0); x++){
                        for(int y = 0; y < nutgrid.gridArray.GetLength(0); y++){
                            int thisVal = nutgrid.GetValue(x,y);
                            nutgrid.SetValue(x, y,thisVal + 1);
 
+                            if(grandNutes >= totNutes+100){break;}
                        }
                    }
                     
 
                          
-               }while(grandNutes < totNutes+100);
+               
                     
                 
             }
@@ -172,7 +179,8 @@ int countNutes;
 
             
             diffusionTimer = 0f;
-           
+           statNutes = grandNutes;
+           statTot = totNutes;
         } 
 
 

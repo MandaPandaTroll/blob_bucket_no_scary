@@ -1,10 +1,13 @@
-//Behaviour and genetics
-//tabacwoman november 2021
+// Metabolic processes, physical status, etc.
+//tabacwoman march 2022
 
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+
+
 
 public class BrainBlobControls : MonoBehaviour
 {
