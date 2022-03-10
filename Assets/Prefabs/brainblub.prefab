@@ -255,7 +255,7 @@ MonoBehaviour:
   sizeAllele2: 4
   sizeGene: 4
   lookDistance: 150
-  energyToReproduce: 30000
+  energyToReproduce: 40000
   lifeLength: 512
   intron1: 100
   intron2: 100

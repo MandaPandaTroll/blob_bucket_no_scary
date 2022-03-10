@@ -197,6 +197,7 @@ System.Random rndA = new System.Random();
 
             void OnCollisionEnter2D(Collision2D col)
             {   
+                
                 GameObject booper = col.gameObject;
              if(alive == false)
                 {   

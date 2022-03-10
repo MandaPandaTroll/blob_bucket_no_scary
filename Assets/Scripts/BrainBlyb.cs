@@ -229,7 +229,7 @@ rCount = bctrl.rCount;
  rb.AddTorque(rotMag*turnTorque*rb.inertia);
  bctrl.energy -=  bctrl.eCost*Mathf.Abs(fwd.magnitude);
  bctrl.energy -= bctrl.basalMet;
-    AddReward(smellReward);
+    
         
 
         if(bctrl.energy<= 105f)

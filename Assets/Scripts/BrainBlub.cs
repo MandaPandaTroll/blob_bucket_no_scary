@@ -248,7 +248,7 @@ hasReproduced = bctrl.hasReproduced;
  rb.AddTorque(rotMag*turnTorque*rb.inertia);
  bctrl.energy -=  bctrl.eCost*Mathf.Abs(fwd.magnitude);
  bctrl.energy -= bctrl.basalMet;
-        AddReward(smellReward);
+        
         //cumSmellReward += smellReward;
         if(bctrl.energy<= 101f)
         {

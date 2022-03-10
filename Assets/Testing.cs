@@ -142,20 +142,21 @@ int countNutes;
             
            if (grandNutes < (totNutes - (totNutes/20)))
            {
-               
+
+                int x = UnityEngine.Random.Range(0,nutgrid.gridArray.GetLength(0));
+                int y = UnityEngine.Random.Range(0,nutgrid.gridArray.GetLength(1));
+                int thisVal = nutgrid.GetValue(x,y);
+                           nutgrid.SetValue(x, y,thisVal + (totNutes/20));
+               /*
                    for(int x = 0; x < nutgrid.gridArray.GetLength(0); x++){
                        for(int y = 0; y < nutgrid.gridArray.GetLength(0); y++){
-                           int thisVal = nutgrid.GetValue(x,y);
-                           nutgrid.SetValue(x, y,thisVal + 1);
+                           
 
-                            if(grandNutes >= totNutes+100){break;}
+                            if(grandNutes >= totNutes+(totNutes/20)){break;}
                        }
+                       
                    }
-                    
-
-                         
-               
-                    
+                    */
                 
             }
 
@@ -163,7 +164,7 @@ int countNutes;
                 
            
 
-            if (grandNutes > totNutes+(totNutes/2))
+            if (grandNutes > totNutes+(totNutes/20))
            {
                      int x = Random.Range(0,nutgrid.gridArray.GetLength(0));
                     int y = Random.Range(0,nutgrid.gridArray.GetLength(1));

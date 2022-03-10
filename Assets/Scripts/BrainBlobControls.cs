@@ -290,6 +290,32 @@ void Awake(){
             void OnCollisionEnter2D(Collision2D col)
             {   
                 GameObject booper = col.gameObject;
+                /*
+                if(booper.tag == "Wall"){
+                     
+                    if( transform.position.x < 0 && Mathf.Abs(transform.position.x) < Mathf.Abs(transform.position.y) ){
+                     
+                    transform.position =  new Vector3(-transform.position.x -5f,transform.position.y, transform.position.z);
+                    }
+
+                    if( transform.position.x > 0 && Mathf.Abs(transform.position.x) > Mathf.Abs(transform.position.y) ){
+                     
+                    transform.position =  new Vector3(-transform.position.x +5f,transform.position.y, transform.position.z);
+                    }
+
+                    if( transform.position.y < 0 && Mathf.Abs(transform.position.y) < Mathf.Abs(transform.position.x )){
+                    
+                    transform.position =  new Vector3(transform.position.x ,-transform.position.y-5f, transform.position.z);
+                    }
+
+                    if( transform.position.y > 0 && Mathf.Abs(transform.position.y) > Mathf.Abs(transform.position.x )){
+                    
+                    transform.position =  new Vector3(transform.position.x ,-transform.position.y+5f, transform.position.z);
+                    }
+                }
+                */
+
+
              if(alive == false)
                 {   
                     
