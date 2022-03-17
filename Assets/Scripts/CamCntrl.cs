@@ -18,7 +18,7 @@ void Awake()
     // Start is called before the first frame update
     void Start()
     {
-      
+      camSpeed = 50f;
     }
 
     // Update is called once per frame
@@ -82,12 +82,12 @@ void Awake()
 
             if(Input.GetKeyDown("n") == true)
             {
-                Time.timeScale -= 0.1f;
+                Time.timeScale -= 1.0f;
                 Time.fixedDeltaTime = this.fixedDeltaTime * Time.timeScale;
             }
             if(Input.GetKeyDown("m") == true)
             {
-                Time.timeScale += 0.1f;
+                Time.timeScale += 1.0f;
                 Time.fixedDeltaTime = this.fixedDeltaTime * Time.timeScale;
             }
     }

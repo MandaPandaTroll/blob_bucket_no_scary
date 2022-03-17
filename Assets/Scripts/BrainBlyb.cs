@@ -51,24 +51,30 @@ void Start()
     thisRay.RayLength = ((genome.lookDistAllele1+genome.lookDistAllele2)/2f);
     nomCount = 0;
     protein = bctrl.protein;
-    v = rb.velocity.magnitude/1000.0f;
+    
     angV = rb.angularVelocity/1000.0f;
     detector = GameObject.Find("Alpha").GetComponent<Detector>();
     boxLength = box.transform.lossyScale.x;
     smellMask = LayerMask.GetMask("Prey");
     latestLookDistance = ((genome.lookDistAllele1+genome.lookDistAllele2)/2f);
     MaxScaledSmellDistance = Mathf.Sqrt( Mathf.Pow((((genome.lookDistAllele1+genome.lookDistAllele2)/2f)/4.0f),2.0f) + Mathf.Pow((((genome.lookDistAllele1+genome.lookDistAllele2)/2f)/4.0f),2.0f) );
-   
+    maxEnergy = bctrl.maxEnergy;
+    ObsAge = bctrl.age;
 }
 
 float MaxScaledSmellDistance = 1f;
 public float latestLookDistance = 100f;
 
 int protein;
-float v, angV;
+float  angV;
+Vector2 v;
 int step;
+float maxEnergy;
+float ObsAge;
+
 public override void OnEpisodeBegin(){
 step = 0;
+nomCount = 0;
 }
 float scaledSmellDistance = 0, smellReward = 0;
 Vector2 scaledClosest = new Vector2 (0f,0f);
@@ -78,28 +84,37 @@ Vector2 scaledClosest = new Vector2 (0f,0f);
     Vector2[] scaledPreyDistance; 
      Vector2[] scaledMateDistance; 
      Vector2[] scaledApexPredDistance; 
+     int dbugVelCount;
+     float[] vels  = new float[256];
+
+const int NUM_BUMP_TYPES = (int)BumperType.LastBumper;
+BumperType m_currentBumper;
+     
 public override void CollectObservations(VectorSensor sensor)
 {
+    /*
+    dbugVelCount +=1;
+    vels[dbugVelCount] = rb.velocity.magnitude;
+
+    if(dbugVelCount >= 255){
+        float meanVel = 0;
+        for(int i = 0; i < 255;i++){
+            meanVel += vels[i];
+        }
+        meanVel = meanVel/256;
+        Debug.Log(meanVel);
+        dbugVelCount = 0;
+    }
     
-     
+     */
     step +=1;
-int minindex = -1;
-float minDistance = Mathf.Infinity;
+
+
 if (bump == false)
 {
     extBooper = null;
 }
-Vector2 smellA = new Vector2(transform.position.x -((genome.lookDistAllele1+genome.lookDistAllele2)/2f)/4.0f, transform.position.y -((genome.lookDistAllele1+genome.lookDistAllele2)/2f)/4.0f);
-Vector2 smellB = new Vector2(transform.position.x +((genome.lookDistAllele1+genome.lookDistAllele2)/2f)/4.0f, transform.position.y +((genome.lookDistAllele1+genome.lookDistAllele2)/2f)/4.0f);
-smellColliders = Physics2D.OverlapAreaAll(smellA,smellB,smellMask);
-for(int i = 0; i < smellColliders.Length;i++){
-float preyDist = (smellColliders[i].transform.position - transform.position).sqrMagnitude;
-if(preyDist < minDistance)
-minDistance = preyDist;
-minindex = i;
-}
-if (smellColliders.Length <1){closest = Vector2.zero;}
-else{closest = (smellColliders[minindex].transform.position - transform.position).normalized;}
+
 if(latestLookDistance != ((genome.lookDistAllele1+genome.lookDistAllele2)/2f)){
     
 MaxScaledSmellDistance = Mathf.Sqrt( Mathf.Pow((((genome.lookDistAllele1+genome.lookDistAllele2)/2f)/4.0f),2.0f) + Mathf.Pow((((genome.lookDistAllele1+genome.lookDistAllele2)/2f)/4.0f),2.0f) );
@@ -112,33 +127,34 @@ latestLookDistance = ((genome.lookDistAllele1+genome.lookDistAllele2)/2f);
  smellReward = (1.0f-scaledSmellDistance)/2048f;
   
 protein = bctrl.protein;
-float e2r = genome.energyToReproduce;
-float ObsAge = bctrl.age;
+ maxEnergy = bctrl.maxEnergy;
+ ObsAge = bctrl.age;
 if(ObsAge <0f )
 {ObsAge = 0f;}
 
-if (e2r < 1f ){e2r = 1f;}
+
 scaledPreyDistance = smeller.scaledPreyDistance;
 scaledMateDistance = smeller.scaledMateDistance;
 scaledApexPredDistance = smeller.scaledApexPredDistance;
- v = rb.velocity.magnitude/1000.0f;
+ v = transform.InverseTransformDirection(rb.velocity/64.0f);
  angV = rb.angularVelocity/1000.0f;
- sensor.AddObservation(scaledClosest);
 sensor.AddObservation(protein);
 sensor.AddObservation(v);
 sensor.AddObservation(angV);
 
 
-sensor.AddObservation(bctrl.energy/e2r);
+sensor.AddObservation(bctrl.energy/maxEnergy);
 sensor.AddObservation(bctrl.age);
+
 for (int i = 0; i < 8; i++){
 sensor.AddObservation(scaledPreyDistance[i]);
 sensor.AddObservation(scaledMateDistance[i]);
 sensor.AddObservation(scaledApexPredDistance[i]);
+
 }
 
 
-
+sensor.AddOneHotObservation((int)m_currentBumper, NUM_BUMP_TYPES);
 
 
 }
@@ -237,13 +253,13 @@ rCount = bctrl.rCount;
         
             SetReward(-1.0f);
             EndEpisode();
-            
+            this.enabled = false;
         }
 
     if(bctrl.hasReproduced == true)
     {
-        AddReward(1.0f);
-        EndEpisode();
+        AddReward(0.5f);
+        
         bctrl.hasReproduced = false;
     }
 
@@ -271,26 +287,39 @@ rCount = bctrl.rCount;
         extBooper = booper;
      if (booper.tag == "ApexPred")
         {
-            if (bctrl.rCount <= 0)
-            {
-            SetReward(-1.0f);
+            m_currentBumper = BumperType.ApexPred;           
+            AddReward(-1.0f);
             EndEpisode();
-            }
-
-            
+            this.enabled = false;
         }
 
-             if (booper.tag == "Predator2" && energy >= bctrl.energyToReproduce*0.75f)
+             if (booper.tag == "Predator" )
             {
-             AddReward(genome.pythagDist*5f);
+                m_currentBumper = BumperType.Predator;
+             
                 
             }
 
+
+            if (booper.tag == "Predator2" )
+            {
+                m_currentBumper = BumperType.Predator2;
+                AddReward(genome.pythagDist*5f);
+                
+            }
             
 
          if (booper.tag == "Prey" || booper.tag == "Carcass" )
          {
-            AddReward((1.0f / (float)nomLim)-((float)step/512f));
+             if(booper.tag == "Prey"){
+                 m_currentBumper = BumperType.Prey;
+             }
+
+             if(booper.tag == "Carcass"){
+                 m_currentBumper = BumperType.Carcass;
+             }
+             
+            AddReward((1.0f / (float)nomLim));
              nomCount +=1;
             if (nomCount >= nomLim){
                 nomCount = 0;
@@ -299,7 +328,12 @@ rCount = bctrl.rCount;
             
                 
          }
-
+        
+        if(booper.tag == "Wall"){
+            
+            m_currentBumper = BumperType.Wall;
+             
+        }
 
 
 
@@ -314,7 +348,7 @@ rCount = bctrl.rCount;
     void OnCollisionExit2D(Collision2D col)
     {
         bump = false;
-        
+        m_currentBumper = BumperType.None;
     }
 
 

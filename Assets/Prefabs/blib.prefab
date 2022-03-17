@@ -84,7 +84,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 1
+  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!58 &3468846596000450124
 CircleCollider2D:
@@ -121,7 +121,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!114 &3468846596000450123
 MonoBehaviour:
@@ -146,17 +146,17 @@ MonoBehaviour:
   statAge: 0
   moveAllele1: 150
   moveAllele2: 150
-  moveForce: 0
+  moveForce: 150
   turnTorque: 90.1477
   turnTorqueAllele1: 90.1477
   turnTorqueAllele2: 90.1477
   redGene: 0
-  greenGene: 0
+  greenGene: 1
   blueGene: 0
   redAllele1: 0
   redAllele2: 0
-  greenAllele1: 0
-  greenAllele2: 0
+  greenAllele1: 1
+  greenAllele2: 1
   blueAllele1: 0
   blueAllele2: 0
   initDiversity: 0
@@ -179,20 +179,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineageID: []
-  greenAllele1: 0
-  greenAllele2: 0
+  greenAllele1: 1
+  greenAllele2: 1
   redAllele1: 0
   redAllele2: 0
   blueAllele1: 0
   blueAllele2: 0
   turnTorqueAllele1: 0
   turnTorqueAllele2: 0
-  e2repAllele1: 0
-  e2repAllele2: 0
+  e2repAllele1: 128
+  e2repAllele2: 128
   moveAllele1: 0
   moveAllele2: 0
-  lifeLengthAllele1: 0
-  lifeLengthAllele2: 0
+  lifeLengthAllele1: 100
+  lifeLengthAllele2: 100
   mutate: 0
   numMutations: 1
   giveLocus:

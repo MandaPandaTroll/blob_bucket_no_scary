@@ -171,7 +171,7 @@ MonoBehaviour:
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: BrainBlub
-  TeamId: 2
+  TeamId: 0
   m_UseChildSensors: 1
   m_UseChildActuators: 1
   m_ObservableAttributeHandling: 0
@@ -274,9 +274,9 @@ MonoBehaviour:
   rDice: 0
   generation: 0
   deadLayer: 9
-  basalMet: 0.1
+  basalMet: 0.2
   protein: 0
-  proteinToReproduce: 2048
+  proteinToReproduce: 4096
   NH4: 0
 --- !u!114 &-518505787406799334
 MonoBehaviour:

@@ -15,7 +15,7 @@ public class BlybSpawner : MonoBehaviour
 
   GameObject box;
 
-  private bool autoRespawn;
+  public bool autoRespawn;
 
     // Start is called before the first frame update
     void Start()

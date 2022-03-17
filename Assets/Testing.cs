@@ -9,6 +9,8 @@ There is some inexplicable loss of nutrients, which means that nutrients must be
 
 public class Testing : MonoBehaviour
 {
+    public bool autoReplenish;
+    public bool autoRemove;
     public nutGrid nutgrid;
     public Transform box;
     float diffusionTimer;
@@ -21,17 +23,27 @@ public class Testing : MonoBehaviour
     GameObject[] blubs;
     GameObject[] blibs;
     int grandarr;
-
+   
+   
     List<GameObject> population = new List<GameObject>();
-    int gridX;
-    int gridY;
+    public int gridX;
+    public int gridY;
     public float cellScale;
 
     public int initConc;
     int totNutes;
+
+     float vSliderValue = 0.0f;
+     
+
+    void OnGUI()
+    {
+        vSliderValue = GUI.VerticalSlider(new Rect(25, 750, 0, 250), vSliderValue, 32.0f, 0.0f);
+    }
    private void Awake() 
     {
 
+        
         
         
         gridX = (int)(box.localScale.x/cellScale);
@@ -47,12 +59,15 @@ public class Testing : MonoBehaviour
             
         }
         
+        vSliderValue = (float)initConc;
         
     }
 int countNutes;
     private void FixedUpdate()
     {
-        
+        initConc = (int)Mathf.Round(vSliderValue);
+        totNutes = gridX*gridY *initConc;
+
         diffusionTimer += Time.deltaTime;
         if (diffusionTimer >= diffRate)
         { grandNutes = 0;
@@ -139,44 +154,56 @@ int countNutes;
                 
             
           // Debug.Log("totNutes = " + totNutes + " , countNutes = " + countNutes + " , grandNutes = " + grandNutes);
-            
-           if (grandNutes < (totNutes - (totNutes/20)))
-           {
+            if(autoReplenish == true){
+                if (grandNutes < (totNutes - (totNutes/32)))
+                {
+                    int minX = nutgrid.gridArray.GetLength(0)/4;
+                    int maxX = nutgrid.gridArray.GetLength(0) + (nutgrid.gridArray.GetLength(0)/4);
+                    int minY = nutgrid.gridArray.GetLength(1)/4;
+                    int maxY = nutgrid.gridArray.GetLength(1) + (nutgrid.gridArray.GetLength(1)/4);
 
-                int x = UnityEngine.Random.Range(0,nutgrid.gridArray.GetLength(0));
-                int y = UnityEngine.Random.Range(0,nutgrid.gridArray.GetLength(1));
-                int thisVal = nutgrid.GetValue(x,y);
-                           nutgrid.SetValue(x, y,thisVal + (totNutes/20));
-               /*
-                   for(int x = 0; x < nutgrid.gridArray.GetLength(0); x++){
-                       for(int y = 0; y < nutgrid.gridArray.GetLength(0); y++){
+
+                        int x = UnityEngine.Random.Range(minX,maxX);
+                        int y = UnityEngine.Random.Range(minX,maxX);
+                        int thisVal = nutgrid.GetValue(x,y);
+                           nutgrid.SetValue(x, y,thisVal + (totNutes/64));
+                    /*
+                        for(int x = 0; x < nutgrid.gridArray.GetLength(0); x++){
+                            for(int y = 0; y < nutgrid.gridArray.GetLength(0); y++){
                            
 
-                            if(grandNutes >= totNutes+(totNutes/20)){break;}
-                       }
+                                    if(grandNutes >= totNutes+(totNutes/20)){break;}
+                            }
                        
-                   }
-                    */
+                         }
+                            */
                 
-            }
+                }
 
                     
                 
-           
+            }
+        if(autoRemove == true){
 
-            if (grandNutes > totNutes+(totNutes/20))
+            if (grandNutes > totNutes+(totNutes/32))
            {
-                     int x = Random.Range(0,nutgrid.gridArray.GetLength(0));
-                    int y = Random.Range(0,nutgrid.gridArray.GetLength(1));
+                for(int x = 0; x < nutgrid.gridArray.GetLength(0);x++){
+                    for(int y = 0; y < nutgrid.gridArray.GetLength(0);y++){
 
-                    int thisVal = nutgrid.GetValue(x,y);
-                        
-                        nutgrid.SetValue(x, y,thisVal - 1);
-                        if(grandNutes < totNutes){FixedUpdate();}
+                        int thisVal = nutgrid.GetValue(x,y);
+                        if (thisVal > 0){
+                            nutgrid.SetValue(x, y,thisVal - 1);
+                        }
+
+                        if(grandNutes <= totNutes){
+                            FixedUpdate();}
+                    }
+                }
 
                     
                 
            }
+        }
 
             
             diffusionTimer = 0f;

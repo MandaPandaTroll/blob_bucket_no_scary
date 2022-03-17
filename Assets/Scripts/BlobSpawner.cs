@@ -16,7 +16,7 @@ public class BlobSpawner : MonoBehaviour
   GameObject box;
 
  float boxSize;
-    private bool autoRespawn;
+    public bool autoRespawn;
 
     // Start is called before the first frame update
     void Start()

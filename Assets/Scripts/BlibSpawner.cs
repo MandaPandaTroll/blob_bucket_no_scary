@@ -10,7 +10,7 @@ public class BlibSpawner : MonoBehaviour
   public char[] initLineage;
   public List<char[]> initLineages = new List<char[]>();
   public int initBlib;
-  private bool autoRespawn;
+  public bool autoRespawn;
   public int extraBlib;
 
   public int minBlib;
@@ -34,7 +34,7 @@ public class BlibSpawner : MonoBehaviour
       }
 
       popLogger = GameObject.Find("StatisticsHandler").GetComponent<PopLogger>();
-      autoRespawn = false;
+      
         box = GameObject.Find("box");
          boxSize = box.transform.localScale.x;
         blib.name = "blib";

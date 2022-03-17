@@ -164,7 +164,7 @@ System.Random rndA = new System.Random();
     if(alive == true)
     {
         NH4_Timer += Time.deltaTime;
-        if (NH4_Timer >= 1f && protein > 1)
+        if (NH4_Timer >= 1f && protein > 2)
         {
             NH4 +=2;
             protein -= 2;

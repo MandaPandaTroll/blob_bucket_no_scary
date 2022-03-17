@@ -26,6 +26,8 @@ public class TimeDisplay : MonoBehaviour
     CamCntrl camCntrl;
     float camSpeed;     
     Testing testing;
+    int gridX, gridY;
+     int initConc;
     
     // Start is called before the first frame update
     void Start()
@@ -39,6 +41,9 @@ public class TimeDisplay : MonoBehaviour
         testing = GameObject.Find("Testing").GetComponent<Testing>();
         grandNutes = testing.statNutes;
         totNutes = testing.statTot;
+        gridX = testing.gridX;
+        gridY = testing.gridY;
+        initConc = testing.initConc;
     }
 
     // Update is called once per frame
@@ -47,6 +52,7 @@ public class TimeDisplay : MonoBehaviour
        
         totNutes = testing.statTot;
         grandNutes = testing.statNutes;
+        initConc = testing.initConc;
         camSpeed = camCntrl.camSpeed;
         
         float timeToDisplay = Mathf.Round(Time.time);
@@ -67,6 +73,7 @@ public class TimeDisplay : MonoBehaviour
                     string camSpeedString = camSpeed.ToString();
                     string timeScaleString = tScale.ToString();
                     string nuteString = ((float)grandNutes/(float)totNutes).ToString();
+                    string expNuteString = initConc.ToString();
                     
                  //Change the m_Text text to the message below
                  m_Text.text = "t = " + timeString + "\n"  + 
@@ -74,7 +81,8 @@ public class TimeDisplay : MonoBehaviour
                  "Blobs = " + blobString + "\n" + 
                  "Blybs = " + blybString + "\n" + 
                  "Blubs = " + blubString + "\n" + 
-                 "Nutes Grand/Tot = " + nuteString + "\n" + 
+                 "Expected nutes = " + expNuteString + "x" + "(" + gridX.ToString() + "," +gridY.ToString() + ")" + "\n" + 
+                 "Nutes measured/expected = " + nuteString + "\n" + 
                  
                  "camSpeed = " + camSpeedString + "\n" + 
                  "timeScale = " + timeScaleString+"x" ;

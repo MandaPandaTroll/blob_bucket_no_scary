@@ -5,7 +5,7 @@ using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 
 // Reward signals and behaviour.
-
+enum BumperType {Prey, Predator, Predator2, ApexPred, Carcass, Wall, None , LastBumper}
 public class BrainBlob : Agent
 {
 public int nomLim;
@@ -58,7 +58,8 @@ void Start()
     smellMask = LayerMask.GetMask("Prey");
     latestLookDistance = ((genome.lookDistAllele1+genome.lookDistAllele2)/2f);
     MaxScaledSmellDistance = Mathf.Sqrt( Mathf.Pow((((genome.lookDistAllele1+genome.lookDistAllele2)/2f)/4.0f),2.0f) + Mathf.Pow((((genome.lookDistAllele1+genome.lookDistAllele2)/2f)/4.0f),2.0f) );
-   
+    maxEnergy = bctrl.maxEnergy;
+    ObsAge = bctrl.age;
 }
 
 float MaxScaledSmellDistance = 1f;
@@ -68,8 +69,12 @@ int protein;
 float  angV;
 Vector2 v;
 int step;
+float maxEnergy;
+float ObsAge;
+
 public override void OnEpisodeBegin(){
 step = 0;
+nomCount = 0;
 }
 float scaledSmellDistance = 0, smellReward = 0;
 Vector2 scaledClosest = new Vector2 (0f,0f);
@@ -81,8 +86,13 @@ Vector2 scaledClosest = new Vector2 (0f,0f);
      Vector2[] scaledApexPredDistance; 
      int dbugVelCount;
      float[] vels  = new float[256];
+
+const int NUM_BUMP_TYPES = (int)BumperType.LastBumper;
+BumperType m_currentBumper;
+     
 public override void CollectObservations(VectorSensor sensor)
 {
+    /*
     dbugVelCount +=1;
     vels[dbugVelCount] = rb.velocity.magnitude;
 
@@ -96,7 +106,7 @@ public override void CollectObservations(VectorSensor sensor)
         dbugVelCount = 0;
     }
     
-     
+     */
     step +=1;
 
 
@@ -117,12 +127,12 @@ latestLookDistance = ((genome.lookDistAllele1+genome.lookDistAllele2)/2f);
  smellReward = (1.0f-scaledSmellDistance)/2048f;
   
 protein = bctrl.protein;
-float e2r = bctrl.energyToReproduce;
-float ObsAge = bctrl.age;
+ maxEnergy = bctrl.maxEnergy;
+ ObsAge = bctrl.age;
 if(ObsAge <0f )
 {ObsAge = 0f;}
 
-if (e2r < 1f ){e2r = 1f;}
+
 scaledPreyDistance = smeller.scaledPreyDistance;
 scaledMateDistance = smeller.scaledMateDistance;
 scaledApexPredDistance = smeller.scaledApexPredDistance;
@@ -133,16 +143,18 @@ sensor.AddObservation(v);
 sensor.AddObservation(angV);
 
 
-sensor.AddObservation(bctrl.energy/e2r);
+sensor.AddObservation(bctrl.energy/maxEnergy);
 sensor.AddObservation(bctrl.age);
+
 for (int i = 0; i < 8; i++){
 sensor.AddObservation(scaledPreyDistance[i]);
 sensor.AddObservation(scaledMateDistance[i]);
 sensor.AddObservation(scaledApexPredDistance[i]);
+
 }
 
 
-
+sensor.AddOneHotObservation((int)m_currentBumper, NUM_BUMP_TYPES);
 
 
 }
@@ -241,13 +253,13 @@ rCount = bctrl.rCount;
         
             SetReward(-1.0f);
             EndEpisode();
-            
+            this.enabled = false;
         }
 
     if(bctrl.hasReproduced == true)
     {
-        AddReward(1.0f);
-        EndEpisode();
+        AddReward(0.5f);
+        
         bctrl.hasReproduced = false;
     }
 
@@ -275,26 +287,38 @@ rCount = bctrl.rCount;
         extBooper = booper;
      if (booper.tag == "ApexPred")
         {
-            if (bctrl.rCount <= 0)
-            {
-            SetReward(-1.0f);
+            m_currentBumper = BumperType.ApexPred;           
+            AddReward(-1.0f);
             EndEpisode();
-            }
-
-            
+            this.enabled = false;
         }
 
-             if (booper.tag == "Predator" && energy >= bctrl.energyToReproduce*0.75f)
+             if (booper.tag == "Predator" )
             {
+                m_currentBumper = BumperType.Predator;
              AddReward(genome.pythagDist*5f);
                 
             }
 
+
+            if (booper.tag == "Predator2" )
+            {
+                m_currentBumper = BumperType.Predator2;
+                
+            }
             
 
          if (booper.tag == "Prey" || booper.tag == "Carcass" )
          {
-            AddReward((1.0f / (float)nomLim)-((float)step/512f));
+             if(booper.tag == "Prey"){
+                 m_currentBumper = BumperType.Prey;
+             }
+
+             if(booper.tag == "Carcass"){
+                 m_currentBumper = BumperType.Carcass;
+             }
+             
+            AddReward((1.0f / (float)nomLim));
              nomCount +=1;
             if (nomCount >= nomLim){
                 nomCount = 0;
@@ -303,7 +327,12 @@ rCount = bctrl.rCount;
             
                 
          }
-
+        
+        if(booper.tag == "Wall"){
+            
+            m_currentBumper = BumperType.Wall;
+             
+        }
 
 
 
@@ -318,7 +347,7 @@ rCount = bctrl.rCount;
     void OnCollisionExit2D(Collision2D col)
     {
         bump = false;
-        
+        m_currentBumper = BumperType.None;
     }
 
 

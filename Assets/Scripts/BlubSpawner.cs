@@ -13,7 +13,7 @@ public class BlubSpawner : MonoBehaviour
   GameObject box;
  float boxSize;
   int blubN;
-  private bool autoRespawn;
+  public bool autoRespawn;
   public int minBlub;
 
     // Start is called before the first frame update

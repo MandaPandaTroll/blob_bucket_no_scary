@@ -297,12 +297,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 415939121d4a24cfe96a4728064886db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autoReplenish: 1
+  autoRemove: 1
   box: {fileID: 1136253243}
   diffRate: 1
   statNutes: 0
   statTot: 0
+  gridX: 0
+  gridY: 0
   cellScale: 4
-  initConc: 4
+  initConc: 12
 --- !u!4 &314230637
 Transform:
   m_ObjectHideFlags: 0
@@ -311,7 +315,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 314230635}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.25568247, y: -2.221589, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 1}
   m_Children: []
   m_Father: {fileID: 1136253243}
@@ -714,7 +718,7 @@ Transform:
   m_GameObject: {fileID: 1136253239}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2048, y: 2048, z: 1}
+  m_LocalScale: {x: 1024, y: 1024, z: 1}
   m_Children:
   - {fileID: 1855928353}
   - {fileID: 721042678}
@@ -1158,8 +1162,9 @@ MonoBehaviour:
   linChars: 
   initLineage: 
   initBlib: 1000
+  autoRespawn: 1
   extraBlib: 1
-  minBlib: 1
+  minBlib: 1000
   blib: {fileID: 3468846596000450122, guid: 6d4cc741cc2fc4e00ad7702559757827, type: 3}
 --- !u!4 &1883381884
 Transform:
@@ -1187,10 +1192,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6bd4133b54884e9b85ea955802985c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initBlob: 0
+  initBlob: 5
   extraBlob: 1
-  minBlob: 3
+  minBlob: 5
   brainblob: {fileID: 1711403674044451826, guid: 62f3ae1229ce147e085f49742d4f03cd, type: 3}
+  autoRespawn: 1
 --- !u!114 &1883381886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1203,10 +1209,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3b243e301ee9401a834a5dedfa9deae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initBlub: 2
+  initBlub: 0
   extraBlub: 1
   blub: {fileID: 2899908468288829811, guid: 85d9ad2e1ee97449ba7a451adfb4fe78, type: 3}
-  minBlub: 2
+  autoRespawn: 1
+  minBlub: 5
 --- !u!114 &1883381887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1222,7 +1229,8 @@ MonoBehaviour:
   initBlyb: 5
   extraBlyb: 1
   blyb: {fileID: 9185934289686911736, guid: b502b5fe1709f4524936c88a0c2bb425, type: 3}
-  minBlyb: 3
+  minBlyb: 5
+  autoRespawn: 1
 --- !u!114 &1883381888
 MonoBehaviour:
   m_ObjectHideFlags: 0

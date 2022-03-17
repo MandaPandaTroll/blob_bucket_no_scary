@@ -46,12 +46,14 @@
      <Compile Include="Assets/BlybSatLogger.cs" />
      <Compile Include="Assets/CodeMonkey/Utils/World_Mesh.cs" />
      <Compile Include="Assets/Scripts/BlobSpawner.cs" />
+     <Compile Include="Assets/BlobGenome.cs" />
      <Compile Include="Assets/CodeMonkey/Utils/UI_TextComplex.cs" />
      <Compile Include="Assets/Scripts/Save.cs" />
      <Compile Include="Assets/Scripts/BrainBlybControls.cs" />
      <Compile Include="Assets/CodeMonkey/Utils/Button_Sprite.cs" />
      <Compile Include="Assets/CodeMonkey/MonoBehaviours/CameraFollowSetup.cs" />
      <Compile Include="Assets/CodeMonkey/MonoBehaviours/CameraFollow.cs" />
+     <Compile Include="Assets/SettingsMenu.cs" />
      <Compile Include="Assets/CodeMonkey/Assets.cs" />
      <Compile Include="Assets/CodeMonkey/Utils/World_Sprite.cs" />
      <Compile Include="Assets/CodeMonkey/Utils/World_Bar.cs" />
@@ -62,6 +64,7 @@
      <Compile Include="Assets/Scripts/CamCntrl.cs" />
      <Compile Include="Assets/Scripts/TrainingPreySpawner.cs" />
      <Compile Include="Assets/Scripts/TrainingPreyBlobControls.cs" />
+     <Compile Include="Assets/Smeller_Blub.cs" />
      <Compile Include="Assets/Scripts/BrainBlubControls.cs" />
      <Compile Include="Assets/Scripts/BlibSpawner.cs" />
      <Compile Include="Assets/CodeMonkey/Utils/FunctionUpdater.cs" />
@@ -95,9 +98,52 @@
      <Compile Include="Assets/CodeMonkey/Utils/FunctionPeriodic.cs" />
      <Compile Include="Assets/BlibGenome.cs" />
      <Compile Include="Assets/Scripts/BlubControls.cs" />
-     <Compile Include="Assets/SettingsMenu.cs" />
-     <Compile Include="Assets/BlobGenome.cs" />
-     <Compile Include="Assets/Smeller_Blub.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/Constraints/DetectionConstraint.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Sensor/GridSensorComponent.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GridSensorComponent3D.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GeomUtil3D.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Detection/Observable.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GridSensorComponentBaseGO.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Sensor/GridSensor.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/Modifiers/PointModNone.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/Constraints/Frustum.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/Modifiers/PointModDiagonalFill.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Util/CoroutineUtil.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GridSensorComponent2D.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Debug/DebugChannelData.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectSettings.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Detection/IDetectable.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/Encoder.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GridEditorHelper3D.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/Modifiers/PointModOrthogonalFill.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GridEditorHelper2D.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Detection/IDetector.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/ShapeScanUtil.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectDetector2D.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/DistanceNormalization.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Debug/IDebugable.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectDetector.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Debug/ChannelLabel.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/Modifiers/PointModDilation.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/IEncoder.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/Constraints/DetectionConstraint2D.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Sensor/GridBuffer.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectDetector3D.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/DetectableGameObject.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Sensor/GridSensorComponentBase.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectShape.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Util/EditorUtil.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/IEncodingSettings.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Detection/ObservableCollection.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Debug/GridBufferDrawer.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Detection/DetectionResult.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/Modifiers/PointModDownsampling.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/Constraints/DetectionConstraint3D.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GridEditor2D.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GridEditor3D.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Sensor/ColorGridBuffer.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/Modifiers/PointModifier.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectSettingsMeta.cs" />
      <None Include="Assets/CodeMonkey/README.txt" />
     <Reference Include="UnityEngine">
         <HintPath>/Applications/2020.3.17f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
@@ -322,7 +368,7 @@
         <HintPath>/Applications/2020.3.17f1/Unity.app/Contents/Managed/UnityEngine/UnityEditor.UnityConnectModule.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.Abstractions">
-        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/PackageCache/com.unity.ml-agents@2.0.1/Plugins/System.IO.Abstractions.dll</HintPath>
+        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/PackageCache/com.unity.ml-agents@2.1.0-exp.1/Plugins/System.IO.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Unsafe">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/PackageCache/com.unity.burst@1.6.0/Unity.Burst.Unsafe.dll</HintPath>
@@ -343,13 +389,13 @@
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/PackageCache/com.unity.burst@1.6.0/Unity.Burst.CodeGen/Unity.Burst.Cecil.Rocks.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.Abstractions.TestingHelpers">
-        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/PackageCache/com.unity.ml-agents@2.0.1/Plugins/System.IO.Abstractions.TestingHelpers.dll</HintPath>
+        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/PackageCache/com.unity.ml-agents@2.1.0-exp.1/Plugins/System.IO.Abstractions.TestingHelpers.dll</HintPath>
     </Reference>
     <Reference Include="System.Interactive.Async">
-        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/PackageCache/com.unity.ml-agents@2.0.1/Plugins/ProtoBuffer/System.Interactive.Async.dll</HintPath>
+        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/PackageCache/com.unity.ml-agents@2.1.0-exp.1/Plugins/ProtoBuffer/System.Interactive.Async.dll</HintPath>
     </Reference>
     <Reference Include="Grpc.Core">
-        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/PackageCache/com.unity.ml-agents@2.0.1/Plugins/ProtoBuffer/Grpc.Core.dll</HintPath>
+        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/PackageCache/com.unity.ml-agents@2.1.0-exp.1/Plugins/ProtoBuffer/Grpc.Core.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
         <HintPath>/Applications/2020.3.17f1/Unity.app/Contents/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
@@ -708,11 +754,14 @@
     <Reference Include="Unity.Barracuda.iOSBLAS">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.Barracuda.iOSBLAS.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Barracuda.BurstBLAS">
-        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.Barracuda.BurstBLAS.dll</HintPath>
+    <Reference Include="Unity.ML-Agents.Extensions.Editor.Input">
+        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.ML-Agents.Extensions.Editor.Input.dll</HintPath>
     </Reference>
     <Reference Include="Unity.InternalAPIEngineBridge.001">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.InternalAPIEngineBridge.001.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Barracuda.BurstBLAS">
+        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.Barracuda.BurstBLAS.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
@@ -753,20 +802,23 @@
     <Reference Include="Unity.2D.Path.Editor">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.2D.Path.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.ML-Agents.Extensions.Input">
+        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.ML-Agents.Extensions.Input.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.UI">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.PlasticSCM.Editor">
-        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.PlasticSCM.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.2D.Psdimporter.Editor">
-        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.2D.Psdimporter.Editor.dll</HintPath>
+    <Reference Include="Unity.PlasticSCM.Editor">
+        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.PlasticSCM.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Psdimporter.Editor">
+        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.2D.Psdimporter.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.InternalAPIEditorBridge.001">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.InternalAPIEditorBridge.001.dll</HintPath>
@@ -782,6 +834,12 @@
     </Reference>
     <Reference Include="Unity.Burst">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.Burst.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ML-Agents.Extensions">
+        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.ML-Agents.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ML-Agents.Extensions.Editor">
+        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.ML-Agents.Extensions.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Animation.Triangle.Runtime">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.2D.Animation.Triangle.Runtime.dll</HintPath>
@@ -818,6 +876,15 @@
     </Reference>
     <Reference Include="Unity.ML-Agents.Editor">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.ML-Agents.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="NaughtyAttributes.Editor">
+        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/NaughtyAttributes.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="NaughtyAttributes.Test">
+        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/NaughtyAttributes.Test.dll</HintPath>
+    </Reference>
+    <Reference Include="NaughtyAttributes.Core">
+        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/NaughtyAttributes.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
