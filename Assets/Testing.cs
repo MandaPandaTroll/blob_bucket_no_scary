@@ -32,6 +32,8 @@ public class Testing : MonoBehaviour
 
     public int initConc;
     int totNutes;
+    public int freeNutes, lockedNutes;
+    
 
      float vSliderValue = 0.0f;
      
@@ -65,12 +67,18 @@ public class Testing : MonoBehaviour
 int countNutes;
     private void FixedUpdate()
     {
+        blibs = new GameObject[0];
+        blobs = new GameObject[0];
+        blybs = new GameObject[0];
+        blubs = new GameObject[0];
         initConc = (int)Mathf.Round(vSliderValue);
         totNutes = gridX*gridY *initConc;
 
         diffusionTimer += Time.deltaTime;
         if (diffusionTimer >= diffRate)
         { grandNutes = 0;
+            freeNutes = 0;
+            lockedNutes = 0;
         blibs = GameObject.FindGameObjectsWithTag("Prey");
         blobs = GameObject.FindGameObjectsWithTag("Predator");
         blybs = GameObject.FindGameObjectsWithTag("Predator2");
@@ -79,33 +87,33 @@ int countNutes;
                 if(blibs.Length > 0)
                 {    for (int i = 0; i < blibs.Length; i++)
                     {
-                        grandNutes += blibs[i].GetComponent<BlibControls>().nutLevel;
+                        lockedNutes += blibs[i].GetComponent<BlibControls>().nutLevel;
                     }
                 }
                 if(blobs.Length > 0)
                 {   for (int i = 0; i < blobs.Length; i++)              
                     {
-                        grandNutes += blobs[i].GetComponent<BrainBlobControls>().protein;
+                        lockedNutes += blobs[i].GetComponent<BrainBlobControls>().protein;
                 }   
                     }
                 if(blybs.Length > 0)
                 {
                     for (int i = 0; i < blybs.Length; i++)               
                     {
-                        grandNutes += blybs[i].GetComponent<BrainBlybControls>().protein;
+                        lockedNutes += blybs[i].GetComponent<BrainBlybControls>().protein;
                     }    
                 }
                 if(blubs.Length > 0)
                 {
                     for (int i = 0; i < blubs.Length; i++)                
                     {
-                        grandNutes += blubs[i].GetComponent<BrainBlubControls>().protein;
+                        lockedNutes += blubs[i].GetComponent<BrainBlubControls>().protein;
                     }   
                 }
 
             for (int x = 0; x< nutgrid.gridArray.GetLength(0);x++){
             for(int y = 0; y < nutgrid.gridArray.GetLength(1); y++){
-                grandNutes += nutgrid.GetValue(x, y);
+                freeNutes += nutgrid.GetValue(x, y);
                         int[,] kernVals = new int[3,3] {
 
                         {nutgrid.GetValue(x-1, y-1), nutgrid.GetValue(x, y-1), nutgrid.GetValue(x+1, y-1) },
@@ -151,12 +159,13 @@ int countNutes;
                     
             }
 
-                
+                grandNutes = freeNutes + lockedNutes;
             
           // Debug.Log("totNutes = " + totNutes + " , countNutes = " + countNutes + " , grandNutes = " + grandNutes);
             if(autoReplenish == true){
                 if (grandNutes < (totNutes - (totNutes/32)))
                 {
+                    /*
                     int minX = nutgrid.gridArray.GetLength(0)/4;
                     int maxX = nutgrid.gridArray.GetLength(0) + (nutgrid.gridArray.GetLength(0)/4);
                     int minY = nutgrid.gridArray.GetLength(1)/4;
@@ -167,16 +176,17 @@ int countNutes;
                         int y = UnityEngine.Random.Range(minX,maxX);
                         int thisVal = nutgrid.GetValue(x,y);
                            nutgrid.SetValue(x, y,thisVal + (totNutes/64));
-                    /*
+                    */
                         for(int x = 0; x < nutgrid.gridArray.GetLength(0); x++){
                             for(int y = 0; y < nutgrid.gridArray.GetLength(0); y++){
-                           
 
-                                    if(grandNutes >= totNutes+(totNutes/20)){break;}
+                                int thisVal = nutgrid.GetValue(x,y);
+                                    nutgrid.SetValue(x, y,thisVal + 1);
+                                    if(grandNutes >= totNutes){break;}
                             }
                        
                          }
-                            */
+                            
                 
                 }
 
@@ -192,10 +202,15 @@ int countNutes;
 
                         int thisVal = nutgrid.GetValue(x,y);
                         if (thisVal > 0){
-                            nutgrid.SetValue(x, y,thisVal - 1);
+                            if (thisVal < 2){nutgrid.SetValue(x, y,thisVal - 1);}
+                            else if (thisVal < 3){nutgrid.SetValue(x, y,thisVal - 2);}
+                            else if (thisVal < 4){nutgrid.SetValue(x, y,thisVal - 3);}
+                            else if (thisVal < 5){nutgrid.SetValue(x, y,thisVal - 4);}
+                            else if (thisVal < 6){nutgrid.SetValue(x, y,thisVal - 5);}
+                            else {nutgrid.SetValue(x, y,thisVal );}
                         }
 
-                        if(grandNutes <= totNutes){
+                        if(grandNutes < totNutes){
                             FixedUpdate();}
                     }
                 }

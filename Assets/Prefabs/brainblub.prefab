@@ -255,8 +255,8 @@ MonoBehaviour:
   sizeAllele2: 4
   sizeGene: 4
   lookDistance: 150
-  energyToReproduce: 40000
-  lifeLength: 512
+  energyToReproduce: 80000
+  lifeLength: 1024
   intron1: 100
   intron2: 100
   intron3: 100
@@ -274,9 +274,9 @@ MonoBehaviour:
   rDice: 0
   generation: 0
   deadLayer: 9
-  basalMet: 0.2
+  basalMet: 0.1
   protein: 0
-  proteinToReproduce: 4096
+  proteinToReproduce: 8192
   NH4: 0
 --- !u!114 &-518505787406799334
 MonoBehaviour:

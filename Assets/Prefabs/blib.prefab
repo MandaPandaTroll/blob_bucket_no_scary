@@ -165,7 +165,7 @@ MonoBehaviour:
   lookDistance: 40
   generation: 0
   nutLevel: 0
-  nutToReproduce: 128
+  nutToReproduce: 64
 --- !u!114 &-8578292840481247088
 MonoBehaviour:
   m_ObjectHideFlags: 0

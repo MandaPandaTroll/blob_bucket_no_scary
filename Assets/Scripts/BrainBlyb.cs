@@ -288,7 +288,7 @@ rCount = bctrl.rCount;
      if (booper.tag == "ApexPred")
         {
             m_currentBumper = BumperType.ApexPred;           
-            AddReward(-1.0f);
+            SetReward(-1.0f);
             EndEpisode();
             this.enabled = false;
         }
@@ -304,8 +304,9 @@ rCount = bctrl.rCount;
             if (booper.tag == "Predator2" )
             {
                 m_currentBumper = BumperType.Predator2;
-                AddReward(genome.pythagDist*5f);
-                
+                AddReward(genome.pythagDist);
+                Debug.Log("blybPythag = " + genome.pythagDist);
+                bctrl.energy -= 5f;
             }
             
 

@@ -261,7 +261,7 @@ void OnCollisionEnter2D(Collision2D col){
 
             //Genetic distance calculations
             float pairWiseA_squared = Mathf.Pow(((float)snpCountA/8748.0f),2.0f);
-            float pairWiseB_squared = Mathf.Pow(((float)snpCountA/8748.0f),2.0f);
+            float pairWiseB_squared = Mathf.Pow(((float)snpCountB/8748.0f),2.0f);
 
              pythagDist = Mathf.Sqrt( pairWiseA_squared + pairWiseB_squared );
             if( pythagDist > 0.01){
@@ -271,7 +271,7 @@ void OnCollisionEnter2D(Collision2D col){
         
 
             //Genetic recombination
-            if(pythagDist < 0.1f){
+            if(pythagDist < 0.2f){
 
                 receiveLocus = mateGenome.giveLocus;
                 mate_cNum = mateGenome.cNum;

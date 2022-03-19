@@ -153,6 +153,9 @@ sensor.AddObservation(bctrl.age);
 for (int i = 0; i < 8; i++){
 sensor.AddObservation(scaledPreyDistance[i]);
 sensor.AddObservation(scaledMateDistance[i]);
+if(Mathf.Abs(scaledPreyDistance[i].magnitude) > 0 ){
+    AddReward(1.0f- Mathf.Abs(scaledPreyDistance[i].magnitude)/64f);
+}
 
 }
 

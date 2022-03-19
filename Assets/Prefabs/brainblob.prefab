@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 779859742907459550}
   - component: {fileID: 779859742907459549}
   - component: {fileID: 9016763350952808994}
+  - component: {fileID: -42933598879469203}
   m_Layer: 6
   m_Name: brainblob
   m_TagString: Predator
@@ -315,7 +316,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 256
+  MaxStep: 512
   nomLim: 4
   rCount: 0
   latestLookDistance: 100
@@ -332,7 +333,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 61
+    VectorObservationSize: 13
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 0
@@ -408,3 +409,18 @@ MonoBehaviour:
   scaledPreyDistance: []
   scaledMateDistance: []
   scaledApexPredDistance: []
+--- !u!114 &-42933598879469203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1711403674044451826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd8012d5925524537b27131fef517017, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SensorName: BufferSensor
+  m_ObservableSize: 3
+  m_MaxNumObservables: 9

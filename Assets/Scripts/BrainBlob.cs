@@ -33,12 +33,13 @@ Collider2D[] smellColliders;
 
 BlobGenome genome;
 Smeller_Blob smeller;
-
+BufferSensorComponent bufferSensor;
 
 void Awake(){
 genome = this.gameObject.GetComponent<BlobGenome>();
 bctrl = gameObject.GetComponent<BrainBlobControls>();
 smeller = gameObject.GetComponent<Smeller_Blob>();
+bufferSensor = gameObject.GetComponent<BufferSensorComponent>();
 }
 void Start() 
 {
@@ -147,11 +148,17 @@ sensor.AddObservation(bctrl.energy/maxEnergy);
 sensor.AddObservation(bctrl.age);
 
 for (int i = 0; i < 8; i++){
-sensor.AddObservation(scaledPreyDistance[i]);
-sensor.AddObservation(scaledMateDistance[i]);
-sensor.AddObservation(scaledApexPredDistance[i]);
+    float[]  pos_prey = new float[3] {scaledPreyDistance[i].x,scaledPreyDistance[i].y, 0.1f};
+    bufferSensor.AppendObservation(pos_prey);
 
-}
+    float[]  pos_mate = new float[3] {scaledMateDistance[i].x,scaledMateDistance[i].y, 0.2f};
+    bufferSensor.AppendObservation(pos_mate);
+
+    float[]  pos_apex = new float[3] {scaledApexPredDistance[i].x,scaledApexPredDistance[i].y, 0.3f};
+    bufferSensor.AppendObservation(pos_apex);
+
+
+    }
 
 
 sensor.AddOneHotObservation((int)m_currentBumper, NUM_BUMP_TYPES);
@@ -162,6 +169,10 @@ float moveForce, turnTorque;
 float forwardSignal, rotSignal;
 float energy;
 float E0, E1, ETimer;
+
+
+
+
 
 public override void OnActionReceived(ActionBuffers actionBuffers)
 {  
@@ -288,7 +299,7 @@ rCount = bctrl.rCount;
      if (booper.tag == "ApexPred")
         {
             m_currentBumper = BumperType.ApexPred;           
-            AddReward(-1.0f);
+            SetReward(-1.0f);
             EndEpisode();
             this.enabled = false;
         }
@@ -296,8 +307,9 @@ rCount = bctrl.rCount;
              if (booper.tag == "Predator" )
             {
                 m_currentBumper = BumperType.Predator;
-             AddReward(genome.pythagDist*5f);
+             AddReward(genome.pythagDist);
                 
+                bctrl.energy -= 5f;
             }
 
 

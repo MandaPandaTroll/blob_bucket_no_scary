@@ -32,8 +32,8 @@ behaviors:
 
 
     # Trainer configurations common to all trainers
-    max_steps: 1.0e6
-    time_horizon: 128
+    max_steps: 5.0e6
+    time_horizon: 256
 
     summary_freq: 10000
     keep_checkpoints: 5
@@ -82,8 +82,8 @@ behaviors:
 
 
     # Trainer configurations common to all trainers
-    max_steps: 1.0e6
-    time_horizon: 128
+    max_steps: 5.0e6
+    time_horizon: 256
 
     summary_freq: 10000
     keep_checkpoints: 5
@@ -132,8 +132,8 @@ behaviors:
 
 
     # Trainer configurations common to all trainers
-    max_steps: 1.0e6
-    time_horizon: 128
+    max_steps: 5.0e6
+    time_horizon: 256
 
     summary_freq: 10000
     keep_checkpoints: 5
@@ -144,7 +144,13 @@ behaviors:
 
 
     reward_signals:
+      curiosity:
+        strength: 0.02
+        gamma: 0.99
+        encoding_size: 256
       # environment reward (default)
       extrinsic:
         strength: 1.0
         gamma: 0.99
+
+

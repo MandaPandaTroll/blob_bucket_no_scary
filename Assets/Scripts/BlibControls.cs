@@ -350,6 +350,7 @@ List <string> codon;
         if (posVal > 0 ) {
             nutLevel +=1;
         m_nutgrid.SetValue(transform.position, posVal-1);
+        rb.AddTorque(turnTorque * Random.Range(-1f,1f));
         
         }
 
