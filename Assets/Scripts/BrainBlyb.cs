@@ -319,9 +319,10 @@ rCount = bctrl.rCount;
              if(booper.tag == "Carcass"){
                  m_currentBumper = BumperType.Carcass;
              }
-             
+             if(energy <= bctrl.maxEnergy || bctrl.protein <= bctrl.proteinToReproduce){
             AddReward((1.0f / (float)nomLim));
              nomCount +=1;
+             }
             if (nomCount >= nomLim){
                 nomCount = 0;
              EndEpisode();

@@ -10,16 +10,15 @@ GameObject:
   m_Component:
   - component: {fileID: 1711403674044451830}
   - component: {fileID: 1711403674044451831}
-  - component: {fileID: 8638604697978746356}
-  - component: {fileID: 7913196591768817145}
   - component: {fileID: 1711403674044451828}
   - component: {fileID: 1711403674044451829}
   - component: {fileID: 779859742907459548}
   - component: {fileID: 779859742907459551}
   - component: {fileID: 779859742907459550}
   - component: {fileID: 779859742907459549}
+  - component: {fileID: 7913196591768817145}
+  - component: {fileID: 8638604697978746356}
   - component: {fileID: 9016763350952808994}
-  - component: {fileID: -42933598879469203}
   m_Layer: 6
   m_Name: brainblob
   m_TagString: Predator
@@ -92,6 +91,202 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!58 &1711403674044451828
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1711403674044451826}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: e64201313438943b593297091c58a445, type: 2}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
+--- !u!50 &1711403674044451829
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1711403674044451826}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 1
+  m_Mass: 0.7853982
+  m_LinearDrag: 10
+  m_AngularDrag: 5
+  m_GravityScale: 0
+  m_Material: {fileID: 6200000, guid: e64201313438943b593297091c58a445, type: 2}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
+--- !u!114 &779859742907459548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1711403674044451826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 393e114dd16534640933dec0a9cdef02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 512
+  nomLim: 4
+  rCount: 0
+  latestLookDistance: 100
+--- !u!114 &779859742907459551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1711403674044451826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BrainParameters:
+    VectorObservationSize: 61
+    NumStackedVectorObservations: 1
+    m_ActionSpec:
+      m_NumContinuousActions: 0
+      BranchSizes: 0500000005000000
+    VectorActionSize: 0500000005000000
+    VectorActionDescriptions: []
+    VectorActionSpaceType: 0
+    hasUpgradedBrainParametersWithActionSpec: 1
+  m_Model: {fileID: 5022602860645237092, guid: 753456d0e68da4435a4fdf2f1fd2dfed, type: 3}
+  m_InferenceDevice: 0
+  m_BehaviorType: 2
+  m_BehaviorName: BrainBlob
+  TeamId: 0
+  m_UseChildSensors: 1
+  m_UseChildActuators: 1
+  m_ObservableAttributeHandling: 0
+--- !u!114 &779859742907459550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1711403674044451826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DecisionPeriod: 1
+  TakeActionsBetweenDecisions: 0
+--- !u!114 &779859742907459549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1711403674044451826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f67c7e722ba14acd9153bb4488bff6e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SensorName: RayPerceptionSensor
+  m_DetectableTags:
+  - Prey
+  - Predator
+  - Wall
+  - Predator2
+  - ApexPred
+  - Carcass
+  m_RaysPerDirection: 1
+  m_MaxRayDegrees: 60
+  m_SphereCastRadius: 0.5
+  m_RayLength: 44.02188
+  m_RayLayerMask:
+    serializedVersion: 2
+    m_Bits: 1019
+  m_ObservationStacks: 1
+  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
+  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &7913196591768817145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1711403674044451826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db382102a72e14415ac543b43578445d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  geneticDistance: 0
+  rCount: 0
+  hasReproduced: 0
+  alive: 1
+  eaten: 0
+  nom: 0
+  eCostCo: 2500
+  speciationDistance: 0.5
+  energy: 10000
+  pEnergy: 0
+  maxEnergy: 40000
+  eCost: 0
+  conjAge: 75
+  age: 0
+  statAge: 0
+  moveAllele1: 178.1948
+  moveAllele2: 206.1074
+  moveForce: 190
+  turnTorque: 101.1475
+  turnTorqueAllele1: 101.1475
+  turnTorqueAllele2: 101.1475
+  sizeAllele1: 2
+  sizeAllele2: 2
+  sizeGene: 2
+  lookDistAllele1: 100
+  lookDistAllele2: 100
+  lookDistance: 200
+  e2repAllele1: 512
+  e2repAllele2: 512
+  energyToReproduce: 20000
+  lifeLengthAllele1: 500
+  lifeLengthAllele2: 500
+  lifeLength: 500
+  intron1: 100
+  intron2: 100
+  intron3: 100
+  intron4: 100
+  redGene: 1
+  greenGene: 0
+  blueGene: 1
+  redAllele1: 1
+  redAllele2: 1
+  greenAllele1: 0
+  greenAllele2: 0
+  blueAllele1: 1
+  blueAllele2: 1
+  initDiversity: 0
+  rDice: 0
+  generation: 0
+  deadLayer: 9
+  basalMet: 0.2
+  protein: 0
+  proteinToReproduce: 2048
+  NH4: 0
 --- !u!114 &8638604697978746356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,202 +393,6 @@ MonoBehaviour:
   loSite: 0
   cNum: 0
   locus: 0
---- !u!114 &7913196591768817145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1711403674044451826}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db382102a72e14415ac543b43578445d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  geneticDistance: 0
-  rCount: 0
-  hasReproduced: 0
-  alive: 1
-  eaten: 0
-  nom: 0
-  eCostCo: 2500
-  speciationDistance: 0.5
-  energy: 8192
-  pEnergy: 0
-  maxEnergy: 40000
-  eCost: 0
-  conjAge: 75
-  age: 0
-  statAge: 0
-  moveAllele1: 178.1948
-  moveAllele2: 206.1074
-  moveForce: 190
-  turnTorque: 101.1475
-  turnTorqueAllele1: 101.1475
-  turnTorqueAllele2: 101.1475
-  sizeAllele1: 0
-  sizeAllele2: 0
-  sizeGene: 0
-  lookDistAllele1: 100
-  lookDistAllele2: 100
-  lookDistance: 200
-  e2repAllele1: 512
-  e2repAllele2: 512
-  energyToReproduce: 16384
-  lifeLengthAllele1: 100
-  lifeLengthAllele2: 100
-  lifeLength: 500
-  intron1: 100
-  intron2: 100
-  intron3: 100
-  intron4: 100
-  redGene: 1
-  greenGene: 0
-  blueGene: 1
-  redAllele1: 1
-  redAllele2: 1
-  greenAllele1: 0
-  greenAllele2: 0
-  blueAllele1: 1
-  blueAllele2: 1
-  initDiversity: 0
-  rDice: 0
-  generation: 0
-  deadLayer: 9
-  basalMet: 0.1
-  protein: 0
-  proteinToReproduce: 1024
-  NH4: 0
---- !u!58 &1711403674044451828
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1711403674044451826}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 6200000, guid: e64201313438943b593297091c58a445, type: 2}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
---- !u!50 &1711403674044451829
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1711403674044451826}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 1
-  m_Mass: 0.7853982
-  m_LinearDrag: 10
-  m_AngularDrag: 5
-  m_GravityScale: 0
-  m_Material: {fileID: 6200000, guid: e64201313438943b593297091c58a445, type: 2}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 0
---- !u!114 &779859742907459548
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1711403674044451826}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 393e114dd16534640933dec0a9cdef02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agentParameters:
-    maxStep: 0
-  hasUpgradedFromAgentParameters: 1
-  MaxStep: 512
-  nomLim: 4
-  rCount: 0
-  latestLookDistance: 100
---- !u!114 &779859742907459551
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1711403674044451826}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_BrainParameters:
-    VectorObservationSize: 13
-    NumStackedVectorObservations: 1
-    m_ActionSpec:
-      m_NumContinuousActions: 0
-      BranchSizes: 0500000005000000
-    VectorActionSize: 0500000005000000
-    VectorActionDescriptions: []
-    VectorActionSpaceType: 0
-    hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
-  m_InferenceDevice: 0
-  m_BehaviorType: 0
-  m_BehaviorName: BrainBlob
-  TeamId: 0
-  m_UseChildSensors: 1
-  m_UseChildActuators: 1
-  m_ObservableAttributeHandling: 0
---- !u!114 &779859742907459550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1711403674044451826}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DecisionPeriod: 1
-  TakeActionsBetweenDecisions: 0
---- !u!114 &779859742907459549
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1711403674044451826}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f67c7e722ba14acd9153bb4488bff6e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SensorName: RayPerceptionSensor
-  m_DetectableTags:
-  - Prey
-  - Predator
-  - Wall
-  - Predator2
-  - ApexPred
-  - Carcass
-  m_RaysPerDirection: 1
-  m_MaxRayDegrees: 60
-  m_SphereCastRadius: 0.5
-  m_RayLength: 44.02188
-  m_RayLayerMask:
-    serializedVersion: 2
-    m_Bits: 1019
-  m_ObservationStacks: 1
-  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
-  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &9016763350952808994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -409,18 +408,3 @@ MonoBehaviour:
   scaledPreyDistance: []
   scaledMateDistance: []
   scaledApexPredDistance: []
---- !u!114 &-42933598879469203
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1711403674044451826}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8012d5925524537b27131fef517017, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SensorName: BufferSensor
-  m_ObservableSize: 3
-  m_MaxNumObservables: 9

@@ -207,10 +207,10 @@ void Awake(){
     if(alive == true)
     {   
         NH4_Timer += Time.deltaTime;
-        if (NH4_Timer >= 1f && protein > 1)
+        if (NH4_Timer >= 0.5f && protein > 4)
         {
-            NH4 +=2;
-            protein -= 2;
+            NH4 +=4;
+            protein -= 4;
             NH4_Timer = 0f;
 
         }

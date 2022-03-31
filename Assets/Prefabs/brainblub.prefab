@@ -237,7 +237,7 @@ MonoBehaviour:
   alive: 1
   eaten: 0
   nom: 0
-  eCostCo: 2500
+  eCostCo: 3500
   speciationDistance: 0.5
   energy: 12500
   pEnergy: 0
@@ -245,16 +245,16 @@ MonoBehaviour:
   conjAge: 700
   age: 0
   statAge: 0
-  moveAllele1: 200
-  moveAllele2: 200
-  moveForce: 200
-  turnTorque: 95.19265
-  turnTorqueAllele1: 95.19265
-  turnTorqueAllele2: 95.19265
+  moveAllele1: 300
+  moveAllele2: 300
+  moveForce: 300
+  turnTorque: 100
+  turnTorqueAllele1: 100
+  turnTorqueAllele2: 100
   sizeAllele1: 4
   sizeAllele2: 4
   sizeGene: 4
-  lookDistance: 150
+  lookDistance: 100
   energyToReproduce: 80000
   lifeLength: 1024
   intron1: 100
@@ -274,9 +274,9 @@ MonoBehaviour:
   rDice: 0
   generation: 0
   deadLayer: 9
-  basalMet: 0.1
+  basalMet: 0.01
   protein: 0
-  proteinToReproduce: 8192
+  proteinToReproduce: 4096
   NH4: 0
 --- !u!114 &-518505787406799334
 MonoBehaviour:

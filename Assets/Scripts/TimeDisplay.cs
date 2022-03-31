@@ -82,7 +82,7 @@ public class TimeDisplay : MonoBehaviour
                  "Blybs = " + blybString + "\n" + 
                  "Blubs = " + blubString + "\n" + 
                  "Nutes: "  +              "\n" + 
-                 "Expected = "  + expNuteString + "x"   + "(" + (gridX * gridY).ToString() + ")" + "\n" + 
+                 "Expected = "  + totNutes + "\n" + 
                  "Free = "      + testing.freeNutes     + "\n" + 
                  "Locked = "    + testing.lockedNutes    + "\n" + 
                  "measured/expected = " + nuteString    + "\n" + 

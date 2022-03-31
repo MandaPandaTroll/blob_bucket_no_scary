@@ -169,9 +169,9 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: a779b6ddf43134c8b8015f4732f9b30b, type: 3}
   m_InferenceDevice: 0
-  m_BehaviorType: 0
+  m_BehaviorType: 2
   m_BehaviorName: BrainBlyb
   TeamId: 0
   m_UseChildSensors: 1
@@ -263,8 +263,8 @@ MonoBehaviour:
   e2repAllele1: 0
   e2repAllele2: 0
   energyToReproduce: 20000
-  lifeLengthAllele1: 0
-  lifeLengthAllele2: 0
+  lifeLengthAllele1: 500
+  lifeLengthAllele2: 500
   lifeLength: 500
   intron1: 100
   intron2: 100
@@ -283,9 +283,9 @@ MonoBehaviour:
   rDice: 0
   generation: 0
   deadLayer: 9
-  basalMet: 0.1
+  basalMet: 0.2
   protein: 0
-  proteinToReproduce: 1024
+  proteinToReproduce: 2048
   NH4: 0
 --- !u!114 &73908161057658362
 MonoBehaviour:

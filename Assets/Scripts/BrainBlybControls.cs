@@ -207,10 +207,10 @@ void Awake(){
     if(alive == true)
     {   
         NH4_Timer += Time.deltaTime;
-        if (NH4_Timer >= 1f && protein > 1)
+        if (NH4_Timer >= 0.5f && protein > 4)
         {
-            NH4 +=2;
-            protein -= 2;
+            NH4 +=4;
+            protein -= 4;
             NH4_Timer = 0f;
 
         }
@@ -300,8 +300,8 @@ void Awake(){
                 {               
                     if(booper.layer == 6)
                     {
-                        energy += (booper.GetComponent<BrainBlybControls>().pEnergy);
-                        protein += (booper.GetComponent<BrainBlybControls>().protein);
+                        energy += (booper.GetComponent<BrainBlobControls>().pEnergy);
+                        protein += (booper.GetComponent<BrainBlobControls>().protein);
                     }
                     if(booper.layer == 7)
                     {

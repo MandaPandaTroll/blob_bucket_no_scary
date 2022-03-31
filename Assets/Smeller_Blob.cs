@@ -107,11 +107,11 @@ public class Smeller_Blob : MonoBehaviour
                             
                         }
                         
-                          tempDist = tempDist.OrderBy((d) => Mathf.Abs(d.magnitude)).ToArray();
+                          tempDist = tempDist.OrderBy((d) => d.magnitude).ToArray();
                           tempDist = tempDist.Where(e => e.sqrMagnitude != 0).ToArray();
                           preyPositions = tempDist;
 
-                       
+
 
                     for(int i = 0; i < 8; i++){
                         
@@ -124,7 +124,7 @@ public class Smeller_Blob : MonoBehaviour
                             
                         }
                         /*
-                        Debug.Log("blob " + scaledPreyDistance[0]+","+
+                        Debug.Log("blyb " + scaledPreyDistance[0]+","+
                         scaledPreyDistance[1]+","+
                         scaledPreyDistance[2]+","+
                         scaledPreyDistance[3]+","+

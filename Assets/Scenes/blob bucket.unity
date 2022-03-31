@@ -305,8 +305,8 @@ MonoBehaviour:
   statTot: 0
   gridX: 0
   gridY: 0
-  cellScale: 4
-  initConc: 8
+  cellScale: 1
+  initConc: 32
   freeNutes: 0
   lockedNutes: 0
 --- !u!4 &314230637
@@ -720,7 +720,7 @@ Transform:
   m_GameObject: {fileID: 1136253239}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2048, y: 2048, z: 1}
+  m_LocalScale: {x: 512, y: 512, z: 1}
   m_Children:
   - {fileID: 1855928353}
   - {fileID: 721042678}
@@ -1163,10 +1163,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   linChars: 
   initLineage: 
-  initBlib: 1500
-  autoRespawn: 0
+  initBlib: 2048
+  autoRespawn: 1
   extraBlib: 1
-  minBlib: 1500
+  minBlib: 1024
   blib: {fileID: 3468846596000450122, guid: 6d4cc741cc2fc4e00ad7702559757827, type: 3}
 --- !u!4 &1883381884
 Transform:
@@ -1194,7 +1194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6bd4133b54884e9b85ea955802985c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initBlob: 5
+  initBlob: 10
   extraBlob: 1
   minBlob: 5
   brainblob: {fileID: 1711403674044451826, guid: 62f3ae1229ce147e085f49742d4f03cd, type: 3}
@@ -1211,7 +1211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3b243e301ee9401a834a5dedfa9deae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initBlub: 5
+  initBlub: 10
   extraBlub: 1
   blub: {fileID: 2899908468288829811, guid: 85d9ad2e1ee97449ba7a451adfb4fe78, type: 3}
   autoRespawn: 1
@@ -1228,7 +1228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e09c4ea668b25499390c530b02010ef1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initBlyb: 5
+  initBlyb: 10
   extraBlyb: 1
   blyb: {fileID: 9185934289686911736, guid: b502b5fe1709f4524936c88a0c2bb425, type: 3}
   minBlyb: 5

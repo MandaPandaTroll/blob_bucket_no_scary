@@ -98,6 +98,7 @@ float lForce;
 
 public int nutLevel;
  int maxNut;
+ float maxEnergy;
 public int nutToReproduce;
 
 float cellSize;
@@ -338,7 +339,7 @@ List <string> codon;
      }
         
         
-        
+        maxEnergy = energyToReproduce*2f;
     }
 
 
@@ -350,7 +351,11 @@ List <string> codon;
         if (posVal > 0 ) {
             nutLevel +=1;
         m_nutgrid.SetValue(transform.position, posVal-1);
-        rb.AddTorque(turnTorque * Random.Range(-1f,1f));
+
+        int feedTurn = Random.Range(0,(int)turnDice/16);
+        if(feedTurn == 1){
+        rb.AddTorque(turnTorque * Random.Range(-1,2));
+        }
         
         }
 
@@ -361,7 +366,7 @@ List <string> codon;
         if(energyTick > 1.0f)
         {
 
-
+            
             redAllele1 = genome.redAllele1;
             redAllele2 = genome.redAllele2;
 
@@ -379,6 +384,8 @@ List <string> codon;
 
             e2repAllele1 = genome.e2repAllele1;
             e2repAllele2 = genome.e2repAllele2;
+
+            maxEnergy = energyToReproduce*2f;
 
             lifeLength = (genome.lifeLengthAllele1 + genome.lifeLengthAllele2);
 
@@ -401,13 +408,17 @@ List <string> codon;
             geneticColor.g = greenGene;
             geneticColor.b = blueGene;
         
-                    m_SpriteRenderer.color = geneticColor;
-            energy += 32f*greenGene + 16f * redGene;
-            energyTick = 0.0f;
+                    
             
                     redGene = Mathf.Clamp(((redAllele1 + redAllele2)/2.0f), 0.00f,1.00f);
                     greenGene = Mathf.Clamp(((greenAllele1 + greenAllele2)/2.0f), 0.00f,1.00f);
                     blueGene = Mathf.Clamp(((blueAllele1 + blueAllele2)/2.0f), 0.00f,1.00f);
+                    m_SpriteRenderer.color = geneticColor;
+                    if(energy < maxEnergy){
+            energy += 42f*greenGene + 16f * redGene;
+                if (energy > maxEnergy){energy = maxEnergy;}
+                    }
+            energyTick = 0.0f; 
         }
 
 
@@ -415,7 +426,7 @@ List <string> codon;
         if(Time.time < 0.1f)
         {
             age = 0f + Random.Range(0f, lifeLength/2.0f);
-            energy = Random.Range(0f, energyToReproduce);
+            energy = Random.Range(energyToReproduce/16f, energyToReproduce);
             InitDiversifier(); 
         }
         
@@ -423,7 +434,7 @@ List <string> codon;
        
 
         
-        int dC = (int) ( (lifeLength*Mathf.Pow((3f*lifeLength/age),2f)) - (9f*lifeLength) );
+        int dC = (int) ( (lifeLength*Mathf.Pow((4f*lifeLength/age),2f)) - (16f*lifeLength) );
         deathDice = Random.Range(1,dC);
         
         age += Time.deltaTime;
@@ -431,8 +442,8 @@ List <string> codon;
 
        
         // rAgeC = 10 + (L/a)^2 
-            int rAgeC = 1+ (int)(Mathf.Pow((10f*lifeLength/age),2f));
-         int  rAgeDice = Random.Range(1,rAgeC);
+            int rAgeC = 1+ (int)(Mathf.Pow((lifeLength/age),2f));
+         int  rAgeDice = Random.Range(0,rAgeC+1);
         
                     
         statAge = age;
@@ -677,7 +688,7 @@ List <string> codon;
                     
                                   
                     energy = energy/2f;
-                    nutLevel = nutLevel/2;
+                    nutLevel = (int)Mathf.Round((float)nutLevel/2.0f);
                     
 
                    string[,] tempStringA = genome.A;

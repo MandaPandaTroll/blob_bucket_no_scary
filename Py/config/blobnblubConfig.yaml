@@ -22,12 +22,11 @@ behaviors:
       conditioning_type: none
       vis_encode_type: resnet
       normalize: true
-      hidden_units: 256
+      hidden_units: 128
       num_layers: 2
-      use recurrent: true
       memory:
-        memory_size: 128
-        sequence_length: 64
+        memory_size: 64
+        sequence_length: 32
 
 
 
@@ -72,12 +71,11 @@ behaviors:
       conditioning_type: none
       vis_encode_type: resnet
       normalize: true
-      hidden_units: 256
+      hidden_units: 128
       num_layers: 2
-      use recurrent: true
       memory:
-        memory_size: 128
-        sequence_length: 64
+        memory_size: 64
+        sequence_length: 32
 
 
 
@@ -122,12 +120,11 @@ behaviors:
       conditioning_type: none
       vis_encode_type: resnet
       normalize: true
-      hidden_units: 256
+      hidden_units: 128
       num_layers: 2
-      use recurrent: true
       memory:
-        memory_size: 128
-        sequence_length: 64
+        memory_size: 64
+        sequence_length: 32
 
 
 
@@ -145,6 +142,7 @@ behaviors:
 
     reward_signals:
       curiosity:
+        learning_rate: 3.0e-4
         strength: 0.02
         gamma: 0.99
         encoding_size: 256

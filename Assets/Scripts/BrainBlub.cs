@@ -29,9 +29,11 @@ int smellMask;
 Vector2 closest;
 Smeller_Blub smeller;
 
+List<float> lastClosest;
 void Awake(){
 smeller = gameObject.GetComponent<Smeller_Blub>();
 bctrl = gameObject.GetComponent<BrainBlubControls>();
+
 }
 void Start() 
 {
@@ -74,6 +76,8 @@ Vector2 scaledClosest;
 
 // int obsCount;
 // float cumSmellReward;
+
+
 public override void CollectObservations(VectorSensor sensor)
 {
 //obsCount +=1;
@@ -106,7 +110,7 @@ latestLookDistance = bctrl.lookDistance;
 
 Vector2 scaledClosest =closest/MaxScaledSmellDistance;
 
- smellReward = (1.0f-scaledSmellDistance)/2048f;
+ smellReward = (1.0f-scaledClosest.magnitude)/1024;
 
 
 
@@ -150,19 +154,15 @@ sensor.AddObservation(angV);
 
 sensor.AddObservation(bctrl.energy/bctrl.energyToReproduce);
 sensor.AddObservation(bctrl.age);
+
+
 for (int i = 0; i < 8; i++){
 sensor.AddObservation(scaledPreyDistance[i]);
 sensor.AddObservation(scaledMateDistance[i]);
-if(Mathf.Abs(scaledPreyDistance[i].magnitude) > 0 ){
-    AddReward(1.0f- Mathf.Abs(scaledPreyDistance[i].magnitude)/64f);
-}
+    
+    }
 
-}
-
-
-
-
-   
+  
 }
 float moveForce, turnTorque;
 float forwardSignal, rotSignal;
@@ -182,6 +182,7 @@ energy = bctrl.energy;
 alive = bctrl.alive;
 eaten = bctrl.eaten;
 hasReproduced = bctrl.hasReproduced;
+
 
 
     moveForce = bctrl.moveForce;
@@ -257,7 +258,7 @@ hasReproduced = bctrl.hasReproduced;
         {
         
             SetReward(-1.0f);
-            EndEpisode();
+            this.enabled = false;
             
         }
  
@@ -302,7 +303,7 @@ hasReproduced = bctrl.hasReproduced;
          if (booper.tag == "Predator" || booper.tag == "Predator2" || booper.tag == "Carcass" )
          {
             AddReward(1.0f);
-            EndEpisode();           
+                   EndEpisode();
                 
          }
 

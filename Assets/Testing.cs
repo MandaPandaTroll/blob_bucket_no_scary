@@ -34,6 +34,10 @@ public class Testing : MonoBehaviour
     int totNutes;
     public int freeNutes, lockedNutes;
     
+    float perlSamp, perlDimX, perlDimY;
+
+    float[,] perlMap;
+
 
      float vSliderValue = 0.0f;
      
@@ -47,15 +51,24 @@ public class Testing : MonoBehaviour
 
         
         
-        
+        totNutes = 0;
         gridX = (int)(box.localScale.x/cellScale);
-        gridY = (int)(box.localScale.x/cellScale);
-        totNutes = gridX*gridY *initConc;
+        gridY = (int)(box.localScale.y/cellScale);
+        perlDimX = box.localScale.x/cellScale;
+        perlDimY = box.localScale.y/cellScale;
+
+        perlMap = new float[gridX,gridY];
+        
+        
         nutgrid = new nutGrid((int)gridX,(int)gridY, cellScale, new Vector3(-box.localScale.x/2.0f, -box.localScale.y/2.0f));
+        
 
                 for (int x = 0; x< nutgrid.gridArray.GetLength(0);x++){
             for(int y = 0; y < nutgrid.gridArray.GetLength(1); y++){
-                nutgrid.SetValue( x, y, initConc);
+                perlMap[x,y] = Mathf.PerlinNoise((float)x,(float)y)*initConc;
+                perlMap[x,y] = Mathf.Round(perlMap[x,y]);
+                nutgrid.SetValue( x, y, (int)perlMap[x,y]);
+                totNutes += (int)perlMap[x,y];
                 
             }
             
@@ -65,14 +78,14 @@ public class Testing : MonoBehaviour
         
     }
 int countNutes;
-    private void FixedUpdate()
+    private void LateUpdate()
     {
         blibs = new GameObject[0];
         blobs = new GameObject[0];
         blybs = new GameObject[0];
         blubs = new GameObject[0];
         initConc = (int)Mathf.Round(vSliderValue);
-        totNutes = gridX*gridY *initConc;
+        
 
         diffusionTimer += Time.deltaTime;
         if (diffusionTimer >= diffRate)
@@ -163,7 +176,7 @@ int countNutes;
             
           // Debug.Log("totNutes = " + totNutes + " , countNutes = " + countNutes + " , grandNutes = " + grandNutes);
             if(autoReplenish == true){
-                if (grandNutes < (totNutes - (totNutes/32)))
+                if (grandNutes < (totNutes - (totNutes/8)))
                 {
                     /*
                     int minX = nutgrid.gridArray.GetLength(0)/4;
@@ -195,7 +208,7 @@ int countNutes;
             }
         if(autoRemove == true){
 
-            if (grandNutes > totNutes+(totNutes/32))
+            if (grandNutes > totNutes+(totNutes/8))
            {
                 for(int x = 0; x < nutgrid.gridArray.GetLength(0);x++){
                     for(int y = 0; y < nutgrid.gridArray.GetLength(0);y++){
@@ -211,7 +224,7 @@ int countNutes;
                         }
 
                         if(grandNutes < totNutes){
-                            FixedUpdate();}
+                            LateUpdate();}
                     }
                 }
 

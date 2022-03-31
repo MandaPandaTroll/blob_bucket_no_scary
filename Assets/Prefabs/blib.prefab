@@ -137,8 +137,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speciationDistance: 10
   energyToReproduce: 512
-  e2repAllele1: 0
-  e2repAllele2: 0
+  e2repAllele1: 64
+  e2repAllele2: 64
   densityCo: 0.0001
   rDice: 0
   age: 0
@@ -187,8 +187,8 @@ MonoBehaviour:
   blueAllele2: 0
   turnTorqueAllele1: 0
   turnTorqueAllele2: 0
-  e2repAllele1: 128
-  e2repAllele2: 128
+  e2repAllele1: 64
+  e2repAllele2: 64
   moveAllele1: 0
   moveAllele2: 0
   lifeLengthAllele1: 100
