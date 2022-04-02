@@ -63,7 +63,7 @@ public class BlibSpawner : MonoBehaviour
       autoRespawn = GUI.Toggle( new Rect(10,500,200,30),autoRespawn,"autoRespawn_blib" );
     }
 
-void Update()
+void LateUpdate()
 {
   
   blibs = GameObject.FindGameObjectsWithTag("Prey");

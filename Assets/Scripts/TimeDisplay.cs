@@ -8,16 +8,7 @@ public class TimeDisplay : MonoBehaviour
 
     Text m_Text;
     RectTransform m_RectTransform;
-    GameObject PopGraph;
-    Graph Graph;
-    int blubs;
-    GameObject StatisticsHandler;
-    Logger Logger;
 
-    int blibs;
-    int blobs;
-    int blybs;
-    float ratio;
     float time;
     float tScale;
     int grandNutes;
@@ -28,14 +19,13 @@ public class TimeDisplay : MonoBehaviour
     Testing testing;
     int gridX, gridY;
      int initConc;
+     public float refreshRate;
     
     // Start is called before the first frame update
     void Start()
     {
         m_Text = GetComponent<Text>();
         m_RectTransform = GetComponent<RectTransform>();
-        PopGraph = GameObject.Find("PopGraph");
-        Graph = PopGraph.GetComponent<Graph>();
         cam = GameObject.Find("Main Camera");
         camCntrl = cam.GetComponent<CamCntrl>();
         testing = GameObject.Find("Testing").GetComponent<Testing>();
@@ -45,9 +35,13 @@ public class TimeDisplay : MonoBehaviour
         gridY = testing.gridY;
         initConc = testing.initConc;
     }
-
-    // Update is called once per frame
-    void Update()
+       public int blibs;
+        public int blobs;
+        public int blybs;
+        public int blubs;
+           
+            float timeToDisplay;
+    void FixedUpdate()
     {   
        
         totNutes = testing.statTot;
@@ -55,14 +49,14 @@ public class TimeDisplay : MonoBehaviour
         initConc = testing.initConc;
         camSpeed = camCntrl.camSpeed;
         
-        float timeToDisplay = Mathf.Round(Time.time);
+         timeToDisplay = Mathf.Round(Time.time);
         tScale = Time.timeScale;
         time += Time.deltaTime;
-        if(time >= 1.0f){
-        blibs = GameObject.FindGameObjectsWithTag("Prey").Length;
-        blobs = GameObject.FindGameObjectsWithTag("Predator").Length;
-        blybs = GameObject.FindGameObjectsWithTag("Predator2").Length;
-        blubs = GameObject.FindGameObjectsWithTag("ApexPred").Length;
+        if(time >= refreshRate){
+             blibs = FindObjectsOfType<BlibControls>().Length;
+             blobs = FindObjectsOfType<BrainBlob>().Length;
+             blybs = FindObjectsOfType<BrainBlyb>().Length;
+             blubs = FindObjectsOfType<BrainBlub>().Length;
         
 
                     string timeString = timeToDisplay.ToString();
@@ -83,6 +77,7 @@ public class TimeDisplay : MonoBehaviour
                  "Blubs = " + blubString + "\n" + 
                  "Nutes: "  +              "\n" + 
                  "Expected = "  + totNutes + "\n" + 
+                 "Measured = "      + grandNutes     + "\n" + 
                  "Free = "      + testing.freeNutes     + "\n" + 
                  "Locked = "    + testing.lockedNutes    + "\n" + 
                  "measured/expected = " + nuteString    + "\n" + 

@@ -11,19 +11,7 @@
         public class Graph : MonoBehaviour
         {
             float e;
-           public List <GameObject> blobList;
-            GameObject[] blobs;
-
-            GameObject[] blybs;
-            public List <GameObject> blybList; 
-
-            public  List <GameObject> blibList;
-
-            public GameObject[] blibs;
-
-            GameObject[] blubs;
-
-            public List <GameObject> blubList; 
+           
             Material mat;
             private Rect windowRect = new Rect(20, 20, 2048, 512);
 
@@ -46,12 +34,15 @@
             private bool showWindow0 = false;
            
            
-
+            public TimeDisplay display;
             // Start is called before the first frame update
             void Start()
             {
 
-                
+                blibCount = (float)display.blibs;
+                blobCount = (float)display.blobs;
+                blybCount = (float)display.blybs;
+                blubCount = (float)display.blubs;
                 e = Mathf.Exp(1);
                 mat = new Material(Shader.Find("Hidden/Internal-Colored"));
                 // Should check for material but I'll leave that to you..
@@ -89,27 +80,21 @@
             }
 
             int dbugCounter;
+
+            float blubCount, blobCount, blybCount, blibCount;
             void Update()
             {
                 dbugCounter +=1;
 
+                blibCount = (float)display.blibs;
+                blobCount = (float)display.blobs;
+                blybCount = (float)display.blybs;
+                blubCount = (float)display.blubs;
+                
                
-                blubs = GameObject.FindGameObjectsWithTag("ApexPred");
-                 blubList = new List <GameObject>(blubs);
-               float blubCount = (float)blubList.Count;
 
                 
-                blobs = GameObject.FindGameObjectsWithTag("Predator");
-                 blobList = new List <GameObject>(blobs);
-               float blobCount = (float)blobList.Count;
-
-                blybs = GameObject.FindGameObjectsWithTag("Predator2");
-                 blybList = new List <GameObject>(blybs);
-               float blybCount = (float)blybList.Count;
-
-                blibs = GameObject.FindGameObjectsWithTag("Prey");
-                 blibList = new List <GameObject>(blibs);
-               float blibCount = (float)blibList.Count;
+                
                 float totalPop = blibCount + blobCount + blybCount + blubCount;
                  
                 float scaledTotalPop = (Mathf.Log(totalPop+1,2)*windowRect.height/16f)-1f;

@@ -35,7 +35,7 @@ public class BlybSpawner : MonoBehaviour
     {
       autoRespawn = GUI.Toggle( new Rect(10,600,200,30),autoRespawn,"autoRespawn_blyb" );
     }
-void Update()
+void LateUpdate()
 {
   blybs = GameObject.FindGameObjectsWithTag("Predator2");
   blybN = blybs.Length;

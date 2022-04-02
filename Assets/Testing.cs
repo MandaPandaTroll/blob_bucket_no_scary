@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey.Utils;
+using System.Linq;
 
 
 /* This script defines how nutrients are distributed across the map.
@@ -18,10 +19,7 @@ public class Testing : MonoBehaviour
     int grandNutes;
     public int statNutes;
     public int statTot;
-    GameObject[] blobs;
-    GameObject[] blybs;
-    GameObject[] blubs;
-    GameObject[] blibs;
+
     int grandarr;
    
    
@@ -44,12 +42,18 @@ public class Testing : MonoBehaviour
 
     void OnGUI()
     {
-        vSliderValue = GUI.VerticalSlider(new Rect(25, 750, 0, 250), vSliderValue, 32.0f, 0.0f);
+        
+      autoReplenish = GUI.Toggle( new Rect(10,700,200,30),autoReplenish,"autoReplenish_nutes" );
+      autoRemove = GUI.Toggle( new Rect(10,750,200,30),autoRemove,"autoRemove_nutes" );
     }
    private void Awake() 
     {
 
-        
+        kernel = new int[3,3]{
+                {0,0,0},
+                {0,0,0},
+                {0,0,0}
+                        };
         
         totNutes = 0;
         gridX = (int)(box.localScale.x/cellScale);
@@ -73,60 +77,178 @@ public class Testing : MonoBehaviour
             }
             
         }
-        
+        totNutes =nutgrid.gridArray.Cast<int>().Sum();
         vSliderValue = (float)initConc;
+        freeNutes = totNutes;
+
+            newArray = nutgrid.gridArray;
+            int gridWidth = newArray.GetLength(0); 
+            int gridHeight = newArray.GetLength(1); 
         
     }
-int countNutes;
+
+
+            int blibNutes, blobNutes, blybNutes, blubNutes;
+
+            
+            int[,] kernel;
+
+            int[,] newArray;
+            int gridWidth; 
+            int gridHeight;
+
     private void LateUpdate()
     {
-        blibs = new GameObject[0];
-        blobs = new GameObject[0];
-        blybs = new GameObject[0];
-        blubs = new GameObject[0];
+        
+        
+        
         initConc = (int)Mathf.Round(vSliderValue);
         
 
         diffusionTimer += Time.deltaTime;
         if (diffusionTimer >= diffRate)
-        { grandNutes = 0;
-            freeNutes = 0;
-            lockedNutes = 0;
-        blibs = GameObject.FindGameObjectsWithTag("Prey");
-        blobs = GameObject.FindGameObjectsWithTag("Predator");
-        blybs = GameObject.FindGameObjectsWithTag("Predator2");
-        blubs = GameObject.FindGameObjectsWithTag("ApexPred");
+        { 
+            blibNutes = 0; blobNutes = 0; blybNutes = 0; blubNutes = 0;
             
-                if(blibs.Length > 0)
-                {    for (int i = 0; i < blibs.Length; i++)
-                    {
-                        lockedNutes += blibs[i].GetComponent<BlibControls>().nutLevel;
-                    }
-                }
-                if(blobs.Length > 0)
-                {   for (int i = 0; i < blobs.Length; i++)              
-                    {
-                        lockedNutes += blobs[i].GetComponent<BrainBlobControls>().protein;
-                }   
-                    }
-                if(blybs.Length > 0)
-                {
-                    for (int i = 0; i < blybs.Length; i++)               
-                    {
-                        lockedNutes += blybs[i].GetComponent<BrainBlybControls>().protein;
-                    }    
-                }
-                if(blubs.Length > 0)
-                {
-                    for (int i = 0; i < blubs.Length; i++)                
-                    {
-                        lockedNutes += blubs[i].GetComponent<BrainBlubControls>().protein;
-                    }   
-                }
+            grandNutes = 0;
+            
+            lockedNutes = 0;
 
-            for (int x = 0; x< nutgrid.gridArray.GetLength(0);x++){
-            for(int y = 0; y < nutgrid.gridArray.GetLength(1); y++){
-                freeNutes += nutgrid.GetValue(x, y);
+            var blibs = FindObjectsOfType<BlibControls>();
+            var blobs = FindObjectsOfType<BrainBlobControls>();
+            var blybs = FindObjectsOfType<BrainBlybControls>();
+            var blubs = FindObjectsOfType<BrainBlubControls>();
+                for(int i = 0; i < blibs.Length; i++){
+                blibNutes += blibs[i].nutLevel;
+                 }
+                 for(int i = 0; i < blobs.Length; i++){
+                blobNutes += blobs[i].protein;
+                blobNutes += blobs[i].NH4;
+                 }
+                 for(int i = 0; i < blybs.Length; i++){
+                blybNutes += blybs[i].protein;
+                blybNutes += blybs[i].NH4;
+                 }
+                 for(int i = 0; i < blubs.Length; i++){
+                blubNutes += blubs[i].protein;
+                blubNutes += blubs[i].NH4;
+                 }
+
+                lockedNutes = blibNutes+blobNutes+blybNutes+blubNutes;
+        
+        
+            
+                
+                
+                /*Box blur kernel from wikipedia
+
+                Box blur (image)
+{
+    set newImage to image;
+    For x /row/, y/column/ on newImage do:
+    {
+        // Kernel would not fit!
+        If x < 1 or y < 1 or x + 1 == width or y + 1 == height then:
+            Continue;
+        // Set P to the average of 9 pixels:
+           X X X
+           X P X
+           X X X
+        // Calculate average.
+        Sum = image[x - 1, y + 1] + // Top left
+              image[x + 0, y + 1] + // Top center
+              image[x + 1, y + 1] + // Top right
+              image[x - 1, y + 0] + // Mid left
+              image[x + 0, y + 0] + // Current pixel
+              image[x + 1, y + 0] + // Mid right
+              image[x - 1, y - 1] + // Low left
+              image[x + 0, y - 1] + // Low center
+              image[x + 1, y - 1];  // Low right
+
+        newImage[x, y] = Sum / 9;
+    }
+    Return newImage;
+}
+                */
+            
+            
+            
+            
+            for (int x = 1; x< gridWidth-1;x++){
+            for(int y = 1; y < gridHeight-1; y++){
+
+                        kernel[0,2] = newArray[x - 1, y + 1];  // Top left
+                        kernel[1,2] = newArray[x + 0, y + 1];  // Top center
+                        kernel[2,2] = newArray[x + 1, y + 1];  // Top right
+                        kernel[0,1] = newArray[x - 1, y + 0];  // Mid left
+                        kernel[1,1] = newArray[x + 0, y + 0];  // Current pixel
+                        kernel[2,1] = newArray[x + 1, y + 0];  // Mid right
+                        kernel[0,0] = newArray[x - 1, y - 1];  // Low left
+                        kernel[1,0] = newArray[x + 0, y - 1];  // Low center
+                        kernel[2,0] = newArray[x + 1, y - 1];  // Low right
+                        //sumPrevKernel = kernel.Cast<int>().Sum();
+
+                        if(kernel[1,1] < kernel[0,2] && kernel[0,2] > 1){
+                            kernel[1,1] += 1; kernel[0,2] -= 1;
+                        }
+                        if(kernel[1,1] < kernel[1,2] && kernel[1,2] > 1){
+                            kernel[1,1] += 1; kernel[1,2] -= 1;
+                        }
+                        if(kernel[1,1] < kernel[2,2] && kernel[2,2] > 1){
+                            kernel[1,1] += 1; kernel[2,2] -= 1;
+                        }
+                        if(kernel[1,1] < kernel[0,1] && kernel[0,1] > 1){
+                            kernel[1,1] += 1; kernel[0,1] -= 1;
+                        }
+                        if(kernel[1,1] < kernel[2,1] && kernel[2,1] > 1){
+                            kernel[1,1] += 1; kernel[2,1] -= 1;
+                        }
+                        if(kernel[1,1] < kernel[0,0] && kernel[0,0] > 1){
+                            kernel[1,1] += 1; kernel[0,0] -= 1;
+                        }
+                        if(kernel[1,1] < kernel[1,0] && kernel[1,0] > 1){
+                            kernel[1,1] += 1; kernel[0,1] -= 1;
+                        }
+                        if(kernel[1,1] < kernel[2,0] && kernel[2,0] > 1){
+                            kernel[1,1] += 1; kernel[2,0] -= 1;
+                        }
+
+                        newArray[x - 1, y + 1] = kernel[0,2];  // Top left
+                        newArray[x + 0, y + 1] = kernel[1,2];  // Top center
+                        newArray[x + 1, y + 1] = kernel[2,2];  // Top right
+                        newArray[x - 1, y + 0] = kernel[0,1];  // Mid left
+                        newArray[x + 0, y + 0] = kernel[1,1];  // Current pixel
+                        newArray[x + 1, y + 0] = kernel[2,1];  // Mid right
+                        newArray[x - 1, y - 1] = kernel[0,0];  // Low left
+                        newArray[x + 0, y - 1] = kernel[1,0];  // Low center
+                        newArray[x + 1, y - 1] = kernel[2,0];  // Low right
+
+                /*
+                sum =   newArray[x - 1, y + 1] + // Top left
+                        newArray[x + 0, y + 1] + // Top center
+                        newArray[x + 1, y + 1] + // Top right
+                        newArray[x - 1, y + 0] + // Mid left
+                        newArray[x + 0, y + 0] + // Current pixel
+                        newArray[x + 1, y + 0] + // Mid right
+                        newArray[x - 1, y - 1] + // Low left
+                        newArray[x + 0, y - 1] + // Low center
+                        newArray[x + 1, y - 1];  // Low right
+                        meanP = (float)sum /9.0f;
+                        resultP = (int)Mathf.Round(meanP);
+                        newArray[x,y] = resultP;
+                        */
+
+                }
+            }
+                    
+                    nutgrid.gridArray = newArray;
+
+            freeNutes = 0;
+
+            /*
+            for (int x = 1; x< nutgrid.gridArray.GetLength(0)-1;x++){
+            for(int y = 1; y < nutgrid.gridArray.GetLength(1)-1; y++){
+                
                         int[,] kernVals = new int[3,3] {
 
                         {nutgrid.GetValue(x-1, y-1), nutgrid.GetValue(x, y-1), nutgrid.GetValue(x+1, y-1) },
@@ -171,6 +293,13 @@ int countNutes;
                     }
                     
             }
+                */
+                freeNutes =nutgrid.gridArray.Cast<int>().Sum();
+                //for (int x = 0; x< nutgrid.gridArray.GetLength(0);x++){
+                //for(int y = 0; y < nutgrid.gridArray.GetLength(1); y++){
+                //freeNutes += nutgrid.GetValue(x, y);
+                    //}
+                //}
 
                 grandNutes = freeNutes + lockedNutes;
             
@@ -195,7 +324,7 @@ int countNutes;
 
                                 int thisVal = nutgrid.GetValue(x,y);
                                     nutgrid.SetValue(x, y,thisVal + 1);
-                                    if(grandNutes >= totNutes){break;}
+                                    if(grandNutes >= totNutes){LateUpdate();}
                             }
                        
                          }

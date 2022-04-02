@@ -59,7 +59,7 @@ public float speciationDistance;
     
     public float energy = 4500f;
     public float pEnergy;
-     float maxEnergy;
+    public float maxEnergy;
     public float eCost;
 
     public float conjAge;
@@ -107,8 +107,9 @@ System.Random rndA = new System.Random();
     nutGrid m_nutgrid;
     // Start is called before the first frame update
     void Start()
-    {  
+    {
         age = 0;
+        tempProtein = protein;
         rCount = 0;
         eaten = false;
         alive = true;
@@ -164,22 +165,22 @@ System.Random rndA = new System.Random();
     if(alive == true)
     {
         NH4_Timer += Time.deltaTime;
-        if (NH4_Timer >= 1f && protein > 2)
+        if (NH4_Timer >= 0.5f && protein > 4)
         {
-            NH4 +=2;
-            protein -= 2;
+            NH4 +=4;
+            protein -= 4;
             NH4_Timer = 0f;
 
         }
         //Ammonia secretion
-        if(NH4 >= 64){
+        if(NH4 >= 32){
             int posval = m_nutgrid.GetValue(transform.position);
                 m_nutgrid.SetValue(transform.position, posval + NH4);
                 NH4 = 0;
         }
         eCost = rb.mass/eCostCo;
         
-        int dC = (int) ( (lifeLength*Mathf.Pow((3f*lifeLength/age),2f)) - (9f*lifeLength) );
+        int dC = (int) ( (lifeLength*Mathf.Pow((3f*lifeLength/(age+1)),2f)) - (9f*lifeLength) );
         deathDice = Random.Range(1,dC);
                 // rCo = 10 + (L/a)^2
        int rCo = 10 + (int)Mathf.Pow((lifeLength/(age+1)),2f); 
@@ -204,7 +205,7 @@ System.Random rndA = new System.Random();
             if  ( energy <= 100f || age > lifeLength || deathDice == 1)
             {
                 
-                alive = false;
+                alive = false;               
                    
             }
             
@@ -229,33 +230,57 @@ System.Random rndA = new System.Random();
     }
 
             void Dead()
-        {   
+        {   tempProtein = protein;
             this.gameObject.GetComponent<BrainBlub>().enabled = false;
             energy -= 10f*Time.deltaTime;
             int posval = m_nutgrid.GetValue(transform.position);
+            if(NH4 > 0){
+            m_nutgrid.SetValue(transform.position, posval + NH4);
+            NH4 = 0;
+            }
+            if(protein > 0){
                 m_nutgrid.SetValue(transform.position, posval + 1);
                 protein -= 1;
+            }
             if(energy <= 0f && protein <= 0)
-            {
-                Destroy(this.gameObject,0.2f);
+            { 
+                Destroy(this.gameObject);
             }
 
         }
-
+            public int tempProtein;
+            public int tempNH4;
             void OnCollisionEnter2D(Collision2D col)
             {   
+                tempProtein = protein;
+                tempNH4 = NH4;
                 GameObject booper = col.gameObject;
-             if(alive == false)
+             if(alive == false  )
                 {
-                     if(booper.tag == ("ApexPred"))
-                    {
-                        energy -= energy/2f;
-                        protein = 0;
-                    }
-                    energy -= 100f + energy/10f;
-
+                    if(booper.tag ==  "Predator"){
+                    BrainBlobControls scavenger = booper.GetComponent<BrainBlobControls>();
+                    scavenger.protein += protein;
+                    scavenger.NH4 += NH4;
+                    scavenger.energy += energy;
+                    energy = 0;
                     protein = 0;
-                    NH4 = 0;
+                    }
+                    if(booper.tag ==  "Predator2"){
+                    BrainBlybControls scavenger = booper.GetComponent<BrainBlybControls>();
+                    scavenger.protein += protein;
+                    scavenger.NH4 += NH4;
+                    scavenger.energy += energy;
+                    energy = 0;
+                    protein = 0;
+                    }
+                    if(booper.tag ==  "ApexPred"){
+                    BrainBlubControls scavenger = booper.GetComponent<BrainBlubControls>();
+                    scavenger.protein += protein;
+                    scavenger.NH4 += NH4;
+                    scavenger.energy += energy;
+                    energy = 0;
+                    protein = 0;
+                    }
                 }
 
                 if( alive == true){
@@ -264,20 +289,20 @@ System.Random rndA = new System.Random();
                     if(booper.layer == 6)
                     {
                         energy += (booper.GetComponent<BrainBlobControls>().pEnergy);
-                        protein += (booper.GetComponent<BrainBlobControls>().protein);
-                        NH4 += (booper.GetComponent<BrainBlobControls>().NH4);
+                        protein += (booper.GetComponent<BrainBlobControls>().tempProtein);
+                        NH4 += (booper.GetComponent<BrainBlobControls>().tempNH4);
                     }
                     if(booper.layer == 7)
                     {
-                        energy +=   (booper.GetComponent<BrainBlubControls>().pEnergy)/2f;
-                        protein +=  (booper.GetComponent<BrainBlubControls>().protein);
-                        NH4 += (booper.GetComponent<BrainBlubControls>().NH4);
+                        energy += (booper.GetComponent<BrainBlubControls>().pEnergy);
+                        protein += (booper.GetComponent<BrainBlubControls>().tempProtein);
+                        NH4 += (booper.GetComponent<BrainBlubControls>().tempNH4);
                     }
                     if(booper.layer == 8)
                     {
                         energy += (booper.GetComponent<BrainBlybControls>().pEnergy);
-                        protein += (booper.GetComponent<BrainBlybControls>().protein);
-                        NH4 += (booper.GetComponent<BrainBlybControls>().NH4);
+                        protein += (booper.GetComponent<BrainBlybControls>().tempProtein);
+                        NH4 += (booper.GetComponent<BrainBlybControls>().tempNH4);           
                     }
                     
                     nom = true; 
@@ -286,7 +311,8 @@ System.Random rndA = new System.Random();
                 {
                     BrainBlobControls blob = booper.GetComponent<BrainBlobControls>();
                    energy += blob.pEnergy;
-                    protein += blob.protein;
+                    protein += blob.tempProtein;
+                    NH4 += blob.tempNH4;
                     
                     nom = true;
                 }
@@ -295,7 +321,8 @@ System.Random rndA = new System.Random();
                 {
                     BrainBlybControls blyb = booper.GetComponent<BrainBlybControls>();
                    energy += blyb.pEnergy;
-                   protein += blyb.protein;
+                   protein += blyb.tempProtein;
+                   NH4 += blyb.tempNH4;
                     nom = true;
                 }
 
@@ -518,8 +545,15 @@ System.Random rndA = new System.Random();
                     
 
                     //Reproduction
+                    bool odd;
                     energy = (energy/2.0f);
-                    protein = (protein/2)-1;
+                    if(protein % 2 == 0){
+                        odd = false;
+                    protein = (protein/2);
+                    }
+                    else{
+                        odd = true;
+                        protein = (protein -1 )/2;}
                     
                 
                 float x = energy/10000f;
@@ -541,8 +575,13 @@ System.Random rndA = new System.Random();
                     }
                     hasReproduced = false;
                     clone = Instantiate(this.gameObject);
-                    clone.GetComponent<BrainBlubControls>().generation +=1;
-                    clone.GetComponent<BrainBlubControls>().age = 0f;
+                    
+                    BrainBlubControls daughter_controls = clone.GetComponent<BrainBlubControls>();
+                    daughter_controls.generation = generation + 1;
+                    daughter_controls.age = 0f;
+                    if (odd == true){
+                        daughter_controls.protein = tempProtein+1;
+                    }
                     rCount += 1;
                         
                         
@@ -560,7 +599,7 @@ System.Random rndA = new System.Random();
             {
                 float x = energy/10000;
                 float k = 0.7f;
-                sigmoid = 4f/ (1f+ Mathf.Exp(-k*(x-1.5f)));
+                sigmoid = sizeGene/ (1f+ Mathf.Exp(-k*(x-1.5f)));
                 newSize = new Vector3(sigmoid,sigmoid,sigmoid);
                 transform.localScale = newSize;
                 maxEnergy = sigmoid*25000f;

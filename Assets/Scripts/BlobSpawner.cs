@@ -36,7 +36,7 @@ public class BlobSpawner : MonoBehaviour
     {
       autoRespawn = GUI.Toggle( new Rect(10,550,200,30),autoRespawn,"autoRespawn_blob" );
     }
-void Update()
+void LateUpdate()
 {
   boxSize = box.transform.localScale.x;
   blobs = GameObject.FindGameObjectsWithTag("Predator");

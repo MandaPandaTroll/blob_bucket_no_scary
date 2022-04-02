@@ -143,6 +143,7 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 512
+  nomLim: 2
   thisRay: {fileID: 0}
   latestLookDistance: 0
 --- !u!114 &3889601855363302305
@@ -158,7 +159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 39
+    VectorObservationSize: 46
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 0
@@ -167,7 +168,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: e7d9097e23bfe47a9821b1176e83c8b6, type: 3}
+  m_Model: {fileID: 0}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: BrainBlub
@@ -237,10 +238,11 @@ MonoBehaviour:
   alive: 1
   eaten: 0
   nom: 0
-  eCostCo: 3500
+  eCostCo: 2500
   speciationDistance: 0.5
   energy: 12500
   pEnergy: 0
+  maxEnergy: 100000
   eCost: 0
   conjAge: 700
   age: 0
@@ -251,9 +253,9 @@ MonoBehaviour:
   turnTorque: 100
   turnTorqueAllele1: 100
   turnTorqueAllele2: 100
-  sizeAllele1: 4
-  sizeAllele2: 4
-  sizeGene: 4
+  sizeAllele1: 5
+  sizeAllele2: 5
+  sizeGene: 5
   lookDistance: 100
   energyToReproduce: 80000
   lifeLength: 1024

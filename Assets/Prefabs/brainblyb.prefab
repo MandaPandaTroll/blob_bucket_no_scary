@@ -171,7 +171,7 @@ MonoBehaviour:
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 5022602860645237092, guid: a779b6ddf43134c8b8015f4732f9b30b, type: 3}
   m_InferenceDevice: 0
-  m_BehaviorType: 2
+  m_BehaviorType: 0
   m_BehaviorName: BrainBlyb
   TeamId: 0
   m_UseChildSensors: 1
@@ -239,7 +239,7 @@ MonoBehaviour:
   alive: 1
   eaten: 0
   nom: 0
-  eCostCo: 2500
+  eCostCo: 2000
   speciationDistance: 0.5
   energy: 10000
   pEnergy: 0

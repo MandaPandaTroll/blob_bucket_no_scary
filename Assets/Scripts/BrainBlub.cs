@@ -10,7 +10,8 @@ using System.Linq;
 
 public class BrainBlub : Agent
 {
-
+public int nomLim;
+int nomCount;
 Collider2D[] smellColliders;
 
 public RayPerceptionSensorComponent2D thisRay;
@@ -57,7 +58,7 @@ public float latestLookDistance;
 public override void OnEpisodeBegin()
 {
 
-
+nomCount = 0;
 }
 
 
@@ -72,7 +73,8 @@ Vector2 scaledClosest;
 
     Vector2[] scaledPreyDistance; 
      Vector2[] scaledMateDistance; 
-     
+     const int NUM_BUMP_TYPES = (int)BumperType.LastBumper;
+BumperType m_currentBumper;
 
 // int obsCount;
 // float cumSmellReward;
@@ -161,6 +163,7 @@ sensor.AddObservation(scaledPreyDistance[i]);
 sensor.AddObservation(scaledMateDistance[i]);
     
     }
+    sensor.AddOneHotObservation((int)m_currentBumper, NUM_BUMP_TYPES);
 
   
 }
@@ -258,7 +261,8 @@ hasReproduced = bctrl.hasReproduced;
         {
         
             SetReward(-1.0f);
-            this.enabled = false;
+            EndEpisode();
+            
             
         }
  
@@ -289,21 +293,35 @@ hasReproduced = bctrl.hasReproduced;
     if(alive == true )
     {
         extBooper = booper;
-
-            //conjugation reward or penalty depending on genetic distance
+            if(booper.tag == "Wall"){
+            
+            m_currentBumper = BumperType.Wall;
+             
+        }
+            //conjugation reward 
              if (booper.tag == "ApexPred" && energy >= bctrl.energyToReproduce*0.75f)
             {
+                m_currentBumper = BumperType.ApexPred;   
              AddReward(bctrl.geneticDistance*2f);
                 
             }
 
-            
+            if(booper.tag == "Prey"){m_currentBumper = BumperType.Prey;}
 
             //Feeding reward
          if (booper.tag == "Predator" || booper.tag == "Predator2" || booper.tag == "Carcass" )
-         {
-            AddReward(1.0f);
-                   EndEpisode();
+         {  if(booper.tag == "Predator"){m_currentBumper = BumperType.Predator;}
+            if(booper.tag == "Predator2"){m_currentBumper = BumperType.Predator2;}
+            if(booper.tag == "Carcass"){m_currentBumper = BumperType.Carcass;}
+             
+            if(energy <= bctrl.maxEnergy || bctrl.protein <= bctrl.proteinToReproduce){
+            AddReward((1.0f / (float)nomLim));
+             nomCount +=1;
+            }
+                   if (nomCount >= nomLim){
+                nomCount = 0;
+             EndEpisode();
+            }
                 
          }
 

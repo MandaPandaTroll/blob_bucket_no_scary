@@ -34,7 +34,7 @@ public class BlubSpawner : MonoBehaviour
       autoRespawn = GUI.Toggle( new Rect(10,650,200,30),autoRespawn,"autoRespawn_blub" );
     }
 
-void Update()
+void LateUpdate()
 {
   blubs = GameObject.FindGameObjectsWithTag("ApexPred");
   blubN = blubs.Length;

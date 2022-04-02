@@ -105,6 +105,7 @@ System.Random rndA = new System.Random();
     public int protein;
     public int proteinToReproduce;
     public int NH4;
+    
 
     nutGrid m_nutgrid;
 
@@ -116,8 +117,9 @@ void Awake(){
 }
     // Start is called before the first frame update
     void Start()
-    {   
-        
+    {
+        age = 0;
+        tempProtein = protein;
         genome = this.gameObject.GetComponent<BlybGenome>();
         
         rCount = 0;
@@ -187,8 +189,7 @@ void Awake(){
     // Update is called once per frame
     void LateUpdate()
     {   
-        Vector2 brownian = new Vector2 (Random.Range(-1.0f,1.0f),Random.Range(-1.0f,1.0f));
-        rb.AddForce(brownian);
+        tempProtein = protein;
         if(Time.time < 0.1f && initDiversity != 0.0f){InitDiversifier(); }
         
         pEnergy = energy;
@@ -207,10 +208,10 @@ void Awake(){
     if(alive == true)
     {   
         NH4_Timer += Time.deltaTime;
-        if (NH4_Timer >= 0.5f && protein > 4)
+        if (NH4_Timer >= 1.0f && protein > 0)
         {
-            NH4 +=4;
-            protein -= 4;
+            NH4 +=1;
+            protein -= 1;
             NH4_Timer = 0f;
 
         }
@@ -272,56 +273,67 @@ void Awake(){
     }
 
             void Dead()
-        {   this.gameObject.GetComponent<BrainBlyb>().enabled = false;
+        {   tempProtein = protein;
+            this.gameObject.GetComponent<BrainBlyb>().enabled = false;
             energy -= 10f*Time.deltaTime;
             int posval = m_nutgrid.GetValue(transform.position);
+            if(NH4 > 0){
+            m_nutgrid.SetValue(transform.position, posval + NH4);
+            NH4 = 0;
+            }
+            if(protein > 0){
                 m_nutgrid.SetValue(transform.position, posval + 1);
                 protein -= 1;
+            }
             if(energy <= 0f && protein <= 0)
             { 
-                Destroy(this.gameObject,0.2f);
+                Destroy(this.gameObject);
             }
 
         }
-
+            public int tempProtein;
+            public int tempNH4;
             void OnCollisionEnter2D(Collision2D col)
             {   
+                tempProtein = protein;
+                tempNH4 = NH4;
                 GameObject booper = col.gameObject;
-             if(alive == false)
-                {   
-                    
-
-                    energy = 0 ;
+             if(alive == false )
+                {
+                    if(booper.tag ==  "Predator"){
+                    BrainBlobControls scavenger = booper.GetComponent<BrainBlobControls>();
+                    scavenger.protein += protein;
+                    scavenger.NH4 += NH4;
+                    scavenger.energy += energy;
+                    energy = 0;
                     protein = 0;
+                    }
+                    if(booper.tag ==  "Predator2"){
+                    BrainBlybControls scavenger = booper.GetComponent<BrainBlybControls>();
+                    scavenger.protein += protein;
+                    scavenger.NH4 += NH4;
+                    scavenger.energy += energy;
+                    energy = 0;
+                    protein = 0;
+                    }
+                    if(booper.tag ==  "ApexPred"){
+                    BrainBlubControls scavenger = booper.GetComponent<BrainBlubControls>();
+                    scavenger.protein += protein;
+                    scavenger.NH4 += NH4;
+                    scavenger.energy += energy;
+                    energy = 0;
+                    protein = 0;
+                    }
                 }
 
             if( alive == true){
                 if(booper.tag == ("Carcass"))
-                {               
-                    if(booper.layer == 6)
-                    {
-                        energy += (booper.GetComponent<BrainBlobControls>().pEnergy);
-                        protein += (booper.GetComponent<BrainBlobControls>().protein);
-                    }
-                    if(booper.layer == 7)
-                    {
-                        energy += (booper.GetComponent<BrainBlubControls>().pEnergy);
-                        protein += (booper.GetComponent<BrainBlubControls>().protein);
-                    }
-                    if(booper.layer == 8)
-                    {
-                        energy += (booper.GetComponent<BrainBlybControls>().pEnergy);
-                        protein += (booper.GetComponent<BrainBlybControls>().protein);           
-                    }
+                {
                     
                     nom = true; 
                 }
                 if (booper.tag == ("Prey"))
                 {
-                   BlibControls blib = booper.GetComponent<BlibControls>();
-                   energy += blib.energy;
-                   protein += blib.nutLevel;
-
                     nom = true;
                 }
 
@@ -347,7 +359,7 @@ void Awake(){
                 if(booper.tag == ("ApexPred"))
                 {   eaten = true;
                     
-                    Destroy(gameObject, 0.2f);
+                    Destroy(gameObject);
                     
         
                 }
@@ -371,7 +383,7 @@ void Awake(){
                 if (alive == true)
                 {
                     rCount += 1;
-
+                    tempProtein = protein;
 
                     int satMutationRoll = rndA.Next(0,2);
                         if(satMutationRoll == 1){ 
@@ -420,8 +432,15 @@ void Awake(){
                     
 
                     //Reproduction
+                    bool odd;
                     energy = (energy/2.0f);
-                    protein = (protein/2)-1;
+                    if(protein % 2 == 0){
+                        odd = false;
+                    protein = (protein/2);
+                    }
+                    else{
+                        odd = true;
+                        protein = (protein -1 )/2;}
                     
                 
                 float x = energy/10000f;
@@ -446,7 +465,9 @@ void Awake(){
                     BrainBlybControls daughter_controls = daughter.GetComponent<BrainBlybControls>();
                     daughter_controls.generation = generation + 1;
                     daughter_controls.age = 0f;
-                    
+                    if (odd == true){
+                        daughter_controls.protein = tempProtein+1;
+                    }
                     
                     
                     

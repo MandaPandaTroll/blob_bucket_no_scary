@@ -342,22 +342,25 @@ List <string> codon;
         maxEnergy = energyToReproduce*2f;
     }
 
-
-    // Update is called once per frame
-    void LateUpdate()
-    {   
-        
+    void FixedUpdate(){
+        tempNut = nutLevel;
         posVal = m_nutgrid.GetValue(transform.position);
-        if (posVal > 0 ) {
+        if (posVal > 0 && nutLevel < nutToReproduce) {
             nutLevel +=1;
         m_nutgrid.SetValue(transform.position, posVal-1);
 
-        int feedTurn = Random.Range(0,(int)turnDice/16);
+        int feedTurn = Random.Range(0,(int)turnDice/8);
         if(feedTurn == 1){
         rb.AddTorque(turnTorque * Random.Range(-1,2));
         }
         
         }
+    }
+    // Update is called once per frame
+    void LateUpdate()
+    {   
+        tempProtein = nutLevel;
+        
 
 
         
@@ -498,16 +501,10 @@ List <string> codon;
             if(deathDice == 1 && age > (lifeLength*(3f/4f)) || age >= lifeLength)
 
             {    
-                posVal = m_nutgrid.GetValue(transform.position);
-
-                
-
                     
                     m_nutgrid.SetValue(transform.position, posVal + nutLevel);
-
-                
-                nutLevel = 0;
-                Destroy(gameObject, 0.2f);
+                    nutLevel = 0;
+                Destroy(gameObject);
             
             }
 
@@ -518,18 +515,37 @@ List <string> codon;
     }
 
 
-
+            public int tempProtein;
             void OnCollisionEnter2D(Collision2D col)
 
             {       
                 bump = true;
                 GameObject booper = col.gameObject;
 
-                if(booper.tag == ("Predator") || booper.tag == "Predator2")
+                if(booper.tag == "Predator" )
                 {   
-                    Destroy(gameObject, 0.1f);
+                    BrainBlobControls blob = booper.GetComponent<BrainBlobControls>();
                     
-        
+                    blob.protein += nutLevel;
+                    nutLevel = 0;
+                    blob.energy += energy;
+                    energy = 0;
+
+                    Destroy(gameObject, 0.2f);
+                    
+                }
+
+                if(booper.tag == "Predator2" )
+                {   
+                    BrainBlybControls blyb = booper.GetComponent<BrainBlybControls>();
+                    
+                    blyb.protein += nutLevel;
+                    nutLevel = 0;
+                    blyb.energy += energy;
+                    energy = 0;
+
+                    Destroy(gameObject, 0.2f);
+                    
                 }
 
                     if(booper.tag == "Prey")
@@ -620,7 +636,7 @@ List <string> codon;
 
             {     
                     rb.AddForce(transform.up * moveForce*rb.mass);
-                    energy -= moveForce/512f;
+                    energy -= moveForce/1024f;
                     int randTurner = Random.Range(0,(int)turnDice);
 
                     if (randTurner == 0)
@@ -634,7 +650,7 @@ List <string> codon;
 
             private int SatChunk, SatIndex, pointmutation;
             private string pointString;
-
+            int tempNut;
             void Reproduce()
             {   
                         
@@ -687,8 +703,28 @@ List <string> codon;
                     m_SpriteRenderer.color = geneticColor;
                     
                                   
-                    energy = energy/2f;
-                    nutLevel = (int)Mathf.Round((float)nutLevel/2.0f);
+                    
+                    energy = (energy/2.0f);
+                    bool odd = false;
+                    
+                if(nutLevel > 0){
+
+
+
+                    if(nutLevel == 1){
+                        odd = true;
+                    }else if (nutLevel > 1){
+
+                        if(nutLevel % 2 == 0){
+                        odd = false;
+                        tempNut = (nutLevel/2);
+                        }
+                        else{
+                        odd = true;
+                        tempNut = (nutLevel -1 )/2;}
+                        
+                    }
+                }
                     
 
                    string[,] tempStringA = genome.A;
@@ -708,7 +744,10 @@ List <string> codon;
                     daughter.GetComponent<BlibGenome>().lineageID.Add(System.String.Join("",daughterID));
                     
                      daughter.GetComponent<BlibGenome>().mutate = true;
-                    
+                    if(odd == true){
+                        daughter_controls.nutLevel = tempNut +1;
+                    }else{daughter_controls.nutLevel = tempNut;}
+                    nutLevel = tempNut;
                     
                     
 
