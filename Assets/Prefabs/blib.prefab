@@ -165,7 +165,7 @@ MonoBehaviour:
   lookDistance: 40
   generation: 0
   nutLevel: 0
-  nutToReproduce: 128
+  nutToReproduce: 32
   tempProtein: 0
 --- !u!114 &-8578292840481247088
 MonoBehaviour:

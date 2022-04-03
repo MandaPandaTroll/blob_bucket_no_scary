@@ -244,7 +244,7 @@ System.Random rndA = new System.Random();
             }
             if(energy <= 0f && protein <= 0)
             { 
-                Destroy(this.gameObject);
+                Destroy(this.gameObject,0.2f);
             }
 
         }
@@ -285,44 +285,20 @@ System.Random rndA = new System.Random();
 
                 if( alive == true){
                 if(booper.tag == ("Carcass"))
-                {               
-                    if(booper.layer == 6)
-                    {
-                        energy += (booper.GetComponent<BrainBlobControls>().pEnergy);
-                        protein += (booper.GetComponent<BrainBlobControls>().tempProtein);
-                        NH4 += (booper.GetComponent<BrainBlobControls>().tempNH4);
-                    }
-                    if(booper.layer == 7)
-                    {
-                        energy += (booper.GetComponent<BrainBlubControls>().pEnergy);
-                        protein += (booper.GetComponent<BrainBlubControls>().tempProtein);
-                        NH4 += (booper.GetComponent<BrainBlubControls>().tempNH4);
-                    }
-                    if(booper.layer == 8)
-                    {
-                        energy += (booper.GetComponent<BrainBlybControls>().pEnergy);
-                        protein += (booper.GetComponent<BrainBlybControls>().tempProtein);
-                        NH4 += (booper.GetComponent<BrainBlybControls>().tempNH4);           
-                    }
+                {
                     
                     nom = true; 
                 }
                 if (booper.tag == ("Predator"))
                 {
-                    BrainBlobControls blob = booper.GetComponent<BrainBlobControls>();
-                   energy += blob.pEnergy;
-                    protein += blob.tempProtein;
-                    NH4 += blob.tempNH4;
+                    
                     
                     nom = true;
                 }
 
                 if (booper.tag == ("Predator2"))
                 {
-                    BrainBlybControls blyb = booper.GetComponent<BrainBlybControls>();
-                   energy += blyb.pEnergy;
-                   protein += blyb.tempProtein;
-                   NH4 += blyb.tempNH4;
+                    
                     nom = true;
                 }
 

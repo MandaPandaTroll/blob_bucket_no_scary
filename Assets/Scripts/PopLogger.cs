@@ -60,17 +60,19 @@ private List<string[]> rowData = new List<string[]>();
         
             if (time >= sampleRate){
 
-                blibs  = GameObject.FindGameObjectsWithTag("Prey");
-                blobs = GameObject.FindGameObjectsWithTag("Predator");
-                blybs = GameObject.FindGameObjectsWithTag("Predator2");
-                blubs  = GameObject.FindGameObjectsWithTag("ApexPred");
+                blibN  = FindObjectsOfType<BlibControls>().Length;
+                blobN  = FindObjectsOfType<BrainBlobControls>().Length;
+                blybN  = FindObjectsOfType<BrainBlybControls>().Length;
+                blubN  = FindObjectsOfType<BrainBlubControls>().Length;
+                
 
 
-
+                /*
                 blibN = blibs.Length;
                 blobN = blobs.Length;
                 blybN = blybs.Length;
                 blubN = blubs.Length;
+                */
 
                 
 
@@ -147,11 +149,12 @@ private List<string[]> rowData = new List<string[]>();
         outStream.WriteLine(sb);
         outStream.Close();
         
-
+        /*
         Array.Clear(blobs,0,blobs.Length);
         Array.Clear(blybs,0,blybs.Length);
         Array.Clear(blibs,0,blibs.Length);
         Array.Clear(blubs,0,blubs.Length);
+        */
         time = 0f;
 
 

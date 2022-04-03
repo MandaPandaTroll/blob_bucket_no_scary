@@ -1164,8 +1164,8 @@ nGRN_A = 0; nGRN_B = 0; nRED_A = 0; nRED_B = 0;
     moveForce = (moveAllele1 + moveAllele2)/2f;
 
 
-    turnTorqueAllele1 = nTRN_A*10f;
-    turnTorqueAllele2 = nTRN_B*10f;
+    turnTorqueAllele1 = nTRN_A*16f;
+    turnTorqueAllele2 = nTRN_B*16f;
     turnTorque = (turnTorqueAllele1 + turnTorqueAllele2)/2f;
 
     e2repAllele1 = Mathf.Pow(2,nREP_A);

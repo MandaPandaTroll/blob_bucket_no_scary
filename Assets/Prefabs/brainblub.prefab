@@ -280,6 +280,8 @@ MonoBehaviour:
   protein: 0
   proteinToReproduce: 4096
   NH4: 0
+  tempProtein: 0
+  tempNH4: 0
 --- !u!114 &-518505787406799334
 MonoBehaviour:
   m_ObjectHideFlags: 0

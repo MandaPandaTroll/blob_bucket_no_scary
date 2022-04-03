@@ -305,7 +305,7 @@ public class Testing : MonoBehaviour
             
           // Debug.Log("totNutes = " + totNutes + " , countNutes = " + countNutes + " , grandNutes = " + grandNutes);
             if(autoReplenish == true){
-                if (grandNutes < (totNutes - (totNutes/8)))
+                if (grandNutes < (totNutes - (totNutes/32)))
                 {
                     /*
                     int minX = nutgrid.gridArray.GetLength(0)/4;
@@ -337,7 +337,7 @@ public class Testing : MonoBehaviour
             }
         if(autoRemove == true){
 
-            if (grandNutes > totNutes+(totNutes/8))
+            if (grandNutes > totNutes+(totNutes/32))
            {
                 for(int x = 0; x < nutgrid.gridArray.GetLength(0);x++){
                     for(int y = 0; y < nutgrid.gridArray.GetLength(0);y++){

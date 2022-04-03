@@ -239,7 +239,7 @@ MonoBehaviour:
   alive: 1
   eaten: 0
   nom: 0
-  eCostCo: 2000
+  eCostCo: 1500
   speciationDistance: 0.5
   energy: 10000
   pEnergy: 0
@@ -287,6 +287,8 @@ MonoBehaviour:
   protein: 0
   proteinToReproduce: 2048
   NH4: 0
+  tempProtein: 0
+  tempNH4: 0
 --- !u!114 &8638604697978746356
 MonoBehaviour:
   m_ObjectHideFlags: 0

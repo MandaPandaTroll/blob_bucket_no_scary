@@ -183,7 +183,10 @@ void Awake(){
         
         Resizer();
     }
-
+    int posval;
+    void FixedUpdate(){
+        posval = m_nutgrid.GetValue(transform.position);
+    }
 
     float NH4_Timer;
     // Update is called once per frame
@@ -217,7 +220,7 @@ void Awake(){
         }
         //Ammonia secretion
         if(NH4 >= 32){
-            int posval = m_nutgrid.GetValue(transform.position);
+            
                 m_nutgrid.SetValue(transform.position, posval + NH4);
                 NH4 = 0;
         }
@@ -276,7 +279,7 @@ void Awake(){
         {   tempProtein = protein;
             this.gameObject.GetComponent<BrainBlyb>().enabled = false;
             energy -= 10f*Time.deltaTime;
-            int posval = m_nutgrid.GetValue(transform.position);
+            
             if(NH4 > 0){
             m_nutgrid.SetValue(transform.position, posval + NH4);
             NH4 = 0;
@@ -287,7 +290,7 @@ void Awake(){
             }
             if(energy <= 0f && protein <= 0)
             { 
-                Destroy(this.gameObject);
+                Destroy(this.gameObject,0.2f);
             }
 
         }
@@ -358,8 +361,8 @@ void Awake(){
 
                 if(booper.tag == ("ApexPred"))
                 {   eaten = true;
-                    
-                    Destroy(gameObject);
+                    gameObject.GetComponent<BrainBlob>().enabled = false;
+                    Destroy(gameObject,0.2f);
                     
         
                 }
