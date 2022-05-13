@@ -10,6 +10,7 @@ There is some inexplicable loss of nutrients, which means that nutrients must be
 
 public class Testing : MonoBehaviour
 {
+    
     public bool autoReplenish;
     public bool autoRemove;
     public nutGrid nutgrid;
@@ -78,15 +79,20 @@ public class Testing : MonoBehaviour
             
         }
         totNutes =nutgrid.gridArray.Cast<int>().Sum();
-        vSliderValue = (float)initConc;
+        
         freeNutes = totNutes;
+        GameObject spawner = GameObject.Find("Spawner");
+        totNutes += (spawner.GetComponent<BlibSpawner>().initProtein)*(spawner.GetComponent<BlibSpawner>().initBlib); 
 
             newArray = nutgrid.gridArray;
             int gridWidth = newArray.GetLength(0); 
             int gridHeight = newArray.GetLength(1); 
         
     }
-
+        int newNuteTarget;
+        void Start(){
+            
+        }
 
             int blibNutes, blobNutes, blybNutes, blubNutes;
 
@@ -96,8 +102,12 @@ public class Testing : MonoBehaviour
             int[,] newArray;
             int gridWidth; 
             int gridHeight;
+            GameObject[] blibs;
+            GameObject[] blobs;
+            GameObject[] blybs;
+            GameObject[] blubs;
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         
         
@@ -105,38 +115,51 @@ public class Testing : MonoBehaviour
         initConc = (int)Mathf.Round(vSliderValue);
         
 
-        diffusionTimer += Time.deltaTime;
+        diffusionTimer += Time.fixedDeltaTime;
         if (diffusionTimer >= diffRate)
         { 
+            
             blibNutes = 0; blobNutes = 0; blybNutes = 0; blubNutes = 0;
             
             grandNutes = 0;
             
             lockedNutes = 0;
 
-            var blibs = FindObjectsOfType<BlibControls>();
-            var blobs = FindObjectsOfType<BrainBlobControls>();
-            var blybs = FindObjectsOfType<BrainBlybControls>();
-            var blubs = FindObjectsOfType<BrainBlubControls>();
+            
+            
+             blibs = GameObject.FindGameObjectsWithTag("Prey");
+             blobs = GameObject.FindGameObjectsWithTag("Predator");
+             blybs = GameObject.FindGameObjectsWithTag("Predator2");
+             blubs = GameObject.FindGameObjectsWithTag("ApexPred");
                 for(int i = 0; i < blibs.Length; i++){
-                blibNutes += blibs[i].nutLevel;
+                blibNutes += blibs[i].GetComponent<BlibControls>().nutLevel;
                  }
+                 System.Array.Clear(blibs, 0, blibs.Length);
+
                  for(int i = 0; i < blobs.Length; i++){
-                blobNutes += blobs[i].protein;
-                blobNutes += blobs[i].NH4;
+                blobNutes += blobs[i].GetComponent<BrainBlobControls>().protein;
+                blobNutes += blobs[i].GetComponent<BrainBlobControls>().NH4;
                  }
+                 System.Array.Clear(blobs, 0, blobs.Length);
+
                  for(int i = 0; i < blybs.Length; i++){
-                blybNutes += blybs[i].protein;
-                blybNutes += blybs[i].NH4;
+                blybNutes += blybs[i].GetComponent<BrainBlybControls>().protein;
+                blybNutes += blybs[i].GetComponent<BrainBlybControls>().NH4;
                  }
+                 System.Array.Clear(blybs, 0, blybs.Length);
                  for(int i = 0; i < blubs.Length; i++){
-                blubNutes += blubs[i].protein;
-                blubNutes += blubs[i].NH4;
+                blubNutes += blubs[i].GetComponent<BrainBlubControls>().protein;
+                blubNutes += blubs[i].GetComponent<BrainBlubControls>().NH4;
                  }
+                 System.Array.Clear(blubs, 0, blubs.Length);
+
 
                 lockedNutes = blibNutes+blobNutes+blybNutes+blubNutes;
-        
-        
+                blibNutes = 0; blobNutes = 0; blybNutes = 0; blubNutes = 0;
+                
+            
+            
+            
             
                 
                 
@@ -294,7 +317,7 @@ public class Testing : MonoBehaviour
                     
             }
                 */
-                freeNutes =nutgrid.gridArray.Cast<int>().Sum();
+                freeNutes =nutgrid.GetSum();
                 //for (int x = 0; x< nutgrid.gridArray.GetLength(0);x++){
                 //for(int y = 0; y < nutgrid.gridArray.GetLength(1); y++){
                 //freeNutes += nutgrid.GetValue(x, y);
@@ -302,6 +325,10 @@ public class Testing : MonoBehaviour
                 //}
 
                 grandNutes = freeNutes + lockedNutes;
+
+
+
+                
             
           // Debug.Log("totNutes = " + totNutes + " , countNutes = " + countNutes + " , grandNutes = " + grandNutes);
             if(autoReplenish == true){
@@ -320,11 +347,11 @@ public class Testing : MonoBehaviour
                            nutgrid.SetValue(x, y,thisVal + (totNutes/64));
                     */
                         for(int x = 0; x < nutgrid.gridArray.GetLength(0); x++){
-                            for(int y = 0; y < nutgrid.gridArray.GetLength(0); y++){
+                            for(int y = 0; y < nutgrid.gridArray.GetLength(1); y++){
 
                                 int thisVal = nutgrid.GetValue(x,y);
                                     nutgrid.SetValue(x, y,thisVal + 1);
-                                    if(grandNutes >= totNutes){LateUpdate();}
+                                    
                             }
                        
                          }
@@ -337,28 +364,28 @@ public class Testing : MonoBehaviour
             }
         if(autoRemove == true){
 
-            if (grandNutes > totNutes+(totNutes/32))
-           {
+            if(freeNutes > 0 && grandNutes > totNutes)
+           {freeNutes =nutgrid.GetSum();
+                        grandNutes = freeNutes + lockedNutes;
                 for(int x = 0; x < nutgrid.gridArray.GetLength(0);x++){
-                    for(int y = 0; y < nutgrid.gridArray.GetLength(0);y++){
-
-                        int thisVal = nutgrid.GetValue(x,y);
-                        if (thisVal > 0){
-                            if (thisVal < 2){nutgrid.SetValue(x, y,thisVal - 1);}
-                            else if (thisVal < 3){nutgrid.SetValue(x, y,thisVal - 2);}
-                            else if (thisVal < 4){nutgrid.SetValue(x, y,thisVal - 3);}
-                            else if (thisVal < 5){nutgrid.SetValue(x, y,thisVal - 4);}
-                            else if (thisVal < 6){nutgrid.SetValue(x, y,thisVal - 5);}
-                            else {nutgrid.SetValue(x, y,thisVal );}
-                        }
-
-                        if(grandNutes < totNutes){
-                            LateUpdate();}
-                    }
-                }
 
                     
-                
+
+                    for(int y = 0; y < nutgrid.gridArray.GetLength(1);y++){
+                        
+                        
+                        int thisVal = nutgrid.GetValue(x, y);
+                        if (thisVal > 0){
+                            nutgrid.SetValue(x, y , thisVal - 1);
+                            
+                            
+                        }
+
+                        
+                    }
+                }
+                freeNutes =nutgrid.GetSum();
+                grandNutes = freeNutes + lockedNutes;       
            }
         }
 

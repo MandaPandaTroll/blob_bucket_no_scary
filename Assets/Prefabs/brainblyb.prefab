@@ -121,7 +121,7 @@ Rigidbody2D:
   m_UseAutoMass: 1
   m_Mass: 0.7853982
   m_LinearDrag: 10
-  m_AngularDrag: 5
+  m_AngularDrag: 2.5
   m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: e64201313438943b593297091c58a445, type: 2}
   m_Interpolate: 0
@@ -144,7 +144,8 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 512
-  nomLim: 4
+  academySpeedModifier_enabled: 0
+  nomLim: 8
   rCount: 0
   latestLookDistance: 100
 --- !u!114 &9185934289686911711
@@ -239,7 +240,7 @@ MonoBehaviour:
   alive: 1
   eaten: 0
   nom: 0
-  eCostCo: 1500
+  eCostCo: 4096
   speciationDistance: 0.5
   energy: 10000
   pEnergy: 0
@@ -260,8 +261,8 @@ MonoBehaviour:
   lookDistAllele1: 100
   lookDistAllele2: 100
   lookDistance: 200
-  e2repAllele1: 0
-  e2repAllele2: 0
+  e2repAllele1: 512
+  e2repAllele2: 512
   energyToReproduce: 20000
   lifeLengthAllele1: 500
   lifeLengthAllele2: 500
@@ -283,9 +284,9 @@ MonoBehaviour:
   rDice: 0
   generation: 0
   deadLayer: 9
-  basalMet: 0.2
+  basalMet: 1
   protein: 0
-  proteinToReproduce: 2048
+  proteinToReproduce: 256
   NH4: 0
   tempProtein: 0
   tempNH4: 0
@@ -312,21 +313,21 @@ MonoBehaviour:
   blueAllele1: 0
   blueAllele2: 0
   blueGene: 0
-  lookDistAllele1: 0
-  lookDistAllele2: 0
-  lookDistance: 0
-  turnTorqueAllele1: 0
-  turnTorqueAllele2: 0
-  turnTorque: 0
-  e2repAllele1: 0
-  e2repAllele2: 0
-  energyToReproduce: 0
-  moveAllele1: 0
-  moveAllele2: 0
-  moveForce: 0
-  lifeLengthAllele1: 0
-  lifeLengthAllele2: 0
-  lifeLength: 0
+  lookDistAllele1: 128
+  lookDistAllele2: 128
+  lookDistance: 128
+  turnTorqueAllele1: 128
+  turnTorqueAllele2: 128
+  turnTorque: 128
+  e2repAllele1: 4096
+  e2repAllele2: 4096
+  energyToReproduce: 4096
+  moveAllele1: 128
+  moveAllele2: 128
+  moveForce: 128
+  lifeLengthAllele1: 128
+  lifeLengthAllele2: 128
+  lifeLength: 128
   sizeAllele1: 0
   sizeAllele2: 0
   sizeGene: 0

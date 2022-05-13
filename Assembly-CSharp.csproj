@@ -36,114 +36,116 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GridSensorComponentBaseGO.cs" />
      <Compile Include="Assets/CodeMonkey/Utils/Button_UI.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Debug/IDebugable.cs" />
      <Compile Include="Assets/Scripts/BrainBlub.cs" />
-     <Compile Include="Assets/Scripts/nutGrid.cs" />
      <Compile Include="Assets/Scripts/BlibControls.cs" />
      <Compile Include="Assets/Scripts/BrainBlyb.cs" />
-     <Compile Include="Assets/Scripts/Graph.cs" />
      <Compile Include="Assets/Scripts/Detector.cs" />
+     <Compile Include="Assets/Scripts/Graph.cs" />
      <Compile Include="Assets/BlybSatLogger.cs" />
      <Compile Include="Assets/CodeMonkey/Utils/World_Mesh.cs" />
-     <Compile Include="Assets/Scripts/BlobSpawner.cs" />
      <Compile Include="Assets/BlobGenome.cs" />
-     <Compile Include="Assets/CodeMonkey/Utils/UI_TextComplex.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Debug/GridBufferDrawer.cs" />
      <Compile Include="Assets/Scripts/Save.cs" />
      <Compile Include="Assets/Scripts/BrainBlybControls.cs" />
-     <Compile Include="Assets/CodeMonkey/Utils/Button_Sprite.cs" />
      <Compile Include="Assets/CodeMonkey/MonoBehaviours/CameraFollowSetup.cs" />
      <Compile Include="Assets/CodeMonkey/MonoBehaviours/CameraFollow.cs" />
-     <Compile Include="Assets/SettingsMenu.cs" />
-     <Compile Include="Assets/CodeMonkey/Assets.cs" />
-     <Compile Include="Assets/CodeMonkey/Utils/World_Sprite.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectSettingsMeta.cs" />
      <Compile Include="Assets/CodeMonkey/Utils/World_Bar.cs" />
-     <Compile Include="Assets/CodeMonkey/Utils/UtilsClass.cs" />
-     <Compile Include="Assets/BlybGenome.cs" />
-     <Compile Include="Assets/CodeMonkey/MonoBehaviours/PositionRendererSorter.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Util/EditorUtil.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Detection/IDetectable.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GridSensorComponent3D.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Debug/DebugChannelData.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/IEncoder.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/Modifiers/PointModDiagonalFill.cs" />
      <Compile Include="Assets/Scripts/BlybGenetics.cs" />
      <Compile Include="Assets/Scripts/CamCntrl.cs" />
-     <Compile Include="Assets/Scripts/TrainingPreySpawner.cs" />
      <Compile Include="Assets/Scripts/TrainingPreyBlobControls.cs" />
-     <Compile Include="Assets/Smeller_Blub.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Sensor/GridBuffer.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/Encoder.cs" />
      <Compile Include="Assets/Scripts/BrainBlubControls.cs" />
-     <Compile Include="Assets/Scripts/BlibSpawner.cs" />
      <Compile Include="Assets/CodeMonkey/Utils/FunctionUpdater.cs" />
      <Compile Include="Assets/Scripts/PopLogger.cs" />
      <Compile Include="Assets/CodeMonkey/Utils/FunctionTimer.cs" />
-     <Compile Include="Assets/Testing.cs" />
-     <Compile Include="Assets/Scripts/BlubGenetics.cs" />
-     <Compile Include="Assets/CodeMonkey/Utils/UI_Bar.cs" />
-     <Compile Include="Assets/Scripts/BlobGenetics.cs" />
-     <Compile Include="Assets/BlobSatLogger.cs" />
      <Compile Include="Assets/_/Base/BaseScripts/GameHandler_Setup.cs" />
      <Compile Include="Assets/Scripts/RandomNumberTest.cs" />
      <Compile Include="Assets/Scripts/BrainBlob.cs" />
      <Compile Include="Assets/Smeller_Blob.cs" />
-     <Compile Include="Assets/Scripts/BrainBlobControls.cs" />
      <Compile Include="Assets/Scripts/TimeDisplay.cs" />
      <Compile Include="Assets/Scripts/GeneDatabase.cs" />
-     <Compile Include="Assets/CodeMonkey/MonoBehaviours/ComponentActions.cs" />
-     <Compile Include="Assets/Prefabs/GeneBits.cs" />
      <Compile Include="Assets/CodeMonkey/Utils/UI_Sprite.cs" />
-     <Compile Include="Assets/Scripts/BlobControls.cs" />
-     <Compile Include="Assets/Scripts/BlubSpawner.cs" />
-     <Compile Include="Assets/CodeMonkey/Utils/UI_BarMultiple.cs" />
-     <Compile Include="Assets/BlibSatLogger.cs" />
-     <Compile Include="Assets/Scripts/BlibGenetics.cs" />
-     <Compile Include="Assets/Scripts/BlybControls.cs" />
-     <Compile Include="Assets/Smeller_Blyb.cs" />
-     <Compile Include="Assets/BlubSatLogger.cs" />
-     <Compile Include="Assets/Scripts/BlybSpawner.cs" />
-     <Compile Include="Assets/CodeMonkey/CMDebug.cs" />
-     <Compile Include="Assets/CodeMonkey/Utils/FunctionPeriodic.cs" />
-     <Compile Include="Assets/BlibGenome.cs" />
-     <Compile Include="Assets/Scripts/BlubControls.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/Constraints/DetectionConstraint.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Sensor/GridSensorComponent.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GridSensorComponent3D.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GeomUtil3D.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Detection/Observable.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GridSensorComponentBaseGO.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Sensor/GridSensor.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/Modifiers/PointModNone.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/Constraints/Frustum.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/Modifiers/PointModDiagonalFill.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Util/CoroutineUtil.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GridSensorComponent2D.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Debug/DebugChannelData.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectSettings.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Detection/IDetectable.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/Encoder.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GridEditorHelper3D.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/Modifiers/PointModOrthogonalFill.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GridEditorHelper2D.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Detection/IDetector.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/ShapeScanUtil.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectDetector2D.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/DistanceNormalization.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Debug/IDebugable.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectDetector.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Debug/ChannelLabel.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/Modifiers/PointModDilation.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/IEncoder.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/Constraints/DetectionConstraint2D.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Sensor/GridBuffer.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectDetector3D.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/DetectableGameObject.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Sensor/GridSensorComponentBase.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectShape.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Util/EditorUtil.cs" />
+     <Compile Include="Assets/BlibSatLogger.cs" />
+     <Compile Include="Assets/Scripts/BlybControls.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/IEncodingSettings.cs" />
+     <Compile Include="Assets/Smeller_Blyb.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GridEditorHelper3D.cs" />
+     <Compile Include="Assets/BlubSatLogger.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GridEditorHelper2D.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Detection/ObservableCollection.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Debug/GridBufferDrawer.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Detection/DetectionResult.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectDetector3D.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Sensor/GridSensorComponentBase.cs" />
+     <Compile Include="Assets/Scripts/nutGrid.cs" />
+     <Compile Include="Assets/Scripts/BlobSpawner.cs" />
+     <Compile Include="Assets/CodeMonkey/Utils/UI_TextComplex.cs" />
+     <Compile Include="Assets/CodeMonkey/Utils/Button_Sprite.cs" />
+     <Compile Include="Assets/SettingsMenu.cs" />
+     <Compile Include="Assets/CodeMonkey/Assets.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/Modifiers/PointModDownsampling.cs" />
+     <Compile Include="Assets/CodeMonkey/Utils/World_Sprite.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Util/CoroutineUtil.cs" />
+     <Compile Include="Assets/CodeMonkey/Utils/UtilsClass.cs" />
+     <Compile Include="Assets/BlybGenome.cs" />
+     <Compile Include="Assets/CodeMonkey/MonoBehaviours/PositionRendererSorter.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectDetector2D.cs" />
+     <Compile Include="Assets/Scripts/TrainingPreySpawner.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/DistanceNormalization.cs" />
+     <Compile Include="Assets/Smeller_Blub.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Debug/ChannelLabel.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Detection/IDetector.cs" />
+     <Compile Include="Assets/Scripts/BlibSpawner.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/Modifiers/PointModOrthogonalFill.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GridSensorComponent2D.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/Constraints/DetectionConstraint3D.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GridEditor2D.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GridEditor3D.cs" />
+     <Compile Include="Assets/Testing.cs" />
+     <Compile Include="Assets/Scripts/BlubGenetics.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/Constraints/DetectionConstraint2D.cs" />
+     <Compile Include="Assets/CodeMonkey/Utils/UI_Bar.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/ShapeScanUtil.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectSettings.cs" />
+     <Compile Include="Assets/Scripts/BlobGenetics.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Sensor/ColorGridBuffer.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/Modifiers/PointModifier.cs" />
-     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectSettingsMeta.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/Constraints/DetectionConstraint.cs" />
+     <Compile Include="Assets/BlobSatLogger.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/Modifiers/PointModDilation.cs" />
+     <Compile Include="Assets/Scripts/BrainBlobControls.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Detection/Observable.cs" />
+     <Compile Include="Assets/CodeMonkey/MonoBehaviours/ComponentActions.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Sensor/GridSensor.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GridEditor3D.cs" />
+     <Compile Include="Assets/Prefabs/GeneBits.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Sensor/GridSensorComponent.cs" />
+     <Compile Include="Assets/Scripts/BlobControls.cs" />
+     <Compile Include="Assets/Scripts/BlubSpawner.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GridEditor2D.cs" />
+     <Compile Include="Assets/CodeMonkey/Utils/UI_BarMultiple.cs" />
+     <Compile Include="Assets/Scripts/BlibGenetics.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/Constraints/Frustum.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Detection/DetectionResult.cs" />
+     <Compile Include="Assets/Scripts/BlybSpawner.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/Modifiers/PointModNone.cs" />
+     <Compile Include="Assets/CodeMonkey/CMDebug.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectDetector.cs" />
+     <Compile Include="Assets/CodeMonkey/Utils/FunctionPeriodic.cs" />
+     <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectShape.cs" />
+     <Compile Include="Assets/BlibGenome.cs" />
+     <Compile Include="Assets/Scripts/BlubControls.cs" />
+     <Compile Include="Assets/Taster_blub.cs" />
+     <Compile Include="Assets/CurriculumHandler.cs" />
      <None Include="Assets/CodeMonkey/README.txt" />
     <Reference Include="UnityEngine">
         <HintPath>/Applications/2020.3.17f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
@@ -775,6 +777,9 @@
     <Reference Include="PsdPlugin">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/PsdPlugin.dll</HintPath>
     </Reference>
+    <Reference Include="NaughtyAttributes.Test">
+        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/NaughtyAttributes.Test.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
@@ -838,6 +843,9 @@
     <Reference Include="Unity.ML-Agents.Extensions">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.ML-Agents.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="NaughtyAttributes.Editor">
+        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/NaughtyAttributes.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.ML-Agents.Extensions.Editor">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.ML-Agents.Extensions.Editor.dll</HintPath>
     </Reference>
@@ -852,6 +860,9 @@
     </Reference>
     <Reference Include="Unity.Timeline.Editor">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="NaughtyAttributes.Core">
+        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/NaughtyAttributes.Core.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mathematics.Editor">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.Mathematics.Editor.dll</HintPath>
@@ -876,15 +887,6 @@
     </Reference>
     <Reference Include="Unity.ML-Agents.Editor">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.ML-Agents.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="NaughtyAttributes.Editor">
-        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/NaughtyAttributes.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="NaughtyAttributes.Test">
-        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/NaughtyAttributes.Test.dll</HintPath>
-    </Reference>
-    <Reference Include="NaughtyAttributes.Core">
-        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/NaughtyAttributes.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

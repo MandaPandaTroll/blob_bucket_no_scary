@@ -51,3 +51,5 @@ Library/
 .Trashes
 ehthumbs.db
 Thumbs.db
+.fake
+.ionide

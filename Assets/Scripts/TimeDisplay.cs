@@ -20,7 +20,7 @@ public class TimeDisplay : MonoBehaviour
     int gridX, gridY;
      int initConc;
      public float refreshRate;
-    
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -53,10 +53,10 @@ public class TimeDisplay : MonoBehaviour
         tScale = Time.timeScale;
         time += Time.deltaTime;
         if(time >= refreshRate){
-             blibs = FindObjectsOfType<BlibControls>().Length;
-             blobs = FindObjectsOfType<BrainBlob>().Length;
-             blybs = FindObjectsOfType<BrainBlyb>().Length;
-             blubs = FindObjectsOfType<BrainBlub>().Length;
+             blibs = GameObject.FindGameObjectsWithTag("Prey").Length;
+             blobs = GameObject.FindGameObjectsWithTag("Predator").Length;
+             blybs = GameObject.FindGameObjectsWithTag("Predator2").Length;
+             blubs = GameObject.FindGameObjectsWithTag("ApexPred").Length;
         
 
                     string timeString = timeToDisplay.ToString();

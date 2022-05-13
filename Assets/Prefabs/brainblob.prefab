@@ -121,7 +121,7 @@ Rigidbody2D:
   m_UseAutoMass: 1
   m_Mass: 0.7853982
   m_LinearDrag: 10
-  m_AngularDrag: 5
+  m_AngularDrag: 2.5
   m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: e64201313438943b593297091c58a445, type: 2}
   m_Interpolate: 0
@@ -144,7 +144,8 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 512
-  nomLim: 4
+  academySpeedModifier_enabled: 0
+  nomLim: 8
   rCount: 0
   latestLookDistance: 100
 --- !u!114 &779859742907459551
@@ -239,7 +240,7 @@ MonoBehaviour:
   alive: 1
   eaten: 0
   nom: 0
-  eCostCo: 1500
+  eCostCo: 4096
   speciationDistance: 0.5
   energy: 10000
   pEnergy: 0
@@ -283,9 +284,9 @@ MonoBehaviour:
   rDice: 0
   generation: 0
   deadLayer: 9
-  basalMet: 0.2
+  basalMet: 1
   protein: 0
-  proteinToReproduce: 2048
+  proteinToReproduce: 256
   NH4: 0
   tempProtein: 0
   tempNH4: 0

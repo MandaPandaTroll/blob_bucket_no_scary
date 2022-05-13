@@ -26,15 +26,15 @@ public class Smeller_Blyb : MonoBehaviour
     
     float latestLookDistance;
     float smellDistance;
-    BrainBlyb blob;
+    BrainBlyb blyb;
    
     void Start()
     {
 
-        blob = gameObject.GetComponent<BrainBlyb>();
+        blyb = gameObject.GetComponent<BrainBlyb>();
         smellMask = LayerMask.GetMask("Prey", "Predator", "Predator2", "ApexPred");
         
-        latestLookDistance = blob.latestLookDistance;
+        latestLookDistance = blyb.latestLookDistance;
         smellDistance= latestLookDistance/4f;
 
 
@@ -53,7 +53,7 @@ public class Smeller_Blyb : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        latestLookDistance = blob.latestLookDistance;
+        latestLookDistance = blyb.latestLookDistance;
         here = gameObject.transform.position;
         smellDistance= latestLookDistance;
         Smell();
@@ -111,7 +111,7 @@ public class Smeller_Blyb : MonoBehaviour
                           tempDist = tempDist.Where(e => e.sqrMagnitude != 0).ToArray();
                           preyPositions = tempDist;
 
-                       
+
 
                     for(int i = 0; i < 8; i++){
                         

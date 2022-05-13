@@ -114,7 +114,7 @@
                 values5.Add(scaledTotalPop);
                
                 if (dbugCounter >= 50){
-                    Debug.Log(" scaledTotalPop "+scaledTotalPop+" scaledBlob "+scaledBlob+" scaledBlib "+scaledBlib+" scaledBlub "+scaledBlub+" scaledBlyb "+scaledBlyb);
+                    //Debug.Log(" scaledTotalPop "+scaledTotalPop+" scaledBlob "+scaledBlob+" scaledBlib "+scaledBlib+" scaledBlub "+scaledBlub+" scaledBlyb "+scaledBlyb);
                     dbugCounter = 0;
                 }
             }

@@ -442,23 +442,26 @@ void Awake(){
                     
 
                     //Reproduction
-                    bool odd;
+                    bool odd = false;
+                    int remainder = 0;
+                    tempProtein = protein;
                     energy = (energy/2.0f);
                     if(protein % 2 == 0){
                         odd = false;
                     protein = (protein/2);
                     }
                     else{
+                        remainder = protein - (protein%2);
                         odd = true;
-                        protein = (protein -1 )/2;}
-                    
-                
+                        protein = (protein - remainder )/2;}
+
+
                 float x = energy/10000f;
                 float k = 0.7f;
                 sigmoid = sizeGene/ (1f+ Mathf.Exp(-k*(x-1.5f)));
                 newSize = new Vector3(sigmoid,sigmoid,sigmoid);
                 transform.localScale = newSize;
-                    maxEnergy = sigmoid*25000f;
+                    maxEnergy = sigmoid*35000f;
                     if (generation == 100|| generation == 200 || generation == 300 || generation == 400 || generation == 500 || generation == 600 || generation == 800 || generation == 1000)
                     {
                         Debug.Log( 
@@ -476,7 +479,7 @@ void Awake(){
                     daughter_controls.generation = generation + 1;
                     daughter_controls.age = 0f;
                     if (odd == true){
-                        daughter_controls.protein = tempProtein+1;
+                      daughter_controls.protein = (tempProtein + remainder)/2;
                     }
                     
                     
@@ -506,7 +509,7 @@ void Awake(){
                 sigmoid = sizeGene/ (1f+ Mathf.Exp(-k*(x-1.5f)));
                 newSize = new Vector3(sigmoid,sigmoid,sigmoid);
                 transform.localScale = newSize;
-                maxEnergy = sigmoid*25000f;
+                maxEnergy = sigmoid*35000f;
                 energyToReproduce = maxEnergy /2.0f;
 
 

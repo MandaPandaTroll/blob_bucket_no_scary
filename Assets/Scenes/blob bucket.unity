@@ -301,13 +301,13 @@ MonoBehaviour:
   autoReplenish: 0
   autoRemove: 0
   box: {fileID: 1136253243}
-  diffRate: 1
+  diffRate: 0.4
   statNutes: 0
   statTot: 0
   gridX: 0
   gridY: 0
-  cellScale: 4
-  initConc: 4
+  cellScale: 6
+  initConc: 16
   freeNutes: 0
   lockedNutes: 0
 --- !u!4 &314230637
@@ -608,6 +608,7 @@ GameObject:
   - component: {fileID: 1136253242}
   - component: {fileID: 1136253241}
   - component: {fileID: 1136253240}
+  - component: {fileID: 1136253244}
   m_Layer: 0
   m_Name: box
   m_TagString: Wall
@@ -721,7 +722,7 @@ Transform:
   m_GameObject: {fileID: 1136253239}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2048, y: 2048, z: 1}
+  m_LocalScale: {x: 256, y: 256, z: 1}
   m_Children:
   - {fileID: 1855928353}
   - {fileID: 721042678}
@@ -733,6 +734,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1136253244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1136253239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8ee9f6eb45df480a94e9bb007697272, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloybSpeedModifier: 1
 --- !u!1 &1626781018
 GameObject:
   m_ObjectHideFlags: 0
@@ -1164,11 +1178,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   linChars: 
   initLineage: 
-  initBlib: 512
+  initBlib: 1024
   autoRespawn: 1
   extraBlib: 1
-  minBlib: 64
+  minBlib: 256
   blib: {fileID: 3468846596000450122, guid: 6d4cc741cc2fc4e00ad7702559757827, type: 3}
+  speedModifier_enabled: 0
+  speedModifier: 0
+  initProtein: 4
 --- !u!4 &1883381884
 Transform:
   m_ObjectHideFlags: 0
@@ -1195,9 +1212,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6bd4133b54884e9b85ea955802985c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initBlob: 64
+  initBlob: 32
   extraBlob: 1
-  minBlob: 16
+  minBlob: 2
   brainblob: {fileID: 1711403674044451826, guid: 62f3ae1229ce147e085f49742d4f03cd, type: 3}
   autoRespawn: 1
 --- !u!114 &1883381886
@@ -1212,11 +1229,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3b243e301ee9401a834a5dedfa9deae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initBlub: 4
+  initBlub: 0
   extraBlub: 1
   blub: {fileID: 2899908468288829811, guid: 85d9ad2e1ee97449ba7a451adfb4fe78, type: 3}
-  autoRespawn: 1
-  minBlub: 4
+  autoRespawn: 0
+  minBlub: 2
 --- !u!114 &1883381887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1229,10 +1246,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e09c4ea668b25499390c530b02010ef1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initBlyb: 64
+  initBlyb: 32
   extraBlyb: 1
   blyb: {fileID: 9185934289686911736, guid: b502b5fe1709f4524936c88a0c2bb425, type: 3}
-  minBlyb: 16
+  minBlyb: 2
   autoRespawn: 1
 --- !u!114 &1883381888
 MonoBehaviour:

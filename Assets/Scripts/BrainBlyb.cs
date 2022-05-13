@@ -3,11 +3,17 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
-
+using System.Linq;
 // Reward signals and behaviour.
 
 public class BrainBlyb : Agent
 {
+public bool academySpeedModifier_enabled;
+CurriculumHandler curriculumHandler;
+float speedModifier;
+
+float test_happiness;
+List<float> resourceBuffer = new List<float>();
 public int nomLim;
  int nomCount;
 RayPerceptionSensorComponent2D thisRay;
@@ -42,15 +48,22 @@ smeller = gameObject.GetComponent<Smeller_Blyb>();
 }
 void Start() 
 {
-    
+
+    curriculumHandler = FindObjectOfType<CurriculumHandler>();
+
+                if(academySpeedModifier_enabled == true){
+                                speedModifier = curriculumHandler.GetBloybSpeedModifier();
+                    }else{speedModifier = 1.0f;}
     box = GameObject.Find("box");
     rb = GetComponent<Rigidbody2D>();
     
     energy = bctrl.energy;
+    protein = bctrl.protein;
+    resourceBuffer.Add((energy/bctrl.maxEnergy)+((float)protein/(float)bctrl.proteinToReproduce));
     thisRay = GetComponent<RayPerceptionSensorComponent2D>();
     thisRay.RayLength = ((genome.lookDistAllele1+genome.lookDistAllele2)/2f);
     nomCount = 0;
-    protein = bctrl.protein;
+    
     
     angV = rb.angularVelocity/1000.0f;
     detector = GameObject.Find("Alpha").GetComponent<Detector>();
@@ -75,6 +88,11 @@ float ObsAge;
 public override void OnEpisodeBegin(){
 step = 0;
 nomCount = 0;
+
+if(academySpeedModifier_enabled == true){
+    curriculumHandler = FindObjectOfType<CurriculumHandler>();
+                                speedModifier = curriculumHandler.GetBloybSpeedModifier();
+                    }else{speedModifier = 1.0f;}
 }
 float scaledSmellDistance = 0, smellReward = 0;
 Vector2 scaledClosest = new Vector2 (0f,0f);
@@ -162,10 +180,12 @@ float moveForce, turnTorque;
 float forwardSignal, rotSignal;
 float energy;
 float E0, E1, ETimer;
-
+float meanResource0, meanResource1;
+float prevhapp = 0;
+float test_reward = 0;
 public override void OnActionReceived(ActionBuffers actionBuffers)
 {  
-        
+
         if( alive == false)
     {
         return;
@@ -241,12 +261,34 @@ rCount = bctrl.rCount;
  
     if(alive == true)
     {
- rb.AddForce(fwd);
+        
+    test_reward = 0;
+ rb.AddForce(fwd*speedModifier);
  rb.AddTorque(rotMag*turnTorque*rb.inertia);
  bctrl.energy -=  bctrl.eCost*Mathf.Abs(fwd.magnitude);
  bctrl.energy -= bctrl.basalMet;
-    
-        
+    float normEnergy = bctrl.energy/bctrl.maxEnergy;
+    float normProtein = (float)bctrl.protein / (float)bctrl.proteinToReproduce;
+
+float test_enerProt = (normEnergy+normProtein)/2.0f;
+test_happiness = (float)System.Math.Tanh( (  ((double)(2*test_enerProt))  ));
+
+
+        resourceBuffer.Add((energy/bctrl.maxEnergy)+((float)protein/(float)bctrl.proteinToReproduce));
+
+        if(resourceBuffer.Count >= 9){
+            meanResource0 = (resourceBuffer[0]+resourceBuffer[1]+resourceBuffer[2]+
+                           resourceBuffer[3]+resourceBuffer[4]+resourceBuffer[5]+
+                           resourceBuffer[6]+resourceBuffer[7])
+                           
+                           / 8.0f;
+            meanResource1 = (+resourceBuffer[8]);
+
+            float deltaResource = meanResource1 - meanResource0;
+            //if(deltaResource >0 ){AddReward(1f);}
+            //AddReward(deltaEnergy/bctrl.maxEnergy);
+            resourceBuffer.Clear();
+        }
 
         if(bctrl.energy<= 105f)
         {
@@ -258,12 +300,14 @@ rCount = bctrl.rCount;
 
     if(bctrl.hasReproduced == true)
     {
-        AddReward(0.5f);
+        AddReward(1.0f);
         
         bctrl.hasReproduced = false;
     }
-
-
+        if(prevhapp == 0){ prevhapp = test_happiness;}
+        if(prevhapp != 0){test_reward = test_happiness - prevhapp;
+        prevhapp = 0;}
+        AddReward(test_reward);
 
 
 
@@ -305,7 +349,7 @@ rCount = bctrl.rCount;
             {
                 m_currentBumper = BumperType.Predator2;
                 AddReward(genome.pythagDist);
-                Debug.Log("blybPythag = " + genome.pythagDist);
+                //Debug.Log("blybPythag = " + genome.pythagDist);
                 bctrl.energy -= 5f;
             }
             
@@ -320,12 +364,12 @@ rCount = bctrl.rCount;
                  m_currentBumper = BumperType.Carcass;
              }
              if(energy <= bctrl.maxEnergy || bctrl.protein <= bctrl.proteinToReproduce){
-            AddReward((1.0f / (float)nomLim));
+            //AddReward((1.0f / (float)nomLim));
              nomCount +=1;
              }
             if (nomCount >= nomLim){
                 nomCount = 0;
-             EndEpisode();
+             
             }
             
                 

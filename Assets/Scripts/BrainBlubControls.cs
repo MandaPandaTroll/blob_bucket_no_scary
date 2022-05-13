@@ -140,7 +140,9 @@ System.Random rndA = new System.Random();
         
         Resizer();
     }
-
+    int posval;
+    void FixedUpdate()
+    {posval = m_nutgrid.GetValue(transform.position);}
 
     float NH4_Timer;
     // Update is called once per frame
@@ -165,16 +167,17 @@ System.Random rndA = new System.Random();
     if(alive == true)
     {
         NH4_Timer += Time.deltaTime;
-        if (NH4_Timer >= 0.5f && protein > 4)
+        if (NH4_Timer >= 1.0f && protein > 1)
         {
-            NH4 +=4;
-            protein -= 4;
+            NH4 +=1;
+            protein -= 1;
             NH4_Timer = 0f;
 
         }
         //Ammonia secretion
         if(NH4 >= 32){
-            int posval = m_nutgrid.GetValue(transform.position);
+
+             posval = m_nutgrid.GetValue(transform.position);
                 m_nutgrid.SetValue(transform.position, posval + NH4);
                 NH4 = 0;
         }
@@ -521,17 +524,20 @@ System.Random rndA = new System.Random();
                     
 
                     //Reproduction
-                    bool odd;
+                    bool odd = false;
+                    int remainder = 0;
+                    tempProtein = protein;
                     energy = (energy/2.0f);
                     if(protein % 2 == 0){
                         odd = false;
                     protein = (protein/2);
                     }
                     else{
+                        remainder = protein - (protein%2);
                         odd = true;
-                        protein = (protein -1 )/2;}
-                    
-                
+                        protein = (protein - remainder )/2;}
+
+
                 float x = energy/10000f;
                 float k = 0.7f;
                 sigmoid = sizeGene/ (1f+ Mathf.Exp(-k*(x-1.5f)));
@@ -555,8 +561,9 @@ System.Random rndA = new System.Random();
                     BrainBlubControls daughter_controls = clone.GetComponent<BrainBlubControls>();
                     daughter_controls.generation = generation + 1;
                     daughter_controls.age = 0f;
+                    
                     if (odd == true){
-                        daughter_controls.protein = tempProtein+1;
+                      daughter_controls.protein = (tempProtein + remainder)/2;
                     }
                     rCount += 1;
                         

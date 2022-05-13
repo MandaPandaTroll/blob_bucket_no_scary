@@ -120,7 +120,7 @@ Rigidbody2D:
   m_UseAutoMass: 1
   m_Mass: 0.7853982
   m_LinearDrag: 10
-  m_AngularDrag: 5
+  m_AngularDrag: 2.5
   m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: e64201313438943b593297091c58a445, type: 2}
   m_Interpolate: 0
@@ -142,8 +142,8 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 512
-  nomLim: 2
+  MaxStep: 0
+  nomLim: 1
   thisRay: {fileID: 0}
   latestLookDistance: 0
 --- !u!114 &3889601855363302305
@@ -159,7 +159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 46
+    VectorObservationSize: 60
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 0
@@ -168,9 +168,9 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: e7d9097e23bfe47a9821b1176e83c8b6, type: 3}
   m_InferenceDevice: 0
-  m_BehaviorType: 0
+  m_BehaviorType: 2
   m_BehaviorName: BrainBlub
   TeamId: 0
   m_UseChildSensors: 1
@@ -238,25 +238,25 @@ MonoBehaviour:
   alive: 1
   eaten: 0
   nom: 0
-  eCostCo: 2500
+  eCostCo: 10000
   speciationDistance: 0.5
-  energy: 12500
+  energy: 50000
   pEnergy: 0
   maxEnergy: 100000
   eCost: 0
   conjAge: 700
   age: 0
   statAge: 0
-  moveAllele1: 300
-  moveAllele2: 300
-  moveForce: 300
-  turnTorque: 100
-  turnTorqueAllele1: 100
-  turnTorqueAllele2: 100
+  moveAllele1: 350
+  moveAllele2: 350
+  moveForce: 350
+  turnTorque: 256
+  turnTorqueAllele1: 256
+  turnTorqueAllele2: 256
   sizeAllele1: 5
   sizeAllele2: 5
   sizeGene: 5
-  lookDistance: 100
+  lookDistance: 300
   energyToReproduce: 80000
   lifeLength: 1024
   intron1: 100
@@ -276,9 +276,9 @@ MonoBehaviour:
   rDice: 0
   generation: 0
   deadLayer: 9
-  basalMet: 0.01
+  basalMet: 0
   protein: 0
-  proteinToReproduce: 4096
+  proteinToReproduce: 2048
   NH4: 0
   tempProtein: 0
   tempNH4: 0
@@ -296,3 +296,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scaledPreyDistance: []
   scaledMateDistance: []
+  scaledBlibDistance: []

@@ -10,6 +10,12 @@ using System.Linq;
 
 public class BrainBlub : Agent
 {
+
+float test_happiness;
+
+    float e;
+List<float> resourceBuffer = new List<float>();
+
 public int nomLim;
 int nomCount;
 Collider2D[] smellColliders;
@@ -34,17 +40,23 @@ List<float> lastClosest;
 void Awake(){
 smeller = gameObject.GetComponent<Smeller_Blub>();
 bctrl = gameObject.GetComponent<BrainBlubControls>();
+e = Mathf.Log(1);
+float d = 0;
+float distFunc = 1.0f - Mathf.Pow( ((Mathf.Pow(e,3f*d)-Mathf.Pow(e,-3f*d))/(Mathf.Pow(e,3f*d)-Mathf.Pow(e,-3f*d))),2f );
 
 }
 void Start() 
 {
+    
     box = GameObject.Find("box");
     rb = GetComponent<Rigidbody2D>();
     
     energy = bctrl.energy;
+    protein = bctrl.protein;
+    resourceBuffer.Add((energy/bctrl.maxEnergy)+((float)protein/(float)bctrl.proteinToReproduce));
     thisRay = GetComponent<RayPerceptionSensorComponent2D>();
     thisRay.RayLength = bctrl.lookDistance;
-    protein = bctrl.protein;
+    
     v = rb.velocity.magnitude/1000.0f;
     angV = rb.angularVelocity/1000.0f;
     smellMask = LayerMask.GetMask("Predator", "Predator2");
@@ -73,6 +85,7 @@ Vector2 scaledClosest;
 
     Vector2[] scaledPreyDistance; 
      Vector2[] scaledMateDistance; 
+     Vector2[] scaledBlibDistance; 
      const int NUM_BUMP_TYPES = (int)BumperType.LastBumper;
 BumperType m_currentBumper;
 
@@ -146,9 +159,11 @@ if(closestX.Count >= 1000 || closestY.Count >= 1000){
 */
 scaledPreyDistance = smeller.scaledPreyDistance;
 scaledMateDistance = smeller.scaledMateDistance;
+scaledBlibDistance = smeller.scaledBlibDistance;
+
  v = rb.velocity.magnitude/1000.0f;
  angV = rb.angularVelocity/1000.0f;
-sensor.AddObservation(scaledClosest);
+//sensor.AddObservation(scaledClosest);
 sensor.AddObservation(protein);
 sensor.AddObservation(v);
 sensor.AddObservation(angV); 
@@ -161,7 +176,8 @@ sensor.AddObservation(bctrl.age);
 for (int i = 0; i < 8; i++){
 sensor.AddObservation(scaledPreyDistance[i]);
 sensor.AddObservation(scaledMateDistance[i]);
-    
+sensor.AddObservation(scaledBlibDistance[i]);
+
     }
     sensor.AddOneHotObservation((int)m_currentBumper, NUM_BUMP_TYPES);
 
@@ -170,16 +186,43 @@ sensor.AddObservation(scaledMateDistance[i]);
 float moveForce, turnTorque;
 float forwardSignal, rotSignal;
 float energy;
-
-
+float lastSqrClosest = 0;
+float closeTimer = 0;
+float distFunc;
+float meanResource0, meanResource1;
 public override void OnActionReceived(ActionBuffers actionBuffers)
 {  
+
+    
+
 
     if( alive == false)
     {
         return;
     }
 
+    
+    
+    if(closeTimer <= Time.fixedDeltaTime && scaledPreyDistance[0].sqrMagnitude > 0){
+        lastSqrClosest = scaledPreyDistance[0].sqrMagnitude;
+        distFunc = 0;
+    }
+    closeTimer += Time.fixedDeltaTime;
+
+    if(closeTimer >= 0.2f && scaledPreyDistance[0].sqrMagnitude > 0){
+        float d = scaledPreyDistance[0].sqrMagnitude;
+        if( d < lastSqrClosest){
+            distFunc = 0;
+             distFunc = 1.0f - Mathf.Pow( ((Mathf.Pow(e,3f*d)-Mathf.Pow(e,-3f*d))/(Mathf.Pow(e,3f*d)-Mathf.Pow(e,-3f*d))),2f );
+            if (distFunc != distFunc) {distFunc = 0;}else{AddReward(0);} //or distFunc
+            
+        }
+        closeTimer = 0;
+        
+    }
+
+    
+    
     
 energy = bctrl.energy;
 alive = bctrl.alive;
@@ -251,11 +294,40 @@ hasReproduced = bctrl.hasReproduced;
  
     if(alive == true)
     {
+
  rb.AddForce(fwd);
  rb.AddTorque(rotMag*turnTorque*rb.inertia);
  bctrl.energy -=  bctrl.eCost*Mathf.Abs(fwd.magnitude);
  bctrl.energy -= bctrl.basalMet;
-        
+ float normEnergy = bctrl.energy/bctrl.maxEnergy;
+    float normProtein = (float)bctrl.protein / (float)bctrl.proteinToReproduce;
+
+float test_enerProt = (normEnergy+normProtein)/2.0f;
+test_happiness = (float)System.Math.Tanh( (  ((double)(test_enerProt))  -0.25f))/(2);
+
+
+        resourceBuffer.Add((energy/bctrl.maxEnergy)+((float)protein/(float)bctrl.proteinToReproduce));
+
+        if(resourceBuffer.Count >= 9){
+            meanResource0 = (resourceBuffer[0]+resourceBuffer[1]+resourceBuffer[2]+
+                           resourceBuffer[3]+resourceBuffer[4]+resourceBuffer[5]+
+                           resourceBuffer[6]+resourceBuffer[7])
+                           
+                           / 8.0f;
+            meanResource1 = (+resourceBuffer[8]);
+
+            float deltaResource = meanResource1 - meanResource0;
+            if(deltaResource >0 ){AddReward(1f);}
+            //AddReward(deltaEnergy/bctrl.maxEnergy);
+            resourceBuffer.Clear();
+        }
+
+
+ /*
+    if(protein < bctrl.proteinToReproduce/16){
+        AddReward(-0.0001f);
+    }
+*/
         //cumSmellReward += smellReward;
         if(bctrl.energy<= 101f)
         {
@@ -271,11 +343,11 @@ hasReproduced = bctrl.hasReproduced;
     if(bctrl.hasReproduced == true)
     {
         AddReward(1.0f);
-        EndEpisode();
+        
         bctrl.hasReproduced = false;
     }
 
-  
+  SetReward(test_happiness);
 
 
         } 
@@ -315,12 +387,12 @@ hasReproduced = bctrl.hasReproduced;
             if(booper.tag == "Carcass"){m_currentBumper = BumperType.Carcass;}
              
             if(energy <= bctrl.maxEnergy || bctrl.protein <= bctrl.proteinToReproduce){
-            AddReward((1.0f / (float)nomLim));
+            //AddReward((1.0f / (float)nomLim));
              nomCount +=1;
             }
                    if (nomCount >= nomLim){
                 nomCount = 0;
-             EndEpisode();
+             //EndEpisode();
             }
                 
          }

@@ -21,7 +21,10 @@ public class BlibSpawner : MonoBehaviour
   int blibN;
   float boxSize;
   PopLogger popLogger;
-  
+  public bool speedModifier_enabled;
+  public float speedModifier;
+  private float vSliderValue;
+  public int initProtein;
 
     // Start is called before the first frame update
     void Start()
@@ -52,25 +55,34 @@ public class BlibSpawner : MonoBehaviour
        thisBlib.GetComponent<BlibGenome>().lineageID.Add (System.String.Join("", initLineages[i]));
        thisBlib.name = popLogger.GetName("blib");
        thisBlib.name = thisBlib.name.Replace("(Clone)", "");
+       thisBlib.GetComponent<BlibControls>().nutLevel = initProtein;
           
         
           
         }
     }
 
+
     void OnGUI()
     {
       autoRespawn = GUI.Toggle( new Rect(10,500,200,30),autoRespawn,"autoRespawn_blib" );
+      speedModifier_enabled = GUI.Toggle (new Rect (10, 200, 200, 30), speedModifier_enabled, "blib_speed_mod");
+            
+                vSliderValue = GUI.HorizontalSlider (new Rect (25, 250, 200, 30), vSliderValue, 0.0f, 1.0f);
     }
 
 void LateUpdate()
 {
   
+
   blibs = GameObject.FindGameObjectsWithTag("Prey");
   blibN = blibs.Length;
   if (Input.GetKeyDown("i") == true  ){ extraSpawn();}
         if (autoRespawn == true && blibN <= minBlib){extraSpawn();}
-        
+  
+  if(speedModifier_enabled == true){
+    speedModifier = vSliderValue;
+      }else{speedModifier = 1f;}
     }
   
 

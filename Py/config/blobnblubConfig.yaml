@@ -6,12 +6,12 @@ behaviors:
       # Hyperparameters common to PPO and SAC
       batch_size: 256
       buffer_size: 2048
-      learning_rate: 3.0e-4
+      learning_rate: 1.0e-4
       learning_rate_schedule: linear
 
       # PPO-specific hyperparameters
       # Replaces the "PPO-specific hyperparameters" section above
-      beta: 5.0e-3
+      beta: 1.0e-3
       epsilon: 0.2
 
       lambd: 0.9
@@ -21,22 +21,22 @@ behaviors:
     network_settings:
       conditioning_type: none
       vis_encode_type: resnet
-      normalize: true
-      hidden_units: 128
+      normalize: false
+      hidden_units: 256
       num_layers: 2
       memory:
-        memory_size: 64
+        memory_size: 128
         sequence_length: 32
 
 
 
     # Trainer configurations common to all trainers
-    max_steps: 2.0e7
-    time_horizon: 256
+    max_steps: 1.0e7
+    time_horizon: 512
 
     summary_freq: 10000
     keep_checkpoints: 5
-    checkpoint_interval: 50000
+    checkpoint_interval: 100000
     threaded: true
     init_path: null
 
@@ -55,12 +55,12 @@ behaviors:
       # Hyperparameters common to PPO and SAC
       batch_size: 512
       buffer_size: 2048
-      learning_rate: 3.0e-4
+      learning_rate: 1.0e-4
       learning_rate_schedule: linear
 
       # PPO-specific hyperparameters
       # Replaces the "PPO-specific hyperparameters" section above
-      beta: 5.0e-3
+      beta: 1.0e-3
       epsilon: 0.2
 
       lambd: 0.9
@@ -70,22 +70,22 @@ behaviors:
     network_settings:
       conditioning_type: none
       vis_encode_type: resnet
-      normalize: true
-      hidden_units: 128
+      normalize: false
+      hidden_units: 256
       num_layers: 2
       memory:
-        memory_size: 64
+        memory_size: 128
         sequence_length: 32
 
 
 
     # Trainer configurations common to all trainers
-    max_steps: 2.0e7
-    time_horizon: 256
+    max_steps: 1.0e7
+    time_horizon: 1024
 
     summary_freq: 10000
     keep_checkpoints: 5
-    checkpoint_interval: 50000
+    checkpoint_interval: 100000
     threaded: true
     init_path: null
 
@@ -103,38 +103,38 @@ behaviors:
     hyperparameters:
       # Hyperparameters common to PPO and SAC
       batch_size: 512
-      buffer_size: 2048
-      learning_rate: 3.0e-4
+      buffer_size: 8192
+      learning_rate: 1.0e-4
       learning_rate_schedule: linear
 
       # PPO-specific hyperparameters
       # Replaces the "PPO-specific hyperparameters" section above
-      beta: 5.0e-3
+      beta: 1.0e-3
       epsilon: 0.2
 
-      lambd: 0.9
-      num_epoch: 3
+      lambd: 0.92
+      num_epoch: 2
 
     # Configuration of the neural network (common to PPO/SAC)
     network_settings:
       conditioning_type: none
       vis_encode_type: resnet
-      normalize: true
-      hidden_units: 128
+      normalize: false
+      hidden_units: 256
       num_layers: 2
       memory:
-        memory_size: 64
-        sequence_length: 32
+        memory_size: 128
+        sequence_length: 64
 
 
 
     # Trainer configurations common to all trainers
-    max_steps: 5.0e6
+    max_steps: 1.0e6
     time_horizon: 512
 
-    summary_freq: 10000
+    summary_freq: 100000
     keep_checkpoints: 5
-    checkpoint_interval: 50000
+    checkpoint_interval: 100000
     threaded: true
     init_path: null
 
@@ -146,4 +146,54 @@ behaviors:
         strength: 1.0
         gamma: 0.99
 
-
+environment_parameters: #can be turned off in editor
+  bloybSpeedModifier:
+    curriculum:
+      - name: A1 # The '-' is important as this is a list
+        completion_criteria:
+          measure: reward
+          behavior: BrainBlub
+          signal_smoothing: true
+          min_lesson_length: 100
+          threshold: 2.0
+        value: 0.2
+      - name: A2 # This is the start of the second lesson
+        completion_criteria:
+          measure: reward
+          behavior: BrainBlub
+          signal_smoothing: true
+          min_lesson_length: 100
+          threshold: 2.0
+        value: 0.4
+      - name: A3
+        completion_criteria:
+          measure: reward
+          behavior: BrainBlub
+          signal_smoothing: true
+          min_lesson_length: 100
+          threshold: 2.0
+        value: 0.7
+      - name: A4
+        completion_criteria:
+          measure: reward
+          behavior: BrainBlub
+          signal_smoothing: true
+          min_lesson_length: 100
+          threshold: 2.0
+        value: 0.8
+      - name: A5
+        completion_criteria:
+          measure: reward
+          behavior: BrainBlub
+          signal_smoothing: true
+          min_lesson_length: 100
+          threshold: 2.0
+        value: 0.9
+      - name: A6
+        completion_criteria:
+          measure: reward
+          behavior: BrainBlub
+          signal_smoothing: true
+          min_lesson_length: 100
+          threshold: 2.0
+        value: 1.0

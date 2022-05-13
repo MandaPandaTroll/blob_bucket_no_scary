@@ -11,6 +11,11 @@ using Unity.MLAgents;
 public class BlibControls : MonoBehaviour
 {
 
+RaycastHit2D rayResults;
+
+
+
+CurriculumHandler curriculumHandler;
 public string[,] superSatellite = new string[4,27] {
     //Chromosome 0
     {"A","T","G",  "A","A","A",  "A","A","A", 
@@ -52,8 +57,8 @@ public float densityCo;
     GameObject box;
     private  bool bump;
     static GameObject[] blibs;
-    private  int layer_mask; 
-    private   int blib_mask;
+    LayerMask layer_mask; 
+    
     public  int rDice;
     public  float age;
     public float energy;
@@ -116,10 +121,14 @@ string[,] A, B;
 int chromoPairs, basePairs;
 
 List <string> codon;
+     
+    float speedModifier;
     
-
+    
     void Start()
     {  
+        
+        
         
         genome = gameObject.GetComponent<BlibGenome>();
         chromoPairs = genome.chromoPairs;
@@ -149,8 +158,8 @@ List <string> codon;
         
         
        
-        layer_mask = LayerMask.GetMask("Predator","Predator2");
-        blib_mask = LayerMask.GetMask("Prey");
+        layer_mask = LayerMask.GetMask("Prey","Predator","Predator2","ApexPred","Wall");
+        
         box = GameObject.Find("box");
         boxTran = box.GetComponent<Transform>();
         boxLength = boxTran.localScale.x;
@@ -358,7 +367,7 @@ List <string> codon;
     }
     // Update is called once per frame
     void LateUpdate()
-    {   
+    {   speedModifier = blibSpawner.speedModifier;
         tempProtein = nutLevel;
         
 
@@ -368,7 +377,7 @@ List <string> codon;
          energyTick += Time.deltaTime;
         if(energyTick > 1.0f)
         {
-
+            
             
             redAllele1 = genome.redAllele1;
             redAllele2 = genome.redAllele2;
@@ -418,7 +427,7 @@ List <string> codon;
                     blueGene = Mathf.Clamp(((blueAllele1 + blueAllele2)/2.0f), 0.00f,1.00f);
                     m_SpriteRenderer.color = geneticColor;
                     if(energy < maxEnergy){
-            energy += 42f*greenGene + 16f * redGene;
+            energy += 64f*greenGene + 16f * redGene;
                 if (energy > maxEnergy){energy = maxEnergy;}
                     }
             energyTick = 0.0f; 
@@ -445,7 +454,7 @@ List <string> codon;
 
        
         // rAgeC = 10 + (L/a)^2 
-            int rAgeC = 1+ (int)(Mathf.Pow((lifeLength/age),2f));
+            int rAgeC = 1+ (int)(Mathf.Pow((lifeLength/(age*4f)),2f));
          int  rAgeDice = Random.Range(0,rAgeC+1);
         
                     
@@ -494,6 +503,7 @@ List <string> codon;
 
         if (bump == false )
         {
+            
         GoForward();
         }
 
@@ -631,11 +641,19 @@ List <string> codon;
 
 
 
-
+            
             void GoForward()
 
-            {     
-                    rb.AddForce(transform.up * moveForce*rb.mass);
+            {    
+                Vector2 origin = transform.position + transform.up;
+                Vector2 direction = transform.up;
+               float distance = 64f;
+                rayResults =  Physics2D.Raycast( origin,  direction,  distance, layer_mask,  -Mathf.Infinity,  Mathf.Infinity);
+                    if(rayResults.collider != null && rayResults.collider.gameObject.tag != "Prey"){
+                        rb.AddTorque(turnTorque * Random.Range(-1f,1f));
+                    }
+                    
+                    rb.AddForce(transform.up * moveForce*rb.mass*speedModifier);
                     energy -= moveForce/1024f;
                     int randTurner = Random.Range(0,(int)turnDice);
 
@@ -724,6 +742,7 @@ List <string> codon;
                         tempNut = (nutLevel -1 )/2;}
                         
                     }
+                    nutLevel = tempNut;
                 }
                     
 
@@ -747,7 +766,7 @@ List <string> codon;
                     if(odd == true){
                         daughter_controls.nutLevel = tempNut +1;
                     }else{daughter_controls.nutLevel = tempNut;}
-                    nutLevel = tempNut;
+                    
                     
                     
 

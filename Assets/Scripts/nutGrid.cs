@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey.Utils;
+using System.Linq;
 
 
 // This script provides the grid that holds the free nutrient values
@@ -53,6 +54,7 @@ public class nutGrid
     }
     public void SetValue(int x, int y, int value){
         if(x >= 0 && y >= 0 && x < width && y < height){
+            if(value < 0){value = 0;}
             gridArray[x, y] = value;
             
         }
@@ -80,6 +82,11 @@ public class nutGrid
         return GetValue(x, y);
     }
     
+
+    public int GetSum(){
+        int freeNutes = gridArray.Cast<int>().Sum();
+        return freeNutes;
+    }
 
 } 
 
