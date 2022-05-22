@@ -240,7 +240,7 @@ MonoBehaviour:
   alive: 1
   eaten: 0
   nom: 0
-  eCostCo: 4096
+  eCostCo: 7000
   speciationDistance: 0.5
   energy: 10000
   pEnergy: 0

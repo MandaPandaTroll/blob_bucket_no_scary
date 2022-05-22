@@ -173,14 +173,15 @@ System.Random rndA = new System.Random();
             protein -= 1;
             NH4_Timer = 0f;
 
-        }
-        //Ammonia secretion
-        if(NH4 >= 32){
+            //Ammonia secretion
+             if(NH4 >= 32){
 
              posval = m_nutgrid.GetValue(transform.position);
                 m_nutgrid.SetValue(transform.position, posval + NH4);
                 NH4 = 0;
+            }
         }
+        
         eCost = rb.mass/eCostCo;
         
         int dC = (int) ( (lifeLength*Mathf.Pow((3f*lifeLength/(age+1)),2f)) - (9f*lifeLength) );
@@ -237,13 +238,13 @@ System.Random rndA = new System.Random();
             this.gameObject.GetComponent<BrainBlub>().enabled = false;
             energy -= 10f*Time.deltaTime;
             int posval = m_nutgrid.GetValue(transform.position);
-            if(NH4 > 0){
+            if(NH4 >= 1){
             m_nutgrid.SetValue(transform.position, posval + NH4);
             NH4 = 0;
             }
-            if(protein > 0){
+            if(protein >= 1){
                 m_nutgrid.SetValue(transform.position, posval + 1);
-                protein -= 1;
+                protein += -1;
             }
             if(energy <= 0f && protein <= 0)
             { 

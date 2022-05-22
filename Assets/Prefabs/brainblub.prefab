@@ -170,7 +170,7 @@ MonoBehaviour:
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 5022602860645237092, guid: e7d9097e23bfe47a9821b1176e83c8b6, type: 3}
   m_InferenceDevice: 0
-  m_BehaviorType: 2
+  m_BehaviorType: 0
   m_BehaviorName: BrainBlub
   TeamId: 0
   m_UseChildSensors: 1
@@ -247,9 +247,9 @@ MonoBehaviour:
   conjAge: 700
   age: 0
   statAge: 0
-  moveAllele1: 350
-  moveAllele2: 350
-  moveForce: 350
+  moveAllele1: 250
+  moveAllele2: 250
+  moveForce: 250
   turnTorque: 256
   turnTorqueAllele1: 256
   turnTorqueAllele2: 256

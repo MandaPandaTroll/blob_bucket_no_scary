@@ -107,7 +107,7 @@ Vector2 scaledClosest = new Vector2 (0f,0f);
 
 const int NUM_BUMP_TYPES = (int)BumperType.LastBumper;
 BumperType m_currentBumper;
-     
+  float deltaResource;   
 public override void CollectObservations(VectorSensor sensor)
 {
     /*
@@ -181,8 +181,7 @@ float forwardSignal, rotSignal;
 float energy;
 float E0, E1, ETimer;
 float meanResource0, meanResource1;
-float prevhapp = 0;
-float test_reward = 0;
+//float test_reward = 0;
 public override void OnActionReceived(ActionBuffers actionBuffers)
 {  
 
@@ -262,7 +261,7 @@ rCount = bctrl.rCount;
     if(alive == true)
     {
         
-
+    //test_reward = 0;
  rb.AddForce(fwd*speedModifier);
  rb.AddTorque(rotMag*turnTorque*rb.inertia);
  bctrl.energy -=  bctrl.eCost*Mathf.Abs(fwd.magnitude);
@@ -270,8 +269,8 @@ rCount = bctrl.rCount;
     float normEnergy = bctrl.energy/bctrl.maxEnergy;
     float normProtein = (float)bctrl.protein / (float)bctrl.proteinToReproduce;
 
-float test_enerProt = (normEnergy+normProtein)/2.0f;
-test_happiness = (float)System.Math.Tanh( (  ((double)(test_enerProt))  ));
+float test_enerProt = (bctrl.energy+bctrl.protein)/2.0f;
+test_happiness = (float)System.Math.Tanh( (  ((double)(2*test_enerProt))  ));
 
 
         resourceBuffer.Add((energy/bctrl.maxEnergy)+((float)protein/(float)bctrl.proteinToReproduce));
@@ -284,16 +283,17 @@ test_happiness = (float)System.Math.Tanh( (  ((double)(test_enerProt))  ));
                            / 8.0f;
             meanResource1 = (+resourceBuffer[8]);
 
-            float deltaResource = meanResource1 - meanResource0;
-            //if(deltaResource >0 ){AddReward(1f);}
+             deltaResource = meanResource1 - meanResource0;
+            if(deltaResource >0 ){AddReward(1f);}
             //AddReward(deltaEnergy/bctrl.maxEnergy);
             resourceBuffer.Clear();
+            deltaResource = 0;
         }
 
         if(bctrl.energy<= 105f)
         {
         
-            SetReward(-1.0f);
+            SetReward(0.0f);
             EndEpisode();
             this.enabled = false;
         }
@@ -304,10 +304,12 @@ test_happiness = (float)System.Math.Tanh( (  ((double)(test_enerProt))  ));
         
         bctrl.hasReproduced = false;
     }
-        if(prevhapp == 0){ prevhapp = test_happiness;}
-        if(prevhapp != 0){test_reward = test_happiness - prevhapp;
-        prevhapp = 0;}
-        AddReward(test_reward);
+        //if(prevhapp == 0){ prevhapp = test_happiness;}
+        //if(prevhapp != 0){test_reward = test_happiness - prevhapp;
+       // prevhapp = 0;}
+        //test_reward = (float)System.Math.Tanh(deltaResource);
+        
+        //AddReward(test_reward);
 
 
 
@@ -332,7 +334,7 @@ test_happiness = (float)System.Math.Tanh( (  ((double)(test_enerProt))  ));
      if (booper.tag == "ApexPred")
         {
             m_currentBumper = BumperType.ApexPred;           
-            SetReward(-1.0f);
+            SetReward(0.0f);
             EndEpisode();
             this.enabled = false;
         }

@@ -246,6 +246,29 @@ public class Testing : MonoBehaviour
                         newArray[x + 0, y - 1] = kernel[1,0];  // Low center
                         newArray[x + 1, y - 1] = kernel[2,0];  // Low right
 
+                        if(x == 1 && 
+                           y > 1  && 
+                           y < gridHeight-1 ){
+                               newArray[2,y] = newArray[x,y]; 
+                               newArray[x,y] = 0;}
+
+                        if(x == gridWidth-1 &&
+                           y > 1              && 
+                           y < gridHeight-1 ){
+                            newArray[gridWidth-2,y] = newArray[x,y];
+                            newArray[x,y] = 0;}
+
+                        if(y == 1   && 
+                            x > 1   && 
+                            x < gridWidth-1 ){
+                                newArray[x,2] = newArray[x,y]; 
+                                newArray[x,y] = 0;}
+
+                        if(y == gridHeight-1 &&
+                           x > 1              && 
+                           y < gridWidth-1 ){
+                            newArray[x,gridHeight-2] = newArray[x,y];
+                            newArray[x,y] = 0;}
                 /*
                 sum =   newArray[x - 1, y + 1] + // Top left
                         newArray[x + 0, y + 1] + // Top center

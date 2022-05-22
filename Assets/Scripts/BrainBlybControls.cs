@@ -214,16 +214,16 @@ void Awake(){
         if (NH4_Timer >= 1.0f && protein > 0)
         {
             NH4 +=1;
-            protein -= 1;
+            protein += -1;
             NH4_Timer = 0f;
-
-        }
         //Ammonia secretion
         if(NH4 >= 32){
             
                 m_nutgrid.SetValue(transform.position, posval + NH4);
                 NH4 = 0;
+            }
         }
+        
         eCost = rb.mass/eCostCo;
         
         int dC = (int) ( (lifeLength*Mathf.Pow((3f*lifeLength/(age+1)),2f)) - (9f*lifeLength) );
@@ -280,13 +280,13 @@ void Awake(){
             this.gameObject.GetComponent<BrainBlyb>().enabled = false;
             energy -= 10f*Time.deltaTime;
             
-            if(NH4 > 0){
+            if(NH4 >= 1){
             m_nutgrid.SetValue(transform.position, posval + NH4);
             NH4 = 0;
             }
-            if(protein > 0){
+            if(protein >= 1){
                 m_nutgrid.SetValue(transform.position, posval + 1);
-                protein -= 1;
+                protein += -1;
             }
             if(energy <= 0f && protein <= 0)
             { 

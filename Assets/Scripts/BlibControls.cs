@@ -39,8 +39,8 @@ public string[,] superSatellite = new string[4,27] {
 
 BlibGenome genome;
 
-Detector detector;
-GameObject Alpha;
+//Detector detector;
+//GameObject Alpha;
 
 
 
@@ -51,7 +51,7 @@ private float colorG;
 private float colorB;
 private float colorA = 1f;
 
-private Color geneticColor;
+public Color geneticColor;
 public float densityCo;
     Rigidbody2D rb;
     GameObject box;
@@ -147,8 +147,8 @@ List <string> codon;
         
        
         posVal = 0;
-       Alpha = GameObject.Find("Alpha");
-        detector = Alpha.GetComponent<Detector>();
+       //Alpha = GameObject.Find("Alpha");
+       // detector = Alpha.GetComponent<Detector>();
 
 
         
@@ -353,19 +353,21 @@ List <string> codon;
 
     void FixedUpdate(){
         tempNut = nutLevel;
+        
+    if ( nutLevel < nutToReproduce) {
         posVal = m_nutgrid.GetValue(transform.position);
-        if (posVal > 0 && nutLevel < nutToReproduce) {
+        if (posVal > 0 ) {
             nutLevel +=1;
         m_nutgrid.SetValue(transform.position, posVal-1);
 
         int feedTurn = Random.Range(0,(int)turnDice/8);
         if(feedTurn == 1){
-        rb.AddTorque(turnTorque * Random.Range(-1,2));
-        }
-        
+            rb.AddTorque(turnTorque * Random.Range(-1,2));
+            }
+        }   
         }
     }
-    // Update is called once per frame
+    public bool doInitDiversifier = false;
     void LateUpdate()
     {   speedModifier = blibSpawner.speedModifier;
         tempProtein = nutLevel;
@@ -427,7 +429,7 @@ List <string> codon;
                     blueGene = Mathf.Clamp(((blueAllele1 + blueAllele2)/2.0f), 0.00f,1.00f);
                     m_SpriteRenderer.color = geneticColor;
                     if(energy < maxEnergy){
-            energy += 64f*greenGene + 16f * redGene;
+            energy += 42f*greenGene + 16f * redGene;
                 if (energy > maxEnergy){energy = maxEnergy;}
                     }
             energyTick = 0.0f; 
@@ -435,10 +437,9 @@ List <string> codon;
 
 
 
-        if(Time.time < 0.1f)
+        if(doInitDiversifier == true)
         {
-            age = 0f + Random.Range(0f, lifeLength/2.0f);
-            energy = Random.Range(energyToReproduce/16f, energyToReproduce);
+            
             InitDiversifier(); 
         }
         
@@ -454,7 +455,7 @@ List <string> codon;
 
        
         // rAgeC = 10 + (L/a)^2 
-            int rAgeC = 1+ (int)(Mathf.Pow((lifeLength/(age*4f)),2f));
+            int rAgeC = 1+ (int)(Mathf.Pow((lifeLength/(age*2f)),2f));
          int  rAgeDice = Random.Range(0,rAgeC+1);
         
                     
@@ -535,7 +536,6 @@ List <string> codon;
                 if(booper.tag == "Predator" )
                 {   
                     BrainBlobControls blob = booper.GetComponent<BrainBlobControls>();
-                    
                     blob.protein += nutLevel;
                     nutLevel = 0;
                     blob.energy += energy;
@@ -846,7 +846,7 @@ List <string> codon;
                     blueGene = Mathf.Clamp(((blueAllele1 + blueAllele2)/2.0f), 0.00f,1.00f);
 
             }else{return;}
-
+        doInitDiversifier = false;
         } 
 
            
