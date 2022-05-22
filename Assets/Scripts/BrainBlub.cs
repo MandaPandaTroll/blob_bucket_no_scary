@@ -31,7 +31,7 @@ bool bump;
 GameObject box;
 
 //Collision identification sensor
-GameObject extBooper;
+
 int smellMask;
 Vector2 closest;
 Smeller_Blub smeller;
@@ -98,12 +98,12 @@ public override void CollectObservations(VectorSensor sensor)
 //obsCount +=1;
 
 protein = bctrl.protein;
+
+
+
+/*
 int minindex = -1;
 float minDistance = Mathf.Infinity;
-if (bump == false)
-{
-    extBooper = null;
-}
 Vector2 smellA = new Vector2(transform.position.x -bctrl.lookDistance/4.0f, transform.position.y -bctrl.lookDistance/4.0f);
 Vector2 smellB = new Vector2(transform.position.x +bctrl.lookDistance/4.0f, transform.position.y +bctrl.lookDistance/4.0f);
 smellColliders = Physics2D.OverlapAreaAll(smellA,smellB,smellMask);
@@ -113,19 +113,19 @@ if(preyDist < minDistance)
 minDistance = preyDist;
 minindex = i;
 }
-if (smellColliders.Length <1){closest = Vector2.zero;}
-else{closest = (smellColliders[minindex].transform.position - transform.position);}
-
+//if (smellColliders.Length <1){closest = Vector2.zero;}
+//else{closest = (smellColliders[minindex].transform.position - transform.position);}
+*/
 if(latestLookDistance != bctrl.lookDistance){
     
-MaxScaledSmellDistance = Mathf.Sqrt( Mathf.Pow((bctrl.lookDistance/4.0f),2.0f) + Mathf.Pow((bctrl.lookDistance/4.0f),2.0f) );
+//MaxScaledSmellDistance = Mathf.Sqrt( Mathf.Pow((bctrl.lookDistance/4.0f),2.0f) + Mathf.Pow((bctrl.lookDistance/4.0f),2.0f) );
 latestLookDistance = bctrl.lookDistance;
 }
- scaledSmellDistance = closest.magnitude / MaxScaledSmellDistance;
+ //scaledSmellDistance = closest.magnitude / MaxScaledSmellDistance;
 
-Vector2 scaledClosest =closest/MaxScaledSmellDistance;
+//Vector2 scaledClosest =closest/MaxScaledSmellDistance;
 
- smellReward = (1.0f-scaledClosest.magnitude)/1024;
+// smellReward = (1.0f-scaledClosest.magnitude)/1024;
 
 
 
@@ -164,13 +164,13 @@ scaledBlibDistance = smeller.scaledBlibDistance;
  v = rb.velocity.magnitude/1000.0f;
  angV = rb.angularVelocity/1000.0f;
 //sensor.AddObservation(scaledClosest);
-sensor.AddObservation(protein);
+sensor.AddObservation(protein/bctrl.proteinToReproduce);
 sensor.AddObservation(v);
 sensor.AddObservation(angV); 
 
 
 sensor.AddObservation(bctrl.energy/bctrl.energyToReproduce);
-sensor.AddObservation(bctrl.age);
+sensor.AddObservation(bctrl.age/bctrl.lifeLength);
 
 
 for (int i = 0; i < 8; i++){
@@ -364,7 +364,7 @@ test_happiness = (float)System.Math.Tanh( (  ((double)(test_enerProt))  -0.25f))
     
     if(alive == true )
     {
-        extBooper = booper;
+        
             if(booper.tag == "Wall"){
             
             m_currentBumper = BumperType.Wall;

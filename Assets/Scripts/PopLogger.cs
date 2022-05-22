@@ -19,12 +19,14 @@ public static int clones_blub;
     int itCount;
     public int blibN = 0, blobN = 0, blubN = 0, blybN = 0;
 
+/*
 GameObject[] blobs;
 GameObject[] blybs;
 GameObject[] blibs;
 GameObject[] blubs;
 GameObject Alpha;
 Detector Detector;
+*/
 private List<string[]> rowData = new List<string[]>();
 
 
@@ -43,8 +45,8 @@ private List<string[]> rowData = new List<string[]>();
     // Start is called before the first frame update
     void Start()
     {
-        Alpha = GameObject.Find("Alpha");
-        Detector = Alpha.GetComponent<Detector>();
+        //Alpha = GameObject.Find("Alpha");
+        //Detector = Alpha.GetComponent<Detector>();
         clones_blib = -1;
         
     }

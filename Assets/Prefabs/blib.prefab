@@ -139,6 +139,7 @@ MonoBehaviour:
   energyToReproduce: 512
   e2repAllele1: 64
   e2repAllele2: 64
+  geneticColor: {r: 0, g: 0, b: 0, a: 0}
   densityCo: 0.0001
   rDice: 0
   age: 0
@@ -166,6 +167,7 @@ MonoBehaviour:
   generation: 0
   nutLevel: 0
   nutToReproduce: 32
+  doInitDiversifier: 0
   tempProtein: 0
 --- !u!114 &-8578292840481247088
 MonoBehaviour:

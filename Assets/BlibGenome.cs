@@ -1086,8 +1086,8 @@ mutate = false;
     turnTorqueAllele1 = nTRN_A*6f;
     turnTorqueAllele2 = nTRN_B*6f;
 
-    e2repAllele1 = 1f +  Mathf.Pow(2f,nREP_A);
-    e2repAllele2 = 1f + Mathf.Pow(2f,nREP_B);
+    e2repAllele1 = 512f +  Mathf.Pow(2f,nREP_A);
+    e2repAllele2 = 512f + Mathf.Pow(2f,nREP_B);
 
     lifeLengthAllele1 = 2f + Mathf.Pow(2f,nLIF_A);
     lifeLengthAllele2 = 2f +Mathf.Pow(2f,nLIF_B);

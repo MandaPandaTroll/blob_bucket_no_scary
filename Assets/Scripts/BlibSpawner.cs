@@ -55,9 +55,11 @@ public class BlibSpawner : MonoBehaviour
        thisBlib.GetComponent<BlibGenome>().lineageID.Add (System.String.Join("", initLineages[i]));
        thisBlib.name = popLogger.GetName("blib");
        thisBlib.name = thisBlib.name.Replace("(Clone)", "");
-       thisBlib.GetComponent<BlibControls>().nutLevel = initProtein;
-          
-        
+       BlibControls thisBlibControls = thisBlib.GetComponent<BlibControls>();
+       thisBlibControls.nutLevel = initProtein;
+       thisBlibControls.age = Random.Range(0f, thisBlibControls.lifeLength*0.8f);
+       thisBlibControls.energy = Random.Range(thisBlibControls.energyToReproduce/16f, thisBlibControls.energyToReproduce);
+       thisBlibControls.doInitDiversifier = true;
           
         }
     }
