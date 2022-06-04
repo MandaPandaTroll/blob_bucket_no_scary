@@ -10,7 +10,7 @@ There is some inexplicable loss of nutrients, which means that nutrients must be
 
 public class Testing : MonoBehaviour
 {
-    
+
     public bool autoReplenish;
     public bool autoRemove;
     public nutGrid nutgrid;
@@ -22,194 +22,205 @@ public class Testing : MonoBehaviour
     public int statTot;
 
     int grandarr;
-   
-   
+
+
     List<GameObject> population = new List<GameObject>();
     public int gridX;
     public int gridY;
     public float cellScale;
 
     public int initConc;
+
     int totNutes;
     public int freeNutes, lockedNutes;
-    
+
     float perlSamp, perlDimX, perlDimY;
 
     float[,] perlMap;
 
 
-     float vSliderValue = 0.0f;
-     
+
+
 
     void OnGUI()
     {
-        
-      autoReplenish = GUI.Toggle( new Rect(10,700,200,30),autoReplenish,"autoReplenish_nutes" );
-      autoRemove = GUI.Toggle( new Rect(10,750,200,30),autoRemove,"autoRemove_nutes" );
+
+        autoReplenish = GUI.Toggle(new Rect(10, 700, 200, 30), autoReplenish, "autoReplenish_nutes");
+        autoRemove = GUI.Toggle(new Rect(10, 750, 200, 30), autoRemove, "autoRemove_nutes");
     }
-   private void Awake() 
+    private void Awake()
     {
 
-        kernel = new int[3,3]{
+        kernel = new int[3, 3]{
                 {0,0,0},
                 {0,0,0},
                 {0,0,0}
                         };
-        
+
         totNutes = 0;
-        gridX = (int)(box.localScale.x/cellScale);
-        gridY = (int)(box.localScale.y/cellScale);
-        perlDimX = box.localScale.x/cellScale;
-        perlDimY = box.localScale.y/cellScale;
+        gridX = (int)(box.localScale.x / cellScale);
+        gridY = (int)(box.localScale.y / cellScale);
+        perlDimX = box.localScale.x / cellScale;
+        perlDimY = box.localScale.y / cellScale;
 
-        perlMap = new float[gridX,gridY];
-        
-        
-        nutgrid = new nutGrid((int)gridX,(int)gridY, cellScale, new Vector3(-box.localScale.x/2.0f, -box.localScale.y/2.0f));
-        
+        perlMap = new float[gridX, gridY];
 
-                for (int x = 0; x< nutgrid.gridArray.GetLength(0);x++){
-            for(int y = 0; y < nutgrid.gridArray.GetLength(1); y++){
-                perlMap[x,y] = Mathf.PerlinNoise((float)x,(float)y)*initConc;
-                perlMap[x,y] = Mathf.Round(perlMap[x,y]);
-                nutgrid.SetValue( x, y, (int)perlMap[x,y]);
-                totNutes += (int)perlMap[x,y];
-                
+
+        nutgrid = new nutGrid((int)gridX, (int)gridY, cellScale, new Vector3(-box.localScale.x / 2.0f, -box.localScale.y / 2.0f));
+
+
+        for (int x = 0; x < nutgrid.gridArray.GetLength(0); x++)
+        {
+            for (int y = 0; y < nutgrid.gridArray.GetLength(1); y++)
+            {
+                int floorCeil = Random.Range(1, 3);
+                perlMap[x, y] = Mathf.PerlinNoise((float)x, (float)y) * initConc;
+                if (floorCeil == 1)
+                {
+                    perlMap[x, y] = Mathf.FloorToInt(perlMap[x, y]);
+                }
+                else if (floorCeil == 2)
+                {
+                    perlMap[x, y] = Mathf.CeilToInt(perlMap[x, y]);
+                }
+
+                nutgrid.SetValue(x, y, (int)perlMap[x, y]);
+                totNutes += (int)perlMap[x, y];
+
             }
-            
+
         }
-        totNutes =nutgrid.gridArray.Cast<int>().Sum();
-        
+        totNutes = nutgrid.gridArray.Cast<int>().Sum();
+
         freeNutes = totNutes;
         GameObject spawner = GameObject.Find("Spawner");
-        totNutes += (spawner.GetComponent<BlibSpawner>().initProtein)*(spawner.GetComponent<BlibSpawner>().initBlib); 
+        totNutes += (spawner.GetComponent<BlibSpawner>().initProtein) * (spawner.GetComponent<BlibSpawner>().initBlib);
 
-            newArray = nutgrid.gridArray;
-            int gridWidth = newArray.GetLength(0); 
-            int gridHeight = newArray.GetLength(1); 
-        
+        newArray = nutgrid.gridArray;
+        int gridWidth = newArray.GetLength(0);
+        int gridHeight = newArray.GetLength(1);
+
     }
-        int newNuteTarget;
-        void Start(){
-            
-        }
+    int newNuteTarget;
+    void Start()
+    {
 
-            int blibNutes, blobNutes, blybNutes, blubNutes;
+    }
 
-            
-            int[,] kernel;
+    int blibNutes, blobNutes, blybNutes, blubNutes, carcassNutes;
 
-            int[,] newArray;
-            int gridWidth; 
-            int gridHeight;
-            GameObject[] blibs;
-            GameObject[] blobs;
-            GameObject[] blybs;
-            GameObject[] blubs;
 
+    int[,] kernel;
+
+    int[,] newArray;
+    int gridWidth;
+    int gridHeight;
+    GameObject[] blibs;
+    GameObject[] blobs;
+    GameObject[] blybs;
+    GameObject[] blubs;
+    GameObject[] carcasses;
     private void FixedUpdate()
     {
-        
-        
-        
-        initConc = (int)Mathf.Round(vSliderValue);
-        
+
+
+
+
+
 
         diffusionTimer += Time.fixedDeltaTime;
         if (diffusionTimer >= diffRate)
-        { 
-            
-            blibNutes = 0; blobNutes = 0; blybNutes = 0; blubNutes = 0;
-            
+        {
+            newArray = nutgrid.gridArray;
+            blibNutes = 0; blobNutes = 0; blybNutes = 0; blubNutes = 0; carcassNutes = 0;
+
             grandNutes = 0;
-            
+
             lockedNutes = 0;
 
-            
-            
-             blibs = GameObject.FindGameObjectsWithTag("Prey");
-             blobs = GameObject.FindGameObjectsWithTag("Predator");
-             blybs = GameObject.FindGameObjectsWithTag("Predator2");
-             blubs = GameObject.FindGameObjectsWithTag("ApexPred");
-                for(int i = 0; i < blibs.Length; i++){
-                blibNutes += blibs[i].GetComponent<BlibControls>().nutLevel;
-                 }
-                 System.Array.Clear(blibs, 0, blibs.Length);
 
-                 for(int i = 0; i < blobs.Length; i++){
+
+            blibs = GameObject.FindGameObjectsWithTag("Prey");
+            blobs = GameObject.FindGameObjectsWithTag("Predator");
+            blybs = GameObject.FindGameObjectsWithTag("Predator2");
+            blubs = GameObject.FindGameObjectsWithTag("ApexPred");
+            carcasses = GameObject.FindGameObjectsWithTag("Carcass");
+            for (int i = 0; i < blibs.Length; i++)
+            {
+                blibNutes += blibs[i].GetComponent<BlibControls>().nutLevel;
+            }
+            System.Array.Clear(blibs, 0, blibs.Length);
+
+            for (int i = 0; i < blobs.Length; i++)
+            {
                 blobNutes += blobs[i].GetComponent<BrainBlobControls>().protein;
                 blobNutes += blobs[i].GetComponent<BrainBlobControls>().NH4;
-                 }
-                 System.Array.Clear(blobs, 0, blobs.Length);
+            }
+            System.Array.Clear(blobs, 0, blobs.Length);
 
-                 for(int i = 0; i < blybs.Length; i++){
+            for (int i = 0; i < blybs.Length; i++)
+            {
                 blybNutes += blybs[i].GetComponent<BrainBlybControls>().protein;
                 blybNutes += blybs[i].GetComponent<BrainBlybControls>().NH4;
-                 }
-                 System.Array.Clear(blybs, 0, blybs.Length);
-                 for(int i = 0; i < blubs.Length; i++){
+            }
+            System.Array.Clear(blybs, 0, blybs.Length);
+            for (int i = 0; i < blubs.Length; i++)
+            {
                 blubNutes += blubs[i].GetComponent<BrainBlubControls>().protein;
                 blubNutes += blubs[i].GetComponent<BrainBlubControls>().NH4;
-                 }
-                 System.Array.Clear(blubs, 0, blubs.Length);
+            }
+            System.Array.Clear(blubs, 0, blubs.Length);
+            for (int i = 0; i < carcasses.Length; i++)
+            {
+                if (carcasses[i].GetComponent<BrainBlobControls>() != null)
+                {
+                    carcassNutes += carcasses[i].GetComponent<BrainBlobControls>().protein;
+                    carcassNutes += carcasses[i].GetComponent<BrainBlobControls>().NH4;
+                }
+                if (carcasses[i].GetComponent<BrainBlybControls>() != null)
+                {
+                    carcassNutes += carcasses[i].GetComponent<BrainBlybControls>().protein;
+                    carcassNutes += carcasses[i].GetComponent<BrainBlybControls>().NH4;
+                }
+                if (carcasses[i].GetComponent<BrainBlubControls>() != null)
+                {
+                    carcassNutes += carcasses[i].GetComponent<BrainBlubControls>().protein;
+                    carcassNutes += carcasses[i].GetComponent<BrainBlubControls>().NH4;
+                }
+            }
+            System.Array.Clear(carcasses, 0, carcasses.Length);
 
 
-                lockedNutes = blibNutes+blobNutes+blybNutes+blubNutes;
-                blibNutes = 0; blobNutes = 0; blybNutes = 0; blubNutes = 0;
-                
-            
-            
-            
-            
-                
-                
-                /*Box blur kernel from wikipedia
+            lockedNutes = blibNutes + blobNutes + blybNutes + blubNutes + carcassNutes;
+            blibNutes = 0; blobNutes = 0; blybNutes = 0; blubNutes = 0; carcassNutes = 0;
 
-                Box blur (image)
-{
-    set newImage to image;
-    For x /row/, y/column/ on newImage do:
-    {
-        // Kernel would not fit!
-        If x < 1 or y < 1 or x + 1 == width or y + 1 == height then:
-            Continue;
-        // Set P to the average of 9 pixels:
-           X X X
-           X P X
-           X X X
-        // Calculate average.
-        Sum = image[x - 1, y + 1] + // Top left
-              image[x + 0, y + 1] + // Top center
-              image[x + 1, y + 1] + // Top right
-              image[x - 1, y + 0] + // Mid left
-              image[x + 0, y + 0] + // Current pixel
-              image[x + 1, y + 0] + // Mid right
-              image[x - 1, y - 1] + // Low left
-              image[x + 0, y - 1] + // Low center
-              image[x + 1, y - 1];  // Low right
 
-        newImage[x, y] = Sum / 9;
-    }
-    Return newImage;
-}
-                */
-            
-            
-            
-            
-            for (int x = 1; x< gridWidth-1;x++){
-            for(int y = 1; y < gridHeight-1; y++){
 
-                        kernel[0,2] = newArray[x - 1, y + 1];  // Top left
-                        kernel[1,2] = newArray[x + 0, y + 1];  // Top center
-                        kernel[2,2] = newArray[x + 1, y + 1];  // Top right
-                        kernel[0,1] = newArray[x - 1, y + 0];  // Mid left
-                        kernel[1,1] = newArray[x + 0, y + 0];  // Current pixel
-                        kernel[2,1] = newArray[x + 1, y + 0];  // Mid right
-                        kernel[0,0] = newArray[x - 1, y - 1];  // Low left
-                        kernel[1,0] = newArray[x + 0, y - 1];  // Low center
-                        kernel[2,0] = newArray[x + 1, y - 1];  // Low right
-                        //sumPrevKernel = kernel.Cast<int>().Sum();
+
+
+
+
+
+            int sumPrevKernel;
+            float kernMean;
+            for (int x = 1; x < gridWidth - 1; x++)
+            {
+                for (int y = 1; y < gridHeight - 1; y++)
+                {
+                    kernel[0, 2] = newArray[x - 1, y + 1];  // Top left
+                    kernel[1, 2] = newArray[x + 0, y + 1];  // Top center
+                    kernel[2, 2] = newArray[x + 1, y + 1];  // Top right
+                    kernel[0, 1] = newArray[x - 1, y + 0];  // Mid left
+                    kernel[1, 1] = newArray[x + 0, y + 0];  // Current pixel
+                    kernel[2, 1] = newArray[x + 1, y + 0];  // Mid right
+                    kernel[0, 0] = newArray[x - 1, y - 1];  // Low left
+                    kernel[1, 0] = newArray[x + 0, y - 1];  // Low center
+                    kernel[2, 0] = newArray[x + 1, y - 1];  // Low right
+                    sumPrevKernel = kernel.Cast<int>().Sum();
+                    kernMean = (float)sumPrevKernel / 9.0f;
+                    newArray[x, y] = (int)Mathf.Round(kernMean);
+                    /*
+                        
 
                         if(kernel[1,1] < kernel[0,2] && kernel[0,2] > 1){
                             kernel[1,1] += 1; kernel[0,2] -= 1;
@@ -286,10 +297,10 @@ public class Testing : MonoBehaviour
 
                 }
             }
-                    
-                    nutgrid.gridArray = newArray;
 
-            freeNutes = 0;
+            nutgrid.gridArray = newArray;
+
+            // freeNutes = 0;
 
             /*
             for (int x = 1; x< nutgrid.gridArray.GetLength(0)-1;x++){
@@ -340,23 +351,26 @@ public class Testing : MonoBehaviour
                     
             }
                 */
-                freeNutes =nutgrid.GetSum();
-                //for (int x = 0; x< nutgrid.gridArray.GetLength(0);x++){
-                //for(int y = 0; y < nutgrid.gridArray.GetLength(1); y++){
-                //freeNutes += nutgrid.GetValue(x, y);
-                    //}
-                //}
+            freeNutes = nutgrid.GetSum();
+            //for (int x = 0; x< nutgrid.gridArray.GetLength(0);x++){
+            //for(int y = 0; y < nutgrid.gridArray.GetLength(1); y++){
+            //freeNutes += nutgrid.GetValue(x, y);
+            //}
+            //}
 
-                grandNutes = freeNutes + lockedNutes;
+            grandNutes = freeNutes + lockedNutes;
 
 
 
-                
-            
-          // Debug.Log("totNutes = " + totNutes + " , countNutes = " + countNutes + " , grandNutes = " + grandNutes);
-            if(autoReplenish == true){
-                if (grandNutes < (totNutes - (totNutes/32)))
+
+
+            // Debug.Log("totNutes = " + totNutes + " , countNutes = " + countNutes + " , grandNutes = " + grandNutes);
+            if (autoReplenish == true)
+            {
+                if (grandNutes < totNutes)
                 {
+                    freeNutes = nutgrid.GetSum();
+                    grandNutes = freeNutes + lockedNutes;
                     /*
                     int minX = nutgrid.gridArray.GetLength(0)/4;
                     int maxX = nutgrid.gridArray.GetLength(0) + (nutgrid.gridArray.GetLength(0)/4);
@@ -369,54 +383,82 @@ public class Testing : MonoBehaviour
                         int thisVal = nutgrid.GetValue(x,y);
                            nutgrid.SetValue(x, y,thisVal + (totNutes/64));
                     */
-                        for(int x = 0; x < nutgrid.gridArray.GetLength(0); x++){
-                            for(int y = 0; y < nutgrid.gridArray.GetLength(1); y++){
+                    for (int x = 0; x < nutgrid.gridArray.GetLength(0); x++)
+                    {
 
-                                int thisVal = nutgrid.GetValue(x,y);
-                                    nutgrid.SetValue(x, y,thisVal + 1);
-                                    
+                        
+                        for (int y = 0; y < nutgrid.gridArray.GetLength(1); y++)
+                        {
+
+                            int thisVal = nutgrid.GetValue(x, y);
+                            
+
+
+                            if (nutgrid.GetSum()+lockedNutes < totNutes)
+                            {
+                                nutgrid.SetValue(x, y, thisVal +1);
+                                
+
+
                             }
-                       
-                         }
-                            
-                
-                }
 
-                    
-                
-            }
-        if(autoRemove == true){
-
-            if(freeNutes > 0 && grandNutes > totNutes)
-           {freeNutes =nutgrid.GetSum();
-                        grandNutes = freeNutes + lockedNutes;
-                for(int x = 0; x < nutgrid.gridArray.GetLength(0);x++){
-
-                    
-
-                    for(int y = 0; y < nutgrid.gridArray.GetLength(1);y++){
-                        
-                        
-                        int thisVal = nutgrid.GetValue(x, y);
-                        if (thisVal > 0){
-                            nutgrid.SetValue(x, y , thisVal - 1);
-                            
-                            
                         }
 
-                        
                     }
-                }
-                freeNutes =nutgrid.GetSum();
-                grandNutes = freeNutes + lockedNutes;       
-           }
-        }
 
-            
+
+                }
+
+
+
+            }
+            if (autoRemove == true)
+            {
+
+                if (freeNutes > 0 && grandNutes > totNutes)
+                {
+                    freeNutes = nutgrid.GetSum();
+                    grandNutes = freeNutes + lockedNutes;
+                    for (int x = 0; x < nutgrid.gridArray.GetLength(0); x++)
+                    {
+                        
+                        for (int y = 0; y < nutgrid.gridArray.GetLength(1); y++)
+                        {
+
+
+                            int thisVal = nutgrid.GetValue(x, y);
+                            
+                            if (thisVal > 0 && nutgrid.GetSum()+lockedNutes > totNutes)
+                            {
+                                if(thisVal > 3){
+                                nutgrid.SetValue(x, y, thisVal -4);
+                                }else
+                                if(thisVal == 3){
+                                nutgrid.SetValue(x, y, thisVal -3);
+                                }else
+                                if(thisVal == 2){
+                                nutgrid.SetValue(x, y, thisVal -2);
+                                }else
+                                if(thisVal == 1){
+                                nutgrid.SetValue(x, y, thisVal -1);
+                                }
+                                
+
+
+                            }
+
+
+                        }
+                    }
+                    
+                }
+            }
+
+
             diffusionTimer = 0f;
-           statNutes = grandNutes;
-           statTot = totNutes;
-        } 
+            statNutes = grandNutes;
+            statTot = totNutes;
+        }
 
 
     }

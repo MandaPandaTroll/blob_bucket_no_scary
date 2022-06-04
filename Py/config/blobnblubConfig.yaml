@@ -11,7 +11,7 @@ behaviors:
 
       # PPO-specific hyperparameters
       # Replaces the "PPO-specific hyperparameters" section above
-      beta: 1.0e-4
+      beta: 1.0e-3
       epsilon: 0.2
 
       lambd: 0.9
@@ -31,7 +31,7 @@ behaviors:
 
 
     # Trainer configurations common to all trainers
-    max_steps: 1.0e6
+    max_steps: 1.0e7
     time_horizon: 512
 
     summary_freq: 10000
@@ -60,7 +60,7 @@ behaviors:
 
       # PPO-specific hyperparameters
       # Replaces the "PPO-specific hyperparameters" section above
-      beta: 1.0e-4
+      beta: 1.0e-3
       epsilon: 0.2
 
       lambd: 0.9
@@ -80,7 +80,7 @@ behaviors:
 
 
     # Trainer configurations common to all trainers
-    max_steps: 1.0e6
+    max_steps: 1.0e7
     time_horizon: 512
 
     summary_freq: 10000
@@ -112,8 +112,8 @@ behaviors:
       beta: 1.0e-4
       epsilon: 0.2
 
-      lambd: 0.92
-      num_epoch: 2
+      lambd: 0.9
+      num_epoch: 3
 
     # Configuration of the neural network (common to PPO/SAC)
     network_settings:
@@ -129,10 +129,10 @@ behaviors:
 
 
     # Trainer configurations common to all trainers
-    max_steps: 1.0e6
+    max_steps: 1.0e7
     time_horizon: 512
 
-    summary_freq: 100000
+    summary_freq: 10000
     keep_checkpoints: 5
     checkpoint_interval: 100000
     threaded: true
@@ -155,45 +155,45 @@ environment_parameters: #can be turned off in editor
           behavior: BrainBlub
           signal_smoothing: true
           min_lesson_length: 100
-          threshold: 2.0
-        value: 0.2
+          threshold: 1.0
+        value: 0.01
       - name: A2 # This is the start of the second lesson
         completion_criteria:
           measure: reward
           behavior: BrainBlub
           signal_smoothing: true
           min_lesson_length: 100
-          threshold: 2.0
-        value: 0.4
+          threshold: 1.0
+        value: 0.1
       - name: A3
         completion_criteria:
           measure: reward
           behavior: BrainBlub
           signal_smoothing: true
           min_lesson_length: 100
-          threshold: 2.0
-        value: 0.7
+          threshold: 1.0
+        value: 0.2
       - name: A4
         completion_criteria:
           measure: reward
           behavior: BrainBlub
           signal_smoothing: true
           min_lesson_length: 100
-          threshold: 2.0
-        value: 0.8
+          threshold: 1.0
+        value: 0.4
       - name: A5
         completion_criteria:
           measure: reward
           behavior: BrainBlub
           signal_smoothing: true
           min_lesson_length: 100
-          threshold: 2.0
-        value: 0.9
+          threshold: 1.0
+        value: 0.8
       - name: A6
         completion_criteria:
           measure: reward
           behavior: BrainBlub
           signal_smoothing: true
           min_lesson_length: 100
-          threshold: 2.0
+          threshold: 1.0
         value: 1.0

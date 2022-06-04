@@ -88,7 +88,9 @@
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Detection/ObservableCollection.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectDetector3D.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Sensor/GridSensorComponentBase.cs" />
+     <Compile Include="Assets/CurriculumHandler.cs" />
      <Compile Include="Assets/Scripts/nutGrid.cs" />
+     <Compile Include="Assets/Taster_blub.cs" />
      <Compile Include="Assets/Scripts/BlobSpawner.cs" />
      <Compile Include="Assets/CodeMonkey/Utils/UI_TextComplex.cs" />
      <Compile Include="Assets/CodeMonkey/Utils/Button_Sprite.cs" />
@@ -144,8 +146,7 @@
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectShape.cs" />
      <Compile Include="Assets/BlibGenome.cs" />
      <Compile Include="Assets/Scripts/BlubControls.cs" />
-     <Compile Include="Assets/Taster_blub.cs" />
-     <Compile Include="Assets/CurriculumHandler.cs" />
+     <Compile Include="Assets/SqrSmeller.cs" />
      <None Include="Assets/CodeMonkey/README.txt" />
     <Reference Include="UnityEngine">
         <HintPath>/Applications/2020.3.17f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>

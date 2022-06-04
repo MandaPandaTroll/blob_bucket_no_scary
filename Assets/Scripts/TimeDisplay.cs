@@ -35,10 +35,10 @@ public class TimeDisplay : MonoBehaviour
         gridY = testing.gridY;
         initConc = testing.initConc;
     }
-       public int blibs;
-        public int blobs;
-        public int blybs;
-        public int blubs;
+       public  int blibCount;
+        public  int blobCount;
+        public  int blybCount;
+        public  int blubCount;
            
             float timeToDisplay;
     void FixedUpdate()
@@ -53,17 +53,17 @@ public class TimeDisplay : MonoBehaviour
         tScale = Time.timeScale;
         time += Time.deltaTime;
         if(time >= refreshRate){
-             blibs = GameObject.FindGameObjectsWithTag("Prey").Length;
-             blobs = GameObject.FindGameObjectsWithTag("Predator").Length;
-             blybs = GameObject.FindGameObjectsWithTag("Predator2").Length;
-             blubs = GameObject.FindGameObjectsWithTag("ApexPred").Length;
+             blibCount = GameObject.FindGameObjectsWithTag("Prey").Length;
+             blobCount = GameObject.FindGameObjectsWithTag("Predator").Length;
+             blybCount = GameObject.FindGameObjectsWithTag("Predator2").Length;
+             blubCount = GameObject.FindGameObjectsWithTag("ApexPred").Length;
         
 
                     string timeString = timeToDisplay.ToString();
-                    string blibString = blibs.ToString();
-                    string blobString = blobs.ToString();
-                    string blybString = blybs.ToString();
-                    string blubString = blubs.ToString();
+                    string blibString = blibCount.ToString();
+                    string blobString = blobCount.ToString();
+                    string blybString = blybCount.ToString();
+                    string blubString = blubCount.ToString();
                     string camSpeedString = camSpeed.ToString();
                     string timeScaleString = tScale.ToString();
                     string nuteString = ((float)grandNutes/(float)totNutes).ToString();

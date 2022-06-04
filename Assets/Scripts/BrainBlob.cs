@@ -8,11 +8,12 @@ using System.Linq;
 enum BumperType {Prey, Predator, Predator2, ApexPred, Carcass, Wall, None , LastBumper}
 public class BrainBlob : Agent
 {
+const int DONOT = 0, EXCRETE = 1, ATTACK = 2, PHAGOCYTISE = 3, CONJUGATE = 4, REPRODUCE = 5;
 public bool academySpeedModifier_enabled;
 CurriculumHandler curriculumHandler;
 float speedModifier;
 
-float test_happiness;
+float happiness = 0;
 List<float> resourceBuffer = new List<float>();
 public int nomLim;
  int nomCount;
@@ -66,7 +67,7 @@ void Start()
     
     
     angV = rb.angularVelocity/1000.0f;
-    detector = GameObject.Find("Alpha").GetComponent<Detector>();
+
     boxLength = box.transform.lossyScale.x;
     smellMask = LayerMask.GetMask("Prey");
     latestLookDistance = ((genome.lookDistAllele1+genome.lookDistAllele2)/2f);
@@ -79,8 +80,8 @@ float MaxScaledSmellDistance = 1f;
 public float latestLookDistance = 100f;
 
 int protein;
-float  angV;
-Vector2 v;
+float  angV = 0;
+Vector2 v = new Vector2(0f,0f);
 int step;
 float maxEnergy;
 float ObsAge;
@@ -100,10 +101,11 @@ Vector2 scaledClosest = new Vector2 (0f,0f);
 
 
     Vector2[] scaledPreyDistance; 
-     Vector2[] scaledMateDistance; 
-     Vector2[] scaledApexPredDistance; 
-     int dbugVelCount;
-     float[] vels  = new float[256];
+    Vector2[] scaledMateDistance; 
+    Vector2[] scaledApexPredDistance; 
+    Vector2[] scaledCompetitorDistance;
+    int dbugVelCount;
+    float[] vels  = new float[256];
 
 const int NUM_BUMP_TYPES = (int)BumperType.LastBumper;
 BumperType m_currentBumper;
@@ -154,20 +156,25 @@ if(ObsAge <0f )
 scaledPreyDistance = smeller.scaledPreyDistance;
 scaledMateDistance = smeller.scaledMateDistance;
 scaledApexPredDistance = smeller.scaledApexPredDistance;
+scaledCompetitorDistance = smeller.scaledCompetitorDistance;
+
  v = transform.InverseTransformDirection(rb.velocity/64.0f);
  angV = rb.angularVelocity/1000.0f;
-sensor.AddObservation(protein);
+sensor.AddObservation(protein/bctrl.proteinToReproduce);
 sensor.AddObservation(v);
 sensor.AddObservation(angV);
 
 
 sensor.AddObservation(bctrl.energy/maxEnergy);
-sensor.AddObservation(bctrl.age);
+sensor.AddObservation(bctrl.age/bctrl.lifeLength);
+sensor.AddObservation(bctrl.currentHealth/bctrl.maxHealth);
+sensor.AddObservation(((float)bctrl.NH4)/256f);
 
 for (int i = 0; i < 8; i++){
 sensor.AddObservation(scaledPreyDistance[i]);
 sensor.AddObservation(scaledMateDistance[i]);
 sensor.AddObservation(scaledApexPredDistance[i]);
+sensor.AddObservation(scaledCompetitorDistance[i]);
 
 }
 
@@ -178,6 +185,7 @@ sensor.AddOneHotObservation((int)m_currentBumper, NUM_BUMP_TYPES);
 }
 float moveForce, turnTorque;
 float forwardSignal, rotSignal;
+int miscActions;
 float energy;
 float E0, E1, ETimer;
 float meanResource0, meanResource1;
@@ -190,21 +198,53 @@ public override void OnActionReceived(ActionBuffers actionBuffers)
         return;
     }
     
+    bctrl.excreting = false;
+    bctrl.tryAttack = false;
+    bctrl.tryPhagocytise = false;
+    bctrl.tryConjugate = false;
+    bctrl.tryReproduce = false;
 
-
-energy = bctrl.energy;
-alive = bctrl.alive;
-eaten = bctrl.eaten;
-hasReproduced = bctrl.hasReproduced;
-rCount = bctrl.rCount;
+    energy = bctrl.energy;
+    alive = bctrl.alive;
+    eaten = bctrl.eaten;
+    hasReproduced = bctrl.hasReproduced;
+    rCount = bctrl.rCount;
 
 
     moveForce = genome.moveForce;
     turnTorque = genome.turnTorque;
     forwardSignal = actionBuffers.DiscreteActions[0];
     rotSignal = actionBuffers.DiscreteActions[1];
+    miscActions = actionBuffers.DiscreteActions[2];
+
     float fwdMag = 0;
     float rotMag = 0;
+
+    if(miscActions == DONOT){           
+        bctrl.excreting = false;
+        bctrl.tryAttack = false;
+        bctrl.tryPhagocytise = false;
+        bctrl.tryConjugate = false;
+        bctrl.tryReproduce = false;
+
+        }else if (miscActions != DONOT){
+
+            if(miscActions == EXCRETE){
+                bctrl.excreting = true;
+            }else 
+            if (miscActions == ATTACK){
+                bctrl.tryAttack = true;
+            }else 
+            if (miscActions == PHAGOCYTISE){
+                bctrl.tryPhagocytise = true;
+            }else 
+            if (miscActions == CONJUGATE){
+                bctrl.tryConjugate = true;
+            }else 
+            if (miscActions == REPRODUCE){
+                bctrl.tryReproduce = true;
+            }
+    }
 
     if(forwardSignal == 0)
     {
@@ -261,18 +301,24 @@ rCount = bctrl.rCount;
     if(alive == true)
     {
         
-    //test_reward = 0;
+
  rb.AddForce(fwd*speedModifier);
  rb.AddTorque(rotMag*turnTorque*rb.inertia);
  bctrl.energy -=  bctrl.eCost*Mathf.Abs(fwd.magnitude);
  bctrl.energy -= bctrl.basalMet;
     float normEnergy = bctrl.energy/bctrl.maxEnergy;
     float normProtein = (float)bctrl.protein / (float)bctrl.proteinToReproduce;
+    float normHealth = bctrl.currentHealth/bctrl.maxHealth;
 
-float test_enerProt = (bctrl.energy+bctrl.protein)/2.0f;
-test_happiness = (float)System.Math.Tanh( (  ((double)(2*test_enerProt))  ));
+    float homeo = (normEnergy+normProtein+normHealth)/3.0f;
+    float newHappiness = 0.50f + 0.50f*(float)System.Math.Tanh((double)((4*homeo)  -2.00f));
+    float deltaHappiness = newHappiness - happiness;
 
+        AddReward(deltaHappiness);
+        
+        happiness = newHappiness;
 
+        /*
         resourceBuffer.Add((energy/bctrl.maxEnergy)+((float)protein/(float)bctrl.proteinToReproduce));
 
         if(resourceBuffer.Count >= 9){
@@ -284,12 +330,11 @@ test_happiness = (float)System.Math.Tanh( (  ((double)(2*test_enerProt))  ));
             meanResource1 = (+resourceBuffer[8]);
 
              deltaResource = meanResource1 - meanResource0;
-            if(deltaResource >0 ){AddReward(1f);}
+            //if(deltaResource >0 ){AddReward(1f);}
             //AddReward(deltaEnergy/bctrl.maxEnergy);
             resourceBuffer.Clear();
-            deltaResource = 0;
         }
-
+        
         if(bctrl.energy<= 105f)
         {
         
@@ -297,24 +342,19 @@ test_happiness = (float)System.Math.Tanh( (  ((double)(2*test_enerProt))  ));
             EndEpisode();
             this.enabled = false;
         }
+        */
 
     if(bctrl.hasReproduced == true)
-    {
-        AddReward(1.0f);
+    {    newHappiness = 1.0f;
+         deltaHappiness = newHappiness - happiness;
+
+        AddReward(deltaHappiness);
+        
+        happiness = newHappiness;
         
         bctrl.hasReproduced = false;
     }
-        //if(prevhapp == 0){ prevhapp = test_happiness;}
-        //if(prevhapp != 0){test_reward = test_happiness - prevhapp;
-       // prevhapp = 0;}
-        //test_reward = (float)System.Math.Tanh(deltaResource);
-        
-        //AddReward(test_reward);
 
-
-
-
-    
 
 
         }
@@ -334,7 +374,7 @@ test_happiness = (float)System.Math.Tanh( (  ((double)(2*test_enerProt))  ));
      if (booper.tag == "ApexPred")
         {
             m_currentBumper = BumperType.ApexPred;           
-            SetReward(0.0f);
+            SetReward(-1.0f);
             EndEpisode();
             this.enabled = false;
         }
@@ -348,11 +388,8 @@ test_happiness = (float)System.Math.Tanh( (  ((double)(2*test_enerProt))  ));
 
 
             if (booper.tag == "Predator" )
-            {
+            {   
                 m_currentBumper = BumperType.Predator;
-                AddReward(genome.pythagDist);
-                //Debug.Log("blobPythag = " + genome.pythagDist);
-                bctrl.energy -= 5f;
             }
             
 
@@ -390,7 +427,18 @@ test_happiness = (float)System.Math.Tanh( (  ((double)(2*test_enerProt))  ));
         
 }
 
+    void OnCollisionStay2D(Collision2D col){
+        GameObject booper = col.gameObject;
+            if( energy >= 5f &&
+                booper.tag == this.gameObject.tag &&
+                bctrl.tryConjugate == true && 
+                booper.GetComponent<BrainBlobControls>().tryConjugate == true){
 
+                AddReward(genome.pythagDist);
+                //Debug.Log("blobPythag = " + genome.pythagDist);
+                bctrl.energy -= 5f;
+                }
+    }
 
 
     void OnCollisionExit2D(Collision2D col)

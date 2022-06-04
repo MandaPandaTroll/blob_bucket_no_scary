@@ -1,6 +1,5 @@
 // This script contains genetic information and converts the sequences to numeric values for the organism's phenotype. It also handles gene transfer and mutations.
 
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -152,7 +151,8 @@ public string[,] extA, extB;
         
 
     }
-    BrainBlybControls brainBlybControls;
+    BrainBlybControls bctrl;
+    BrainBlybControls mateBctrl;
     BlybGenome mateGenome;
 
     string thisTag;
@@ -163,7 +163,7 @@ public string[,] extA, extB;
         age = 0;
         
         
-            brainBlybControls = this.gameObject.GetComponent<BrainBlybControls>();
+            bctrl = this.gameObject.GetComponent<BrainBlybControls>();
             
         
         
@@ -211,9 +211,12 @@ public int loSite, cNum, locus;
 private int AorB, mate_loSite,mate_cNum;
 
 // Horizontal gene transfer.
-void OnCollisionEnter2D(Collision2D col){
-        if (col.gameObject.tag == this.gameObject.tag){
-
+void OnCollisionStay2D(Collision2D col){
+    GameObject booper = col.gameObject;
+    if (booper.tag == "Predator2" ){
+        mateBctrl = booper.GetComponent<BrainBlybControls>();
+        if (bctrl.tryConjugate == true && mateBctrl.tryConjugate == true){
+            mateGenome = col.gameObject.GetComponent<BlybGenome>();
          cNum = UnityEngine.Random.Range(0,A.GetLength(0));
          AorB = UnityEngine.Random.Range(0,2);
         locus = UnityEngine.Random.Range(0,sites.GetLength(1)-1);
@@ -235,7 +238,7 @@ void OnCollisionEnter2D(Collision2D col){
         //string debugLocus = System.String.Join("",giveLocus);
        // //Debug.Log("Chromosome: " + debugChar + ":" + cNum + " Locus: " + locus + " -> " + debugLocus);
         
-            mateGenome = col.gameObject.GetComponent<BlybGenome>();
+        
             
         
         
@@ -271,7 +274,7 @@ void OnCollisionEnter2D(Collision2D col){
         
 
             //Genetic recombination
-            if(pythagDist < 0.2f){
+            if(pythagDist < 0.5f){
 
                 receiveLocus = mateGenome.giveLocus;
                 mate_cNum = mateGenome.cNum;
@@ -292,6 +295,7 @@ void OnCollisionEnter2D(Collision2D col){
                 }
                 
             }
+        }
 
         }
     }

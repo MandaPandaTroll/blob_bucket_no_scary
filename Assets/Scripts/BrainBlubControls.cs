@@ -170,12 +170,10 @@ System.Random rndA = new System.Random();
         if (NH4_Timer >= 1.0f && protein > 1)
         {
             NH4 +=1;
-            protein -= 1;
+            protein += -1;
             NH4_Timer = 0f;
-
-            //Ammonia secretion
-             if(NH4 >= 32){
-
+        //Ammonia secretion
+        if(NH4 >= 32){
              posval = m_nutgrid.GetValue(transform.position);
                 m_nutgrid.SetValue(transform.position, posval + NH4);
                 NH4 = 0;
@@ -235,18 +233,19 @@ System.Random rndA = new System.Random();
 
             void Dead()
         {   tempProtein = protein;
+            this.gameObject.GetComponent<BrainBlub>().EndEpisode();
             this.gameObject.GetComponent<BrainBlub>().enabled = false;
             energy -= 10f*Time.deltaTime;
-            int posval = m_nutgrid.GetValue(transform.position);
+            
             if(NH4 >= 1){
-            m_nutgrid.SetValue(transform.position, posval + NH4);
-            NH4 = 0;
+            m_nutgrid.SetValue(transform.position, posval +1);
+            NH4 += -1;
             }
             if(protein >= 1){
-                m_nutgrid.SetValue(transform.position, posval + 1);
                 protein += -1;
+                NH4 += 1;
             }
-            if(energy <= 0f && protein <= 0)
+            if(energy <= 0f && NH4 <= 0)
             { 
                 Destroy(this.gameObject,0.2f);
             }
@@ -264,30 +263,34 @@ System.Random rndA = new System.Random();
                     if(booper.tag ==  "Predator"){
                     BrainBlobControls scavenger = booper.GetComponent<BrainBlobControls>();
                     scavenger.protein += protein;
-                    scavenger.NH4 += NH4;
-                    scavenger.energy += energy;
-                    energy = 0;
                     protein = 0;
+                    scavenger.NH4 += NH4;
+                    NH4 = 0;
+                    scavenger.energy += energy;
+                    energy = 0f;
                     }
                     if(booper.tag ==  "Predator2"){
                     BrainBlybControls scavenger = booper.GetComponent<BrainBlybControls>();
                     scavenger.protein += protein;
-                    scavenger.NH4 += NH4;
-                    scavenger.energy += energy;
-                    energy = 0;
                     protein = 0;
+                    scavenger.NH4 += NH4;
+                    NH4 = 0;
+                    scavenger.energy += energy;
+                    energy = 0f;
+                    
                     }
                     if(booper.tag ==  "ApexPred"){
                     BrainBlubControls scavenger = booper.GetComponent<BrainBlubControls>();
                     scavenger.protein += protein;
-                    scavenger.NH4 += NH4;
-                    scavenger.energy += energy;
-                    energy = 0;
                     protein = 0;
+                    scavenger.NH4 += NH4;
+                    NH4 = 0;
+                    scavenger.energy += energy;
+                    energy = 0f;
                     }
                 }
 
-                if( alive == true){
+            if( alive == true){
                 if(booper.tag == ("Carcass"))
                 {
                     
@@ -544,7 +547,7 @@ System.Random rndA = new System.Random();
                 sigmoid = sizeGene/ (1f+ Mathf.Exp(-k*(x-1.5f)));
                 newSize = new Vector3(sigmoid,sigmoid,sigmoid);
                 transform.localScale = newSize;
-                    maxEnergy = sigmoid*25000f;
+                    maxEnergy = sigmoid*35000f;
                     if (generation == 100|| generation == 200 || generation == 300 || generation == 400 || generation == 500 || generation == 600 || generation == 800 || generation == 1000)
                     {
                         Debug.Log( 
@@ -562,7 +565,7 @@ System.Random rndA = new System.Random();
                     BrainBlubControls daughter_controls = clone.GetComponent<BrainBlubControls>();
                     daughter_controls.generation = generation + 1;
                     daughter_controls.age = 0f;
-                    
+                    daughter_controls.NH4 = 0;
                     if (odd == true){
                       daughter_controls.protein = (tempProtein + remainder)/2;
                     }
@@ -586,7 +589,7 @@ System.Random rndA = new System.Random();
                 sigmoid = sizeGene/ (1f+ Mathf.Exp(-k*(x-1.5f)));
                 newSize = new Vector3(sigmoid,sigmoid,sigmoid);
                 transform.localScale = newSize;
-                maxEnergy = sigmoid*25000f;
+                maxEnergy = sigmoid*35000f;
             }
 
         void InitDiversifier()

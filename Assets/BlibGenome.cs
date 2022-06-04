@@ -1080,14 +1080,14 @@ mutate = false;
     blueAllele2 = nLLY_B/12f;
     
 
-    moveAllele1 = nMVV_A*8f;
-    moveAllele2 = nMVV_B*8f;
+    moveAllele1 = nMVV_A*6f;
+    moveAllele2 = nMVV_B*6f;
 
     turnTorqueAllele1 = nTRN_A*6f;
     turnTorqueAllele2 = nTRN_B*6f;
 
-    e2repAllele1 = 512f +  Mathf.Pow(2f,nREP_A);
-    e2repAllele2 = 512f + Mathf.Pow(2f,nREP_B);
+    e2repAllele1 = 64f +  Mathf.Pow(2f,nREP_A);
+    e2repAllele2 = 64f + Mathf.Pow(2f,nREP_B);
 
     lifeLengthAllele1 = 2f + Mathf.Pow(2f,nLIF_A);
     lifeLengthAllele2 = 2f +Mathf.Pow(2f,nLIF_B);

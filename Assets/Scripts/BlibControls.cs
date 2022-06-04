@@ -535,26 +535,32 @@ List <string> codon;
 
                 if(booper.tag == "Predator" )
                 {   
-                    BrainBlobControls blob = booper.GetComponent<BrainBlobControls>();
-                    blob.protein += nutLevel;
-                    nutLevel = 0;
-                    blob.energy += energy;
-                    energy = 0;
+                    BrainBlobControls contactor = booper.GetComponent<BrainBlobControls>();
+                    if(contactor.tryPhagocytise == true){
 
-                    Destroy(gameObject, 0.2f);
+                        contactor.protein += nutLevel;
+                        nutLevel = 0;
+                        contactor.energy += energy;
+                        energy = 0;
+
+                        Destroy(gameObject, 0.2f);
+                    }
                     
                 }
 
                 if(booper.tag == "Predator2" )
                 {   
-                    BrainBlybControls blyb = booper.GetComponent<BrainBlybControls>();
-                    
-                    blyb.protein += nutLevel;
-                    nutLevel = 0;
-                    blyb.energy += energy;
-                    energy = 0;
+                    BrainBlybControls contactor = booper.GetComponent<BrainBlybControls>();
+                    if(contactor.tryPhagocytise == true){
 
-                    Destroy(gameObject, 0.2f);
+                        contactor.protein += nutLevel;
+                        nutLevel = 0;
+                        contactor.energy += energy;
+                        energy = 0;
+
+                        Destroy(gameObject, 0.2f);
+                    }
+                    
                     
                 }
 
@@ -614,7 +620,8 @@ List <string> codon;
             {
 
 
-                
+                if(col.gameObject.tag != "Prey"){
+
                 ContactPoint2D contact = col.GetContact(0);
                 float thisDir = rb.rotation*Mathf.Deg2Rad;
                 Vector2 norm = contact.normal;
@@ -623,6 +630,8 @@ List <string> codon;
                 rb.AddForce(contact.normal * moveForce*5f);
                 
                 rb.AddTorque((norm.y + norm.x )*Mathf.Rad2Deg);
+                }
+                
                 
 
                 GoForward();
@@ -645,6 +654,8 @@ List <string> codon;
             void GoForward()
 
             {    
+                if(energy < energyToReproduce/16f){return;}
+                else{
                 Vector2 origin = transform.position + transform.up;
                 Vector2 direction = transform.up;
                float distance = 64f;
@@ -663,7 +674,7 @@ List <string> codon;
                         
                     }
                     
-                   
+                   }
             }
 
             private int SatChunk, SatIndex, pointmutation;
@@ -731,6 +742,7 @@ List <string> codon;
 
                     if(nutLevel == 1){
                         odd = true;
+                        tempNut = 0;
                     }else if (nutLevel > 1){
 
                         if(nutLevel % 2 == 0){
@@ -742,7 +754,7 @@ List <string> codon;
                         tempNut = (nutLevel -1 )/2;}
                         
                     }
-                    nutLevel = tempNut;
+                    nutLevel = 0;
                 }
                     
 
@@ -767,7 +779,7 @@ List <string> codon;
                         daughter_controls.nutLevel = tempNut +1;
                     }else{daughter_controls.nutLevel = tempNut;}
                     
-                    
+                    nutLevel = tempNut;
                     
 
                     

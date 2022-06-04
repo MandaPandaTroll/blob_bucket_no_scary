@@ -42,7 +42,7 @@ public class BlobGenome : MonoBehaviour
         nLIF_A, nLIF_B,
         nTHICC_A, nTHICC_B;
 
-         //Current chromosomal loci
+        //Current chromosomal loci
     int [,] sites = new int[9,19] {
         {0,27,54,81,108,135,162,189,216,243,270,297,324,351,378,405,432,459,486} , {0,27,54,81,108,135,162,189,216,243,270,297,324,351,378,405,432,459,486} , {0,27,54,81,108,135,162,189,216,243,270,297,324,351,378,405,432,459,486},
 
@@ -151,7 +151,8 @@ public string[,] extA, extB;
         
 
     }
-    BrainBlobControls brainBlobControls;
+    BrainBlobControls bctrl;
+    BrainBlobControls mateBctrl;
     BlobGenome mateGenome;
 
     string thisTag;
@@ -162,7 +163,7 @@ public string[,] extA, extB;
         age = 0;
         
         
-            brainBlobControls = this.gameObject.GetComponent<BrainBlobControls>();
+            bctrl = this.gameObject.GetComponent<BrainBlobControls>();
             
         
         
@@ -210,9 +211,12 @@ public int loSite, cNum, locus;
 private int AorB, mate_loSite,mate_cNum;
 
 // Horizontal gene transfer.
-void OnCollisionEnter2D(Collision2D col){
-        if (col.gameObject.tag == this.gameObject.tag){
-
+void OnCollisionStay2D(Collision2D col){
+    GameObject booper = col.gameObject;
+    if (booper.tag == "Predator" ){
+        mateBctrl = booper.GetComponent<BrainBlobControls>();
+        if (booper.tag == "Predator" && bctrl.tryConjugate == true && mateBctrl.tryConjugate == true){
+            mateGenome = col.gameObject.GetComponent<BlobGenome>();
          cNum = UnityEngine.Random.Range(0,A.GetLength(0));
          AorB = UnityEngine.Random.Range(0,2);
         locus = UnityEngine.Random.Range(0,sites.GetLength(1)-1);
@@ -234,7 +238,6 @@ void OnCollisionEnter2D(Collision2D col){
         //string debugLocus = System.String.Join("",giveLocus);
        // //Debug.Log("Chromosome: " + debugChar + ":" + cNum + " Locus: " + locus + " -> " + debugLocus);
         
-            mateGenome = col.gameObject.GetComponent<BlobGenome>();
             
         
         
@@ -270,7 +273,7 @@ void OnCollisionEnter2D(Collision2D col){
         
 
             //Genetic recombination
-            if(pythagDist < 0.2f){
+            if(pythagDist < 0.5f){
 
                 receiveLocus = mateGenome.giveLocus;
                 mate_cNum = mateGenome.cNum;
@@ -291,6 +294,7 @@ void OnCollisionEnter2D(Collision2D col){
                 }
                 
             }
+        }
 
         }
     }

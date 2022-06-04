@@ -50,6 +50,9 @@ private List<string[]> rowData = new List<string[]>();
     public List <float> turnTorqueAllele2;
     public List <float> lookDistance;
 
+    public List <float> e2repA;
+    public List <float> e2repB;
+
     int sampleGroup;
  
     
@@ -110,6 +113,8 @@ private List<string[]> rowData = new List<string[]>();
                     turnTorqueAllele2.Add(sampledBlib.turnTorqueAllele2);
                     generation.Add(sampledBlib.generation);
                     lookDistance.Add(sampledBlib.lookDistance);
+                    e2repA.Add(sampledBlib.e2repAllele1);
+                    e2repB.Add(sampledBlib.e2repAllele2);
                     
                 }           
                 
@@ -138,7 +143,7 @@ private List<string[]> rowData = new List<string[]>();
             itCount += 1;
             string[] rowDataTemp;
         if (itCount == 1){
-            rowDataTemp = new string[21];
+            rowDataTemp = new string[23];
             rowDataTemp[0] ="time" ;
             rowDataTemp[1] ="species";
             rowDataTemp[2] ="sampleGroup";
@@ -160,13 +165,15 @@ private List<string[]> rowData = new List<string[]>();
             rowDataTemp[18] = "turnTorqueAllele1";
             rowDataTemp[19] = "turnTorqueAllele2";
             rowDataTemp[20] = "lookDistance";
+            rowDataTemp[21] = "e2repA";
+            rowDataTemp[22] = "e2repB";
             rowData.Add(rowDataTemp);
         }
 
 
         // You can add up the values in as many cells as you want.
         for(int i = 0; i < sampleSize; i++){
-            rowDataTemp = new string[21];
+            rowDataTemp = new string[23];
             rowDataTemp[0] = totalTime.ToString();
             rowDataTemp[1] = "blib";
             rowDataTemp[2] = sampleGroup.ToString();
@@ -188,7 +195,8 @@ private List<string[]> rowData = new List<string[]>();
             rowDataTemp[18] = turnTorqueAllele1[i].ToString();
             rowDataTemp[19] = turnTorqueAllele2[i].ToString();
             rowDataTemp[20] = lookDistance[i].ToString();
-            rowDataTemp[20] = lookDistance[i].ToString();
+            rowDataTemp[21] = e2repA[i].ToString();
+            rowDataTemp[22] = e2repB[i].ToString();
 
             
 
@@ -237,6 +245,8 @@ private List<string[]> rowData = new List<string[]>();
         turnDice.Clear();
         generation.Clear();
         lookDistance.Clear();
+        e2repA.Clear();
+        e2repB.Clear();
         sampleGroup += 1;
 
         Array.Clear(blibs,0,blibs.Length);

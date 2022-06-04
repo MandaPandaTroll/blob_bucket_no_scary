@@ -39,10 +39,10 @@
             void Start()
             {
 
-                blibCount = (float)display.blibs;
-                blobCount = (float)display.blobs;
-                blybCount = (float)display.blybs;
-                blubCount = (float)display.blubs;
+                blibCount = (float)display.blibCount;
+                blobCount = (float)display.blobCount;
+                blybCount = (float)display.blybCount;
+                blubCount = (float)display.blubCount;
                 e = Mathf.Exp(1);
                 mat = new Material(Shader.Find("Hidden/Internal-Colored"));
                 // Should check for material but I'll leave that to you..
@@ -85,11 +85,11 @@
             void Update()
             {
                 dbugCounter +=1;
-
-                blibCount = (float)display.blibs;
-                blobCount = (float)display.blobs;
-                blybCount = (float)display.blybs;
-                blubCount = (float)display.blubs;
+    
+                blibCount = (float)display.blibCount;
+                blobCount = (float)display.blobCount;
+                blybCount = (float)display.blybCount;
+                blubCount = (float)display.blubCount;
                 
                
 

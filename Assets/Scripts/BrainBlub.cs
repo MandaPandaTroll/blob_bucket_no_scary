@@ -11,8 +11,8 @@ using System.Linq;
 public class BrainBlub : Agent
 {
 
-float test_happiness;
 
+float happiness = 0;
     float e;
 List<float> resourceBuffer = new List<float>();
 
@@ -179,6 +179,7 @@ sensor.AddObservation(scaledMateDistance[i]);
 sensor.AddObservation(scaledBlibDistance[i]);
 
     }
+
     sensor.AddOneHotObservation((int)m_currentBumper, NUM_BUMP_TYPES);
 
   
@@ -214,7 +215,7 @@ public override void OnActionReceived(ActionBuffers actionBuffers)
         if( d < lastSqrClosest){
             distFunc = 0;
              distFunc = 1.0f - Mathf.Pow( ((Mathf.Pow(e,3f*d)-Mathf.Pow(e,-3f*d))/(Mathf.Pow(e,3f*d)-Mathf.Pow(e,-3f*d))),2f );
-            if (distFunc != distFunc) {distFunc = 0;}else{AddReward(0);} //or distFunc
+            if (distFunc != distFunc) {distFunc = 0;}//else{AddReward(0);} //or distFunc
             
         }
         closeTimer = 0;
@@ -295,17 +296,23 @@ hasReproduced = bctrl.hasReproduced;
     if(alive == true)
     {
 
+
  rb.AddForce(fwd);
  rb.AddTorque(rotMag*turnTorque*rb.inertia);
  bctrl.energy -=  bctrl.eCost*Mathf.Abs(fwd.magnitude);
  bctrl.energy -= bctrl.basalMet;
- float normEnergy = bctrl.energy/bctrl.maxEnergy;
+    float normEnergy = bctrl.energy/bctrl.maxEnergy;
     float normProtein = (float)bctrl.protein / (float)bctrl.proteinToReproduce;
 
-float test_enerProt = (normEnergy+normProtein)/2.0f;
-test_happiness = (float)System.Math.Tanh( (  ((double)(test_enerProt))  -0.25f))/(2);
+    float test_enerProt = (normEnergy+normProtein)/2.0f;
+    float newHappiness = 0.50f + 0.50f*(float)System.Math.Tanh((double)((4*test_enerProt)  -2.00f));
+    float deltaHappiness = newHappiness - happiness;
 
+        AddReward(deltaHappiness);
+        
+        happiness = newHappiness;
 
+        /*
         resourceBuffer.Add((energy/bctrl.maxEnergy)+((float)protein/(float)bctrl.proteinToReproduce));
 
         if(resourceBuffer.Count >= 9){
@@ -316,28 +323,13 @@ test_happiness = (float)System.Math.Tanh( (  ((double)(test_enerProt))  -0.25f))
                            / 8.0f;
             meanResource1 = (+resourceBuffer[8]);
 
-            float deltaResource = meanResource1 - meanResource0;
-            if(deltaResource >0 ){AddReward(1f);}
+             deltaResource = meanResource1 - meanResource0;
+            //if(deltaResource >0 ){AddReward(1f);}
             //AddReward(deltaEnergy/bctrl.maxEnergy);
             resourceBuffer.Clear();
         }
+        */
 
-
- /*
-    if(protein < bctrl.proteinToReproduce/16){
-        AddReward(-0.0001f);
-    }
-*/
-        //cumSmellReward += smellReward;
-        if(bctrl.energy<= 101f)
-        {
-        
-            SetReward(-1.0f);
-            EndEpisode();
-            
-            
-        }
- 
 
 
     if(bctrl.hasReproduced == true)
@@ -347,10 +339,9 @@ test_happiness = (float)System.Math.Tanh( (  ((double)(test_enerProt))  -0.25f))
         bctrl.hasReproduced = false;
     }
 
-  SetReward(test_happiness);
 
 
-        } 
+        }
 }
   void OnCollisionEnter2D(Collision2D col)
 {
@@ -358,7 +349,6 @@ test_happiness = (float)System.Math.Tanh( (  ((double)(test_enerProt))  -0.25f))
     {
         return;
     }
-    
     bump = true;
     GameObject booper = col.gameObject;
     
@@ -385,7 +375,9 @@ test_happiness = (float)System.Math.Tanh( (  ((double)(test_enerProt))  -0.25f))
          {  if(booper.tag == "Predator"){m_currentBumper = BumperType.Predator;}
             if(booper.tag == "Predator2"){m_currentBumper = BumperType.Predator2;}
             if(booper.tag == "Carcass"){m_currentBumper = BumperType.Carcass;}
-             
+             if(m_currentBumper == BumperType.Predator || m_currentBumper == BumperType.Predator2 || m_currentBumper == BumperType.Carcass ){
+                 //AddReward(1.0f);
+             }
             if(energy <= bctrl.maxEnergy || bctrl.protein <= bctrl.proteinToReproduce){
             //AddReward((1.0f / (float)nomLim));
              nomCount +=1;
@@ -411,7 +403,7 @@ test_happiness = (float)System.Math.Tanh( (  ((double)(test_enerProt))  -0.25f))
     void OnCollisionExit2D(Collision2D col)
     {
         bump = false;
-        
+        m_currentBumper = BumperType.None;
     }
 
 
@@ -419,8 +411,4 @@ test_happiness = (float)System.Math.Tanh( (  ((double)(test_enerProt))  -0.25f))
 
 
 
-
-
 }
-
-

@@ -44,7 +44,9 @@ float colorG;
 float colorB;
 float colorA = 1f;
 Color geneticColor;
-
+public float maxHealth = 256f;
+public float currentHealth = 256f;
+bool bump;
 //Script instance genetically related mate involved in conjugation
 BrainBlybControls mate;
 
@@ -105,6 +107,7 @@ System.Random rndA = new System.Random();
     public int protein;
     public int proteinToReproduce;
     public int NH4;
+    public bool excreting, tryAttack, tryPhagocytise, tryConjugate, tryReproduce;
     
 
     nutGrid m_nutgrid;
@@ -119,7 +122,7 @@ void Awake(){
     void Start()
     {
         age = 0;
-        tempProtein = protein;
+        
         genome = this.gameObject.GetComponent<BlybGenome>();
         
         rCount = 0;
@@ -186,20 +189,23 @@ void Awake(){
     int posval;
     void FixedUpdate(){
         posval = m_nutgrid.GetValue(transform.position);
+        
     }
 
     float NH4_Timer;
     // Update is called once per frame
     void LateUpdate()
     {   
-        tempProtein = protein;
-        if(Time.time < 0.1f && initDiversity != 0.0f){InitDiversifier(); }
         
-        pEnergy = energy;
-        if (energy > maxEnergy)
-        {
-            energy = maxEnergy;
+        if(Time.time < 0.1f && initDiversity != 0.0f){InitDiversifier(); }
+        if(energy < 0){energy = 0;}
+        if (energy > maxEnergy){energy = maxEnergy;}
+        if(energy < maxEnergy/64){
+            currentHealth += -0.1f;
         }
+
+        pEnergy = energy;
+
         if(alive == false)
         {  this.gameObject.tag = "Carcass";
             this.gameObject.layer = deadLayer;
@@ -210,18 +216,48 @@ void Awake(){
         }
     if(alive == true)
     {   
+        if  ( age > lifeLength || deathDice == 1 || currentHealth <= 0 )
+            {
+                
+                alive = false;               
+                   
+            }
+        if(currentHealth > maxHealth){
+            currentHealth = maxHealth;
+        }
+        if(tryAttack == true ||  tryConjugate == true || tryPhagocytise == true){
+            if(bump == false && energy >= 5f){
+                energy += -0.5f;
+            }
+        }
+
+        //Ammonia excretion
+            if(excreting == true && NH4 > 0 && energy > 5f){
+                m_nutgrid.SetValue(transform.position, posval + NH4);
+                NH4 = 0;
+                energy += -5f;
+            }
         NH4_Timer += Time.deltaTime;
-        if (NH4_Timer >= 1.0f && protein > 0)
+        if (NH4_Timer >= 3.0f && protein >= 1)
         {
             NH4 +=1;
             protein += -1;
             NH4_Timer = 0f;
-        //Ammonia secretion
-        if(NH4 >= 32){
             
-                m_nutgrid.SetValue(transform.position, posval + NH4);
-                NH4 = 0;
+            //Ammonia toxicity
+            if(NH4 >= (int)Mathf.Pow(2f,sizeGene)){
+                currentHealth += -1f;
+                
+                }
+
+            
+            if(energy > maxEnergy/2.00f && protein > 0 && currentHealth < maxHealth){
+                energy += -sizeGene;
+                currentHealth += 1f;
+                protein += -1;
+                NH4 += 1;
             }
+
         }
         
         eCost = rb.mass/eCostCo;
@@ -229,7 +265,7 @@ void Awake(){
         int dC = (int) ( (lifeLength*Mathf.Pow((3f*lifeLength/(age+1)),2f)) - (9f*lifeLength) );
         deathDice = Random.Range(1,dC);
                 // rCo = 10 + (L/a)^2
-       int rCo = 10 + (int)Mathf.Pow((lifeLength/(age+1)),2f); 
+       int rCo = (int)( lifeLength*( (lifeLength/age) -1) ); 
         
         rDice = Random.Range(1, rCo);
         
@@ -238,23 +274,18 @@ void Awake(){
          
         
 
-
-            if(energy >= energyToReproduce && rDice == 1 && protein >= proteinToReproduce){
+            if(tryReproduce == true){
+                if( energy >= energyToReproduce && protein >= proteinToReproduce && rDice == 1){
                 
                 Reproduce();
 
+                }else if(energy >= 5f){
+                    energy += -0.5f;
+                }
             }
 
 
 
-        
-            if  ( energy <= 100f || age > lifeLength || deathDice == 1)
-            {
-                
-                alive = false;               
-                   
-            }
-            
 
 
 
@@ -274,100 +305,134 @@ void Awake(){
 
             
     }
-
+        int decayCount = 0;
             void Dead()
-        {   tempProtein = protein;
-            this.gameObject.GetComponent<BrainBlyb>().enabled = false;
-            energy -= 10f*Time.deltaTime;
+        {   decayCount += 1;
+            if(this.gameObject.GetComponent<BrainBlyb>().enabled == true){
+                this.gameObject.GetComponent<BrainBlyb>().enabled = false;
+        }
+            if(decayCount >= 7){
+            energy -= 16f;
             
             if(NH4 >= 1){
-            m_nutgrid.SetValue(transform.position, posval + NH4);
-            NH4 = 0;
+            m_nutgrid.SetValue(transform.position, posval + 1);
+            NH4 += -1;
             }
             if(protein >= 1){
-                m_nutgrid.SetValue(transform.position, posval + 1);
                 protein += -1;
+                NH4 += 1;
             }
-            if(energy <= 0f && protein <= 0)
+            decayCount = 0;
+            }
+            if(energy < 1f && NH4 < 1 && protein < 1)
             { 
                 Destroy(this.gameObject,0.2f);
             }
 
         }
-            public int tempProtein;
-            public int tempNH4;
+            
             void OnCollisionEnter2D(Collision2D col)
             {   
-                tempProtein = protein;
-                tempNH4 = NH4;
+                
                 GameObject booper = col.gameObject;
              if(alive == false )
                 {
                     if(booper.tag ==  "Predator"){
                     BrainBlobControls scavenger = booper.GetComponent<BrainBlobControls>();
-                    scavenger.protein += protein;
-                    scavenger.NH4 += NH4;
-                    scavenger.energy += energy;
-                    energy = 0;
-                    protein = 0;
+                        if(scavenger.tryPhagocytise == true){
+                            scavenger.protein += protein;
+                            protein = 0;
+                            scavenger.NH4 += NH4;
+                            NH4 = 0;
+                            scavenger.energy += energy;
+                            energy = 0f;
+                        }
                     }
+
                     if(booper.tag ==  "Predator2"){
                     BrainBlybControls scavenger = booper.GetComponent<BrainBlybControls>();
-                    scavenger.protein += protein;
-                    scavenger.NH4 += NH4;
-                    scavenger.energy += energy;
-                    energy = 0;
-                    protein = 0;
+                        if(scavenger.tryPhagocytise == true){
+                            scavenger.protein += protein;
+                            protein = 0;
+                            scavenger.NH4 += NH4;
+                            NH4 = 0;
+                            scavenger.energy += energy;
+                            energy = 0f;
+                        }
                     }
+
                     if(booper.tag ==  "ApexPred"){
                     BrainBlubControls scavenger = booper.GetComponent<BrainBlubControls>();
                     scavenger.protein += protein;
-                    scavenger.NH4 += NH4;
-                    scavenger.energy += energy;
-                    energy = 0;
                     protein = 0;
+                    scavenger.NH4 += NH4;
+                    NH4 = 0;
+                    scavenger.energy += energy;
+                    energy = 0f;
                     }
                 }
 
             if( alive == true){
-                if(booper.tag == ("Carcass"))
-                {
-                    
-                    nom = true; 
-                }
-                if (booper.tag == ("Prey"))
-                {
-                    nom = true;
+                bump = true;
+                if(tryPhagocytise == true){
+                    if(booper.tag == ("Carcass"))
+                    {
+                        nom = true; 
+                    }
+                    if (booper.tag == ("Prey"))
+                    {
+                        nom = true;
+                    }
                 }
 
 
+                if(booper.tag == "Predator")
+                {
+                    BrainBlobControls contactor = booper.GetComponent<BrainBlobControls>();
+                    float deltaSize = this.gameObject.transform.localScale.x - booper.gameObject.transform.localScale.x;
+                    if(contactor.tryAttack == true){
+                        if(deltaSize < 0 ){
+                            currentHealth += deltaSize*deltaSize;
+                        }
+                    }
+                    if(tryAttack == true){
+                        if(deltaSize > 0 ){
+                            contactor.currentHealth += deltaSize*deltaSize*(-1f);
+                        }
+                    }
+
+                }
 
                 if(booper.tag == "Predator2")
                 {
-                    
-                    
-                    colorR = redGene;
-                    colorG = greenGene;
-                    colorB = blueGene;
-
-                    geneticColor = new Color(colorR, colorG, colorB, colorA);
-                    m_SpriteRenderer.color = geneticColor;
-                    
-
+                    BrainBlybControls contactor = booper.GetComponent<BrainBlybControls>();
+                    float deltaSize = this.gameObject.transform.localScale.x - booper.gameObject.transform.localScale.x;
+                    if(contactor.tryAttack == true){
+                        if(deltaSize < 0 ){
+                            currentHealth += deltaSize*deltaSize;
+                        }
                     }
-                
-                
+                    if(tryAttack == true){
+                        if(deltaSize > 0 ){
+                            contactor.currentHealth += deltaSize*deltaSize*(-1f);
+                        }
+                    }
+
+                }
+
                     
 
                 if(booper.tag == ("ApexPred"))
                 {   
                     BrainBlubControls hunter = booper.GetComponent<BrainBlubControls>();
                     hunter.protein += protein;
+                    protein = 0;
                     hunter.NH4 += NH4;
+                    NH4 = 0;
                     hunter.energy += energy;
                     energy = 0;
-                    protein = 0;
                     eaten = true;
+                    currentHealth = 0;
                     gameObject.GetComponent<BrainBlyb>().enabled = false;
                     Destroy(gameObject,0.2f);
                     
@@ -380,12 +445,13 @@ void Awake(){
                 
             }
 
+    void OnCollisionExit2D(Collision2D col){
+        bump = false;
+    }
 
 
-
-
-
-
+    public int tempProtein;
+    public int tempNH4;
 
 
             void Reproduce()
@@ -393,7 +459,7 @@ void Awake(){
                 if (alive == true)
                 {
                     rCount += 1;
-                    tempProtein = protein;
+                    
 
                     int satMutationRoll = rndA.Next(0,2);
                         if(satMutationRoll == 1){ 
@@ -441,7 +507,55 @@ void Awake(){
                     m_SpriteRenderer.color = geneticColor;
                     
 
+
                     //Reproduction
+
+                    energy = (energy/2.0f);
+                    bool odd_protein = false;
+                    bool odd_NH4 = false;
+                    
+                if(protein > 0){
+
+
+
+                    if(protein == 1){
+                        odd_protein = true;
+                        tempProtein = 0;
+                    }else if (protein > 1){
+
+                        if(protein % 2 == 0){
+                        odd_protein = false;
+                        tempProtein = (protein/2);
+                        }
+                        else{
+                        odd_protein = true;
+                        tempProtein = (protein -1 )/2;}
+                        
+                    }
+                    protein = 0;
+                }
+
+                if(NH4 > 0){
+
+
+
+                    if(NH4 == 1){
+                        odd_NH4 = true;
+                        tempNH4 = 0;
+                    }else if (protein > 1){
+
+                        if(protein % 2 == 0){
+                        odd_NH4 = false;
+                        tempNH4 = (NH4/2);
+                        }
+                        else{
+                        odd_NH4 = true;
+                        tempNH4 = (NH4 -1 )/2;}
+                        
+                    }
+                    NH4 = 0;
+                }
+                /*
                     bool odd = false;
                     int remainder = 0;
                     tempProtein = protein;
@@ -455,13 +569,15 @@ void Awake(){
                         odd = true;
                         protein = (protein - remainder )/2;}
 
-
-                float x = energy/10000f;
-                float k = 0.7f;
-                sigmoid = sizeGene/ (1f+ Mathf.Exp(-k*(x-1.5f)));
+                */
+                float x = energy/35000f;
+                float k = 1f;
+                sigmoid = sizeGene/ (1f+ Mathf.Exp(-k*(x)));
                 newSize = new Vector3(sigmoid,sigmoid,sigmoid);
                 transform.localScale = newSize;
                     maxEnergy = sigmoid*35000f;
+                energyToReproduce = maxEnergy /2.0f;
+                maxHealth = (int)Mathf.Round(Mathf.Pow(4, newSize.x+1f));
                     if (generation == 100|| generation == 200 || generation == 300 || generation == 400 || generation == 500 || generation == 600 || generation == 800 || generation == 1000)
                     {
                         Debug.Log( 
@@ -478,15 +594,27 @@ void Awake(){
                     BrainBlybControls daughter_controls = daughter.GetComponent<BrainBlybControls>();
                     daughter_controls.generation = generation + 1;
                     daughter_controls.age = 0f;
+                    /*
                     if (odd == true){
                       daughter_controls.protein = (tempProtein + remainder)/2;
                     }
-                    
+                    */
                     
                     
                     
                     
                      daughter.GetComponent<BlybGenome>().mutate = true;
+                    if(odd_protein == true){
+                        daughter_controls.protein = tempProtein +1;
+                    }else{daughter_controls.protein = tempProtein;}
+                    
+                    protein = tempProtein;
+
+                    if(odd_NH4 == true){
+                        daughter_controls.NH4 = tempNH4 +1;
+                    }else{daughter_controls.NH4 = tempNH4;}
+                    
+                    NH4 = tempNH4;
 
 
                     rCount += 1;
@@ -504,14 +632,14 @@ void Awake(){
 
             void Resizer()
             {
-                float x = energy/10000;
-                float k = 0.7f;
-                sigmoid = sizeGene/ (1f+ Mathf.Exp(-k*(x-1.5f)));
+                float x = energy/35000f;
+                float k = 1f;
+                sigmoid = sizeGene/ (1f+ Mathf.Exp(-k*(x)));
                 newSize = new Vector3(sigmoid,sigmoid,sigmoid);
                 transform.localScale = newSize;
                 maxEnergy = sigmoid*35000f;
                 energyToReproduce = maxEnergy /2.0f;
-
+                maxHealth = (int)Mathf.Round(Mathf.Pow(4, newSize.x+1f));
 
                      
 
