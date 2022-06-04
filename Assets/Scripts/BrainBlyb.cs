@@ -311,7 +311,7 @@ public override void OnActionReceived(ActionBuffers actionBuffers)
     float normHealth = bctrl.currentHealth/bctrl.maxHealth;
 
     float homeo = (normEnergy+normProtein+normHealth)/3.0f;
-    float newHappiness = 0.50f + 0.50f*(float)System.Math.Tanh((double)((4*homeo)  -2.00f));
+    float newHappiness = 0.25f + 0.75f*(float)System.Math.Tanh((double)((4*homeo)  -2.00f));
     float deltaHappiness = newHappiness - happiness;
 
         AddReward(deltaHappiness);

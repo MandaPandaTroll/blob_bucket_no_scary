@@ -200,7 +200,7 @@ void Awake(){
         if(Time.time < 0.1f && initDiversity != 0.0f){InitDiversifier(); }
         if(energy < 0){energy = 0;}
         if (energy > maxEnergy){energy = maxEnergy;}
-        if(energy < maxEnergy/64){
+        if(energy < maxEnergy/32){
             currentHealth += -0.1f;
         }
 
