@@ -109,7 +109,6 @@ System.Random rndA = new System.Random();
     void Start()
     {
         age = 0;
-        tempProtein = protein;
         rCount = 0;
         eaten = false;
         alive = true;
@@ -232,7 +231,7 @@ System.Random rndA = new System.Random();
     }
 
             void Dead()
-        {   tempProtein = protein;
+        {    
             this.gameObject.GetComponent<BrainBlub>().EndEpisode();
             this.gameObject.GetComponent<BrainBlub>().enabled = false;
             energy -= 10f*Time.deltaTime;
@@ -251,11 +250,10 @@ System.Random rndA = new System.Random();
             }
 
         }
-            public int tempProtein;
-            public int tempNH4;
+            
             void OnCollisionEnter2D(Collision2D col)
             {   
-                tempProtein = protein;
+                
                 tempNH4 = NH4;
                 GameObject booper = col.gameObject;
              if(alive == false  )
@@ -416,7 +414,8 @@ System.Random rndA = new System.Random();
 
 
 
-
+            public int tempProtein;
+            public int tempNH4;
 
             void Reproduce()
             {   
@@ -528,18 +527,52 @@ System.Random rndA = new System.Random();
                     
 
                     //Reproduction
-                    bool odd = false;
-                    int remainder = 0;
-                    tempProtein = protein;
+
                     energy = (energy/2.0f);
-                    if(protein % 2 == 0){
-                        odd = false;
-                    protein = (protein/2);
+                    bool odd_protein = false;
+                    bool odd_NH4 = false;
+                    
+                if(protein > 0){
+
+
+
+                    if(protein == 1){
+                        odd_protein = true;
+                        tempProtein = 0;
+                    }else if (protein > 1){
+
+                        if(protein % 2 == 0){
+                        odd_protein = false;
+                        tempProtein = (protein/2);
+                        }
+                        else{
+                        odd_protein = true;
+                        tempProtein = (protein -1 )/2;}
+                        
                     }
-                    else{
-                        remainder = protein - (protein%2);
-                        odd = true;
-                        protein = (protein - remainder )/2;}
+                    protein = 0;
+                }
+
+                if(NH4 > 0){
+
+
+
+                    if(NH4 == 1){
+                        odd_NH4 = true;
+                        tempNH4 = 0;
+                    }else if (protein > 1){
+
+                        if(protein % 2 == 0){
+                        odd_NH4 = false;
+                        tempNH4 = (NH4/2);
+                        }
+                        else{
+                        odd_NH4 = true;
+                        tempNH4 = (NH4 -1 )/2;}
+                        
+                    }
+                    NH4 = 0;
+                }
 
 
                 float x = energy/10000f;
@@ -566,9 +599,17 @@ System.Random rndA = new System.Random();
                     daughter_controls.generation = generation + 1;
                     daughter_controls.age = 0f;
                     daughter_controls.NH4 = 0;
-                    if (odd == true){
-                      daughter_controls.protein = (tempProtein + remainder)/2;
-                    }
+                   if(odd_protein == true){
+                        daughter_controls.protein = tempProtein +1;
+                    }else{daughter_controls.protein = tempProtein;}
+                    
+                    protein = tempProtein;
+
+                    if(odd_NH4 == true){
+                        daughter_controls.NH4 = tempNH4 +1;
+                    }else{daughter_controls.NH4 = tempNH4;}
+                    
+                    NH4 = tempNH4;
                     rCount += 1;
                         
                         

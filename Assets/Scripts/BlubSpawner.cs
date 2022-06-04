@@ -26,6 +26,7 @@ public class BlubSpawner : MonoBehaviour
         float x = (float)Random.Range(-boxSize/3,boxSize/3);
         float y = (float)Random.Range(-boxSize/3,boxSize/3);
        Instantiate(blub, new Vector3(x, y, 0), Quaternion.identity);
+       blub.GetComponent<BrainBlubControls>().protein=0;
         }
     }
 
@@ -50,6 +51,7 @@ void LateUpdate()
         float x = (float)Random.Range(-boxSize/3,boxSize/3);
         float y = (float)Random.Range(-boxSize/3,boxSize/3);
        Instantiate(blub, new Vector3(x, y, 0), Quaternion.identity);
+       blub.GetComponent<BrainBlubControls>().protein=0;
   }
   }
 

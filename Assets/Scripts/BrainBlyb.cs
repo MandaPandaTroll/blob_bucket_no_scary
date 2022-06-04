@@ -311,7 +311,7 @@ public override void OnActionReceived(ActionBuffers actionBuffers)
     float normHealth = bctrl.currentHealth/bctrl.maxHealth;
 
     float homeo = (normEnergy+normProtein+normHealth)/3.0f;
-    float newHappiness = 0.25f + 0.75f*(float)System.Math.Tanh((double)((4*homeo)  -2.00f));
+    float newHappiness = 0.5f + 0.5f*(float)System.Math.Tanh((double)((4*homeo)  -2.00f));
     float deltaHappiness = newHappiness - happiness;
 
         AddReward(deltaHappiness);
@@ -348,7 +348,7 @@ public override void OnActionReceived(ActionBuffers actionBuffers)
     {    newHappiness = 1.0f;
          deltaHappiness = newHappiness - happiness;
 
-        AddReward(deltaHappiness);
+        AddReward(1.0f);
         
         happiness = newHappiness;
         
@@ -374,7 +374,7 @@ public override void OnActionReceived(ActionBuffers actionBuffers)
      if (booper.tag == "ApexPred")
         {
             m_currentBumper = BumperType.ApexPred;           
-            SetReward(-1.0f);
+            AddReward(-1.0f);
             EndEpisode();
             this.enabled = false;
         }
