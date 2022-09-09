@@ -54,7 +54,7 @@ public class Smeller_Blob : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         latestLookDistance = blob.latestLookDistance;
         here = gameObject.transform.position;

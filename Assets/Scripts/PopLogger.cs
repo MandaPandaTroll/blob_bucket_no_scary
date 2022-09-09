@@ -35,10 +35,13 @@ private List<string[]> rowData = new List<string[]>();
     float totalTime;
     public float sampleRate;
 
-
-    
-
-
+    sampleGeneticDiversity genSamp;
+    bool isGenSamp;
+    float meanHeterozygosity_blib;
+    float meanHeterozygosity_blob;
+    float meanHeterozygosity_blyb;
+    float meanHeterozygosity_blub;
+    int genSampColumns;
 
 
 
@@ -47,12 +50,19 @@ private List<string[]> rowData = new List<string[]>();
     {
         //Alpha = GameObject.Find("Alpha");
         //Detector = Alpha.GetComponent<Detector>();
+       isGenSamp = false;
+       genSampColumns = 0;
         clones_blib = -1;
+        if(gameObject.GetComponent<sampleGeneticDiversity>() != null){
+            isGenSamp = true;
+                genSamp = gameObject.GetComponent<sampleGeneticDiversity>();
+                genSampColumns = 3;
+        }
         
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
 
         
@@ -66,7 +76,12 @@ private List<string[]> rowData = new List<string[]>();
                 blobN  = FindObjectsOfType<BrainBlobControls>().Length;
                 blybN  = FindObjectsOfType<BrainBlybControls>().Length;
                 blubN  = FindObjectsOfType<BrainBlubControls>().Length;
-                
+                if (isGenSamp == true){
+                    meanHeterozygosity_blib = genSamp.meanHeterozygosity_blib;
+                    meanHeterozygosity_blob = genSamp.meanHeterozygosity_blob;
+                    meanHeterozygosity_blyb = genSamp.meanHeterozygosity_blyb;
+                    //meanHeterozygosity_blub = genSamp.meanHeterozygosity_blub;
+                }
 
 
                 /*
@@ -100,17 +115,25 @@ private List<string[]> rowData = new List<string[]>();
             itCount += 1;
             string[] rowDataTemp;
         if (itCount == 1){
-            rowDataTemp = new string[5];
+            rowDataTemp = new string[5+genSampColumns];
             rowDataTemp[0] = "t";
             rowDataTemp[1] = "blibN";
             rowDataTemp[2] = "blobN";
             rowDataTemp[3] = "blybN";
             rowDataTemp[4] = "blubN";
+            if(isGenSamp == true){
+                rowDataTemp[5] = "meanHeterozygosity_blib";
+                rowDataTemp[6] = "meanHeterozygosity_blob";
+                rowDataTemp[7] = "meanHeterozygosity_blyb";
+                //rowDataTemp[8] = "meanHeterozygosity_blub";
+            }
+            
+
 
             rowData.Add(rowDataTemp);
         }
         // Creating First row of titles manually..
-            rowDataTemp = new string[5];
+            rowDataTemp = new string[5+genSampColumns];
             rowDataTemp[0] = totalTime.ToString();
             //Blibsamples
             rowDataTemp[1] = blibN.ToString();
@@ -124,7 +147,12 @@ private List<string[]> rowData = new List<string[]>();
             //Blubsamples
             rowDataTemp[4] = blubN.ToString();
 
-
+             if(isGenSamp == true){
+                rowDataTemp[5] = meanHeterozygosity_blib.ToString();
+                rowDataTemp[6] = meanHeterozygosity_blob.ToString();
+                rowDataTemp[7] = meanHeterozygosity_blyb.ToString();
+               // rowDataTemp[8] = meanHeterozygosity_blub.ToString();
+            }
 
             
             rowData.Add(rowDataTemp);

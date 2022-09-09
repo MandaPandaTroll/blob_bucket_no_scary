@@ -1116,15 +1116,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autoReplenish: 0
-  autoRemove: 0
+  autoRemove: 1
   box: {fileID: 1136253243}
   diffRate: 1
   statNutes: 0
   statTot: 0
   gridX: 0
   gridY: 0
-  cellScale: 8
-  initConc: 42
+  cellScale: 16
+  initConc: 64
   freeNutes: 0
   lockedNutes: 0
 --- !u!4 &314230637
@@ -3041,7 +3041,7 @@ Transform:
   m_GameObject: {fileID: 1136253239}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 256, y: 256, z: 1}
+  m_LocalScale: {x: 512, y: 512, z: 1}
   m_Children:
   - {fileID: 1855928353}
   - {fileID: 721042678}
@@ -4164,6 +4164,7 @@ GameObject:
   - component: {fileID: 1626781022}
   - component: {fileID: 1626781021}
   - component: {fileID: 1626781020}
+  - component: {fileID: 1626781030}
   m_Layer: 2
   m_Name: StatisticsHandler
   m_TagString: Untagged
@@ -4419,6 +4420,23 @@ MonoBehaviour:
   blubN: 0
   blybN: 0
   sampleRate: 1
+--- !u!114 &1626781030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626781018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5da18b17048ec4b14936ea23f1848b89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sampleRate: 1
+  maxSampleSize: 100
+  meanHeterozygosity_blib: 0
+  meanHeterozygosity_blob: 0
+  meanHeterozygosity_blyb: 0
 --- !u!1 &1703044431
 GameObject:
   m_ObjectHideFlags: 0
@@ -5135,10 +5153,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   linChars: 
   initLineage: 
-  initBlib: 512
+  initBlib: 256
   autoRespawn: 1
   extraBlib: 1
-  minBlib: 64
+  minBlib: 8
   blib: {fileID: 3468846596000450122, guid: 6d4cc741cc2fc4e00ad7702559757827, type: 3}
   speedModifier_enabled: 1
   speedModifier: 0
@@ -5171,8 +5189,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initBlob: 2
   extraBlob: 1
-  minBlob: 1
-  brainblob: {fileID: 1711403674044451826, guid: 62f3ae1229ce147e085f49742d4f03cd, type: 3}
+  minBlob: 2
+  blob: {fileID: 1711403674044451826, guid: 62f3ae1229ce147e085f49742d4f03cd, type: 3}
+  initProtein: 16
   autoRespawn: 1
 --- !u!114 &1883381886
 MonoBehaviour:
@@ -5181,15 +5200,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1883381882}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f3b243e301ee9401a834a5dedfa9deae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initBlub: 1
+  initBlub: 0
   extraBlub: 1
   blub: {fileID: 2899908468288829811, guid: 85d9ad2e1ee97449ba7a451adfb4fe78, type: 3}
-  autoRespawn: 1
+  autoRespawn: 0
   minBlub: 1
 --- !u!114 &1883381887
 MonoBehaviour:
@@ -5205,8 +5224,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initBlyb: 2
   extraBlyb: 1
+  minBlyb: 2
   blyb: {fileID: 9185934289686911736, guid: b502b5fe1709f4524936c88a0c2bb425, type: 3}
-  minBlyb: 1
+  initProtein: 16
   autoRespawn: 1
 --- !u!114 &1883381888
 MonoBehaviour:

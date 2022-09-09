@@ -54,18 +54,18 @@ private List<string[]> rowData = new List<string[]>();
     public List <float> e2repB;
 
     int sampleGroup;
- 
+
     
-    
- 
+
     BlibControls sampledBlib;
 
     // Start is called before the first frame update
     void Start()
     {
+        
         itCount = 0;
         sampleGroup = 0;
-
+        
     }
 
     // Update is called once per frame
@@ -89,8 +89,8 @@ private List<string[]> rowData = new List<string[]>();
                 {   
                     sampler = UnityEngine.Random.Range(0,blibs.Length);
                     sampledBlib = blibs[sampler].GetComponent<BlibControls>();
-
-
+                    
+                        
                     intron1.Add(sampledBlib.introns[0,0]);
                     intron2.Add(sampledBlib.introns[1,0]);
                     intron3.Add(sampledBlib.introns[0,1]);

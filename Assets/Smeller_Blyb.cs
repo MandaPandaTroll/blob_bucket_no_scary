@@ -54,7 +54,7 @@ public class Smeller_Blyb : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         latestLookDistance = blyb.latestLookDistance;
         here = gameObject.transform.position;

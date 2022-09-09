@@ -13,7 +13,7 @@ public bool academySpeedModifier_enabled;
 CurriculumHandler curriculumHandler;
 float speedModifier;
 
-float happiness = 0;
+public float happiness = 0;
 List<float> resourceBuffer = new List<float>();
 public int nomLim;
  int nomCount;
@@ -40,6 +40,9 @@ Collider2D[] smellColliders;
 
 BlobGenome genome;
 Smeller_Blob smeller;
+
+//Happiness weights
+public float w_energy, w_protein, w_health;
 
 
 void Awake(){
@@ -89,14 +92,14 @@ float ObsAge;
 public override void OnEpisodeBegin(){
 step = 0;
 nomCount = 0;
-
+booperSize = 0;
 if(academySpeedModifier_enabled == true){
     curriculumHandler = FindObjectOfType<CurriculumHandler>();
                                 speedModifier = curriculumHandler.GetBloybSpeedModifier();
                     }else{speedModifier = 1.0f;}
 }
-float scaledSmellDistance = 0, smellReward = 0;
-Vector2 scaledClosest = new Vector2 (0f,0f);
+float scaledSmellDistance = 0;
+
 
 
 
@@ -104,29 +107,16 @@ Vector2 scaledClosest = new Vector2 (0f,0f);
     Vector2[] scaledMateDistance; 
     Vector2[] scaledApexPredDistance; 
     Vector2[] scaledCompetitorDistance;
-    int dbugVelCount;
-    float[] vels  = new float[256];
+
 
 const int NUM_BUMP_TYPES = (int)BumperType.LastBumper;
 BumperType m_currentBumper;
   float deltaResource;   
+  float booperSize = 0, deltaBooperSize;
+  bool booper_isLarger = false;
 public override void CollectObservations(VectorSensor sensor)
 {
-    /*
-    dbugVelCount +=1;
-    vels[dbugVelCount] = rb.velocity.magnitude;
 
-    if(dbugVelCount >= 255){
-        float meanVel = 0;
-        for(int i = 0; i < 255;i++){
-            meanVel += vels[i];
-        }
-        meanVel = meanVel/256;
-        Debug.Log(meanVel);
-        dbugVelCount = 0;
-    }
-    
-     */
     step +=1;
 
 
@@ -135,6 +125,8 @@ if (bump == false)
     extBooper = null;
 }
 
+    
+
 if(latestLookDistance != ((genome.lookDistAllele1+genome.lookDistAllele2)/2f)){
     
 MaxScaledSmellDistance = Mathf.Sqrt( Mathf.Pow((((genome.lookDistAllele1+genome.lookDistAllele2)/2f)/4.0f),2.0f) + Mathf.Pow((((genome.lookDistAllele1+genome.lookDistAllele2)/2f)/4.0f),2.0f) );
@@ -142,9 +134,9 @@ latestLookDistance = ((genome.lookDistAllele1+genome.lookDistAllele2)/2f);
 }
  scaledSmellDistance = closest.magnitude /MaxScaledSmellDistance;
 
- scaledClosest =closest/MaxScaledSmellDistance;
 
- smellReward = (1.0f-scaledSmellDistance)/2048f;
+
+
   
 protein = bctrl.protein;
  maxEnergy = bctrl.maxEnergy;
@@ -168,7 +160,7 @@ sensor.AddObservation(angV);
 sensor.AddObservation(bctrl.energy/maxEnergy);
 sensor.AddObservation(bctrl.age/bctrl.lifeLength);
 sensor.AddObservation(bctrl.currentHealth/bctrl.maxHealth);
-sensor.AddObservation(((float)bctrl.NH4)/256f);
+sensor.AddObservation(((float)bctrl.NH4)/128f);
 
 for (int i = 0; i < 8; i++){
 sensor.AddObservation(scaledPreyDistance[i]);
@@ -180,7 +172,7 @@ sensor.AddObservation(scaledCompetitorDistance[i]);
 
 
 sensor.AddOneHotObservation((int)m_currentBumper, NUM_BUMP_TYPES);
-
+sensor.AddObservation(booper_isLarger);
 
 }
 float moveForce, turnTorque;
@@ -189,6 +181,7 @@ int miscActions;
 float energy;
 float E0, E1, ETimer;
 float meanResource0, meanResource1;
+public float newHappiness = 0;
 //float test_reward = 0;
 public override void OnActionReceived(ActionBuffers actionBuffers)
 {  
@@ -310,13 +303,14 @@ public override void OnActionReceived(ActionBuffers actionBuffers)
     float normProtein = (float)bctrl.protein / (float)bctrl.proteinToReproduce;
     float normHealth = bctrl.currentHealth/bctrl.maxHealth;
 
-    float homeo = (normEnergy+normProtein+normHealth)/3.0f;
-    float newHappiness = 0.5f + 0.5f*(float)System.Math.Tanh((double)((4*homeo)  -2.00f));
+    float homeo = (w_energy*normEnergy+w_protein*normProtein+w_health*normHealth)/3.0f;
+    //newHappiness = 0.5f + 0.5f*(float)System.Math.Tanh((double)((4*homeo)  -2.00f));
+    newHappiness = 0.95f - (1.0f/((float)System.Math.Cosh((double)(2.635f*homeo))));
     float deltaHappiness = newHappiness - happiness;
 
         AddReward(deltaHappiness);
         
-        happiness = newHappiness;
+        happiness = Mathf.Clamp(newHappiness, -1f, 1f);
 
         /*
         resourceBuffer.Add((energy/bctrl.maxEnergy)+((float)protein/(float)bctrl.proteinToReproduce));
@@ -345,12 +339,10 @@ public override void OnActionReceived(ActionBuffers actionBuffers)
         */
 
     if(bctrl.hasReproduced == true)
-    {    newHappiness = 1.0f;
-         deltaHappiness = newHappiness - happiness;
+    {    
 
         AddReward(1.0f);
         
-        happiness = newHappiness;
         
         bctrl.hasReproduced = false;
     }
@@ -379,19 +371,23 @@ public override void OnActionReceived(ActionBuffers actionBuffers)
             this.enabled = false;
         }
 
-             if (booper.tag == "Predator2" )
-            {
-                m_currentBumper = BumperType.Predator2;
-             
-                
-            }
-
-
-            if (booper.tag == "Predator" )
+             if (booper.tag == "Predator" ||  booper.tag == "Predator2")
             {   
-                m_currentBumper = BumperType.Predator;
-            }
-            
+                if (booper.tag == "Predator"){
+                    m_currentBumper = BumperType.Predator;
+                    }
+                else if (booper.tag == "Predator2"){
+                    m_currentBumper = BumperType.Predator2;
+                    }
+
+                booperSize = booper.transform.localScale.x;
+                if(booperSize > transform.localScale.x){
+                    booper_isLarger = true;
+                }else{booper_isLarger = false;}
+                
+            }else{booperSize = 0; booper_isLarger = false;}
+
+
 
          if (booper.tag == "Prey" || booper.tag == "Carcass" )
          {

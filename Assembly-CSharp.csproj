@@ -78,6 +78,7 @@
      <Compile Include="Assets/CodeMonkey/Utils/UI_Sprite.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GeomUtil3D.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/DetectableGameObject.cs" />
+     <Compile Include="Assets/SqrSmeller.cs" />
      <Compile Include="Assets/BlibSatLogger.cs" />
      <Compile Include="Assets/Scripts/BlybControls.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/IEncodingSettings.cs" />
@@ -146,7 +147,7 @@
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectShape.cs" />
      <Compile Include="Assets/BlibGenome.cs" />
      <Compile Include="Assets/Scripts/BlubControls.cs" />
-     <Compile Include="Assets/SqrSmeller.cs" />
+     <Compile Include="Assets/Scripts/sampleGeneticDiversity.cs" />
      <None Include="Assets/CodeMonkey/README.txt" />
     <Reference Include="UnityEngine">
         <HintPath>/Applications/2020.3.17f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>

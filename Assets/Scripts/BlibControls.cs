@@ -619,8 +619,58 @@ List <string> codon;
             void OnCollisionStay2D(Collision2D col)
             {
 
+                GameObject booper = col.gameObject;
 
-                if(col.gameObject.tag != "Prey"){
+                if(booper.tag == "Predator" )
+                {   
+                    BrainBlobControls contactor = booper.GetComponent<BrainBlobControls>();
+                    if(contactor.tryPhagocytise == true){
+
+                        contactor.protein += nutLevel;
+                        nutLevel = 0;
+                        contactor.energy += energy;
+                        energy = 0;
+
+                        Destroy(gameObject, 0.2f);
+                    }else{
+                        ContactPoint2D contact = col.GetContact(0);
+                        float thisDir = rb.rotation*Mathf.Deg2Rad;
+                        Vector2 norm = contact.normal;
+                
+               
+                        rb.AddForce(contact.normal * moveForce*5f);
+                
+                        rb.AddTorque((norm.y + norm.x )*Mathf.Rad2Deg);
+                    }
+                    
+                }
+
+                if(booper.tag == "Predator2" )
+                {   
+                    BrainBlybControls contactor = booper.GetComponent<BrainBlybControls>();
+                    if(contactor.tryPhagocytise == true){
+
+                        contactor.protein += nutLevel;
+                        nutLevel = 0;
+                        contactor.energy += energy;
+                        energy = 0;
+
+                        Destroy(gameObject, 0.2f);
+                    }else{
+                        ContactPoint2D contact = col.GetContact(0);
+                        float thisDir = rb.rotation*Mathf.Deg2Rad;
+                        Vector2 norm = contact.normal;
+                
+               
+                        rb.AddForce(contact.normal * moveForce*5f);
+                
+                        rb.AddTorque((norm.y + norm.x )*Mathf.Rad2Deg);
+
+                    }
+                    
+                    
+                }
+                if(booper.tag == "Wall" || booper.tag == "ApexPred"){
 
                 ContactPoint2D contact = col.GetContact(0);
                 float thisDir = rb.rotation*Mathf.Deg2Rad;
@@ -631,6 +681,8 @@ List <string> codon;
                 
                 rb.AddTorque((norm.y + norm.x )*Mathf.Rad2Deg);
                 }
+
+                
                 
                 
 

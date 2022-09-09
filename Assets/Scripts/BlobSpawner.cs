@@ -10,25 +10,28 @@ public class BlobSpawner : MonoBehaviour
   public int initBlob;
   public int extraBlob;
   public int minBlob;
-  public GameObject brainblob;
+  public GameObject blob;
+  float boxSize;
   GameObject[] blobs;
+  public int initProtein;
 
   GameObject box;
 
- float boxSize;
-    public bool autoRespawn;
+  public bool autoRespawn;
 
     // Start is called before the first frame update
     void Start()
     {   
         box = GameObject.Find("box");
-         boxSize = box.transform.localScale.x;
+        boxSize = box.transform.localScale.x;
 
         for(int i = 0; i < initBlob; i++){
         float x = (float)Random.Range(-boxSize/3,boxSize/3);
         float y = (float)Random.Range(-boxSize/3,boxSize/3);
-       Instantiate(brainblob, new Vector3(x, y, 0), Quaternion.identity);
-
+       Instantiate(blob, new Vector3(x, y, 0), Quaternion.identity);
+       BrainBlobControls bctrl = blob.GetComponent<BrainBlobControls>();
+       bctrl.protein = initProtein;
+       bctrl.age = Random.Range(0,bctrl.lifeLength*0.75f);
         }
     }
 
@@ -38,7 +41,6 @@ public class BlobSpawner : MonoBehaviour
     }
 void LateUpdate()
 {
-  boxSize = box.transform.localScale.x;
   blobs = GameObject.FindGameObjectsWithTag("Predator");
   blobN = blobs.Length;
   if (Input.GetKeyDown("o") == true  ){ extraSpawn();}
@@ -52,7 +54,10 @@ void LateUpdate()
         for(int i = 0; i < extraBlob; i++){
         float x = (float)Random.Range(-boxSize/3,boxSize/3);
         float y = (float)Random.Range(-boxSize/3,boxSize/3);
-       Instantiate(brainblob, new Vector3(x, y, 0), Quaternion.identity);
+       Instantiate(blob, new Vector3(x, y, 0), Quaternion.identity);
+       BrainBlobControls bctrl = blob.GetComponent<BrainBlobControls>();
+       bctrl.protein = 0;
+       bctrl.age = Random.Range(0,bctrl.lifeLength*0.75f);
   }
   }
 

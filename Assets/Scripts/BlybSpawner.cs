@@ -5,13 +5,15 @@ using UnityEngine;
 
 public class BlybSpawner : MonoBehaviour
 {
+   
    int blybN;
-   GameObject[] blybs;
   public int initBlyb;
   public int extraBlyb;
+  public int minBlyb;
   public GameObject blyb;
   float boxSize;
-  public int minBlyb;
+  GameObject[] blybs;
+  public int initProtein;
 
   GameObject box;
 
@@ -27,9 +29,11 @@ public class BlybSpawner : MonoBehaviour
         float x = (float)Random.Range(-boxSize/3,boxSize/3);
         float y = (float)Random.Range(-boxSize/3,boxSize/3);
        Instantiate(blyb, new Vector3(x, y, 0), Quaternion.identity);
+       BrainBlybControls bctrl = blyb.GetComponent<BrainBlybControls>();
+       bctrl.protein = initProtein;
+       bctrl.age = Random.Range(0,bctrl.lifeLength*0.75f);
         }
     }
-
 
       void OnGUI()
     {
@@ -51,6 +55,9 @@ void LateUpdate()
         float x = (float)Random.Range(-boxSize/3,boxSize/3);
         float y = (float)Random.Range(-boxSize/3,boxSize/3);
        Instantiate(blyb, new Vector3(x, y, 0), Quaternion.identity);
+       BrainBlybControls bctrl = blyb.GetComponent<BrainBlybControls>();
+       bctrl.protein = 0;
+       bctrl.age = Random.Range(0,bctrl.lifeLength*0.75f);
   }
   }
 

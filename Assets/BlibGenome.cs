@@ -1080,8 +1080,8 @@ mutate = false;
     blueAllele2 = nLLY_B/12f;
     
 
-    moveAllele1 = nMVV_A*6f;
-    moveAllele2 = nMVV_B*6f;
+    moveAllele1 = nMVV_A*3f;
+    moveAllele2 = nMVV_B*3f;
 
     turnTorqueAllele1 = nTRN_A*6f;
     turnTorqueAllele2 = nTRN_B*6f;

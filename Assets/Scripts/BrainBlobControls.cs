@@ -44,9 +44,9 @@ float colorG;
 float colorB;
 float colorA = 1f;
 Color geneticColor;
-public float maxHealth = 256f;
-public float currentHealth = 256f;
-bool bump;
+public float maxHealth = 14f;
+public float currentHealth = 14f;
+
 //Script instance genetically related mate involved in conjugation
 BrainBlobControls mate;
 
@@ -61,7 +61,7 @@ public float speciationDistance;
     public float pEnergy;
     public float maxEnergy;
     public float eCost;
-
+    
     public float conjAge =0;
 
  
@@ -107,13 +107,14 @@ System.Random rndA = new System.Random();
     public int protein;
     public int proteinToReproduce;
     public int NH4;
+    public int NH4_tox_lvl;
     public bool excreting, tryAttack, tryPhagocytise, tryConjugate, tryReproduce;
     
 
     nutGrid m_nutgrid;
 
     BlobGenome genome;
-
+    BrainBlob thisBrain;
 
 void Awake(){
     
@@ -121,10 +122,11 @@ void Awake(){
     // Start is called before the first frame update
     void Start()
     {
+        currentHealth = maxHealth/2;
         age = 0;
         
         genome = this.gameObject.GetComponent<BlobGenome>();
-        
+        thisBrain = this.gameObject.GetComponent<BrainBlob>();
         rCount = 0;
         eaten = false;
         alive = true;
@@ -200,9 +202,6 @@ void Awake(){
         if(Time.time < 0.1f && initDiversity != 0.0f){InitDiversifier(); }
         if(energy < 0){energy = 0;}
         if (energy > maxEnergy){energy = maxEnergy;}
-        if(energy < maxEnergy/32){
-            currentHealth += -0.1f;
-        }
 
         pEnergy = energy;
 
@@ -216,6 +215,9 @@ void Awake(){
         }
     if(alive == true)
     {   
+        if(energy < maxEnergy/32){
+            currentHealth += -0.1f;
+        }
         if  ( age > lifeLength || deathDice == 1 || currentHealth <= 0 )
             {
                 
@@ -225,8 +227,8 @@ void Awake(){
         if(currentHealth > maxHealth){
             currentHealth = maxHealth;
         }
-        if(tryAttack == true ||  tryConjugate == true || tryPhagocytise == true){
-            if(bump == false && energy >= 5f){
+        if(tryAttack == true ||  tryConjugate == true  || tryReproduce == true || tryPhagocytise || excreting == true){
+            if(energy >= 1.0f){
                 energy += -0.5f;
             }
         }
@@ -244,9 +246,10 @@ void Awake(){
             protein += -1;
             NH4_Timer = 0f;
             
+            float NH4_excess = (float)(NH4 - NH4_tox_lvl);
             //Ammonia toxicity
-            if(NH4 >= (int)Mathf.Pow(2f,sizeGene)){
-                currentHealth += -1f;
+            if(NH4 >= NH4_tox_lvl){
+                currentHealth += -1f*(Mathf.Pow(2f,0.1f*NH4_excess)-1f);
                 
                 }
 
@@ -265,7 +268,7 @@ void Awake(){
         int dC = (int) ( (lifeLength*Mathf.Pow((3f*lifeLength/(age+1)),2f)) - (9f*lifeLength) );
         deathDice = Random.Range(1,dC);
                 // rCo = 10 + (L/a)^2
-       int rCo = (int)( lifeLength*( (lifeLength/age) -1) ); 
+       int rCo = (int)( ( 1+ (lifeLength/age)) ); 
         
         rDice = Random.Range(1, rCo);
         
@@ -308,8 +311,8 @@ void Awake(){
         int decayCount = 0;
             void Dead()
         {   decayCount += 1;
-        if(this.gameObject.GetComponent<BrainBlob>().enabled == true){
-            this.gameObject.GetComponent<BrainBlob>().enabled = false;
+        if(thisBrain.enabled == true){
+            thisBrain.enabled = false;
         }
             if(decayCount >= 7){
             energy -= 16f;
@@ -373,7 +376,7 @@ void Awake(){
                 }
 
             if( alive == true){
-                bump = true;
+                
                 if(tryPhagocytise == true){
                     if(booper.tag == ("Carcass"))
                     {
@@ -392,12 +395,13 @@ void Awake(){
                     float deltaSize = this.gameObject.transform.localScale.x - booper.gameObject.transform.localScale.x;
                     if(contactor.tryAttack == true){
                         if(deltaSize < 0 ){
-                            currentHealth += deltaSize*deltaSize;
+                            currentHealth = 0;
+                            this.gameObject.GetComponent<BrainBlob>().AddReward(-1f);
                         }
                     }
                     if(tryAttack == true){
                         if(deltaSize > 0 ){
-                            contactor.currentHealth += deltaSize*deltaSize*(-1f);
+                            contactor.currentHealth = 0;
                         }
                     }
 
@@ -409,12 +413,15 @@ void Awake(){
                     float deltaSize = this.gameObject.transform.localScale.x - booper.gameObject.transform.localScale.x;
                     if(contactor.tryAttack == true){
                         if(deltaSize < 0 ){
-                            currentHealth += deltaSize*deltaSize;
+                            this.gameObject.GetComponent<BrainBlob>().AddReward(-1f);
+                            currentHealth = 0;
+                            thisBrain.SetReward(-1f);
                         }
                     }
                     if(tryAttack == true){
                         if(deltaSize > 0 ){
-                            contactor.currentHealth += deltaSize*deltaSize*(-1f);
+                            contactor.currentHealth = 0;
+                            
                         }
                     }
 
@@ -433,7 +440,8 @@ void Awake(){
                     energy = 0;
                     eaten = true;
                     currentHealth = 0;
-                    gameObject.GetComponent<BrainBlob>().enabled = false;
+                    thisBrain.SetReward(-1f);
+                    thisBrain.enabled = false;
                     Destroy(gameObject,0.2f);
                     
         
@@ -446,7 +454,7 @@ void Awake(){
             }
 
     void OnCollisionExit2D(Collision2D col){
-        bump = false;
+        
     }
 
 
@@ -575,9 +583,10 @@ void Awake(){
                 sigmoid = sizeGene/ (1f+ Mathf.Exp(-k*(x)));
                 newSize = new Vector3(sigmoid,sigmoid,sigmoid);
                 transform.localScale = newSize;
+                NH4_tox_lvl = (int)Mathf.Pow(2f,newSize.x);
                     maxEnergy = sigmoid*35000f;
                 energyToReproduce = maxEnergy /2.0f;
-                maxHealth = (int)Mathf.Round(Mathf.Pow(4, newSize.x+1f));
+                maxHealth = Mathf.Round(Mathf.Pow(4, newSize.x+1f));
                     if (generation == 100|| generation == 200 || generation == 300 || generation == 400 || generation == 500 || generation == 600 || generation == 800 || generation == 1000)
                     {
                         Debug.Log( 
@@ -637,9 +646,10 @@ void Awake(){
                 sigmoid = sizeGene/ (1f+ Mathf.Exp(-k*(x)));
                 newSize = new Vector3(sigmoid,sigmoid,sigmoid);
                 transform.localScale = newSize;
+                NH4_tox_lvl = (int)Mathf.Pow(2f,newSize.x);
                 maxEnergy = sigmoid*35000f;
                 energyToReproduce = maxEnergy /2.0f;
-                maxHealth = (int)Mathf.Round(Mathf.Pow(4, newSize.x+1f));
+                maxHealth = Mathf.Round(Mathf.Pow(4, newSize.x+1f));
 
                      
 

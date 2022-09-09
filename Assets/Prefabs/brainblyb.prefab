@@ -145,9 +145,14 @@ MonoBehaviour:
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
   academySpeedModifier_enabled: 0
+  happiness: 0
   nomLim: 8
   rCount: 0
+  w_energy: 1
+  w_protein: 1
+  w_health: 1
   latestLookDistance: 100
+  newHappiness: 0
 --- !u!114 &9185934289686911711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,7 +166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 79
+    VectorObservationSize: 80
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 0
@@ -240,7 +245,7 @@ MonoBehaviour:
   alive: 1
   eaten: 0
   nom: 0
-  eCostCo: 10000
+  eCostCo: 40000
   maxHealth: 256
   currentHealth: 256
   speciationDistance: 0.5
@@ -286,9 +291,9 @@ MonoBehaviour:
   rDice: 0
   generation: 0
   deadLayer: 9
-  basalMet: 1
+  basalMet: 2
   protein: 0
-  proteinToReproduce: 256
+  proteinToReproduce: 64
   NH4: 0
   excreting: 0
   tryAttack: 0

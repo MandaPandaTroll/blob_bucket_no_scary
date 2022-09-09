@@ -27,7 +27,6 @@ bool alive = true;
 bool eaten = false;
 bool hasReproduced = false;
 
-bool bump;
 GameObject box;
 
 //Collision identification sensor
@@ -349,7 +348,7 @@ hasReproduced = bctrl.hasReproduced;
     {
         return;
     }
-    bump = true;
+    
     GameObject booper = col.gameObject;
     
     if(alive == true )
@@ -402,7 +401,7 @@ hasReproduced = bctrl.hasReproduced;
 
     void OnCollisionExit2D(Collision2D col)
     {
-        bump = false;
+        
         m_currentBumper = BumperType.None;
     }
 

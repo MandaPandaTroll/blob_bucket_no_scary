@@ -95,6 +95,8 @@ public class Testing : MonoBehaviour
         freeNutes = totNutes;
         GameObject spawner = GameObject.Find("Spawner");
         totNutes += (spawner.GetComponent<BlibSpawner>().initProtein) * (spawner.GetComponent<BlibSpawner>().initBlib);
+        totNutes += (spawner.GetComponent<BlobSpawner>().initProtein) * (spawner.GetComponent<BlobSpawner>().initBlob);
+        totNutes += (spawner.GetComponent<BlybSpawner>().initProtein) * (spawner.GetComponent<BlybSpawner>().initBlyb);
 
         newArray = nutgrid.gridArray;
         int gridWidth = newArray.GetLength(0);
@@ -419,29 +421,20 @@ public class Testing : MonoBehaviour
                 {
                     freeNutes = nutgrid.GetSum();
                     grandNutes = freeNutes + lockedNutes;
-                    for (int x = 0; x < nutgrid.gridArray.GetLength(0); x++)
+                    int nutleft = grandNutes - totNutes;
+                    for (int x = 1; x < nutgrid.gridArray.GetLength(0)-1; x++)
                     {
                         
-                        for (int y = 0; y < nutgrid.gridArray.GetLength(1); y++)
+                        for (int y = 1; y < nutgrid.gridArray.GetLength(1)-1; y++)
                         {
 
 
                             int thisVal = nutgrid.GetValue(x, y);
                             
-                            if (thisVal > 0 && nutgrid.GetSum()+lockedNutes > totNutes)
+                            if (thisVal > 0 && grandNutes > totNutes && nutleft > 0)
                             {
-                                if(thisVal > 3){
-                                nutgrid.SetValue(x, y, thisVal -4);
-                                }else
-                                if(thisVal == 3){
-                                nutgrid.SetValue(x, y, thisVal -3);
-                                }else
-                                if(thisVal == 2){
-                                nutgrid.SetValue(x, y, thisVal -2);
-                                }else
-                                if(thisVal == 1){
-                                nutgrid.SetValue(x, y, thisVal -1);
-                                }
+                                nutleft += - thisVal;
+                                nutgrid.SetValue(x, y, 0);
                                 
 
 
