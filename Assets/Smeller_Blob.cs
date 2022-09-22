@@ -49,7 +49,7 @@ public class Smeller_Blob : MonoBehaviour
     scaledPreyDistance          = new Vector2[9]{n0,n0,n0,n0,n0,n0,n0,n0,n0}; 
     scaledMateDistance          = new Vector2[9]{n0,n0,n0,n0,n0,n0,n0,n0,n0}; 
     scaledApexPredDistance      = new Vector2[9]{n0,n0,n0,n0,n0,n0,n0,n0,n0}; 
-    scaledCompetitorDistance    = new Vector2[9]{n0,n0,n0,n0,n0,n0,n0,n0,n0}; 
+    scaledCompetitorDistance    = new Vector2[9]{n0,n0,n0,n0,n0,n0,n0,n0,n0};  
         
     }
 

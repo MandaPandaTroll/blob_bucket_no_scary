@@ -8,7 +8,9 @@ using System.Text.RegularExpressions;
 
 public class BlobGenome : MonoBehaviour
 {
-    
+    public bool translocation_enabled;
+    public bool duplication_enabled;
+
     public float pythagDist;
     float age;
     public List<string> lineageID = new List<string>();
@@ -215,7 +217,7 @@ void OnCollisionStay2D(Collision2D col){
     GameObject booper = col.gameObject;
     if (booper.tag == "Predator" ){
         mateBctrl = booper.GetComponent<BrainBlobControls>();
-        if (booper.tag == "Predator" && bctrl.tryConjugate == true && mateBctrl.tryConjugate == true){
+        if (bctrl.tryConjugate == true && mateBctrl.tryConjugate == true){
             mateGenome = col.gameObject.GetComponent<BlobGenome>();
          cNum = UnityEngine.Random.Range(0,A.GetLength(0));
          AorB = UnityEngine.Random.Range(0,2);
@@ -338,7 +340,7 @@ void OnCollisionStay2D(Collision2D col){
     
     int[] triIndex = new int[2]{UnityEngine.Random.Range(0,chromoPairs),UnityEngine.Random.Range(3,basePairs-6)}; //The 3 nucleobases to duplicate and their location.
     
-    if(transLocRoll == 64){
+    if(transLocRoll == 64 && translocation_enabled == true){
 
         string origin ="", destination ="";
         int tAorB = UnityEngine.Random.Range(0,2);
@@ -442,10 +444,10 @@ void OnCollisionStay2D(Collision2D col){
         }
 
         
-    Debug.Log("Translocation :  " + " Origin: " + origin + "["+siteIndex_originI+","+siteIndex_originJ+"]" + "-[" + System.String.Join("", tranString_origin) +  "] " + " Destination: " + destination + "["+siteIndex_destinationI+","+siteIndex_destinationJ+"]" + "-[" + System.String.Join("", tranString_destination) +  "]");
+    //Debug.Log("Translocation :  " + " Origin: " + origin + "["+siteIndex_originI+","+siteIndex_originJ+"]" + "-[" + System.String.Join("", tranString_origin) +  "] " + " Destination: " + destination + "["+siteIndex_destinationI+","+siteIndex_destinationJ+"]" + "-[" + System.String.Join("", tranString_destination) +  "]");
     }
 
-    if(duplicationRoll == 64){
+    if(duplicationRoll == 64 && duplication_enabled == true){
         
         if(AorB == 0){
             triNu[0] = A[triIndex[0],triIndex[1]];
@@ -458,7 +460,7 @@ void OnCollisionStay2D(Collision2D col){
                 A[triIndex[0],triIndex[1]+3] = triNu[0];
                 A[triIndex[0],triIndex[1]+4] = triNu[1];
                 A[triIndex[0],triIndex[1]+5] = triNu[2];
-                Debug.Log("Duplication! : " + "[" + triIndex[0] + "," + triIndex[1] + "] " + thisD + "-" + nextD);
+                //Debug.Log("Duplication! : " + "[" + triIndex[0] + "," + triIndex[1] + "] " + thisD + "-" + nextD);
                 
             } 
 
@@ -472,13 +474,15 @@ void OnCollisionStay2D(Collision2D col){
                 B[triIndex[0],triIndex[1]+3] = triNu[0];
                 B[triIndex[0],triIndex[1]+4] = triNu[1];
                 B[triIndex[0],triIndex[1]+5] = triNu[2];
-                Debug.Log("Duplication! : " + "[" + triIndex[0] + "," + triIndex[1] + "] " + thisD + "-" + nextD);
+                //Debug.Log("Duplication! : " + "[" + triIndex[0] + "," + triIndex[1] + "] " + thisD + "-" + nextD);
                 
             } 
     }
+
+    
     
     // Substitution point mutation below.
-    numMutations = UnityEngine.Random.Range(0,6);
+    numMutations = UnityEngine.Random.Range(1,3);
     for (int i = 0; i < numMutations; i++){
     
     int index0 = UnityEngine.Random.Range(0, chromoPairs);
@@ -1136,7 +1140,7 @@ nGRN_A = 0; nGRN_B = 0; nRED_A = 0; nRED_B = 0;
         nTRN_B = (float)turnCountB;
         nREP_B = (float)repCountB;
         nLIF_B = (float)lifCountB;
-        nLKDISTA_B = (float)lookCountA;
+        nLKDISTA_B = (float)lookCountB;
         nTHICC_B =   (float)thiccCountB;
 
     

@@ -56,6 +56,7 @@ public class BlibSpawner : MonoBehaviour
        thisBlib.name = popLogger.GetName("blib");
        thisBlib.name = thisBlib.name.Replace("(Clone)", "");
        BlibControls thisBlibControls = thisBlib.GetComponent<BlibControls>();
+       thisBlibControls.energy = 100f;
        thisBlibControls.nutLevel = initProtein;
        thisBlibControls.age = Random.Range(0f, thisBlibControls.lifeLength*0.8f);
        thisBlibControls.energy = Random.Range(thisBlibControls.energyToReproduce/16f, thisBlibControls.energyToReproduce);
@@ -95,8 +96,10 @@ void LateUpdate()
         float x = (float)Random.Range(-boxSize/3,boxSize/3);
         float y = (float)Random.Range(-boxSize/3,boxSize/3);
        GameObject thisBlib = Instantiate(blib, new Vector3(x, y, 0), Quaternion.identity);
+       thisBlib.GetComponent<BlibControls>().energy = 100f;
        thisBlib.name = popLogger.GetName("blib");
        thisBlib.name = thisBlib.name.Replace("(Clone)", "");
+       
       }
   }
 

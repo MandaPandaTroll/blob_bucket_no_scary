@@ -491,7 +491,7 @@ if(alive == true)
                     
                     if (generation == 100|| generation == 200 || generation == 300 || generation == 400 || generation == 500 || generation == 600 || generation == 800 || generation == 1000)
                     {
-                        Debug.Log( 
+                       /* Debug.Log( 
                             "Blybgen "        +
                             generation        + "," + 
                             moveAllele1       + "," +
@@ -500,7 +500,7 @@ if(alive == true)
                             turnDice          + "," +
                             lookDistance      + "," +
                             energyToReproduce 
-                                    );
+                                    );*/
                     }
                     clone = Instantiate(this.gameObject);
                     clone.GetComponent<BlybControls>().generation +=1;

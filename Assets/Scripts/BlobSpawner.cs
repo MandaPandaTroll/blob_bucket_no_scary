@@ -14,6 +14,7 @@ public class BlobSpawner : MonoBehaviour
   float boxSize;
   GameObject[] blobs;
   public int initProtein;
+  public float initEnergy;
 
   GameObject box;
 
@@ -31,6 +32,8 @@ public class BlobSpawner : MonoBehaviour
        Instantiate(blob, new Vector3(x, y, 0), Quaternion.identity);
        BrainBlobControls bctrl = blob.GetComponent<BrainBlobControls>();
        bctrl.protein = initProtein;
+       initEnergy = bctrl.maxEnergy*0.1f;
+       bctrl.energy = initEnergy;
        bctrl.age = Random.Range(0,bctrl.lifeLength*0.75f);
         }
     }
@@ -57,6 +60,8 @@ void LateUpdate()
        Instantiate(blob, new Vector3(x, y, 0), Quaternion.identity);
        BrainBlobControls bctrl = blob.GetComponent<BrainBlobControls>();
        bctrl.protein = 0;
+       initEnergy = bctrl.maxEnergy*0.1f;
+       bctrl.energy = initEnergy;
        bctrl.age = Random.Range(0,bctrl.lifeLength*0.75f);
   }
   }

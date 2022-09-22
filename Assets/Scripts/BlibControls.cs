@@ -14,7 +14,6 @@ public class BlibControls : MonoBehaviour
 RaycastHit2D rayResults;
 
 
-
 CurriculumHandler curriculumHandler;
 public string[,] superSatellite = new string[4,27] {
     //Chromosome 0
@@ -37,7 +36,7 @@ public string[,] superSatellite = new string[4,27] {
      "G","A","A",  "C","G","T",  "T","G","A"},
 };
 
-BlibGenome genome;
+public BlibGenome genome;
 
 //Detector detector;
 //GameObject Alpha;
@@ -66,6 +65,7 @@ public float densityCo;
     System.Random rndA = new System.Random();
     
   
+
       
 
     // Selection parameters
@@ -118,21 +118,29 @@ int posVal;
 
  int[] lys, asn, ile, met, thr, arg, ser, tyr, phe, leu, cys, trp, gln, his, pro, val, ala, asp, glu, gly;int nothing;
 string[,] A, B;
-int chromoPairs, basePairs;
+int chromoPairs = 9;int basePairs = 486;
 
 List <string> codon;
      
     float speedModifier;
     
-    
+public float[] m_phenotype = new float[7];
+    void Awake(){
+        if(genome == null){
+        genome = gameObject.GetComponent<BlibGenome>();
+        }
+        m_phenotype = genome.phenotype;
+        for(int i = 0; i < m_phenotype.Length; i++){
+        Debug.Log(m_phenotype[i]);
+        }
+    }
     void Start()
     {  
         
         
-        
-        genome = gameObject.GetComponent<BlibGenome>();
-        chromoPairs = genome.chromoPairs;
-        basePairs = genome.basePairs;
+
+        chromoPairs = 9;
+        basePairs = 486;
         codon = new List<string>();
          lys = new int[5]; asn= new int[5]; ile= new int[5]; met= new int[5]; thr= new int[5]; arg= new int[5]; ser= new int[5]; tyr= new int[5]; phe= new int[5]; leu= new int[5]; cys= new int[5]; trp= new int[5]; gln= new int[5]; his= new int[5]; pro= new int[5]; val= new int[5]; ala= new int[5]; asp= new int[5]; glu= new int[5]; gly= new int[5];
         
@@ -171,7 +179,7 @@ List <string> codon;
         
          
          
-            
+            /*
             redAllele1 = genome.redAllele1;
             redAllele2 = genome.redAllele2;
 
@@ -205,8 +213,10 @@ List <string> codon;
                  blueGene = Mathf.Clamp((blueAllele1 + blueAllele2)/2.0f, 0.00f,1.00f);
 
             
+            */
 
-            geneticColor = new Color(redGene,greenGene,blueGene,colorA);
+
+            geneticColor = new Color(redGene,greenGene,blueGene,1f);
             geneticColor.r = redGene ;
             geneticColor.g = greenGene;
             geneticColor.b = blueGene;
@@ -358,7 +368,7 @@ List <string> codon;
         posVal = m_nutgrid.GetValue(transform.position);
         if (posVal > 0 ) {
             nutLevel +=1;
-        m_nutgrid.SetValue(transform.position, posVal-1);
+        m_nutgrid.SetValue(transform.position, (ushort)(posVal-1));
 
         int feedTurn = Random.Range(0,(int)turnDice/8);
         if(feedTurn == 1){
@@ -417,7 +427,7 @@ List <string> codon;
 
             
 
-            geneticColor = new Color(redGene,greenGene,blueGene,colorA);
+            geneticColor = new Color(redGene,greenGene,blueGene,1f);
             geneticColor.r = redGene ;
             geneticColor.g = greenGene;
             geneticColor.b = blueGene;
@@ -509,11 +519,11 @@ List <string> codon;
         }
 
 
-            if(deathDice == 1 && age > (lifeLength*(3f/4f)) || age >= lifeLength)
+            if(deathDice == 1 && age > (lifeLength*(3f/4f)) || age >= lifeLength || energy <= 0)
 
             {    
                     
-                    m_nutgrid.SetValue(transform.position, posVal + nutLevel);
+                    m_nutgrid.SetValue(transform.position, (int)(posVal + nutLevel));
                     nutLevel = 0;
                 Destroy(gameObject);
             
@@ -573,7 +583,7 @@ List <string> codon;
                     Mathf.Abs((introns[1,0] - mate.introns[1,0])) +
                     Mathf.Abs((introns[0,1] - mate.introns[0,1])) +
                     Mathf.Abs((introns[1,1] - mate.introns[1,1])))/4.0f;
-                    if(geneticDistance > speciationDistance){Debug.Log("blibGenDist = " + geneticDistance);}
+                    //if(geneticDistance > speciationDistance){Debug.Log("blibGenDist = " + geneticDistance);}
                     if(geneticDistance < speciationDistance)
                     {
                     
@@ -702,12 +712,12 @@ List <string> codon;
 
 
 
-            
+            float energyMoveMod;
             void GoForward()
 
             {    
-                if(energy < energyToReproduce/16f){return;}
-                else{
+                if(energy < energyToReproduce/16f){energyMoveMod = 0;}
+                else{energyMoveMod = 1f;}
                 Vector2 origin = transform.position + transform.up;
                 Vector2 direction = transform.up;
                float distance = 64f;
@@ -716,8 +726,8 @@ List <string> codon;
                         rb.AddTorque(turnTorque * Random.Range(-1f,1f));
                     }
                     
-                    rb.AddForce(transform.up * moveForce*rb.mass*speedModifier);
-                    energy -= moveForce/1024f;
+                    rb.AddForce((transform.up * moveForce*rb.mass*speedModifier)*energyMoveMod);
+                    energy -= (moveForce/1024f)*energyMoveMod;
                     int randTurner = Random.Range(0,(int)turnDice);
 
                     if (randTurner == 0)
@@ -726,7 +736,7 @@ List <string> codon;
                         
                     }
                     
-                   }
+                   
             }
 
             private int SatChunk, SatIndex, pointmutation;
@@ -846,39 +856,37 @@ List <string> codon;
                         
             redAllele1 = genome.redAllele1;
             redAllele2 = genome.redAllele2;
+            redGene = Mathf.Clamp((redAllele1 + redAllele2)/2.0f, 0.00f,1.00f);
 
             greenAllele1 = genome.greenAllele1;
             greenAllele2 = genome.greenAllele2;
+            greenGene = Mathf.Clamp((greenAllele1 + greenAllele2)/2.0f, 0.00f,1.00f);
 
             blueAllele1 = genome.blueAllele1;
             blueAllele2 = genome.blueAllele2;
+            blueGene = Mathf.Clamp((blueAllele1 + blueAllele2)/2.0f, 0.00f,1.00f);
 
             moveAllele1 = genome.moveAllele1;
             moveAllele2 = genome.moveAllele2;
+            moveForce = (moveAllele1+moveAllele2)/2f;
 
             turnTorqueAllele1 = genome.turnTorqueAllele1;
             turnTorqueAllele2 = genome.turnTorqueAllele2;
+            turnTorque = (turnTorqueAllele1 + turnTorqueAllele2)/2.0f;
 
             e2repAllele1 = genome.e2repAllele1;
             e2repAllele2 = genome.e2repAllele2;
-
+            energyToReproduce = (e2repAllele1+e2repAllele2)/2.0f;
             lifeLength = (genome.lifeLengthAllele1 + genome.lifeLengthAllele2);
 
-                energyToReproduce = (e2repAllele1+e2repAllele2)/2.0f;
+                
 
-                moveForce = (moveAllele1+moveAllele2)/2f;
+                
 
-                turnTorque = (turnTorqueAllele1 + turnTorqueAllele2)/2.0f;
+                
 
-                redGene = Mathf.Clamp((redAllele1 + redAllele2)/2.0f, 0.00f,1.00f);
 
-                greenGene = Mathf.Clamp((greenAllele1 + greenAllele2)/2.0f, 0.00f,1.00f);
-
-                blueGene = Mathf.Clamp((blueAllele1 + blueAllele2)/2.0f, 0.00f,1.00f);
-
-            
-
-            geneticColor = new Color(redGene,greenGene,blueGene,colorA);
+            geneticColor = new Color(redGene,greenGene,blueGene,1f);
             geneticColor.r = redGene ;
             geneticColor.g = greenGene;
             geneticColor.b = blueGene;

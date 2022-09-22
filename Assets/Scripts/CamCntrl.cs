@@ -82,12 +82,12 @@ void Awake()
 
             if(Input.GetKeyDown("n") == true)
             {
-                Time.timeScale -= 1.0f;
+                Time.timeScale -= 0.25f;
                 Time.fixedDeltaTime = this.fixedDeltaTime * Time.timeScale;
             }
             if(Input.GetKeyDown("m") == true)
             {
-                Time.timeScale += 1.0f;
+                Time.timeScale += 0.25f;
                 Time.fixedDeltaTime = this.fixedDeltaTime * Time.timeScale;
             }
     }

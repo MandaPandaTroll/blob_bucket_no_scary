@@ -36,6 +36,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -51,6 +52,7 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -175,8 +177,8 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
-  m_InferenceDevice: 0
+  m_Model: {fileID: 5022602860645237092, guid: 753456d0e68da4435a4fdf2f1fd2dfed, type: 3}
+  m_InferenceDevice: 3
   m_BehaviorType: 0
   m_BehaviorName: BrainBlob
   TeamId: 0
@@ -245,11 +247,11 @@ MonoBehaviour:
   alive: 1
   eaten: 0
   nom: 0
-  eCostCo: 40000
+  eCostCo: 20000
   maxHealth: 256
   currentHealth: 256
   speciationDistance: 0.5
-  energy: 10000
+  energy: 4000
   pEnergy: 0
   maxEnergy: 40000
   eCost: 0
@@ -262,9 +264,9 @@ MonoBehaviour:
   turnTorque: 101.1475
   turnTorqueAllele1: 101.1475
   turnTorqueAllele2: 101.1475
-  sizeAllele1: 2
-  sizeAllele2: 2
-  sizeGene: 2
+  sizeAllele1: 3
+  sizeAllele2: 3
+  sizeGene: 3
   lookDistAllele1: 100
   lookDistAllele2: 100
   lookDistance: 200
@@ -291,10 +293,12 @@ MonoBehaviour:
   rDice: 0
   generation: 0
   deadLayer: 9
-  basalMet: 2
+  basalMet: 1
   protein: 0
-  proteinToReproduce: 64
+  proteinToReproduce: 128
+  maxProtein: 0
   NH4: 0
+  NH4_tox_lvl: 0
   excreting: 0
   tryAttack: 0
   tryPhagocytise: 0
@@ -314,6 +318,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281087887ede349089232a6c788cdf00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  translocation_enabled: 0
+  duplication_enabled: 0
   pythagDist: 0
   lineageID: []
   greenAllele1: 0

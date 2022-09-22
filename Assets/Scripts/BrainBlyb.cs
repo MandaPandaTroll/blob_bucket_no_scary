@@ -294,12 +294,13 @@ public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         
 
+
  rb.AddForce(fwd*speedModifier);
  rb.AddTorque(rotMag*turnTorque*rb.inertia);
- bctrl.energy -=  bctrl.eCost*Mathf.Abs(fwd.magnitude);
+ bctrl.energy -=  bctrl.eCost*Mathf.Abs(fwd.magnitude)*Mathf.Pow(rb.mass,0.66f);
  bctrl.energy -= bctrl.basalMet;
     float normEnergy = bctrl.energy/bctrl.maxEnergy;
-    float normProtein = (float)bctrl.protein / (float)bctrl.proteinToReproduce;
+    float normProtein = (float)bctrl.protein / (float)bctrl.maxProtein;
     float normHealth = bctrl.currentHealth/bctrl.maxHealth;
 
     float homeo = (w_energy*normEnergy+w_protein*normProtein+w_health*normHealth)/3.0f;

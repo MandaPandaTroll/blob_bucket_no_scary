@@ -46,20 +46,25 @@ GameObject[] blibs;
     public int maxSampleSize;
     public float sampleRate;
 
-   string TE3 = "t_0";
+   
     string filename;
 
     // Start is called before the first frame update
     void Start()
-    {
+    {   blibs  = GameObject.FindGameObjectsWithTag("Prey");
+        sat1.Clear();sat2.Clear();sat3.Clear();sat4.Clear();
+        A0.Clear();A1.Clear();A2.Clear();A3.Clear();A4.Clear();A5.Clear();A6.Clear();A7.Clear();A8.Clear();
+        B0.Clear();B1.Clear();B2.Clear();B3.Clear();B4.Clear();B5.Clear();B6.Clear();B7.Clear();B8.Clear();
+        unitName.Clear();
+        Array.Clear(blibs,0,blibs.Length);
         itCount = 0;
-        filename = "blib_sats" + TE3 +".csv";
+        filename = "blib_sats.csv";
         sampleGroup = 0;
         time = 0;
     }
-
+    string sampleChrom;
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
 
         
@@ -70,22 +75,8 @@ GameObject[] blibs;
         if (time >= sampleRate)
         {
 
-            if (totalTime < 2.0000e3f ){TE3 ="t_0";}
-
-            else if (totalTime > 2.0000e3f && totalTime < 4.0000e3f ){TE3 ="t_2e3";}
-
-            else if (totalTime > 4.0000e3f && totalTime < 6.0000e3f ){TE3 ="t_4e3";}
             
-            else if (totalTime > 6.0000e3f && totalTime < 8.0000e3f ){TE3 ="t_6e3";}
-
-            else if (totalTime > 8.0000e3f && totalTime < 10.0000e3f ){TE3 ="t_8e3";}
-
-            else if (totalTime > 10.0000e3f && totalTime < 12.0000e3f ){TE3 ="t_10e3";}
-
-            else if (totalTime > 12.0000e3f && totalTime < 14.0000e3f ){TE3 ="t_12e3";}
-
-            else {TE3 ="t_plus14e3";}
-            filename = "blib_sats_" + TE3 +".csv";
+            
              blibs  = GameObject.FindGameObjectsWithTag("Prey");
             if(blibs.Length <= 0){return;}
             if(blibs.Length >= 1)
@@ -102,7 +93,7 @@ GameObject[] blibs;
                     BlibControls  sampledBlib = blibs[sampler].GetComponent<BlibControls>();
                     BlibGenome sampledGenome = blibs[sampler].GetComponent<BlibGenome>();
                     string[] nucleotides = new string[27];
-                    string[] bases = new string[sampledGenome.extA.GetLength(1)];
+                    string[] bases = new string[sampledGenome.A.GetLength(1)];
                     unitName.Add(sampledBlib.gameObject.name);
                     for(int a = 0; a < 27; a++)
                     {
@@ -133,67 +124,67 @@ GameObject[] blibs;
                     sat4.Add(sampleSat4);
 
 
-                    for(int e = 0; e < bases.Length; e++)
+                    for(int e = 0; e < 486; e++)
                     {
-                        bases[e] = sampledGenome.extA[0,e];
+                        bases[e] = sampledGenome.A[0,e];
                     }
-                    string sampleChrom = String.Join("", bases);
+                     sampleChrom = String.Join("", bases);
                     A0.Add(sampleChrom);
 
-                    for(int e = 0; e < bases.Length; e++)
+                    for(int e = 0; e < 486; e++)
                     {
-                        bases[e] = sampledGenome.extA[1,e];
+                        bases[e] = sampledGenome.A[1,e];
                     }
                      sampleChrom = String.Join("", bases);
                     A1.Add(sampleChrom);
 
-                    for(int e = 0; e < bases.Length; e++)
+                    for(int e = 0; e < 486; e++)
                     {
-                        bases[e] = sampledGenome.extA[2,e];
+                        bases[e] = sampledGenome.A[2,e];
                     }
                      sampleChrom = String.Join("", bases);
                     A2.Add(sampleChrom);
 
-                    for(int e = 0; e < bases.Length; e++)
+                    for(int e = 0; e < 486; e++)
                     {
-                        bases[e] = sampledGenome.extA[3,e];
+                        bases[e] = sampledGenome.A[3,e];
                     }
                      sampleChrom = String.Join("", bases);
                     A3.Add(sampleChrom);
 
-                    for(int e = 0; e < bases.Length; e++)
+                    for(int e = 0; e < 486; e++)
                     {
-                        bases[e] = sampledGenome.extA[4,e];
+                        bases[e] = sampledGenome.A[4,e];
                     }
                      sampleChrom = String.Join("", bases);
                     A4.Add(sampleChrom);
 
 
-                    for(int e = 0; e < bases.Length; e++)
+                    for(int e = 0; e < 486; e++)
                     {
-                        bases[e] = sampledGenome.extA[5,e];
+                        bases[e] = sampledGenome.A[5,e];
                     }
                      sampleChrom = String.Join("", bases);
                     A5.Add(sampleChrom);
 
 
-                    for(int e = 0; e < bases.Length; e++)
+                    for(int e = 0; e < 486; e++)
                     {
-                        bases[e] = sampledGenome.extA[6,e];
+                        bases[e] = sampledGenome.A[6,e];
                     }
                      sampleChrom = String.Join("", bases);
                     A6.Add(sampleChrom);
 
-                    for(int e = 0; e < bases.Length; e++)
+                    for(int e = 0; e < 486; e++)
                     {
-                        bases[e] = sampledGenome.extA[7,e];
+                        bases[e] = sampledGenome.A[7,e];
                     }
                      sampleChrom = String.Join("", bases);
                     A7.Add(sampleChrom);
 
-                    for(int e = 0; e < bases.Length; e++)
+                    for(int e = 0; e < 486; e++)
                     {
-                        bases[e] = sampledGenome.extA[8,e];
+                        bases[e] = sampledGenome.A[8,e];
                     }
                      sampleChrom = String.Join("", bases);
                     A8.Add(sampleChrom);
@@ -201,67 +192,67 @@ GameObject[] blibs;
 
 
                     
-                    for(int e = 0; e < bases.Length; e++)
+                    for(int e = 0; e < 486; e++)
                     {
-                        bases[e] = sampledGenome.extB[0,e];
+                        bases[e] = sampledGenome.B[0,e];
                     }
                      sampleChrom = String.Join("", bases);
                     B0.Add(sampleChrom);
 
-                    for(int e = 0; e < bases.Length; e++)
+                    for(int e = 0; e < 486; e++)
                     {
-                        bases[e] = sampledGenome.extB[1,e];
+                        bases[e] = sampledGenome.B[1,e];
                     }
                      sampleChrom = String.Join("", bases);
                     B1.Add(sampleChrom);
 
-                    for(int e = 0; e < bases.Length; e++)
+                    for(int e = 0; e < 486; e++)
                     {
-                        bases[e] = sampledGenome.extB[2,e];
+                        bases[e] = sampledGenome.B[2,e];
                     }
                      sampleChrom = String.Join("", bases);
                     B2.Add(sampleChrom);
 
-                    for(int e = 0; e < bases.Length; e++)
+                    for(int e = 0; e < 486; e++)
                     {
-                        bases[e] = sampledGenome.extB[3,e];
+                        bases[e] = sampledGenome.B[3,e];
                     }
                      sampleChrom = String.Join("", bases);
                     B3.Add(sampleChrom);
 
-                    for(int e = 0; e < bases.Length; e++)
+                    for(int e = 0; e < 486; e++)
                     {
-                        bases[e] = sampledGenome.extB[4,e];
+                        bases[e] = sampledGenome.B[4,e];
                     }
                      sampleChrom = String.Join("", bases);
                     B4.Add(sampleChrom);
 
 
-                    for(int e = 0; e < bases.Length; e++)
+                    for(int e = 0; e < 486; e++)
                     {
-                        bases[e] = sampledGenome.extB[5,e];
+                        bases[e] = sampledGenome.B[5,e];
                     }
                      sampleChrom = String.Join("", bases);
                     B5.Add(sampleChrom);
 
 
-                    for(int e = 0; e < bases.Length; e++)
+                    for(int e = 0; e < 486; e++)
                     {
-                        bases[e] = sampledGenome.extB[6,e];
+                        bases[e] = sampledGenome.B[6,e];
                     }
                      sampleChrom = String.Join("", bases);
                     B6.Add(sampleChrom);
 
-                    for(int e = 0; e < bases.Length; e++)
+                    for(int e = 0; e < 486; e++)
                     {
-                        bases[e] = sampledGenome.extB[7,e];
+                        bases[e] = sampledGenome.B[7,e];
                     }
                      sampleChrom = String.Join("", bases);
                     B7.Add(sampleChrom);
 
-                    for(int e = 0; e < bases.Length; e++)
+                    for(int e = 0; e < 486; e++)
                     {
-                        bases[e] = sampledGenome.extB[8,e];
+                        bases[e] = sampledGenome.B[8,e];
                     }
                      sampleChrom = String.Join("", bases);
                     B8.Add(sampleChrom);

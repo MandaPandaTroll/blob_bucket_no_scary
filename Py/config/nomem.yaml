@@ -14,7 +14,7 @@ behaviors:
       beta: 1.0e-3
       epsilon: 0.3
 
-      lambd: 0.925
+      lambd: 0.9
       num_epoch: 3
 
     # Configuration of the neural network (common to PPO/SAC)
@@ -23,7 +23,7 @@ behaviors:
       vis_encode_type: resnet
       normalize: false
       hidden_units: 128
-      num_layers: 2
+      num_layers: 3
 
 
 
@@ -61,16 +61,16 @@ behaviors:
       beta: 1.0e-3
       epsilon: 0.3
 
-      lambd: 0.925
+      lambd: 0.9
       num_epoch: 3
 
     # Configuration of the neural network (common to PPO/SAC)
     network_settings:
       conditioning_type: none
-      vis_encode_type: simple
+      vis_encode_type: resnet
       normalize: false
       hidden_units: 128
-      num_layers: 2
+      num_layers: 3
 
 
 

@@ -174,7 +174,7 @@ System.Random rndA = new System.Random();
         //Ammonia secretion
         if(NH4 >= 32){
              posval = m_nutgrid.GetValue(transform.position);
-                m_nutgrid.SetValue(transform.position, posval + NH4);
+                m_nutgrid.SetValue(transform.position, (int)(posval + NH4));
                 NH4 = 0;
             }
         }
@@ -237,7 +237,7 @@ System.Random rndA = new System.Random();
             energy -= 10f*Time.deltaTime;
             
             if(NH4 >= 1){
-            m_nutgrid.SetValue(transform.position, posval +1);
+            m_nutgrid.SetValue(transform.position,(int) (posval +1));
             NH4 += -1;
             }
             if(protein >= 1){
@@ -583,14 +583,14 @@ System.Random rndA = new System.Random();
                     maxEnergy = sigmoid*35000f;
                     if (generation == 100|| generation == 200 || generation == 300 || generation == 400 || generation == 500 || generation == 600 || generation == 800 || generation == 1000)
                     {
-                        Debug.Log( 
+                       /* Debug.Log( 
                             "Blubgen "        +
                             generation        + "," + 
                             moveAllele1       + "," +
                             moveAllele2       + "," +
                             turnTorque        + "," +
                             energyToReproduce 
-                                    );
+                                    );*/
                     }
                     hasReproduced = false;
                     clone = Instantiate(this.gameObject);

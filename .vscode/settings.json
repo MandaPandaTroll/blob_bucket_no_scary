@@ -3,5 +3,12 @@
         "/Users/Amanda/UnityProjects/blob bucket updated": {
             "preferredRemoteName": "blobbucket"
         }
-    }
+    },
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[csharp]": {
+        "editor.defaultFormatter": "csharpier.csharpier-vscode"
+    },
+    
 }

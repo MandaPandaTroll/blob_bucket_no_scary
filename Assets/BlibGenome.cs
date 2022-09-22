@@ -7,25 +7,120 @@ using System;
 using System.Text.RegularExpressions;
 
 
+public struct PhenoStruct{
+    
+    
+    
+    
+    
+    
+    
+    public PhenoStruct(float redGene, float greenGene, float blueGene, float moveForce, float turnTorque, float energyToReproduce, float lifeLength){
+            
+        }
+    }
+    
+    public struct GenoPhenoStruct{
+    public float redAllele1;
+    public float redAllele2;
+    public float redGene;
+    public float greenAllele1;
+    public float greenAllele2;
+    public float greenGene;
+    public float blueAllele1;
+    public float blueAllele2;
+    public float blueGene;
+    public float moveAllele1;
+    public float moveAllele2;
+    public float moveForce;
+    public float turnTorqueAllele1;
+    public float turnTorqueAllele2;
+    public float turnTorque;
+    public float e2repAllele1;
+    public float e2repAllele2;
+    public float energyToReproduce;
+    public float lifeLengthAllele1;
+    public float lifeLengthAllele2;
+    public float lifeLength;
+     GenoPhenoStruct(
+                float redAllele1,
+                float redAllele2,
+                float greenAllele1,
+                float greenAllele2,
+                float blueAllele1,
+                float blueAllele2,
+                float moveAllele1,
+                float moveAllele2,
+                float turnTorqueAllele1,
+                float turnTorqueAllele2,
+                float e2repAllele1,
+                float e2repAllele2,
+                float lifeLengthAllele1,
+                float lifeLengthAllele2){
+                    
+            
+            
+            
+            
+            
+            
+                this.redAllele1 = redAllele1;
+                this.redAllele2 = redAllele2;
+                this.redGene = redGene;
+                this.greenAllele1 = greenAllele1;
+                this.greenAllele2 = greenAllele2;
+                this.greenGene = greenGene;
+                this.blueAllele1 = blueAllele1;
+                this.blueAllele2 = blueAllele2;
+                this.blueGene = blueGene;
+                this.moveAllele1 = moveAllele1;
+                this.moveAllele2 = moveAllele2;
+                this.moveForce = moveForce;
+                this.turnTorqueAllele1 = turnTorqueAllele1;
+                this.turnTorqueAllele2 = turnTorqueAllele2;
+                this.turnTorque = turnTorque;
+                this.e2repAllele1 = e2repAllele1;
+                this.e2repAllele2 = e2repAllele2;
+                this.energyToReproduce = energyToReproduce;
+                this.lifeLengthAllele1 = lifeLengthAllele1;
+                this.lifeLengthAllele2 = lifeLengthAllele2;
+                this.lifeLength = lifeLength;
+        }
+    }
 
 
 public class BlibGenome : MonoBehaviour
 {
-
+     PhenoStruct  phenotype_struct = new PhenoStruct();
+     GenoStruct  genotype_struct = new GenoStruct();
+    int[] pois = new int[20]{0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0};
+   public float[] phenotype = new float[7];
+    public initGenomeTest_blib initGenomeTest_blib;
+    public bool translocation_enabled;
+    public bool duplication_enabled;
+    public string[,] A = new string[9,486];
+    public string[,] B = new string[9,486];
     
     public List<string> lineageID = new List<string>();
    public static List <BlibGenome> blib_genomes = new List <BlibGenome>();
-    public float greenAllele1, greenAllele2,
-    redAllele1, redAllele2,
-     blueAllele1, blueAllele2, 
-     turnTorqueAllele1, turnTorqueAllele2, 
-     e2repAllele1, e2repAllele2,
-     moveAllele1, moveAllele2,
-
-     lifeLengthAllele1, lifeLengthAllele2;
+    public float greenAllele1, greenAllele2, greenGene,
+                 redAllele1, redAllele2, redGene,
+                 blueAllele1, blueAllele2, blueGene,
+                 turnTorqueAllele1, turnTorqueAllele2, turnTorque,
+                 e2repAllele1, e2repAllele2, energyToReproduce,
+                 moveAllele1, moveAllele2, moveForce, 
+                 lifeLengthAllele1, lifeLengthAllele2, lifeLength;
     
-    private string redSeq, greenSeq, blueSeq, moveSeq, turnSeq, repSeq, lifSeq;
- public bool mutate;
+    //private string redSeq, greenSeq, blueSeq, moveSeq, turnSeq, repSeq, lifSeq;
+    //Get relevant amino acid sequences from database.
+       string redSeq = GeneDatabase.red;
+       string greenSeq = GeneDatabase.green;
+       string blueSeq = GeneDatabase.blue;
+       string moveSeq = GeneDatabase.move;
+       string turnSeq = GeneDatabase.turnt;
+       string repSeq = GeneDatabase.rep;
+       string lifSeq = GeneDatabase.lifeL;
+ public bool mutate = false;
    public int numMutations;
        public string[] giveLocus = new string[27];
        public string[] receiveLocus = new string[27];
@@ -52,7 +147,8 @@ public class BlibGenome : MonoBehaviour
         };
 public string[,] extA, extB;
 //Chromosome A 
-    public string[,] A = new string[9,486] 
+    //public string[,] A = new string[9,486]
+    /*
         // 0: L0 ->                                                                                                                             27 | L1 ->                                                                                                                             54 | L2 ->                                                                                                                             81 | L3 ->                                                                                                                            108 | L4 ->                                                                                                                            135 | L5 ->                                                                                                                            162 | L6 ->                                                                                                                            189 | L7 ->                                                                                                                            216 | L8 ->                                                                                                                            243 | L9 ->                                                                                                                             270| L10 ->                                                                                                                            297| L11 ->                                                                                                                            324| L12 ->                                                                                                                           351 | L13 ->                                                                                                                           378 | L14 ->                                                                                                                           405 | L15 ->                                                                                                                           432 | L16 ->                                                                                                                           459 | L17 ->                                                                                                                           486 |
            {{"A", "T", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "T", "A", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "A", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "A", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "A", "G", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "G", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "A", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A"  },
         // 1: L0 ->                                                                                                                             27 | L1 ->                                                                                                                             54 | L2 ->                                                                                                                             81 | L3 ->                                                                                                                            108 | L4 ->                                                                                                                            135 | L5 ->                                                                                                                            162 | L6 ->                                                                                                                            189 | L7 ->                                                                                                                            216 | L8 ->                                                                                                                            243 | L9 ->                                                                                                                             270| L10 ->                                                                                                                            297| L11 ->                                                                                                                            324| L12 ->                                                                                                                           351 | L13 ->                                                                                                                           378 | L14 ->                                                                                                                           405 | L15 ->                                                                                                                           432 | L16 ->                                                                                                                           459 | L17 ->                                                                                                                           486 |
@@ -71,10 +167,11 @@ public string[,] extA, extB;
             {"A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "C", "T", "G", "C", "T", "T", "A", "T", "T", "T", "T", "T", "C", "T", "T", "A", "T", "T", "T", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "T", "T", "A", "T", "T", "T", "T", "T", "C", "T", "T", "A", "T", "T", "T", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "T", "T", "A", "T", "T", "T", "T", "T", "C", "T", "T", "A", "T", "T", "T", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "T", "T", "A", "T", "T", "T", "T", "T", "C", "T", "T", "A", "T", "T", "T", "T", "T", "A", "A", "A", "T", "G", "A", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A" },
         // 8: L0 ->                                                                                                                             27 | L1 ->                                                                                                                             54 | L2 ->                                                                                                                             81 | L3 ->                                                                                                                            108 | L4 ->                                                                                                                            135 | L5 ->                                                                                                                            162 | L6 ->                                                                                                                            189 | L7 ->                                                                                                                            216 | L8 ->                                                                                                                            243 | L9 ->                                                                                                                             270| L10 ->                                                                                                                            297| L11 ->                                                                                                                            324| L12 ->                                                                                                                           351 | L13 ->                                                                                                                           378 | L14 ->                                                                                                                           405 | L15 ->                                                                                                                           432 | L16 ->                                                                                                                           459 | L17 ->                                                                                                                           486 |
             {"A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A" }};
-    
+        */
 
     //Chromosome B
-    public string[,] B = new string[9,486] 
+    //public string[,] B = new string[9,486]
+    /*
         // 0: L0 ->                                                                                                                             27 | L1 ->                                                                                                                             54 | L2 ->                                                                                                                             81 | L3 ->                                                                                                                            108 | L4 ->                                                                                                                            135 | L5 ->                                                                                                                            162 | L6 ->                                                                                                                            189 | L7 ->                                                                                                                            216 | L8 ->                                                                                                                            243 | L9 ->                                                                                                                             270| L10 ->                                                                                                                            297| L11 ->                                                                                                                            324| L12 ->                                                                                                                           351 | L13 ->                                                                                                                           378 | L14 ->                                                                                                                           405 | L15 ->                                                                                                                           432 | L16 ->                                                                                                                           459 | L17 ->                                                                                                                           486 |
            {{"A", "T", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "T", "A", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "A", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "A", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "A", "G", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "G", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "A", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A"  },
         // 1: L0 ->                                                                                                                             27 | L1 ->                                                                                                                             54 | L2 ->                                                                                                                             81 | L3 ->                                                                                                                            108 | L4 ->                                                                                                                            135 | L5 ->                                                                                                                            162 | L6 ->                                                                                                                            189 | L7 ->                                                                                                                            216 | L8 ->                                                                                                                            243 | L9 ->                                                                                                                             270| L10 ->                                                                                                                            297| L11 ->                                                                                                                            324| L12 ->                                                                                                                           351 | L13 ->                                                                                                                           378 | L14 ->                                                                                                                           405 | L15 ->                                                                                                                           432 | L16 ->                                                                                                                           459 | L17 ->                                                                                                                           486 |
@@ -93,6 +190,7 @@ public string[,] extA, extB;
             {"A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "T", "G", "C", "T", "T", "A", "T", "T", "T", "T", "T", "C", "T", "T", "A", "T", "T", "T", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "T", "T", "A", "T", "T", "T", "T", "T", "C", "T", "T", "A", "T", "T", "T", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "T", "T", "A", "T", "T", "T", "T", "T", "C", "T", "T", "A", "T", "T", "T", "T", "T", "A", "A", "A", "T", "G", "A", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A" },
         // 8: L0 ->                                                                                                                             27 | L1 ->                                                                                                                             54 | L2 ->                                                                                                                             81 | L3 ->                                                                                                                            108 | L4 ->                                                                                                                            135 | L5 ->                                                                                                                            162 | L6 ->                                                                                                                            189 | L7 ->                                                                                                                            216 | L8 ->                                                                                                                            243 | L9 ->                                                                                                                             270| L10 ->                                                                                                                            297| L11 ->                                                                                                                            324| L12 ->                                                                                                                           351 | L13 ->                                                                                                                           378 | L14 ->                                                                                                                           405 | L15 ->                                                                                                                           432 | L16 ->                                                                                                                           459 | L17 ->                                                                                                                           486 |
             {"A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A" }};
+        */
    public int chromoPairs, basePairs;
     public bool randGenome;
     int baseCount = 0;
@@ -100,40 +198,46 @@ public string[,] extA, extB;
     
 
 
-    BlibSpawner blibSpawner;
+   
     
     void Awake(){
-        firstTranslation = false;
-        blibSpawner = GameObject.Find("Spawner").GetComponent<BlibSpawner>();
-
-        
-        
-        chromoPairs = A.GetLength(0);
-        basePairs = A.GetLength(1);
-        //Get relevant amino acid sequences from database.
-        redSeq = GeneDatabase.red;
-        greenSeq = GeneDatabase.green;
-        blueSeq = GeneDatabase.blue;
-        moveSeq = GeneDatabase.move;
-        turnSeq = GeneDatabase.turnt;
-        repSeq = GeneDatabase.rep;
-        lifSeq = GeneDatabase.lifeL;
-
-        if(mother != null){
-            A = mother.A;
-            B = mother.B;
-        }
-        
-
+        blibControls = this.gameObject.GetComponent<BlibControls>();
+         
+        Mutate();
+        TranslateGenome();
 
         
         
 
     }
+   
     void Start()
     {
+        Debug.Log("struct_start" + " redGene" + phenotype_struct.redGene+ " greenGene " + phenotype_struct.greenGene+ " blueGene " + phenotype_struct.blueGene+ " moveForce " + phenotype_struct.moveForce+ " turnTorque " + phenotype_struct.turnTorque+ " energyToReproduce " + phenotype_struct.energyToReproduce+ " lifeLength"+ phenotype_struct.lifeLength);
+        Array.Clear(A,0,A.Length);
+        Array.Clear(B,0,B.Length);
+        
+        firstTranslation = false;
+        
+
+        
+        
+        chromoPairs = A.GetLength(0);
+        basePairs = A.GetLength(1);
+        
+
+        
+
+        if(mother != null){
+            A = mother.A;
+            B = mother.B;
+        }else if(Time.time < 1.0f){
+            A = initGenomeTest_blib.A;
+            B = initGenomeTest_blib.B;
+        }
+
         tempS = null;
-        blibControls = this.gameObject.GetComponent<BlibControls>();
+        
         codon = new string[3]{"","",""}; 
          allelesA = "";
          allelesB = "";
@@ -168,7 +272,7 @@ public string[,] extA, extB;
         }
         
        
-       Mutate();
+       
      
     }
 
@@ -270,15 +374,18 @@ void OnCollisionEnter2D(Collision2D col){
 
 
     // Update is called once per frame
-    void LateUpdate()
+    void Update()
     {   
-        int mutationroll = UnityEngine.Random.Range(0,1024);
+        int mutationroll = UnityEngine.Random.Range(0,4096*2);
 
         if (mutationroll == 64){mutate = true;}
         extA = A;
         extB = B;
+        if(firstTranslation == false){
+            TranslateGenome();
+        }
         if(this.gameObject.GetComponent<BlibControls>().age > 0.5f ){
-        if ( firstTranslation == false || mutate == true)
+        if ( mutate == true)
         {
             Mutate();
             
@@ -300,7 +407,7 @@ void OnCollisionEnter2D(Collision2D col){
     
     int[] triIndex = new int[2]{UnityEngine.Random.Range(0,chromoPairs),UnityEngine.Random.Range(3,basePairs-6)};
     
-    if(transLocRoll == 64){
+    if(transLocRoll == 64 && translocation_enabled == true){
         string [] oNu = new string[3];
         string origin ="", destination ="";
         int tAorB = UnityEngine.Random.Range(0,2);
@@ -404,10 +511,10 @@ void OnCollisionEnter2D(Collision2D col){
         }
 
         
-    Debug.Log("Translocation :  " + " Origin: " + origin + "["+siteIndex_originI+","+siteIndex_originJ+"]" + "-[" + System.String.Join("", tranString_origin) +  "] " + " Destination: " + destination + "["+siteIndex_destinationI+","+siteIndex_destinationJ+"]" + "-[" + System.String.Join("", tranString_destination) +  "]");
+    //Debug.Log("Translocation :  " + " Origin: " + origin + "["+siteIndex_originI+","+siteIndex_originJ+"]" + "-[" + System.String.Join("", tranString_origin) +  "] " + " Destination: " + destination + "["+siteIndex_destinationI+","+siteIndex_destinationJ+"]" + "-[" + System.String.Join("", tranString_destination) +  "]");
     }
 
-    if(duplicationRoll == 64){
+    if(duplicationRoll == 64 && duplication_enabled == true){
         
         if(AorB == 0){
             triNu[0] = A[triIndex[0],triIndex[1]];
@@ -420,7 +527,7 @@ void OnCollisionEnter2D(Collision2D col){
                 A[triIndex[0],triIndex[1]+3] = triNu[0];
                 A[triIndex[0],triIndex[1]+4] = triNu[1];
                 A[triIndex[0],triIndex[1]+5] = triNu[2];
-                Debug.Log("Duplication! : " + "[" + triIndex[0] + "," + triIndex[1] + "] " + thisD + "-" + nextD);
+                //Debug.Log("Duplication! : " + "[" + triIndex[0] + "," + triIndex[1] + "] " + thisD + "-" + nextD);
                 
             } 
 
@@ -434,17 +541,17 @@ void OnCollisionEnter2D(Collision2D col){
                 B[triIndex[0],triIndex[1]+3] = triNu[0];
                 B[triIndex[0],triIndex[1]+4] = triNu[1];
                 B[triIndex[0],triIndex[1]+5] = triNu[2];
-                Debug.Log("Duplication! : " + "[" + triIndex[0] + "," + triIndex[1] + "] " + thisD + "-" + nextD);
+                //Debug.Log("Duplication! : " + "[" + triIndex[0] + "," + triIndex[1] + "] " + thisD + "-" + nextD);
                 
             } 
     }
+     
     
-    
-    numMutations = UnityEngine.Random.Range(1,4);
+    numMutations = pois[UnityEngine.Random.Range(0,pois.Length)];
     for (int i = 0; i < numMutations; i++){
     
-    int index0 = UnityEngine.Random.Range(0, chromoPairs);
-    int index1 = UnityEngine.Random.Range(0, basePairs);
+    int index0 = UnityEngine.Random.Range(0, 8);
+    int index1 = UnityEngine.Random.Range(0, 485);
     int randBase = UnityEngine.Random.Range(0,2);
     int pointTypeRoll = UnityEngine.Random.Range(1,101);
     string pointType;
@@ -549,8 +656,8 @@ void OnCollisionEnter2D(Collision2D col){
     }
 }
 
+        mutate = false;
         
-        TranslateGenome();
 }
 
     
@@ -572,9 +679,95 @@ string tempS = "";
 
 
 int codonCount = 0;
+bool doConversion;
+int numRecoms;
+int recoChromos;
+int numRecoLoci;
+int whichChromo;
+
+        int  recoStart_locus;
+        int recoStart_site;
+         
+         
+        int recoEnd_locus;
+        int recoEnd_site;
+        
+
+        int recoLength;
+        List <string> recoBuffer_A = new List<string>(); 
+        List <string> recoBuffer_B = new List<string>(); 
+        List <string> donatorBuffer = new List<string>(); 
+
  void TranslateGenome() {
 
      bool translating = true;
+     
+     if(firstTranslation == false ){ //Recombination
+        
+         doConversion = false;
+        
+         numRecoms = UnityEngine.Random.Range(1, 16);
+
+         recoChromos = 9;
+         numRecoLoci = 19;
+        
+
+        
+         whichChromo = UnityEngine.Random.Range(0,recoChromos);
+
+          recoStart_locus =  UnityEngine.Random.Range(0,numRecoLoci-1);
+         recoStart_site = sites[whichChromo, recoStart_locus];
+         
+         
+         recoEnd_locus =  UnityEngine.Random.Range(recoStart_locus, numRecoLoci);
+         recoEnd_site = sites[whichChromo, recoEnd_locus];
+        
+
+         recoLength = sites[whichChromo,recoEnd_locus]-sites[whichChromo,recoStart_locus];
+          
+          /*
+          recoBuffer_A = new string[recoLength];
+          recoBuffer_B = new string[recoLength];
+          donatorBuffer = new string[recoLength];
+          */
+          int conversionDice;
+            int donator;
+
+        for(int n = 0; n < numRecoms; n++){
+             conversionDice = UnityEngine.Random.Range(0,4096);
+             donator = -1;
+
+            if(conversionDice == 64){
+            donator = UnityEngine.Random.Range(0,2);
+            doConversion = true;
+            }else{doConversion = false;}
+
+            for(int i = recoStart_site; i < recoEnd_site; i++){
+            recoBuffer_A.Add(A[whichChromo,i]);
+            recoBuffer_B.Add(B[whichChromo,i]);
+            }
+
+            for (int i = recoStart_site; i < recoEnd_site; i++){
+                if(doConversion == false){
+                    A[whichChromo,i] = recoBuffer_B[i - recoStart_site];
+                    B[whichChromo,i] = recoBuffer_A[i - recoStart_site];
+                }else if(doConversion == true){
+                    if(donator == 0){
+                        B[whichChromo,i] = recoBuffer_A[i - recoStart_site];
+                     }else if(donator == 1){
+                        A[whichChromo,i] = recoBuffer_B[i - recoStart_site];
+                    }
+                }
+
+            }
+            recoBuffer_A.Clear();
+            recoBuffer_B.Clear();
+        }
+            
+
+        
+
+    }
 
 do{
 mutate = false;
@@ -1068,31 +1261,63 @@ mutate = false;
     thisA = null;
     thisB = null;
 
-    redAllele1 = nRED_A/12f;
-    redAllele2 = nRED_B/12f;
+    genotype_struct.redAllele1 = nRED_A/12f;
+    genotype_struct.redAllele2 = nRED_B/12f;
+    phenotype_struct.redGene = Mathf.Clamp((genotype_struct.redAllele1 + genotype_struct.redAllele2)/2.0f, 0.00f,1.00f);
     
 
-    greenAllele1 = nGRN_A/12f;
-    greenAllele2 = nGRN_B/12f;
+    genotype_struct.greenAllele1 = nGRN_A/12f;
+    genotype_struct.greenAllele2 = nGRN_B/12f;
+    phenotype_struct.greenGene = Mathf.Clamp((genotype_struct.greenAllele1 + genotype_struct.greenAllele2)/2.0f, 0.00f,1.00f);
+
+    genotype_struct.blueAllele1 = nLLY_A/12f;
+    genotype_struct.blueAllele2 = nLLY_B/12f;
+    phenotype_struct.blueGene = Mathf.Clamp((genotype_struct.blueAllele1 + blueAllele2)/2.0f, 0.00f,1.00f);
+
+    genotype_struct.moveAllele1 = nMVV_A*3f;
+    genotype_struct.moveAllele2 = nMVV_B*3f;
+    phenotype_struct.moveForce = (moveAllele1+moveAllele2)/2f;
+
+    genotype_struct.turnTorqueAllele1 = nTRN_A*6f;
+    genotype_struct.turnTorqueAllele2 = nTRN_B*6f;
+    phenotype_struct.turnTorque = (turnTorqueAllele1 + turnTorqueAllele2)/2.0f;
+
+    genotype_struct.e2repAllele1 = 64f +  Mathf.Pow(2f,nREP_A);
+    genotype_struct.e2repAllele2 = 64f + Mathf.Pow(2f,nREP_B);
+    phenotype_struct.energyToReproduce = (e2repAllele1+e2repAllele2)/2.0f;
+
+    genotype_struct.lifeLengthAllele1 = 16f + Mathf.Pow(2f,nLIF_A);
+    genotype_struct.lifeLengthAllele2 = 16f +Mathf.Pow(2f,nLIF_B);
+    phenotype_struct.lifeLength = (lifeLengthAllele1 + lifeLengthAllele2);
+    
+     
+
+     phenotype_struct.redGene = redGene;
+     phenotype_struct.greenGene = greenGene;
+     phenotype_struct.blueGene = blueGene;
+     phenotype_struct.moveForce = moveForce;
+     phenotype_struct.turnTorque = turnTorque;
+     phenotype_struct.energyToReproduce = energyToReproduce;
+     phenotype_struct.lifeLength = lifeLength;
+    
+    Debug.Log("struct_aftertranslate" + " redGene" + phenotype_struct.redGene+ " greenGene " + phenotype_struct.greenGene+ " blueGene " + phenotype_struct.blueGene+ " moveForce " + phenotype_struct.moveForce+ " turnTorque " + phenotype_struct.turnTorque+ " energyToReproduce " + phenotype_struct.energyToReproduce+ " lifeLength"+ phenotype_struct.lifeLength);
     
 
-    blueAllele1 = nLLY_A/12f;
-    blueAllele2 = nLLY_B/12f;
+            
     
 
-    moveAllele1 = nMVV_A*3f;
-    moveAllele2 = nMVV_B*3f;
+            
+            
 
-    turnTorqueAllele1 = nTRN_A*6f;
-    turnTorqueAllele2 = nTRN_B*6f;
+            
+            
 
-    e2repAllele1 = 64f +  Mathf.Pow(2f,nREP_A);
-    e2repAllele2 = 64f + Mathf.Pow(2f,nREP_B);
+            
+            
 
-    lifeLengthAllele1 = 2f + Mathf.Pow(2f,nLIF_A);
-    lifeLengthAllele2 = 2f +Mathf.Pow(2f,nLIF_B);
-
-    
+            
+            
+            
     
 
     
@@ -1100,7 +1325,12 @@ mutate = false;
         firstTranslation = true;
         translating = false;
 }while(translating == true);
+
 }
+
+
+
+
 
 
 /* 

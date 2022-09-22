@@ -14,6 +14,7 @@ public class BlybSpawner : MonoBehaviour
   float boxSize;
   GameObject[] blybs;
   public int initProtein;
+    public float initEnergy;
 
   GameObject box;
 
@@ -31,6 +32,8 @@ public class BlybSpawner : MonoBehaviour
        Instantiate(blyb, new Vector3(x, y, 0), Quaternion.identity);
        BrainBlybControls bctrl = blyb.GetComponent<BrainBlybControls>();
        bctrl.protein = initProtein;
+       initEnergy = bctrl.maxEnergy*0.1f;
+       bctrl.energy = initEnergy;
        bctrl.age = Random.Range(0,bctrl.lifeLength*0.75f);
         }
     }
@@ -57,6 +60,8 @@ void LateUpdate()
        Instantiate(blyb, new Vector3(x, y, 0), Quaternion.identity);
        BrainBlybControls bctrl = blyb.GetComponent<BrainBlybControls>();
        bctrl.protein = 0;
+       initEnergy = bctrl.maxEnergy*0.1f;
+       bctrl.energy = initEnergy;
        bctrl.age = Random.Range(0,bctrl.lifeLength*0.75f);
   }
   }

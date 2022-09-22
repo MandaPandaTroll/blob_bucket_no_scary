@@ -9,6 +9,8 @@ using UnityEngine;
 public class BrainBlybControls : MonoBehaviour
 {
 
+
+
 public string[,] superSatellite = new string[4,27] {
     //VAGGARN
     {"A","T","G",  "G","T","T",  "G","C","T", 
@@ -46,7 +48,7 @@ float colorA = 1f;
 Color geneticColor;
 public float maxHealth = 14f;
 public float currentHealth = 14f;
-
+float alloScaleFactor = 0.66f;
 //Script instance genetically related mate involved in conjugation
 BrainBlybControls mate;
 
@@ -57,7 +59,7 @@ public float speciationDistance;
    Vector3 newSize;
 
 
-    public float energy = 4500f;
+    public float energy;
     public float pEnergy;
     public float maxEnergy;
     public float eCost;
@@ -67,7 +69,7 @@ public float speciationDistance;
  
 System.Random rndA = new System.Random();
 
-    public float age;
+    public float age = 0;
      public float statAge;
    // Selection parameters
      public float moveAllele1;
@@ -106,6 +108,7 @@ System.Random rndA = new System.Random();
     public float basalMet;
     public int protein;
     public int proteinToReproduce;
+    public int maxProtein;
     public int NH4;
     public int NH4_tox_lvl;
     public bool excreting, tryAttack, tryPhagocytise, tryConjugate, tryReproduce;
@@ -162,6 +165,7 @@ void Awake(){
         sizeAllele2 = genome.sizeAllele2;
         sizeGene = (sizeAllele1+sizeAllele2)/2f;
 
+
         e2repAllele1 = genome.e2repAllele1;
         e2repAllele2 = genome.e2repAllele2;
         energyToReproduce = maxEnergy/2.0f;
@@ -198,10 +202,18 @@ void Awake(){
     // Update is called once per frame
     void LateUpdate()
     {   
-        
+        if(currentHealth < 0){
+            currentHealth = 0;
+        }
         if(Time.time < 0.1f && initDiversity != 0.0f){InitDiversifier(); }
         if(energy < 0){energy = 0;}
         if (energy > maxEnergy){energy = maxEnergy;}
+
+        if(protein > maxProtein){
+            int excessProtein = protein - maxProtein;
+            NH4 += excessProtein;
+            protein -= excessProtein;
+        }
 
         pEnergy = energy;
 
@@ -227,15 +239,17 @@ void Awake(){
         if(currentHealth > maxHealth){
             currentHealth = maxHealth;
         }
-        if(tryAttack == true ||  tryConjugate == true  || tryReproduce == true || tryPhagocytise || excreting == true){
-            if(energy >= 1.0f){
-                energy += -0.5f;
+        if(tryAttack == true ||  tryConjugate == true  || tryReproduce == true || tryPhagocytise == true || excreting == true){
+            if(energy >= 100.0f){
+                energy += -1f*(newSize.x);
+            }else if(energy < 100.0f){
+                tryAttack = false;  tryConjugate = false; tryReproduce = false; tryPhagocytise = false; excreting = false;
             }
         }
 
         //Ammonia excretion
             if(excreting == true && NH4 > 0 && energy > 5f){
-                m_nutgrid.SetValue(transform.position, posval + NH4);
+                m_nutgrid.SetValue(transform.position, (int)(posval + NH4));
                 NH4 = 0;
                 energy += -5f;
             }
@@ -249,6 +263,7 @@ void Awake(){
             float NH4_excess = (float)(NH4 - NH4_tox_lvl);
             //Ammonia toxicity
             if(NH4 >= NH4_tox_lvl){
+
                 currentHealth += -1f*(Mathf.Pow(2f,0.1f*NH4_excess)-1f);
                 
                 }
@@ -318,7 +333,7 @@ void Awake(){
             energy -= 16f;
             
             if(NH4 >= 1){
-            m_nutgrid.SetValue(transform.position, posval + 1);
+            m_nutgrid.SetValue(transform.position, (int)(posval + 1));
             NH4 += -1;
             }
             if(protein >= 1){
@@ -589,14 +604,14 @@ void Awake(){
                 maxHealth = Mathf.Round(Mathf.Pow(4, newSize.x+1f));
                     if (generation == 100|| generation == 200 || generation == 300 || generation == 400 || generation == 500 || generation == 600 || generation == 800 || generation == 1000)
                     {
-                        Debug.Log( 
+                       /* Debug.Log( 
                             "Blybgen "        +
                             generation        + "," + 
                             moveAllele1       + "," +
                             moveAllele2       + "," +
                             turnTorque        + "," +
                             energyToReproduce 
-                                    );
+                                    );*/
                     }
                     GameObject daughter = Instantiate(this.gameObject);
                     daughter.GetComponent<BlybGenome>().mother = genome;
@@ -650,7 +665,11 @@ void Awake(){
                 maxEnergy = sigmoid*35000f;
                 energyToReproduce = maxEnergy /2.0f;
                 maxHealth = Mathf.Round(Mathf.Pow(4, newSize.x+1f));
-
+                //Allometric scaling
+                basalMet = Mathf.Pow(rb.mass, 1f/3f);
+                float protScale = 190f*Mathf.Pow((float)sizeGene,alloScaleFactor);
+                proteinToReproduce = (int)Mathf.Round(protScale);
+                maxProtein = proteinToReproduce*2;
                      
 
 

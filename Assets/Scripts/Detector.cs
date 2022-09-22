@@ -64,10 +64,10 @@ public Vector2 mean1, mean2, mean3, mean4;
         blCorner = new Vector3(-boxTransform.lossyScale.x/2f, -boxTransform.lossyScale.y/2f, 0);
         trCorner = new Vector3(boxTransform.lossyScale.x/2f, boxTransform.lossyScale.y/2f, 0);
         maxDist = Vector3.Distance(blCorner,trCorner);
-        Debug.Log(boxA);
-        Debug.Log(boxB);
-        Debug.Log(boxC);
-        Debug.Log(boxD);
+        //Debug.Log(boxA);
+        //Debug.Log(boxB);
+        //Debug.Log(boxC);
+        //Debug.Log(boxD);
     }
 
     // Update is called once per frame
@@ -159,7 +159,7 @@ public Vector2 mean1, mean2, mean3, mean4;
 
          
         outMeanAll = meanAll;
-       Debug.Log("outMeanAll = " + outMeanAll.ToString("F4") + "mean1 = " + mean1.ToString("F4") + "mean2 = " + mean2.ToString("F4") + "mean3 = " + mean3.ToString("F4") + "mean4 = " + mean4.ToString("F4"));
+       //Debug.Log("outMeanAll = " + outMeanAll.ToString("F4") + "mean1 = " + mean1.ToString("F4") + "mean2 = " + mean2.ToString("F4") + "mean3 = " + mean3.ToString("F4") + "mean4 = " + mean4.ToString("F4"));
         time = 0f;
 
         }

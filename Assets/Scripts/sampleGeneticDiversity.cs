@@ -97,7 +97,7 @@ public class sampleGeneticDiversity : MonoBehaviour
                     nPolymorphisms_blib = 0;
                 }
                 meanHeterozygosity_blib = totHeterozygosity_blib/sampleSize;
-                Debug.Log("meanHeterozygosity_blib = " + meanHeterozygosity_blib );
+                //Debug.Log("meanHeterozygosity_blib = " + meanHeterozygosity_blib );
             }
 
             if(blobs.Length >= 1){
@@ -121,7 +121,7 @@ public class sampleGeneticDiversity : MonoBehaviour
                     nPolymorphisms_blob = 0;
                 }
                 meanHeterozygosity_blob = totHeterozygosity_blob/sampleSize;
-                Debug.Log("meanHeterozygosity_blob = " + meanHeterozygosity_blob );
+                //Debug.Log("meanHeterozygosity_blob = " + meanHeterozygosity_blob );
             }
 
             if(blybs.Length >= 1){
@@ -145,7 +145,7 @@ public class sampleGeneticDiversity : MonoBehaviour
                     nPolymorphisms_blyb = 0;
                 }
                 meanHeterozygosity_blyb = totHeterozygosity_blyb/sampleSize;
-                Debug.Log("meanHeterozygosity_blyb = " + meanHeterozygosity_blyb );
+                //Debug.Log("meanHeterozygosity_blyb = " + meanHeterozygosity_blyb );
             }
             /*
             if(blubs.Length >= 1){

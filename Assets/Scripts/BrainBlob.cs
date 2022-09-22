@@ -295,17 +295,18 @@ public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         
 
+
  rb.AddForce(fwd*speedModifier);
  rb.AddTorque(rotMag*turnTorque*rb.inertia);
- bctrl.energy -=  bctrl.eCost*Mathf.Abs(fwd.magnitude);
+ bctrl.energy -=  bctrl.eCost*Mathf.Abs(fwd.magnitude)*Mathf.Pow(rb.mass,0.66f);
  bctrl.energy -= bctrl.basalMet;
     float normEnergy = bctrl.energy/bctrl.maxEnergy;
-    float normProtein = (float)bctrl.protein / (float)bctrl.proteinToReproduce;
+    float normProtein = (float)bctrl.protein / (float)bctrl.maxProtein;
     float normHealth = bctrl.currentHealth/bctrl.maxHealth;
 
     float homeo = (w_energy*normEnergy+w_protein*normProtein+w_health*normHealth)/3.0f;
     //newHappiness = 0.5f + 0.5f*(float)System.Math.Tanh((double)((4*homeo)  -2.00f));
-    newHappiness = 0.95f - (1.0f/((float)System.Math.Cosh((double)(2.635f*homeo))));
+    newHappiness = 1.0f - (1.0f/((float)System.Math.Cosh((double)(4.0f*homeo))));
     float deltaHappiness = newHappiness - happiness;
 
         AddReward(deltaHappiness);
