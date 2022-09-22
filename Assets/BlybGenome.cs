@@ -6,63 +6,62 @@ using UnityEngine;
 using System;
 using System.Text.RegularExpressions;
 
-public class BlybGenome : MonoBehaviour
-{
-    public bool translocation_enabled;
-    public bool duplication_enabled;
+public class BlybGenome : MonoBehaviour {
+  public bool translocation_enabled;
+  public bool duplication_enabled;
 
-    public float pythagDist;
-    float age;
-    public List<string> lineageID = new List<string>();
-   
-    public float greenAllele1, greenAllele2, greenGene,
-    redAllele1, redAllele2, redGene,
-     blueAllele1, blueAllele2, blueGene, 
-     lookDistAllele1, lookDistAllele2,lookDistance,
-     turnTorqueAllele1, turnTorqueAllele2, turnTorque,
-     e2repAllele1, e2repAllele2, energyToReproduce,
-     moveAllele1, moveAllele2, moveForce,
+  public float pythagDist;
+  float age;
+  public List<string> lineageID = new List<string>();
 
-     lifeLengthAllele1, lifeLengthAllele2, lifeLength,
-     sizeAllele1, sizeAllele2, sizeGene;
-    
-    private string redSeq, greenSeq, blueSeq, moveSeq, turnSeq, repSeq, lifSeq, lookSeq, thiccSeq;
- public bool mutate;
-   public int numMutations;
-       public string[] giveLocus = new string[27];
-       public string[] receiveLocus = new string[27];
+  public float greenAllele1, greenAllele2, greenGene,
+  redAllele1, redAllele2, redGene,
+   blueAllele1, blueAllele2, blueGene,
+   lookDistAllele1, lookDistAllele2, lookDistance,
+   turnTorqueAllele1, turnTorqueAllele2, turnTorque,
+   e2repAllele1, e2repAllele2, energyToReproduce,
+   moveAllele1, moveAllele2, moveForce,
 
-    
-    public BlybGenome mother; //Could be used to debug if genome is being properly transferred to offspring.
-   private float nGRN_A, nGRN_B,
-        nRED_A,nRED_B,
-        nLLY_A, nLLY_B, 
-        nMVV_A, nMVV_B,
-        nTRN_A, nTRN_B,
-        nREP_A, nREP_B,
-        nLKDISTA_A, nLKDISTA_B,
-        nLIF_A, nLIF_B,
-        nTHICC_A, nTHICC_B;
+   lifeLengthAllele1, lifeLengthAllele2, lifeLength,
+   sizeAllele1, sizeAllele2, sizeGene;
 
-        //Current chromosomal loci
-    int [,] sites = new int[9,19] {
+  private string redSeq, greenSeq, blueSeq, moveSeq, turnSeq, repSeq, lifSeq, lookSeq, thiccSeq;
+  public bool mutate;
+  public int numMutations;
+  public string[] giveLocus = new string[27];
+  public string[] receiveLocus = new string[27];
+
+
+  public BlybGenome mother; //Could be used to debug if genome is being properly transferred to offspring.
+  private float nGRN_A, nGRN_B,
+       nRED_A, nRED_B,
+       nLLY_A, nLLY_B,
+       nMVV_A, nMVV_B,
+       nTRN_A, nTRN_B,
+       nREP_A, nREP_B,
+       nLKDISTA_A, nLKDISTA_B,
+       nLIF_A, nLIF_B,
+       nTHICC_A, nTHICC_B;
+
+  //Current chromosomal loci
+  int[,] sites = new int[9, 19] {
         {0,27,54,81,108,135,162,189,216,243,270,297,324,351,378,405,432,459,486} , {0,27,54,81,108,135,162,189,216,243,270,297,324,351,378,405,432,459,486} , {0,27,54,81,108,135,162,189,216,243,270,297,324,351,378,405,432,459,486},
 
         {0,27,54,81,108,135,162,189,216,243,270,297,324,351,378,405,432,459,486} , {0,27,54,81,108,135,162,189,216,243,270,297,324,351,378,405,432,459,486} , {0,27,54,81,108,135,162,189,216,243,270,297,324,351,378,405,432,459,486},
 
         {0,27,54,81,108,135,162,189,216,243,270,297,324,351,378,405,432,459,486} , {0,27,54,81,108,135,162,189,216,243,270,297,324,351,378,405,432,459,486} , {0,27,54,81,108,135,162,189,216,243,270,297,324,351,378,405,432,459,486},
 
-        
+
         };
-        //"A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A"
-        //START_REDGRN_STOP = yellow
-        
-public string[,] extA, extB;
-//Chromosome A
+  //"A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A"
+  //START_REDGRN_STOP = yellow
 
-    public string[,] A = new string[9,486] 
-        // 0: L0 ->                                                                                                                             27 | L1 ->                                                                                                                             54 | L2 ->                                                                                                                             81 | L3 ->                                                                                                                            108 | L4 ->                                                                                                                            135 | L5 ->                                                                                                                            162 | L6 ->                                                                                                                            189 | L7 ->                                                                                                                            216 | L8 ->                                                                                                                            243 | L9 ->                                                                                                                             270| L10 ->                                                                                                                            297| L11 ->                                                                                                                            324| L12 ->                                                                                                                           351 | L13 ->                                                                                                                           378 | L14 ->                                                                                                                           405 | L15 ->                                                                                                                           432 | L16 ->                                                                                                                           459 | L17 ->                                                                                                                           486 |
-           {{"A", "T", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "A", "A", "A", "A", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "C", "T", "G", "C", "T", "G", "T", "A", "T", "A", "A", "A", "T", "A", "G", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "G", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A"  },
+  public string[,] extA, extB;
+  //Chromosome A
+
+  public string[,] A = new string[9, 486]
+         // 0: L0 ->                                                                                                                             27 | L1 ->                                                                                                                             54 | L2 ->                                                                                                                             81 | L3 ->                                                                                                                            108 | L4 ->                                                                                                                            135 | L5 ->                                                                                                                            162 | L6 ->                                                                                                                            189 | L7 ->                                                                                                                            216 | L8 ->                                                                                                                            243 | L9 ->                                                                                                                             270| L10 ->                                                                                                                            297| L11 ->                                                                                                                            324| L12 ->                                                                                                                           351 | L13 ->                                                                                                                           378 | L14 ->                                                                                                                           405 | L15 ->                                                                                                                           432 | L16 ->                                                                                                                           459 | L17 ->                                                                                                                           486 |
+         {{"A", "T", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "A", "A", "A", "A", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "C", "T", "G", "C", "T", "G", "T", "A", "T", "A", "A", "A", "T", "A", "G", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "G", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A"  },
         // 1: L0 ->                                                                                                                             27 | L1 ->                                                                                                                             54 | L2 ->                                                                                                                             81 | L3 ->                                                                                                                            108 | L4 ->                                                                                                                            135 | L5 ->                                                                                                                            162 | L6 ->                                                                                                                            189 | L7 ->                                                                                                                            216 | L8 ->                                                                                                                            243 | L9 ->                                                                                                                             270| L10 ->                                                                                                                            297| L11 ->                                                                                                                            324| L12 ->                                                                                                                           351 | L13 ->                                                                                                                           378 | L14 ->                                                                                                                           405 | L15 ->                                                                                                                           432 | L16 ->                                                                                                                           459 | L17 ->                                                                                                                           486 |
             {"A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A"  },
         // 2: L0 ->                                                                                                                             27 | L1 ->                                                                                                                             54 | L2 ->                                                                                                                             81 | L3 ->                                                                                                                            108 | L4 ->                                                                                                                            135 | L5 ->                                                                                                                            162 | L6 ->                                                                                                                            189 | L7 ->                                                                                                                            216 | L8 ->                                                                                                                            243 | L9 ->                                                                                                                             270| L10 ->                                                                                                                            297| L11 ->                                                                                                                            324| L12 ->                                                                                                                           351 | L13 ->                                                                                                                           378 | L14 ->                                                                                                                           405 | L15 ->                                                                                                                           432 | L16 ->                                                                                                                           459 | L17 ->                                                                                                                           486 |
@@ -79,11 +78,11 @@ public string[,] extA, extB;
             {"C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "C", "T", "T", "A", "T", "T", "T", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "G", "T", "G", "A", "A", "C", "C", "T", "C", "G", "T", "G", "A", "A", "C", "C", "T", "T", "C", "T", "T", "G", "A", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A" },
         // 8: L0 ->                                                                                                                             27 | L1 ->                                                                                                                             54 | L2 ->                                                                                                                             81 | L3 ->                                                                                                                            108 | L4 ->                                                                                                                            135 | L5 ->                                                                                                                            162 | L6 ->                                                                                                                            189 | L7 ->                                                                                                                            216 | L8 ->                                                                                                                            243 | L9 ->                                                                                                                             270| L10 ->                                                                                                                            297| L11 ->                                                                                                                            324| L12 ->                                                                                                                           351 | L13 ->                                                                                                                           378 | L14 ->                                                                                                                           405 | L15 ->                                                                                                                           432 | L16 ->                                                                                                                           459 | L17 ->                                                                                                                           486 |
             {"A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A" }};
-    
-    //Chromosome B
-    public string[,] B = new string[9,486] 
-        // 0: L0 ->                                                                                                                             27 | L1 ->                                                                                                                             54 | L2 ->                                                                                                                             81 | L3 ->                                                                                                                            108 | L4 ->                                                                                                                            135 | L5 ->                                                                                                                            162 | L6 ->                                                                                                                            189 | L7 ->                                                                                                                            216 | L8 ->                                                                                                                            243 | L9 ->                                                                                                                             270| L10 ->                                                                                                                            297| L11 ->                                                                                                                            324| L12 ->                                                                                                                           351 | L13 ->                                                                                                                           378 | L14 ->                                                                                                                           405 | L15 ->                                                                                                                           432 | L16 ->                                                                                                                           459 | L17 ->                                                                                                                           486 |
-           {{"A", "T", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "A", "A", "A", "A", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "C", "T", "G", "C", "T", "G", "T", "A", "T", "A", "A", "A", "T", "A", "G", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "G", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A"  },
+
+  //Chromosome B
+  public string[,] B = new string[9, 486]
+         // 0: L0 ->                                                                                                                             27 | L1 ->                                                                                                                             54 | L2 ->                                                                                                                             81 | L3 ->                                                                                                                            108 | L4 ->                                                                                                                            135 | L5 ->                                                                                                                            162 | L6 ->                                                                                                                            189 | L7 ->                                                                                                                            216 | L8 ->                                                                                                                            243 | L9 ->                                                                                                                             270| L10 ->                                                                                                                            297| L11 ->                                                                                                                            324| L12 ->                                                                                                                           351 | L13 ->                                                                                                                           378 | L14 ->                                                                                                                           405 | L15 ->                                                                                                                           432 | L16 ->                                                                                                                           459 | L17 ->                                                                                                                           486 |
+         {{"A", "T", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "A", "A", "A", "A", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "C", "T", "G", "C", "T", "G", "T", "A", "T", "A", "A", "A", "T", "A", "G", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "G", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "A", "A", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A"  },
         // 1: L0 ->                                                                                                                             27 | L1 ->                                                                                                                             54 | L2 ->                                                                                                                             81 | L3 ->                                                                                                                            108 | L4 ->                                                                                                                            135 | L5 ->                                                                                                                            162 | L6 ->                                                                                                                            189 | L7 ->                                                                                                                            216 | L8 ->                                                                                                                            243 | L9 ->                                                                                                                             270| L10 ->                                                                                                                            297| L11 ->                                                                                                                            324| L12 ->                                                                                                                           351 | L13 ->                                                                                                                           378 | L14 ->                                                                                                                           405 | L15 ->                                                                                                                           432 | L16 ->                                                                                                                           459 | L17 ->                                                                                                                           486 |
             {"A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "G", "C", "G", "A", "A", "G", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A"  },
         // 2: L0 ->                                                                                                                             27 | L1 ->                                                                                                                             54 | L2 ->                                                                                                                             81 | L3 ->                                                                                                                            108 | L4 ->                                                                                                                            135 | L5 ->                                                                                                                            162 | L6 ->                                                                                                                            189 | L7 ->                                                                                                                            216 | L8 ->                                                                                                                            243 | L9 ->                                                                                                                             270| L10 ->                                                                                                                            297| L11 ->                                                                                                                            324| L12 ->                                                                                                                           351 | L13 ->                                                                                                                           378 | L14 ->                                                                                                                           405 | L15 ->                                                                                                                           432 | L16 ->                                                                                                                           459 | L17 ->                                                                                                                           486 |
@@ -100,1164 +99,1093 @@ public string[,] extA, extB;
             {"C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "T", "G", "G", "T", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "G", "G", "T", "T", "G", "T", "T", "C", "T", "T", "A", "T", "T", "T", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "C", "G", "T", "G", "A", "A", "C", "C", "T", "C", "G", "T", "G", "A", "A", "C", "C", "T", "T", "C", "T", "T", "G", "A", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "C", "T", "G", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A" },
         // 8: L0 ->                                                                                                                             27 | L1 ->                                                                                                                             54 | L2 ->                                                                                                                             81 | L3 ->                                                                                                                            108 | L4 ->                                                                                                                            135 | L5 ->                                                                                                                            162 | L6 ->                                                                                                                            189 | L7 ->                                                                                                                            216 | L8 ->                                                                                                                            243 | L9 ->                                                                                                                             270| L10 ->                                                                                                                            297| L11 ->                                                                                                                            324| L12 ->                                                                                                                           351 | L13 ->                                                                                                                           378 | L14 ->                                                                                                                           405 | L15 ->                                                                                                                           432 | L16 ->                                                                                                                           459 | L17 ->                                                                                                                           486 |
             {"A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "T", "A", "A", "A", "T", "G", "T", "T", "A", "A", "A", "T", "G", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A" }};
-   public int chromoPairs, basePairs;
-    public bool randGenome;
-    int baseCount = 0;
-    bool firstTranslation;
-    
-
-    
-    void Awake(){
-        
-        
-
-        firstTranslation = false;
-       
-
-        
-        
-        chromoPairs = A.GetLength(0);
-        basePairs = A.GetLength(1);
-//Get relevant amino acid sequences from database.
-        redSeq = GeneDatabase.red;
-        greenSeq = GeneDatabase.green;
-        blueSeq = GeneDatabase.blue;
-        moveSeq = GeneDatabase.move;
-        turnSeq = GeneDatabase.turnt;
-        repSeq = GeneDatabase.rep;
-        lookSeq = GeneDatabase.lookD;
-        lifSeq = GeneDatabase.lifeL;
-        thiccSeq = GeneDatabase.thicc;
-
-        if(mother != null){
-            A = mother.A;
-            B = mother.B;
-        }
-        
-
-        tempS = null;
-        codon = new string[3]{"","",""}; // Holds groups of 3 DNA bases to decode into amino acids.
-         allelesA = ""; //Holds all alleles on chromosome A.
-         allelesB = ""; //Holds all alleles on chromosome B.
-         thisAlleleA = ""; //Holds current allele being read.
-         thisAlleleB = ""; //Holds current allele being read.
-
-         nAllelesA = 0; //Allele count.
-         stopA = ""; //Can hold a symbol to mark stop codons in the amino acid sequence.
-         nAllelesB = 0; //Allele count.
-         stopB = "";
-         isGene = false; // Is true if start codon is read (ATG), is false if stop codon is read(TGA,TAA, etc).
-        TranslateGenome();
-        
-        
-        
-
-    }
-    BrainBlybControls bctrl;
-    BrainBlybControls mateBctrl;
-    BlybGenome mateGenome;
-
-    string thisTag;
-
-    
-    void Start()
-    {
-        age = 0;
-        
-        
-            bctrl = this.gameObject.GetComponent<BrainBlybControls>();
-            
-        
-        
-        tempS = null; //Holds current base being read.
-        codon = new string[3]{"","",""};
-         allelesA = "";
-         allelesB = "";
-         thisAlleleA = "";
-         thisAlleleB = "";
-
-         nAllelesA = 0;
-         stopA = "";
-         nAllelesB = 0;
-         stopB = "";
-         isGene = false;
+  public int chromoPairs, basePairs;
+  public bool randGenome;
+  int baseCount = 0;
+  bool firstTranslation;
 
 
-        // Creates completely random genome.
-        if(randGenome == true){
-            for(int i = 0; i < chromoPairs;i++){
-                for(int j = 0; j < basePairs;j++){
-                    int randBase = UnityEngine.Random.Range(1,5);
-                    string randChar;
-                    if (randBase == 1){randChar = "A";}
-                    else if (randBase == 2){randChar = "C";}
-                    else if (randBase == 3){randChar = "G";}
-                    else {randChar = "T";}
-                    A[i,j] = randChar;
-                    B[i,j] = randChar; 
-                    
-                }
 
-            }
+  void Awake() {
 
-            
-        }
-        
-       
-       
-     Mutate();
+
+
+    firstTranslation = false;
+
+
+
+
+    chromoPairs = A.GetLength(0);
+    basePairs = A.GetLength(1);
+    //Get relevant amino acid sequences from database.
+    redSeq = GeneDatabase.red;
+    greenSeq = GeneDatabase.green;
+    blueSeq = GeneDatabase.blue;
+    moveSeq = GeneDatabase.move;
+    turnSeq = GeneDatabase.turnt;
+    repSeq = GeneDatabase.rep;
+    lookSeq = GeneDatabase.lookD;
+    lifSeq = GeneDatabase.lifeL;
+    thiccSeq = GeneDatabase.thicc;
+
+    if (mother != null) {
+      A = mother.A;
+      B = mother.B;
     }
 
 
-public int loSite, cNum, locus;
-private int AorB, mate_loSite,mate_cNum;
+    tempS = null;
+    codon = new string[3] { "", "", "" }; // Holds groups of 3 DNA bases to decode into amino acids.
+    allelesA = ""; //Holds all alleles on chromosome A.
+    allelesB = ""; //Holds all alleles on chromosome B.
+    thisAlleleA = ""; //Holds current allele being read.
+    thisAlleleB = ""; //Holds current allele being read.
 
-// Horizontal gene transfer.
-void OnCollisionStay2D(Collision2D col){
+    nAllelesA = 0; //Allele count.
+    stopA = ""; //Can hold a symbol to mark stop codons in the amino acid sequence.
+    nAllelesB = 0; //Allele count.
+    stopB = "";
+    isGene = false; // Is true if start codon is read (ATG), is false if stop codon is read(TGA,TAA, etc).
+    TranslateGenome();
+
+
+
+
+  }
+  BrainBlybControls bctrl;
+  BrainBlybControls mateBctrl;
+  BlybGenome mateGenome;
+
+  string thisTag;
+
+
+  void Start() {
+    age = 0;
+
+
+    bctrl = this.gameObject.GetComponent<BrainBlybControls>();
+
+
+
+    tempS = null; //Holds current base being read.
+    codon = new string[3] { "", "", "" };
+    allelesA = "";
+    allelesB = "";
+    thisAlleleA = "";
+    thisAlleleB = "";
+
+    nAllelesA = 0;
+    stopA = "";
+    nAllelesB = 0;
+    stopB = "";
+    isGene = false;
+
+
+    // Creates completely random genome.
+    if (randGenome == true) {
+      for (int i = 0; i < chromoPairs; i++) {
+        for (int j = 0; j < basePairs; j++) {
+          int randBase = UnityEngine.Random.Range(1, 5);
+          string randChar;
+          if (randBase == 1) { randChar = "A"; } else if (randBase == 2) { randChar = "C"; } else if (randBase == 3) { randChar = "G"; } else { randChar = "T"; }
+          A[i, j] = randChar;
+          B[i, j] = randChar;
+
+        }
+
+      }
+
+
+    }
+
+
+
+    Mutate();
+  }
+
+
+  public int loSite, cNum, locus;
+  private int AorB, mate_loSite, mate_cNum;
+
+  // Horizontal gene transfer.
+  void OnCollisionStay2D(Collision2D col) {
     GameObject booper = col.gameObject;
-    if (booper.tag == "Predator2" ){
-        mateBctrl = booper.GetComponent<BrainBlybControls>();
-        if (bctrl.tryConjugate == true && mateBctrl.tryConjugate == true){
-            mateGenome = col.gameObject.GetComponent<BlybGenome>();
-         cNum = UnityEngine.Random.Range(0,A.GetLength(0));
-         AorB = UnityEngine.Random.Range(0,2);
-        locus = UnityEngine.Random.Range(0,sites.GetLength(1)-1);
-        loSite = sites[cNum,locus];
-        
-        int snpCountA = 0,snpCountB = 0;
+    if (booper.tag == "Predator2") {
+      mateBctrl = booper.GetComponent<BrainBlybControls>();
+      if (bctrl.tryConjugate == true && mateBctrl.tryConjugate == true) {
+        mateGenome = col.gameObject.GetComponent<BlybGenome>();
+        cNum = UnityEngine.Random.Range(0, A.GetLength(0));
+        AorB = UnityEngine.Random.Range(0, 2);
+        locus = UnityEngine.Random.Range(0, sites.GetLength(1) - 1);
+        loSite = sites[cNum, locus];
+
+        int snpCountA = 0, snpCountB = 0;
         bool isEqual;
-        
-        for (int i = 0 ; i < 27; i++)
-        {   if (AorB == 0){
-                giveLocus[i] = A[cNum,loSite+i];
-            }else{
-                giveLocus[i] = B[cNum,loSite+i];
-            }
-            
+
+        for (int i = 0; i < 27; i++) {
+          if (AorB == 0) {
+            giveLocus[i] = A[cNum, loSite + i];
+          } else {
+            giveLocus[i] = B[cNum, loSite + i];
+          }
+
         }
-       // string debugChar;
+        // string debugChar;
         //if (AorB == 0){debugChar ="A";}else{debugChar = "B";}
         //string debugLocus = System.String.Join("",giveLocus);
-       // //Debug.Log("Chromosome: " + debugChar + ":" + cNum + " Locus: " + locus + " -> " + debugLocus);
-        
-        
-            
-        
-        
+        // //Debug.Log("Chromosome: " + debugChar + ":" + cNum + " Locus: " + locus + " -> " + debugLocus);
+
+
+
+
+
         //A-Compare
-        for(int i = 0; i < chromoPairs; i++){
-            for(int j = 0; j < basePairs; j++){
-                isEqual = System.String.Equals(this.A[i,j], mateGenome.A[i,j]);
-                if(isEqual == false){
-                    snpCountA +=1;
-                }
-                }
+        for (int i = 0; i < chromoPairs; i++) {
+          for (int j = 0; j < basePairs; j++) {
+            isEqual = System.String.Equals(this.A[i, j], mateGenome.A[i, j]);
+            if (isEqual == false) {
+              snpCountA += 1;
             }
+          }
+        }
 
         //B-Compare
-        for(int i = 0; i < chromoPairs; i++){
-            for(int j = 0; j < basePairs; j++){
-                isEqual = System.String.Equals(this.B[i,j], mateGenome.B[i,j]);
-                if(isEqual == false){
-                    snpCountB +=1;
-                }
-                }
+        for (int i = 0; i < chromoPairs; i++) {
+          for (int j = 0; j < basePairs; j++) {
+            isEqual = System.String.Equals(this.B[i, j], mateGenome.B[i, j]);
+            if (isEqual == false) {
+              snpCountB += 1;
             }
-
-            //Genetic distance calculations
-            float pairWiseA_squared = Mathf.Pow(((float)snpCountA/8748.0f),2.0f);
-            float pairWiseB_squared = Mathf.Pow(((float)snpCountB/8748.0f),2.0f);
-
-             pythagDist = Mathf.Sqrt( pairWiseA_squared + pairWiseB_squared );
-            if( pythagDist > 0.01){
-           // //Debug.Log("SNP-A = " + snpCountA + ", SNP-B = " + snpCountB + " PWA = " + pairWiseA_squared + " PWB = " + pairWiseB_squared +
-           // " Pythagorean distance (BP) = " + pythagDist);
-            }
-        
-
-            //Genetic recombination
-            if(pythagDist < 0.5f){
-
-                receiveLocus = mateGenome.giveLocus;
-                mate_cNum = mateGenome.cNum;
-                mate_loSite = mateGenome.loSite;
-                
-                AorB = UnityEngine.Random.Range(0,2);
-
-                if(AorB == 0){
-                    for(int i = 0; i < 27; i++){
-                    A[mate_cNum,mate_loSite+i] = receiveLocus[i];
-                    }
-                }
-
-                if(AorB == 1){
-                    for(int i = 0; i < 27; i++){
-                    A[mate_cNum,mate_loSite+i] = receiveLocus[i];
-                    }
-                }
-                
-            }
+          }
         }
 
+        //Genetic distance calculations
+        float pairWiseA_squared = Mathf.Pow(((float)snpCountA / 8748.0f), 2.0f);
+        float pairWiseB_squared = Mathf.Pow(((float)snpCountB / 8748.0f), 2.0f);
+
+        pythagDist = Mathf.Sqrt(pairWiseA_squared + pairWiseB_squared);
+        if (pythagDist > 0.01) {
+          // //Debug.Log("SNP-A = " + snpCountA + ", SNP-B = " + snpCountB + " PWA = " + pairWiseA_squared + " PWB = " + pairWiseB_squared +
+          // " Pythagorean distance (BP) = " + pythagDist);
         }
+
+
+        //Genetic recombination
+        if (pythagDist < 0.5f) {
+
+          receiveLocus = mateGenome.giveLocus;
+          mate_cNum = mateGenome.cNum;
+          mate_loSite = mateGenome.loSite;
+
+          AorB = UnityEngine.Random.Range(0, 2);
+
+          if (AorB == 0) {
+            for (int i = 0; i < 27; i++) {
+              A[mate_cNum, mate_loSite + i] = receiveLocus[i];
+            }
+          }
+
+          if (AorB == 1) {
+            for (int i = 0; i < 27; i++) {
+              A[mate_cNum, mate_loSite + i] = receiveLocus[i];
+            }
+          }
+
+        }
+      }
+
+    }
+  }
+
+
+
+
+
+
+
+
+  // Update is called once per frame
+  void LateUpdate() {
+    age += Time.deltaTime;
+    int mutationroll = UnityEngine.Random.Range(0, 4096);
+
+    if (mutationroll == 64) { mutate = true; }
+    extA = A;
+    extB = B;
+    if (age > 0.5f) {
+      if (firstTranslation == false || mutate == true) {
+        Mutate();
+
+      }
     }
 
-
-    
-    
-    
-
-
-
-    // Update is called once per frame
-    void LateUpdate()
-    {   
-        age += Time.deltaTime;
-        int mutationroll = UnityEngine.Random.Range(0,4096);
-
-        if (mutationroll == 64){mutate = true;}
-        extA = A;
-        extB = B;
-        if(age > 0.5f ){
-        if ( firstTranslation == false || mutate == true)
-        {
-            Mutate();
-            
-        }
-        }
-                
-    }
-    void Mutate() {
+  }
+  void Mutate() {
     string randChar = "A";
-    AorB = UnityEngine.Random.Range(0,2);
-    int duplicationRoll = UnityEngine.Random.Range(0,8192); // "Faces" of duplication die.
-    int transLocRoll = UnityEngine.Random.Range(0,4096); // "Faces" of translocation die.
+    AorB = UnityEngine.Random.Range(0, 2);
+    int duplicationRoll = UnityEngine.Random.Range(0, 8192); // "Faces" of duplication die.
+    int transLocRoll = UnityEngine.Random.Range(0, 4096); // "Faces" of translocation die.
 
     string[] triNu = new string[3];
     string[] tranString_origin = new string[27];
     string[] tranString_destination = new string[27];
     int siteCroms = sites.GetLength(0);
     int siteLocs = sites.GetLength(1);
-    
-    int[] triIndex = new int[2]{UnityEngine.Random.Range(0,chromoPairs),UnityEngine.Random.Range(3,basePairs-6)}; //The 3 nucleobases to duplicate and their location.
-    
-    if(transLocRoll == 64 && translocation_enabled == true){
 
-        string origin ="", destination ="";
-        int tAorB = UnityEngine.Random.Range(0,2);
+    int[] triIndex = new int[2] { UnityEngine.Random.Range(0, chromoPairs), UnityEngine.Random.Range(3, basePairs - 6) }; //The 3 nucleobases to duplicate and their location.
 
-        int siteIndex_originI = UnityEngine.Random.Range(0,siteCroms);
-        int siteIndex_originJ = sites[siteIndex_originI, UnityEngine.Random.Range(0,siteLocs-1)];
+    if (transLocRoll == 64 && translocation_enabled == true) {
 
-       
+      string origin = "", destination = "";
+      int tAorB = UnityEngine.Random.Range(0, 2);
 
-        int siteIndex_destinationI = UnityEngine.Random.Range(0,siteCroms);
-        int siteIndex_destinationJ = sites[siteIndex_destinationI, UnityEngine.Random.Range(0,siteLocs-1)];
-
-        
+      int siteIndex_originI = UnityEngine.Random.Range(0, siteCroms);
+      int siteIndex_originJ = sites[siteIndex_originI, UnityEngine.Random.Range(0, siteLocs - 1)];
 
 
-        if(AorB == 0){
-            origin = "A";
 
-        for(int i = 0; i < 27; i++){
-            tranString_origin[i] = A[siteIndex_originI, siteIndex_originJ +i];
+      int siteIndex_destinationI = UnityEngine.Random.Range(0, siteCroms);
+      int siteIndex_destinationJ = sites[siteIndex_destinationI, UnityEngine.Random.Range(0, siteLocs - 1)];
+
+
+
+
+      if (AorB == 0) {
+        origin = "A";
+
+        for (int i = 0; i < 27; i++) {
+          tranString_origin[i] = A[siteIndex_originI, siteIndex_originJ + i];
         }
 
-        if (tAorB == 0){
-            destination = "A";
+        if (tAorB == 0) {
+          destination = "A";
 
 
-            for(int i = 0; i < 27; i++){
-            tranString_destination[i] = A[siteIndex_destinationI, siteIndex_destinationJ +i];
-            }
+          for (int i = 0; i < 27; i++) {
+            tranString_destination[i] = A[siteIndex_destinationI, siteIndex_destinationJ + i];
+          }
 
-            //Replace destination
-            for(int i = 0; i < 27; i++){
-            A[siteIndex_destinationI,siteIndex_destinationJ +i] = tranString_origin[i];
-            }
-            //Replace origin
-            for(int i = 0; i < 27; i++){
-            A[siteIndex_originI,siteIndex_originJ +i] = tranString_destination[i];
-            }
+          //Replace destination
+          for (int i = 0; i < 27; i++) {
+            A[siteIndex_destinationI, siteIndex_destinationJ + i] = tranString_origin[i];
+          }
+          //Replace origin
+          for (int i = 0; i < 27; i++) {
+            A[siteIndex_originI, siteIndex_originJ + i] = tranString_destination[i];
+          }
 
-            }
-        else{
-            destination = "B";
-            for(int i = 0; i < 27; i++){
-            tranString_destination[i] = B[siteIndex_destinationI, siteIndex_destinationJ +i];
-            }
+        } else {
+          destination = "B";
+          for (int i = 0; i < 27; i++) {
+            tranString_destination[i] = B[siteIndex_destinationI, siteIndex_destinationJ + i];
+          }
 
-            //Replace destination
-            for(int i = 0; i < 27; i++){
-            B[siteIndex_destinationI,siteIndex_destinationJ +i] = tranString_origin[i];
-            }
-            //Replace origin
-            for(int i = 0; i < 27; i++){
-            A[siteIndex_originI,siteIndex_originJ +i] = tranString_destination[i];
-            }
-
-            }
-
-
-
-        }
-        else{
-            origin = "B";
-        for(int i = 0; i < 27; i++){
-            tranString_origin[i] = B[siteIndex_originI, siteIndex_originJ +i];
-        }
-
-        if (tAorB == 0){
-            destination = "A";
-            for(int i = 0; i < 27; i++){
-            tranString_destination[i] = A[siteIndex_destinationI, siteIndex_destinationJ +i];
-            }
-            
-            //Replace destination
-            for(int i = 0; i < 27; i++){
-            A[siteIndex_destinationI,siteIndex_destinationJ +i] = tranString_origin[i];
-            }
-
-            //Replace origin
-            for(int i = 0; i < 27; i++){
-            B[siteIndex_originI,siteIndex_originJ +i] = tranString_destination[i];
-            }
-
-            }
-        else{
-            destination = "B";
-
-            for(int i = 0; i < 27; i++){
-            tranString_destination[i] = B[siteIndex_destinationI, siteIndex_destinationJ +i];
-            }
-            //Replace destination
-            for(int i = 0; i < 27; i++){
-            B[siteIndex_destinationI,siteIndex_destinationJ +i] = tranString_origin[i];
-            }
-            //Replace origin
-            for(int i = 0; i < 27; i++){
-            B[siteIndex_originI,siteIndex_originJ +i] = tranString_destination[i];
-            }
-            
-            }
+          //Replace destination
+          for (int i = 0; i < 27; i++) {
+            B[siteIndex_destinationI, siteIndex_destinationJ + i] = tranString_origin[i];
+          }
+          //Replace origin
+          for (int i = 0; i < 27; i++) {
+            A[siteIndex_originI, siteIndex_originJ + i] = tranString_destination[i];
+          }
 
         }
 
-        
-    //Debug.Log("Translocation :  " + " Origin: " + origin + "["+siteIndex_originI+","+siteIndex_originJ+"]" + "-[" + System.String.Join("", tranString_origin) +  "] " + " Destination: " + destination + "["+siteIndex_destinationI+","+siteIndex_destinationJ+"]" + "-[" + System.String.Join("", tranString_destination) +  "]");
+
+
+      } else {
+        origin = "B";
+        for (int i = 0; i < 27; i++) {
+          tranString_origin[i] = B[siteIndex_originI, siteIndex_originJ + i];
+        }
+
+        if (tAorB == 0) {
+          destination = "A";
+          for (int i = 0; i < 27; i++) {
+            tranString_destination[i] = A[siteIndex_destinationI, siteIndex_destinationJ + i];
+          }
+
+          //Replace destination
+          for (int i = 0; i < 27; i++) {
+            A[siteIndex_destinationI, siteIndex_destinationJ + i] = tranString_origin[i];
+          }
+
+          //Replace origin
+          for (int i = 0; i < 27; i++) {
+            B[siteIndex_originI, siteIndex_originJ + i] = tranString_destination[i];
+          }
+
+        } else {
+          destination = "B";
+
+          for (int i = 0; i < 27; i++) {
+            tranString_destination[i] = B[siteIndex_destinationI, siteIndex_destinationJ + i];
+          }
+          //Replace destination
+          for (int i = 0; i < 27; i++) {
+            B[siteIndex_destinationI, siteIndex_destinationJ + i] = tranString_origin[i];
+          }
+          //Replace origin
+          for (int i = 0; i < 27; i++) {
+            B[siteIndex_originI, siteIndex_originJ + i] = tranString_destination[i];
+          }
+
+        }
+
+      }
+
+
+      //Debug.Log("Translocation :  " + " Origin: " + origin + "["+siteIndex_originI+","+siteIndex_originJ+"]" + "-[" + System.String.Join("", tranString_origin) +  "] " + " Destination: " + destination + "["+siteIndex_destinationI+","+siteIndex_destinationJ+"]" + "-[" + System.String.Join("", tranString_destination) +  "]");
     }
 
-    if(duplicationRoll == 64 && duplication_enabled == true){
-        
-        if(AorB == 0){
-            triNu[0] = A[triIndex[0],triIndex[1]];
-            triNu[1] = A[triIndex[0],triIndex[1]+1];
-            triNu[2] = A[triIndex[0],triIndex[1]+2];
+    if (duplicationRoll == 64 && duplication_enabled == true) {
 
-            string nextD = System.String.Join("",A[triIndex[0],triIndex[1]+3]+A[triIndex[0],triIndex[1]+4]+A[triIndex[0],triIndex[1]+5]);
-            string thisD = System.String.Join("", triNu[0]+triNu[1]+triNu[2]);
-            
-                A[triIndex[0],triIndex[1]+3] = triNu[0];
-                A[triIndex[0],triIndex[1]+4] = triNu[1];
-                A[triIndex[0],triIndex[1]+5] = triNu[2];
-                //Debug.Log("Duplication! : " + "[" + triIndex[0] + "," + triIndex[1] + "] " + thisD + "-" + nextD);
-                
-            } 
+      if (AorB == 0) {
+        triNu[0] = A[triIndex[0], triIndex[1]];
+        triNu[1] = A[triIndex[0], triIndex[1] + 1];
+        triNu[2] = A[triIndex[0], triIndex[1] + 2];
 
-        else{
-            triNu[0] = B[triIndex[0],triIndex[1]];
-            triNu[1] = B[triIndex[0],triIndex[1]+1];
-            triNu[2] = B[triIndex[0],triIndex[1]+2];
-            string nextD = System.String.Join("",B[triIndex[0],triIndex[1]+3]+B[triIndex[0],triIndex[1]+4]+B[triIndex[0],triIndex[1]+5]);
-            string thisD = System.String.Join("", triNu[0]+triNu[1]+triNu[2]);
-            
-                B[triIndex[0],triIndex[1]+3] = triNu[0];
-                B[triIndex[0],triIndex[1]+4] = triNu[1];
-                B[triIndex[0],triIndex[1]+5] = triNu[2];
-                //Debug.Log("Duplication! : " + "[" + triIndex[0] + "," + triIndex[1] + "] " + thisD + "-" + nextD);
-                
-            } 
+        string nextD = System.String.Join("", A[triIndex[0], triIndex[1] + 3] + A[triIndex[0], triIndex[1] + 4] + A[triIndex[0], triIndex[1] + 5]);
+        string thisD = System.String.Join("", triNu[0] + triNu[1] + triNu[2]);
+
+        A[triIndex[0], triIndex[1] + 3] = triNu[0];
+        A[triIndex[0], triIndex[1] + 4] = triNu[1];
+        A[triIndex[0], triIndex[1] + 5] = triNu[2];
+        //Debug.Log("Duplication! : " + "[" + triIndex[0] + "," + triIndex[1] + "] " + thisD + "-" + nextD);
+
+      } else {
+        triNu[0] = B[triIndex[0], triIndex[1]];
+        triNu[1] = B[triIndex[0], triIndex[1] + 1];
+        triNu[2] = B[triIndex[0], triIndex[1] + 2];
+        string nextD = System.String.Join("", B[triIndex[0], triIndex[1] + 3] + B[triIndex[0], triIndex[1] + 4] + B[triIndex[0], triIndex[1] + 5]);
+        string thisD = System.String.Join("", triNu[0] + triNu[1] + triNu[2]);
+
+        B[triIndex[0], triIndex[1] + 3] = triNu[0];
+        B[triIndex[0], triIndex[1] + 4] = triNu[1];
+        B[triIndex[0], triIndex[1] + 5] = triNu[2];
+        //Debug.Log("Duplication! : " + "[" + triIndex[0] + "," + triIndex[1] + "] " + thisD + "-" + nextD);
+
+      }
     }
-    
+
     // Substitution point mutation below.
-    numMutations = UnityEngine.Random.Range(1,3);
-    for (int i = 0; i < numMutations; i++){
-    
-    int index0 = UnityEngine.Random.Range(0, chromoPairs);
-    int index1 = UnityEngine.Random.Range(0, basePairs);
-    int randBase = UnityEngine.Random.Range(0,2);
-    int pointTypeRoll = UnityEngine.Random.Range(0,10);
-    string pointType;
-    string pyrOrPur;
+    numMutations = UnityEngine.Random.Range(1, 3);
+    for (int i = 0; i < numMutations; i++) {
 
-    /* pointTypeRoll decides if the point mutation is going to result in
-     a base of the same nucleotide group
-     ( A <-> G | C <-> T , 10x more likely) - Transition (trt)
+      int index0 = UnityEngine.Random.Range(0, chromoPairs);
+      int index1 = UnityEngine.Random.Range(0, basePairs);
+      int randBase = UnityEngine.Random.Range(0, 2);
+      int pointTypeRoll = UnityEngine.Random.Range(0, 10);
+      string pointType;
+      string pyrOrPur;
 
-     or a base of the other nucleotide group 
-    ( A <-> T | C <-> G )                   - Transversion (trv)
+      /* pointTypeRoll decides if the point mutation is going to result in
+       a base of the same nucleotide group
+       ( A <-> G | C <-> T , 10x more likely) - Transition (trt)
 
-    Purines: Adenine (A), Guanine(G)
-    Pyrimidines: Cytosine (C), Thymine (T)
+       or a base of the other nucleotide group 
+      ( A <-> T | C <-> G )                   - Transversion (trv)
 
-    */
-        if (pointTypeRoll == 9){pointType = "trv";}else{pointType = "trt";}
+      Purines: Adenine (A), Guanine(G)
+      Pyrimidines: Cytosine (C), Thymine (T)
 
-        
-        
+      */
+      if (pointTypeRoll == 9) { pointType = "trv"; } else { pointType = "trt"; }
 
-        if (AorB == 0){
-            if(A[index0,index1] == "A" || A[index0,index1] == "G"){
-                pyrOrPur ="pur";
-            }else{pyrOrPur = "pyr";}
 
-        if(pointType == "trt"){
-            if(pyrOrPur == "pur"){
-                if(randBase == 0){
-                    randChar = "A";
-                }
-                else if(randBase == 1){
-                    randChar = "G";
-                }
+
+
+      if (AorB == 0) {
+        if (A[index0, index1] == "A" || A[index0, index1] == "G") {
+          pyrOrPur = "pur";
+        } else { pyrOrPur = "pyr"; }
+
+        if (pointType == "trt") {
+          if (pyrOrPur == "pur") {
+            if (randBase == 0) {
+              randChar = "A";
+            } else if (randBase == 1) {
+              randChar = "G";
             }
-            if(pyrOrPur == "pyr"){
-                if(randBase == 0){
-                    randChar = "C";
-                }
-                else if(randBase == 1){
-                    randChar = "T";
-                }
+          }
+          if (pyrOrPur == "pyr") {
+            if (randBase == 0) {
+              randChar = "C";
+            } else if (randBase == 1) {
+              randChar = "T";
             }
+          }
         }
 
-        if(pointType == "trv"){
-            if(pyrOrPur == "pur"){
-                if(randBase == 0){
-                    randChar = "C";
-                }
-                else if(randBase == 1){
-                    randChar = "T";
-                }
+        if (pointType == "trv") {
+          if (pyrOrPur == "pur") {
+            if (randBase == 0) {
+              randChar = "C";
+            } else if (randBase == 1) {
+              randChar = "T";
             }
-            if(pyrOrPur == "pyr"){
-                if(randBase == 0){
-                    randChar = "A";
-                }
-                else if(randBase == 1){
-                    randChar = "G";
-                }
+          }
+          if (pyrOrPur == "pyr") {
+            if (randBase == 0) {
+              randChar = "A";
+            } else if (randBase == 1) {
+              randChar = "G";
             }
+          }
         }
 
-        A[index0,index1] = randChar; 
-        
+        A[index0, index1] = randChar;
+
+      } else {
+        if (B[index0, index1] == "A" || B[index0, index1] == "G") {
+          pyrOrPur = "pur";
+        } else { pyrOrPur = "pyr"; }
+
+
+        if (pointType == "trt") {
+          if (pyrOrPur == "pur") {
+            if (randBase == 0) {
+              randChar = "A";
+            } else if (randBase == 1) {
+              randChar = "G";
+            }
+          }
+          if (pyrOrPur == "pyr") {
+            if (randBase == 0) {
+              randChar = "C";
+            } else if (randBase == 1) {
+              randChar = "T";
+            }
+          }
         }
 
-        else{
-            if(B[index0,index1] == "A" || B[index0,index1] == "G"){
-                pyrOrPur ="pur";
-            }else{pyrOrPur = "pyr";}
-
-
-        if(pointType == "trt"){
-            if(pyrOrPur == "pur"){
-                if(randBase == 0){
-                    randChar = "A";
-                }
-                else if(randBase == 1){
-                    randChar = "G";
-                }
+        if (pointType == "trv") {
+          if (pyrOrPur == "pur") {
+            if (randBase == 0) {
+              randChar = "C";
+            } else if (randBase == 1) {
+              randChar = "T";
             }
-            if(pyrOrPur == "pyr"){
-                if(randBase == 0){
-                    randChar = "C";
-                }
-                else if(randBase == 1){
-                    randChar = "T";
-                }
+          }
+          if (pyrOrPur == "pyr") {
+            if (randBase == 0) {
+              randChar = "A";
+            } else if (randBase == 1) {
+              randChar = "G";
             }
+          }
         }
 
-        if(pointType == "trv"){
-            if(pyrOrPur == "pur"){
-                if(randBase == 0){
-                    randChar = "C";
-                }
-                else if(randBase == 1){
-                    randChar = "T";
-                }
-            }
-            if(pyrOrPur == "pyr"){
-                if(randBase == 0){
-                    randChar = "A";
-                }
-                else if(randBase == 1){
-                    randChar = "G";
-                }
-            }
-        }
-
-             B[index0,index1] = randChar; 
+        B[index0, index1] = randChar;
+      }
     }
-}
-
-        
-        TranslateGenome();
-}
-
-    
-
-string[] codon= new string[3];
-string allelesA = "";
-string allelesB = "";
-string thisAlleleA = "";
-string thisAlleleB = "";
-
-     int nAllelesA = 0;
-     string stopA = "";
-     int nAllelesB = 0;
-     string stopB = "";
-     bool isGene = false;
 
 
-string tempS = "";
-
-
-int codonCount = 0;
-
-//The code below functions as a rudimentary ribosome, translating DNA into proteins, which are used to calculate numeric values of phenotypic traits.
-
- void TranslateGenome() {
-
-     bool translating = true;
-
-do{
-mutate = false;
-        codon = new string[3]{"","",""};
-         allelesA = "";
-         allelesB = "";
-         thisAlleleA = "";
-         thisAlleleB = "";
-
-         nAllelesA = 0;
-         stopA = "";
-         nAllelesB = 0;
-         stopB = "";
-         isGene = false;
+    TranslateGenome();
+  }
 
 
 
+  string[] codon = new string[3];
+  string allelesA = "";
+  string allelesB = "";
+  string thisAlleleA = "";
+  string thisAlleleB = "";
 
-    
+  int nAllelesA = 0;
+  string stopA = "";
+  int nAllelesB = 0;
+  string stopB = "";
+  bool isGene = false;
 
-            
-        int numBasesA = 0;
-        int numBasesB = 0;
-        codonCount = 0;
-        baseCount = 0;
-        for (int i = 0; i < A.GetLength(0); i++){
-        for (int j = 0; j < basePairs;j++)
-        {   
-            if(i == 0 && j == 0){allelesA = ""; allelesB = ""; thisAlleleA = ""; thisAlleleB = "";}
-            
-            numBasesA +=1;
-            
- 
-                        if (baseCount == 3){
-                            
-                            
-                                
-                                
-                                
-                                if(codon[0] == "A"){                     //A-
 
-                                if(codon[1] == "A"){                     //AA-
-                                    if(codon[2] == "A" ) {tempS = "K";}            //AAA
-                                    else if (codon[2] == "T" ) {tempS = ("N");}      //AAT
-                                    else if (codon[2] == "C" ) {tempS = ("N");}      //AAC
-                                    else if (codon[2] == "G" ) {tempS = ("K");}      //AAG
-                                    
-                                    if (isGene == true ){ thisAlleleA += tempS;}
-                                }
+  string tempS = "";
 
-                                else if (codon[1] == "T"){              //AT-
-                                    if(codon[2] == "A" ) {tempS = ("I");}           //ATA
-                                    else if (codon[2] == "T" ) {tempS = ("I");}     //ATT
-                                    else if (codon[2] == "C" ) {tempS = ("I");}     //ATC
-                                    else if (codon[2] == "G" ) {                    //ATG
-                                        if ( thisAlleleA.Length > 0){tempS = ("M");}
-                                        if (thisAlleleA.Length == 0){isGene = true; tempS = "<";}
-                                         
-                                        }
-                                   
-                                    if (isGene == true ){ thisAlleleA += tempS;}
-                                }
 
-                                else if (codon[1] == "C"){               //AC-
-                                    if(codon[2] == "A" ) {tempS = ("T");}           //ACA
-                                    else if (codon[2] == "T" ) {tempS = ("T");}     //ACT
-                                    else if (codon[2] == "C" ) {tempS = ("T");}     //ACC
-                                    else if (codon[2] == "G" ) {tempS = ("T");}     //ACG
-                                    
-                                    if (isGene == true ){ thisAlleleA += tempS;}
-                                }
-                                else if (codon[1] == "G"){               //AG-
-                                    if(codon[2] == "A" ) {tempS = ("R");}           //AGA
-                                    else if (codon[2] == "T" ) {tempS = ("S");}     //AGT
-                                    else if (codon[2] == "C" ) {tempS = ("S");}     //AGC
-                                    else if (codon[2] == "G" ) {tempS = ("R");}     //AGG
-                                    
-                                    if (isGene == true ){ thisAlleleA += tempS;}
-                                }
-                            }
-                            else if (codon[0] == "T"){              //T-
-                                if(codon[1] == "A"){                     //TA-
-                                    if(codon[2] == "A" ) { 
-                                        tempS = ">";
-                                        thisAlleleA += tempS; 
-                                        codonCount = 0;                         //TAA
-                                         allelesA += thisAlleleA;
-                                         isGene = false;
-                                         nAllelesA +=1;
-                                         stopA +=  "-" + nAllelesA.ToString()+ "TAA" + "-";
-                                         thisAlleleA = "";
-                                         tempS = "";
-                                         
-                                        }  
+  int codonCount = 0;
 
-                                    else if (codon[2] == "T" ) {tempS = ("Y");}     //TAT
-                                    else if (codon[2] == "C" ) {tempS = ("Y");}     //TAC
-                                    else if (codon[2] == "G" )                      //TAG
-                                    {tempS = ">"; 
-                                    thisAlleleA += tempS;     
-                                            codonCount = 0; 
-                                            isGene = false;
-                                         allelesA += thisAlleleA;
-                                         nAllelesA +=1;
-                                         stopA +=  "-" + nAllelesA.ToString()+ "TAG" + "-";
-                                         thisAlleleA = "";
-                                        tempS = "";
-                                        }  
-                                    if (isGene == true ){ thisAlleleA += tempS;}
-                                }
+  //The code below functions as a rudimentary ribosome, translating DNA into proteins, which are used to calculate numeric values of phenotypic traits.
 
-                                else if (codon[1] == "T"){              //TT-
-                                    if(codon[2] == "A" ) {tempS = ("L");}           //TTA
-                                    else if (codon[2] == "T" ) {tempS = ("F");}     //TTT
-                                    else if (codon[2] == "C" ) {tempS = ("F");}     //TTC
-                                    else if (codon[2] == "G" ) {tempS = ("L");}     //TTG
-                                    if (isGene == true ){ thisAlleleA += tempS;}
-                                }
+  void TranslateGenome() {
 
-                                else if (codon[1] == "C"){               //TC-
-                                    if(codon[2] == "A" ) {tempS = ("S");}           //TCA
-                                    else if (codon[2] == "T" ) {tempS = ("S");}     //TCT
-                                    else if (codon[2] == "C" ) {tempS = ("S");}     //TCC
-                                    else if (codon[2] == "G" ) {tempS = ("S");}     //TCG
-                                    if (isGene == true ){ thisAlleleA += tempS;}
-                                }
-                                else if (codon[1] == "G"){               //TG-
-                                    if(codon[2] == "A" )                             //TGA
-                                    {tempS = ">"; thisAlleleA += tempS;     
-                                            codonCount = 0; 
-                                            isGene = false;
-                                         allelesA += thisAlleleA;
-                                         nAllelesA +=1;
-                                         stopA +=  "-" + nAllelesA.ToString()+ "TGA" + "-";
-                                         thisAlleleA = "";
-                                         tempS = "";
-                                         
-                                        }            
-                                    else if (codon[2] == "T" ) {tempS = ("C");}     //TGT
-                                    else if (codon[2] == "C" ) {tempS = ("C");}     //TGC
-                                    else if (codon[2] == "G" ) {tempS = ("W");}     //TGG
-                                    if (isGene == true ){ thisAlleleA += tempS;}
-                                }
-                            }
-                            else if (codon[0] == "C"){               //C-
-                                if(codon[1] == "A"){                     //CA-
-                                    if(codon[2] == "A" ) {tempS = ("Q");}           //CAA
-                                    else if (codon[2] == "T" ) {tempS = ("H");}     //CAT
-                                    else if (codon[2] == "C" ) {tempS = ("H");}     //CAC
-                                    else if (codon[2] == "G" ) {tempS = ("Q");}     //CAG
-                                    if (isGene == true ){ thisAlleleA += tempS;}
-                                }
+    bool translating = true;
 
-                                else if (codon[1] == "T"){              //CT-
-                                    if(codon[2] == "A" ) {tempS = ("L");}           //CTA
-                                    else if (codon[2] == "T" ) {tempS = ("L");}     //CTT
-                                    else if (codon[2] == "C" ) {tempS = ("L");}     //CTC
-                                    else if (codon[2] == "G" ) {tempS = ("L");}     //CTG
-                                    if (isGene == true ){ thisAlleleA += tempS;}
-                                }
+    do {
+      mutate = false;
+      codon = new string[3] { "", "", "" };
+      allelesA = "";
+      allelesB = "";
+      thisAlleleA = "";
+      thisAlleleB = "";
 
-                                else if (codon[1] == "C"){               //CC-
-                                    if(codon[2] == "A" ) {tempS = ("P");}           //CCA
-                                    else if (codon[2] == "T" ) {tempS = ("P");}     //CCT
-                                    else if (codon[2] == "C" ) {tempS = ("P");}     //CCC
-                                    else if (codon[2] == "G" ) {tempS = ("P");}     //CCG
-                                    if (isGene == true ){ thisAlleleA += tempS;}
-                                }
-                                else if (codon[1] == "G"){               //CG-
-                                    if(codon[2] == "A" ) {tempS = ("R");}           //CGA
-                                    else if (codon[2] == "T" ) {tempS = ("R");}     //CGT
-                                    else if (codon[2] == "C" ) {tempS = ("R");}     //CGC
-                                    else if (codon[2] == "G" ) {tempS = ("R");}     //CGG
-                                    if (isGene == true ){ thisAlleleA += tempS;}
-                                }
-                            }
-                            else if (codon[0] == "G"){              //G-
-                                if(codon[1] == "A"){                     //GA-
-                                    if(codon[2] == "A" ) {tempS = ("E");}           //GAA
-                                    else if (codon[2] == "T" ) {tempS = ("D");}     //GAT
-                                    else if (codon[2] == "C" ) {tempS = ("D");}     //GAC
-                                    else if (codon[2] == "G" ) {tempS = ("E");}     //GAG
-                                    if (isGene == true ){ thisAlleleA += tempS;}
-                                }
-
-                                else if (codon[1] == "T"){              //GT-
-                                    if(codon[2] == "A" ) {tempS = ("V");}           //GTA
-                                    else if (codon[2] == "T" ) {tempS = ("V");}     //GTT
-                                    else if (codon[2] == "C" ) {tempS = ("V");}     //GTC
-                                    else if (codon[2] == "G" ) {tempS = ("V");}     //GTG
-                                    if (isGene == true ){ thisAlleleA += tempS;}
-                                }
-
-                                else if (codon[1] == "C"){               //GC-
-                                    if(codon[2] == "A" ) {tempS = ("A");}           //GCA
-                                    else if (codon[2] == "T" ) {tempS = ("A");}     //GCT
-                                    else if (codon[2] == "C" ) {tempS = ("A");}     //GCC
-                                    else if (codon[2] == "G" ) {tempS = ("A");}     //GCG
-                                    if (isGene == true ){ thisAlleleA += tempS;}
-                                }
-                                else if (codon[1] == "G"){               //GG-
-                                    if(codon[2] == "A" ) {tempS = ("G");}           //GGA
-                                    else if (codon[2] == "T" ) {tempS = ("G");}     //GGT
-                                    else if (codon[2] == "C" ) {tempS = ("G");}     //GGC
-                                    else if (codon[2] == "G" ) {tempS = ("G");}     //GGG
-                                    if (isGene == true ){ thisAlleleA += tempS;}
-                                }
-                            }
-                            
+      nAllelesA = 0;
+      stopA = "";
+      nAllelesB = 0;
+      stopB = "";
+      isGene = false;
 
 
 
 
-                            codonCount += 1;
-                             baseCount = 0;
-                            }
 
-            codon[baseCount]=(A[i,j]);
-            baseCount +=1;
+
+
+      int numBasesA = 0;
+      int numBasesB = 0;
+      codonCount = 0;
+      baseCount = 0;
+      for (int i = 0; i < A.GetLength(0); i++) {
+        for (int j = 0; j < basePairs; j++) {
+          if (i == 0 && j == 0) { allelesA = ""; allelesB = ""; thisAlleleA = ""; thisAlleleB = ""; }
+
+          numBasesA += 1;
+
+
+          if (baseCount == 3) {
+
+
+
+
+
+            if (codon[0] == "A") {                     //A-
+
+              if (codon[1] == "A") {                     //AA-
+                if (codon[2] == "A") { tempS = "K"; }            //AAA
+                else if (codon[2] == "T") { tempS = ("N"); }      //AAT
+                else if (codon[2] == "C") { tempS = ("N"); }      //AAC
+                else if (codon[2] == "G") { tempS = ("K"); }      //AAG
+
+                if (isGene == true) { thisAlleleA += tempS; }
+              } else if (codon[1] == "T") {              //AT-
+                if (codon[2] == "A") { tempS = ("I"); }           //ATA
+                else if (codon[2] == "T") { tempS = ("I"); }     //ATT
+                else if (codon[2] == "C") { tempS = ("I"); }     //ATC
+                else if (codon[2] == "G") {                    //ATG
+                  if (thisAlleleA.Length > 0) { tempS = ("M"); }
+                  if (thisAlleleA.Length == 0) { isGene = true; tempS = "<"; }
+
+                }
+
+                if (isGene == true) { thisAlleleA += tempS; }
+              } else if (codon[1] == "C") {               //AC-
+                if (codon[2] == "A") { tempS = ("T"); }           //ACA
+                else if (codon[2] == "T") { tempS = ("T"); }     //ACT
+                else if (codon[2] == "C") { tempS = ("T"); }     //ACC
+                else if (codon[2] == "G") { tempS = ("T"); }     //ACG
+
+                if (isGene == true) { thisAlleleA += tempS; }
+              } else if (codon[1] == "G") {               //AG-
+                if (codon[2] == "A") { tempS = ("R"); }           //AGA
+                else if (codon[2] == "T") { tempS = ("S"); }     //AGT
+                else if (codon[2] == "C") { tempS = ("S"); }     //AGC
+                else if (codon[2] == "G") { tempS = ("R"); }     //AGG
+
+                if (isGene == true) { thisAlleleA += tempS; }
+              }
+            } else if (codon[0] == "T") {              //T-
+              if (codon[1] == "A") {                     //TA-
+                if (codon[2] == "A") {
+                  tempS = ">";
+                  thisAlleleA += tempS;
+                  codonCount = 0;                         //TAA
+                  allelesA += thisAlleleA;
+                  isGene = false;
+                  nAllelesA += 1;
+                  stopA += "-" + nAllelesA.ToString() + "TAA" + "-";
+                  thisAlleleA = "";
+                  tempS = "";
+
+                } else if (codon[2] == "T") { tempS = ("Y"); }     //TAT
+                  else if (codon[2] == "C") { tempS = ("Y"); }     //TAC
+                  else if (codon[2] == "G")                      //TAG
+                  {
+                  tempS = ">";
+                  thisAlleleA += tempS;
+                  codonCount = 0;
+                  isGene = false;
+                  allelesA += thisAlleleA;
+                  nAllelesA += 1;
+                  stopA += "-" + nAllelesA.ToString() + "TAG" + "-";
+                  thisAlleleA = "";
+                  tempS = "";
+                }
+                if (isGene == true) { thisAlleleA += tempS; }
+              } else if (codon[1] == "T") {              //TT-
+                if (codon[2] == "A") { tempS = ("L"); }           //TTA
+                else if (codon[2] == "T") { tempS = ("F"); }     //TTT
+                else if (codon[2] == "C") { tempS = ("F"); }     //TTC
+                else if (codon[2] == "G") { tempS = ("L"); }     //TTG
+                if (isGene == true) { thisAlleleA += tempS; }
+              } else if (codon[1] == "C") {               //TC-
+                if (codon[2] == "A") { tempS = ("S"); }           //TCA
+                else if (codon[2] == "T") { tempS = ("S"); }     //TCT
+                else if (codon[2] == "C") { tempS = ("S"); }     //TCC
+                else if (codon[2] == "G") { tempS = ("S"); }     //TCG
+                if (isGene == true) { thisAlleleA += tempS; }
+              } else if (codon[1] == "G") {               //TG-
+                if (codon[2] == "A")                             //TGA
+                {
+                  tempS = ">"; thisAlleleA += tempS;
+                  codonCount = 0;
+                  isGene = false;
+                  allelesA += thisAlleleA;
+                  nAllelesA += 1;
+                  stopA += "-" + nAllelesA.ToString() + "TGA" + "-";
+                  thisAlleleA = "";
+                  tempS = "";
+
+                } else if (codon[2] == "T") { tempS = ("C"); }     //TGT
+                  else if (codon[2] == "C") { tempS = ("C"); }     //TGC
+                  else if (codon[2] == "G") { tempS = ("W"); }     //TGG
+                if (isGene == true) { thisAlleleA += tempS; }
+              }
+            } else if (codon[0] == "C") {               //C-
+              if (codon[1] == "A") {                     //CA-
+                if (codon[2] == "A") { tempS = ("Q"); }           //CAA
+                else if (codon[2] == "T") { tempS = ("H"); }     //CAT
+                else if (codon[2] == "C") { tempS = ("H"); }     //CAC
+                else if (codon[2] == "G") { tempS = ("Q"); }     //CAG
+                if (isGene == true) { thisAlleleA += tempS; }
+              } else if (codon[1] == "T") {              //CT-
+                if (codon[2] == "A") { tempS = ("L"); }           //CTA
+                else if (codon[2] == "T") { tempS = ("L"); }     //CTT
+                else if (codon[2] == "C") { tempS = ("L"); }     //CTC
+                else if (codon[2] == "G") { tempS = ("L"); }     //CTG
+                if (isGene == true) { thisAlleleA += tempS; }
+              } else if (codon[1] == "C") {               //CC-
+                if (codon[2] == "A") { tempS = ("P"); }           //CCA
+                else if (codon[2] == "T") { tempS = ("P"); }     //CCT
+                else if (codon[2] == "C") { tempS = ("P"); }     //CCC
+                else if (codon[2] == "G") { tempS = ("P"); }     //CCG
+                if (isGene == true) { thisAlleleA += tempS; }
+              } else if (codon[1] == "G") {               //CG-
+                if (codon[2] == "A") { tempS = ("R"); }           //CGA
+                else if (codon[2] == "T") { tempS = ("R"); }     //CGT
+                else if (codon[2] == "C") { tempS = ("R"); }     //CGC
+                else if (codon[2] == "G") { tempS = ("R"); }     //CGG
+                if (isGene == true) { thisAlleleA += tempS; }
+              }
+            } else if (codon[0] == "G") {              //G-
+              if (codon[1] == "A") {                     //GA-
+                if (codon[2] == "A") { tempS = ("E"); }           //GAA
+                else if (codon[2] == "T") { tempS = ("D"); }     //GAT
+                else if (codon[2] == "C") { tempS = ("D"); }     //GAC
+                else if (codon[2] == "G") { tempS = ("E"); }     //GAG
+                if (isGene == true) { thisAlleleA += tempS; }
+              } else if (codon[1] == "T") {              //GT-
+                if (codon[2] == "A") { tempS = ("V"); }           //GTA
+                else if (codon[2] == "T") { tempS = ("V"); }     //GTT
+                else if (codon[2] == "C") { tempS = ("V"); }     //GTC
+                else if (codon[2] == "G") { tempS = ("V"); }     //GTG
+                if (isGene == true) { thisAlleleA += tempS; }
+              } else if (codon[1] == "C") {               //GC-
+                if (codon[2] == "A") { tempS = ("A"); }           //GCA
+                else if (codon[2] == "T") { tempS = ("A"); }     //GCT
+                else if (codon[2] == "C") { tempS = ("A"); }     //GCC
+                else if (codon[2] == "G") { tempS = ("A"); }     //GCG
+                if (isGene == true) { thisAlleleA += tempS; }
+              } else if (codon[1] == "G") {               //GG-
+                if (codon[2] == "A") { tempS = ("G"); }           //GGA
+                else if (codon[2] == "T") { tempS = ("G"); }     //GGT
+                else if (codon[2] == "C") { tempS = ("G"); }     //GGC
+                else if (codon[2] == "G") { tempS = ("G"); }     //GGG
+                if (isGene == true) { thisAlleleA += tempS; }
+              }
+            }
+
+
+
+
+
+            codonCount += 1;
+            baseCount = 0;
+          }
+
+          codon[baseCount] = (A[i, j]);
+          baseCount += 1;
         }
-     }
-            
-            //Debug.Log("numBasesA = " + numBasesA + " nAllelesA = " + nAllelesA + " StopsA = " + stopA);
-         
-        
-        codonCount = 0;
-        baseCount = 0;
-        for (int x = 0; x < B.GetLength(0); x++){
-        for (int y = 0; y < basePairs;y++)
-        {   
-            if(x == 0 && y == 0){ allelesB = ""; thisAlleleA = ""; thisAlleleB = "";}
-            numBasesB +=1;
- 
-                        if (baseCount == 3){
-                            
-                            
-                            
-                                
-                                if(codon[0] == "A"){                     //A-
+      }
 
-                                if(codon[1] == "A"){                     //AA-
-                                    if(codon[2] == "A" ) {tempS = "K";}            //AAA
-                                    else if (codon[2] == "T" ) {tempS = ("N");}      //AAT
-                                    else if (codon[2] == "C" ) {tempS = ("N");}      //AAC
-                                    else if (codon[2] == "G" ) {tempS = ("K");}      //AAG
-                                    
-                                    if (isGene == true ){ thisAlleleB += tempS;}
-                                }
+      //Debug.Log("numBasesA = " + numBasesA + " nAllelesA = " + nAllelesA + " StopsA = " + stopA);
 
-                                else if (codon[1] == "T"){              //AT-
-                                    if(codon[2] == "A" ) {tempS = ("I");}           //ATA
-                                    else if (codon[2] == "T" ) {tempS = ("I");}     //ATT
-                                    else if (codon[2] == "C" ) {tempS = ("I");}     //ATC
-                                     if (codon[2] == "G" ) {                        //ATG
-                                            if ( thisAlleleB.Length > 0){tempS = ("M");}
-                                        if (thisAlleleB.Length == 0){isGene = true; tempS = "<";}
-                                        }
-                                   
-                                    if (isGene == true ){ thisAlleleB += tempS;}
-                                }
 
-                                else if (codon[1] == "C"){               //AC-
-                                    if(codon[2] == "A" ) {tempS = ("T");}           //ACA
-                                    else if (codon[2] == "T" ) {tempS = ("T");}     //ACT
-                                    else if (codon[2] == "C" ) {tempS = ("T");}     //ACC
-                                    else if (codon[2] == "G" ) {tempS = ("T");}     //ACG
-                                    
-                                    if (isGene == true ){ thisAlleleB += tempS;}
-                                }
-                                else if (codon[1] == "G"){               //AG-
-                                    if(codon[2] == "A" ) {tempS = ("R");}           //AGA
-                                    else if (codon[2] == "T" ) {tempS = ("S");}     //AGT
-                                    else if (codon[2] == "C" ) {tempS = ("S");}     //AGC
-                                    else if (codon[2] == "G" ) {tempS = ("R");}     //AGG
-                                    
-                                    if (isGene == true ){ thisAlleleB += tempS;}
-                                }
-                            }
-                            else if (codon[0] == "T"){              //T-
-                                if(codon[1] == "A"){                     //TA-
-                                    if(codon[2] == "A" ) { 
-                                        tempS = ">";
-                                        thisAlleleB += tempS; 
-                                        codonCount = 0;                         //TAA
-                                         allelesB += thisAlleleB;
-                                         nAllelesB +=1;
-                                         stopB +=  "-" + nAllelesB.ToString()+ "TAA" + "-";
-                                         thisAlleleB = "";
-                                         
-                                        }  
+      codonCount = 0;
+      baseCount = 0;
+      for (int x = 0; x < B.GetLength(0); x++) {
+        for (int y = 0; y < basePairs; y++) {
+          if (x == 0 && y == 0) { allelesB = ""; thisAlleleA = ""; thisAlleleB = ""; }
+          numBasesB += 1;
 
-                                    else if (codon[2] == "T" ) {tempS = ("Y");}     //TAT
-                                    else if (codon[2] == "C" ) {tempS = ("Y");}     //TAC
-                                    else if (codon[2] == "G" )                      //TAG
-                                    {tempS = ">"; thisAlleleB += tempS;     
-                                            codonCount = 0; isGene = false;
-                                         allelesB += thisAlleleB;
-                                         nAllelesB +=1;
-                                         stopB +=  "-" + nAllelesB.ToString()+ "TAG" + "-";
-                                         thisAlleleB = "";
-                                        
-                                        }  
-                                    if (isGene == true ){ thisAlleleB += tempS;}
-                                }
-
-                                else if (codon[1] == "T"){              //TT-
-                                    if(codon[2] == "A" ) {tempS = ("L");}           //TTA
-                                    else if (codon[2] == "T" ) {tempS = ("F");}     //TTT
-                                    else if (codon[2] == "C" ) {tempS = ("F");}     //TTC
-                                    else if (codon[2] == "G" ) {tempS = ("L");}     //TTG
-                                    if (isGene == true ){ thisAlleleB += tempS;}
-                                }
-
-                                else if (codon[1] == "C"){               //TC-
-                                    if(codon[2] == "A" ) {tempS = ("S");}           //TCA
-                                    else if (codon[2] == "T" ) {tempS = ("S");}     //TCT
-                                    else if (codon[2] == "C" ) {tempS = ("S");}     //TCC
-                                    else if (codon[2] == "G" ) {tempS = ("S");}     //TCG
-                                    if (isGene == true ){ thisAlleleB += tempS;}
-                                }
-                                else if (codon[1] == "G"){               //TG-
-                                    if(codon[2] == "A" )                             //TGA
-                                    {tempS = ">"; thisAlleleB += tempS;     
-                                            codonCount = 0; isGene = false;
-                                         allelesB += thisAlleleB;
-                                         nAllelesB +=1;
-                                         stopB +=  "-" + nAllelesB.ToString()+ "TGA" + "-";
-                                         thisAlleleB = "";
-                                         
-                                        }            
-                                    else if (codon[2] == "T" ) {tempS = ("C");}     //TGT
-                                    else if (codon[2] == "C" ) {tempS = ("C");}     //TGC
-                                    else if (codon[2] == "G" ) {tempS = ("W");}     //TGG
-                                    if (isGene == true ){ thisAlleleB += tempS;}
-                                }
-                            }
-                            else if (codon[0] == "C"){               //C-
-                                if(codon[1] == "A"){                     //CA-
-                                    if(codon[2] == "A" ) {tempS = ("Q");}           //CAA
-                                    else if (codon[2] == "T" ) {tempS = ("H");}     //CAT
-                                    else if (codon[2] == "C" ) {tempS = ("H");}     //CAC
-                                    else if (codon[2] == "G" ) {tempS = ("Q");}     //CAG
-                                    if (isGene == true ){ thisAlleleB += tempS;}
-                                }
-
-                                else if (codon[1] == "T"){              //CT-
-                                    if(codon[2] == "A" ) {tempS = ("L");}           //CTA
-                                    else if (codon[2] == "T" ) {tempS = ("L");}     //CTT
-                                    else if (codon[2] == "C" ) {tempS = ("L");}     //CTC
-                                    else if (codon[2] == "G" ) {tempS = ("L");}     //CTG
-                                    if (isGene == true ){ thisAlleleB += tempS;}
-                                }
-
-                                else if (codon[1] == "C"){               //CC-
-                                    if(codon[2] == "A" ) {tempS = ("P");}           //CCA
-                                    else if (codon[2] == "T" ) {tempS = ("P");}     //CCT
-                                    else if (codon[2] == "C" ) {tempS = ("P");}     //CCC
-                                    else if (codon[2] == "G" ) {tempS = ("P");}     //CCG
-                                    if (isGene == true ){ thisAlleleB += tempS;}
-                                }
-                                else if (codon[1] == "G"){               //CG-
-                                    if(codon[2] == "A" ) {tempS = ("R");}           //CGA
-                                    else if (codon[2] == "T" ) {tempS = ("R");}     //CGT
-                                    else if (codon[2] == "C" ) {tempS = ("R");}     //CGC
-                                    else if (codon[2] == "G" ) {tempS = ("R");}     //CGG
-                                    if (isGene == true ){ thisAlleleB += tempS;}
-                                }
-                            }
-                            else if (codon[0] == "G"){              //G-
-                                if(codon[1] == "A"){                     //GA-
-                                    if(codon[2] == "A" ) {tempS = ("E");}           //GAA
-                                    else if (codon[2] == "T" ) {tempS = ("D");}     //GAT
-                                    else if (codon[2] == "C" ) {tempS = ("D");}     //GAC
-                                    else if (codon[2] == "G" ) {tempS = ("E");}     //GAG
-                                    if (isGene == true ){ thisAlleleB += tempS;}
-                                }
-
-                                else if (codon[1] == "T"){              //GT-
-                                    if(codon[2] == "A" ) {tempS = ("V");}           //GTA
-                                    else if (codon[2] == "T" ) {tempS = ("V");}     //GTT
-                                    else if (codon[2] == "C" ) {tempS = ("V");}     //GTC
-                                    else if (codon[2] == "G" ) {tempS = ("V");}     //GTG
-                                    if (isGene == true ){ thisAlleleB += tempS;}
-                                }
-
-                                else if (codon[1] == "C"){               //GC-
-                                    if(codon[2] == "A" ) {tempS = ("A");}           //GCA
-                                    else if (codon[2] == "T" ) {tempS = ("A");}     //GCT
-                                    else if (codon[2] == "C" ) {tempS = ("A");}     //GCC
-                                    else if (codon[2] == "G" ) {tempS = ("A");}     //GCG
-                                    if (isGene == true ){ thisAlleleB += tempS;}
-                                }
-                                else if (codon[1] == "G"){               //GG-
-                                    if(codon[2] == "A" ) {tempS = ("G");}           //GGA
-                                    else if (codon[2] == "T" ) {tempS = ("G");}     //GGT
-                                    else if (codon[2] == "C" ) {tempS = ("G");}     //GGC
-                                    else if (codon[2] == "G" ) {tempS = ("G");}     //GGG
-                                    if (isGene == true ){ thisAlleleB += tempS;}
-                                }
-                            }
-                            
+          if (baseCount == 3) {
 
 
 
 
-                            codonCount += 1;
-                             baseCount = 0;
-                            }
+            if (codon[0] == "A") {                     //A-
 
-            codon[baseCount]=(B[x,y]);
-            baseCount +=1;
+              if (codon[1] == "A") {                     //AA-
+                if (codon[2] == "A") { tempS = "K"; }            //AAA
+                else if (codon[2] == "T") { tempS = ("N"); }      //AAT
+                else if (codon[2] == "C") { tempS = ("N"); }      //AAC
+                else if (codon[2] == "G") { tempS = ("K"); }      //AAG
+
+                if (isGene == true) { thisAlleleB += tempS; }
+              } else if (codon[1] == "T") {              //AT-
+                if (codon[2] == "A") { tempS = ("I"); }           //ATA
+                else if (codon[2] == "T") { tempS = ("I"); }     //ATT
+                else if (codon[2] == "C") { tempS = ("I"); }     //ATC
+                if (codon[2] == "G") {                        //ATG
+                  if (thisAlleleB.Length > 0) { tempS = ("M"); }
+                  if (thisAlleleB.Length == 0) { isGene = true; tempS = "<"; }
+                }
+
+                if (isGene == true) { thisAlleleB += tempS; }
+              } else if (codon[1] == "C") {               //AC-
+                if (codon[2] == "A") { tempS = ("T"); }           //ACA
+                else if (codon[2] == "T") { tempS = ("T"); }     //ACT
+                else if (codon[2] == "C") { tempS = ("T"); }     //ACC
+                else if (codon[2] == "G") { tempS = ("T"); }     //ACG
+
+                if (isGene == true) { thisAlleleB += tempS; }
+              } else if (codon[1] == "G") {               //AG-
+                if (codon[2] == "A") { tempS = ("R"); }           //AGA
+                else if (codon[2] == "T") { tempS = ("S"); }     //AGT
+                else if (codon[2] == "C") { tempS = ("S"); }     //AGC
+                else if (codon[2] == "G") { tempS = ("R"); }     //AGG
+
+                if (isGene == true) { thisAlleleB += tempS; }
+              }
+            } else if (codon[0] == "T") {              //T-
+              if (codon[1] == "A") {                     //TA-
+                if (codon[2] == "A") {
+                  tempS = ">";
+                  thisAlleleB += tempS;
+                  codonCount = 0;                         //TAA
+                  allelesB += thisAlleleB;
+                  nAllelesB += 1;
+                  stopB += "-" + nAllelesB.ToString() + "TAA" + "-";
+                  thisAlleleB = "";
+
+                } else if (codon[2] == "T") { tempS = ("Y"); }     //TAT
+                  else if (codon[2] == "C") { tempS = ("Y"); }     //TAC
+                  else if (codon[2] == "G")                      //TAG
+                  {
+                  tempS = ">"; thisAlleleB += tempS;
+                  codonCount = 0; isGene = false;
+                  allelesB += thisAlleleB;
+                  nAllelesB += 1;
+                  stopB += "-" + nAllelesB.ToString() + "TAG" + "-";
+                  thisAlleleB = "";
+
+                }
+                if (isGene == true) { thisAlleleB += tempS; }
+              } else if (codon[1] == "T") {              //TT-
+                if (codon[2] == "A") { tempS = ("L"); }           //TTA
+                else if (codon[2] == "T") { tempS = ("F"); }     //TTT
+                else if (codon[2] == "C") { tempS = ("F"); }     //TTC
+                else if (codon[2] == "G") { tempS = ("L"); }     //TTG
+                if (isGene == true) { thisAlleleB += tempS; }
+              } else if (codon[1] == "C") {               //TC-
+                if (codon[2] == "A") { tempS = ("S"); }           //TCA
+                else if (codon[2] == "T") { tempS = ("S"); }     //TCT
+                else if (codon[2] == "C") { tempS = ("S"); }     //TCC
+                else if (codon[2] == "G") { tempS = ("S"); }     //TCG
+                if (isGene == true) { thisAlleleB += tempS; }
+              } else if (codon[1] == "G") {               //TG-
+                if (codon[2] == "A")                             //TGA
+                {
+                  tempS = ">"; thisAlleleB += tempS;
+                  codonCount = 0; isGene = false;
+                  allelesB += thisAlleleB;
+                  nAllelesB += 1;
+                  stopB += "-" + nAllelesB.ToString() + "TGA" + "-";
+                  thisAlleleB = "";
+
+                } else if (codon[2] == "T") { tempS = ("C"); }     //TGT
+                  else if (codon[2] == "C") { tempS = ("C"); }     //TGC
+                  else if (codon[2] == "G") { tempS = ("W"); }     //TGG
+                if (isGene == true) { thisAlleleB += tempS; }
+              }
+            } else if (codon[0] == "C") {               //C-
+              if (codon[1] == "A") {                     //CA-
+                if (codon[2] == "A") { tempS = ("Q"); }           //CAA
+                else if (codon[2] == "T") { tempS = ("H"); }     //CAT
+                else if (codon[2] == "C") { tempS = ("H"); }     //CAC
+                else if (codon[2] == "G") { tempS = ("Q"); }     //CAG
+                if (isGene == true) { thisAlleleB += tempS; }
+              } else if (codon[1] == "T") {              //CT-
+                if (codon[2] == "A") { tempS = ("L"); }           //CTA
+                else if (codon[2] == "T") { tempS = ("L"); }     //CTT
+                else if (codon[2] == "C") { tempS = ("L"); }     //CTC
+                else if (codon[2] == "G") { tempS = ("L"); }     //CTG
+                if (isGene == true) { thisAlleleB += tempS; }
+              } else if (codon[1] == "C") {               //CC-
+                if (codon[2] == "A") { tempS = ("P"); }           //CCA
+                else if (codon[2] == "T") { tempS = ("P"); }     //CCT
+                else if (codon[2] == "C") { tempS = ("P"); }     //CCC
+                else if (codon[2] == "G") { tempS = ("P"); }     //CCG
+                if (isGene == true) { thisAlleleB += tempS; }
+              } else if (codon[1] == "G") {               //CG-
+                if (codon[2] == "A") { tempS = ("R"); }           //CGA
+                else if (codon[2] == "T") { tempS = ("R"); }     //CGT
+                else if (codon[2] == "C") { tempS = ("R"); }     //CGC
+                else if (codon[2] == "G") { tempS = ("R"); }     //CGG
+                if (isGene == true) { thisAlleleB += tempS; }
+              }
+            } else if (codon[0] == "G") {              //G-
+              if (codon[1] == "A") {                     //GA-
+                if (codon[2] == "A") { tempS = ("E"); }           //GAA
+                else if (codon[2] == "T") { tempS = ("D"); }     //GAT
+                else if (codon[2] == "C") { tempS = ("D"); }     //GAC
+                else if (codon[2] == "G") { tempS = ("E"); }     //GAG
+                if (isGene == true) { thisAlleleB += tempS; }
+              } else if (codon[1] == "T") {              //GT-
+                if (codon[2] == "A") { tempS = ("V"); }           //GTA
+                else if (codon[2] == "T") { tempS = ("V"); }     //GTT
+                else if (codon[2] == "C") { tempS = ("V"); }     //GTC
+                else if (codon[2] == "G") { tempS = ("V"); }     //GTG
+                if (isGene == true) { thisAlleleB += tempS; }
+              } else if (codon[1] == "C") {               //GC-
+                if (codon[2] == "A") { tempS = ("A"); }           //GCA
+                else if (codon[2] == "T") { tempS = ("A"); }     //GCT
+                else if (codon[2] == "C") { tempS = ("A"); }     //GCC
+                else if (codon[2] == "G") { tempS = ("A"); }     //GCG
+                if (isGene == true) { thisAlleleB += tempS; }
+              } else if (codon[1] == "G") {               //GG-
+                if (codon[2] == "A") { tempS = ("G"); }           //GGA
+                else if (codon[2] == "T") { tempS = ("G"); }     //GGT
+                else if (codon[2] == "C") { tempS = ("G"); }     //GGC
+                else if (codon[2] == "G") { tempS = ("G"); }     //GGG
+                if (isGene == true) { thisAlleleB += tempS; }
+              }
+            }
+
+
+
+
+
+            codonCount += 1;
+            baseCount = 0;
+          }
+
+          codon[baseCount] = (B[x, y]);
+          baseCount += 1;
         }
-     }
+      }
 
-    //Debug.Log( "numBasesB = " + numBasesB + " nAllelesB = " + nAllelesB + " StopsB = " + stopB);
+      //Debug.Log( "numBasesB = " + numBasesB + " nAllelesB = " + nAllelesB + " StopsB = " + stopB);
 
 
-//Code below counts numbers of amino acid sequences that correspond to defined traits.
+      //Code below counts numbers of amino acid sequences that correspond to defined traits.
 
-nGRN_A = 0; nGRN_B = 0; nRED_A = 0; nRED_B = 0;
-     nLLY_A = 0; nLLY_B = 0; nMVV_A = 0; nMVV_B = 0;
+      nGRN_A = 0; nGRN_B = 0; nRED_A = 0; nRED_B = 0;
+      nLLY_A = 0; nLLY_B = 0; nMVV_A = 0; nMVV_B = 0;
       nTRN_A = 0; nTRN_B = 0; nREP_A = 0; nREP_B = 0;
-      nLKDISTA_A = 0; nLKDISTA_B = 0; 
+      nLKDISTA_A = 0; nLKDISTA_B = 0;
       nLIF_A = 0; nLIF_B = 0;
       nTHICC_A = 0; nTHICC_B = 0;
-    
-    string thisA = allelesA;
-    allelesA = null;
-        
-        //debugAminoA.Add(thisGene);
-        
-        int grnCountA = Regex.Matches(thisA, greenSeq).Count;
 
-         
-         int bluCountA = Regex.Matches(thisA, blueSeq).Count;
+      string thisA = allelesA;
+      allelesA = null;
 
-         
-         int redCountA = Regex.Matches(thisA, redSeq).Count;
+      //debugAminoA.Add(thisGene);
 
-         
-         int moveCountA = Regex.Matches(thisA, moveSeq).Count;
-
-         
-         int turnCountA = Regex.Matches(thisA, turnSeq).Count;
-
-         
-         int repCountA = Regex.Matches(thisA, repSeq).Count;
+      int grnCountA = Regex.Matches(thisA, greenSeq).Count;
 
 
-         int lifCountA = Regex.Matches(thisA, lifSeq).Count;
+      int bluCountA = Regex.Matches(thisA, blueSeq).Count;
 
 
-         int lookCountA = Regex.Matches(thisA, lookSeq).Count;
+      int redCountA = Regex.Matches(thisA, redSeq).Count;
 
 
-         int thiccCountA = Regex.Matches(thisA, thiccSeq).Count;
-        
-        nGRN_A =     (float)grnCountA;
-        nRED_A =     (float)redCountA;
-        nLLY_A =     (float)bluCountA;
-        nMVV_A =     (float)moveCountA;
-        nTRN_A =     (float)turnCountA;
-        nREP_A =     (float)repCountA;
-        nLIF_A =     (float)lifCountA;
-        nLKDISTA_A = (float)lookCountA;
-        nTHICC_A =   (float)thiccCountA;
-
-    
-    
-   string thisB = allelesB;
-        allelesB = null;
-        //debugBminoB.Bdd(thisGene);
-        
-        int grnCountB = Regex.Matches(thisB, greenSeq).Count;
-
-         
-         int bluCountB = Regex.Matches(thisB, blueSeq).Count;
-
-         
-         int redCountB = Regex.Matches(thisB, redSeq).Count;
-
-         
-         int moveCountB = Regex.Matches(thisB, moveSeq).Count;
-
-         
-         int turnCountB = Regex.Matches(thisB, turnSeq).Count;
-
-         
-         int repCountB = Regex.Matches(thisB, repSeq).Count;
+      int moveCountA = Regex.Matches(thisA, moveSeq).Count;
 
 
-         int lifCountB = Regex.Matches(thisB, lifSeq).Count;
+      int turnCountA = Regex.Matches(thisA, turnSeq).Count;
 
 
-         int lookCountB = Regex.Matches(thisB, lookSeq).Count;
+      int repCountA = Regex.Matches(thisA, repSeq).Count;
 
 
-         int thiccCountB = Regex.Matches(thisB, thiccSeq).Count;
-
-         
-        
-        nGRN_B = (float)grnCountB;
-        nRED_B = (float)redCountB;
-        nLLY_B = (float)bluCountB;
-        nMVV_B = (float)moveCountB;
-        nTRN_B = (float)turnCountB;
-        nREP_B = (float)repCountB;
-        nLIF_B = (float)lifCountB;
-        nLKDISTA_B = (float)lookCountB;
-        nTHICC_B =   (float)thiccCountB;
-
-    
-
-    //Debug.Log("thisA : " + thisA);
-    //Debug.Log("thisB : " + thisB);
-    thisA = null;
-    thisB = null;
+      int lifCountA = Regex.Matches(thisA, lifSeq).Count;
 
 
-// Code below controls how the number of sequences translate to numeric values for the traits.
-
-    redAllele1 = nRED_A/8f;
-    redAllele2 = nRED_B/8f;
-    redGene = (redAllele1 + redAllele2)/2f;
-    
-
-    greenAllele1 = nGRN_A/8f;
-    greenAllele2 = nGRN_B/8f;
-    greenGene = (greenAllele1 + greenAllele2)/2f;
-
-    blueAllele1 = nLLY_A/8f;
-    blueAllele2 = nLLY_B/8f;
-    blueGene = (blueAllele1 + blueAllele2)/2f;
-    
-
-    moveAllele1 = nMVV_A*8f;
-    moveAllele2 = nMVV_B*8f;
-    moveForce = (moveAllele1 + moveAllele2)/2f;
+      int lookCountA = Regex.Matches(thisA, lookSeq).Count;
 
 
-    turnTorqueAllele1 = nTRN_A*20f;
-    turnTorqueAllele2 = nTRN_B*20f;
-    turnTorque = (turnTorqueAllele1 + turnTorqueAllele2)/2f;
+      int thiccCountA = Regex.Matches(thisA, thiccSeq).Count;
 
-    e2repAllele1 = Mathf.Pow(2,nREP_A);
-    e2repAllele2 = Mathf.Pow(2,nREP_B);
+      nGRN_A = (float)grnCountA;
+      nRED_A = (float)redCountA;
+      nLLY_A = (float)bluCountA;
+      nMVV_A = (float)moveCountA;
+      nTRN_A = (float)turnCountA;
+      nREP_A = (float)repCountA;
+      nLIF_A = (float)lifCountA;
+      nLKDISTA_A = (float)lookCountA;
+      nTHICC_A = (float)thiccCountA;
 
 
-    lookDistAllele1 = Mathf.Pow(2f,nLKDISTA_A);
-    lookDistAllele2 = Mathf.Pow(2f,nLKDISTA_B);
-    lookDistance = (lookDistAllele1 + lookDistAllele2)/2f;
 
-    lifeLengthAllele1 = Mathf.Pow(2f,nLIF_A);
-    lifeLengthAllele2 = Mathf.Pow(2f,nLIF_B);
-    lifeLength = (lifeLengthAllele1 + lifeLengthAllele2)/2f;
+      string thisB = allelesB;
+      allelesB = null;
+      //debugBminoB.Bdd(thisGene);
 
-    sizeAllele1 = nTHICC_A/2f;
-    sizeAllele2 = nTHICC_B/2f;
-    sizeGene = (sizeAllele1+sizeAllele2)/2f;
-    
-    nGRN_A = 0; nGRN_B = 0; nRED_A = 0; nRED_B = 0;
-     nLLY_A = 0; nLLY_B = 0; nMVV_A = 0; nMVV_B = 0;
+      int grnCountB = Regex.Matches(thisB, greenSeq).Count;
+
+
+      int bluCountB = Regex.Matches(thisB, blueSeq).Count;
+
+
+      int redCountB = Regex.Matches(thisB, redSeq).Count;
+
+
+      int moveCountB = Regex.Matches(thisB, moveSeq).Count;
+
+
+      int turnCountB = Regex.Matches(thisB, turnSeq).Count;
+
+
+      int repCountB = Regex.Matches(thisB, repSeq).Count;
+
+
+      int lifCountB = Regex.Matches(thisB, lifSeq).Count;
+
+
+      int lookCountB = Regex.Matches(thisB, lookSeq).Count;
+
+
+      int thiccCountB = Regex.Matches(thisB, thiccSeq).Count;
+
+
+
+      nGRN_B = (float)grnCountB;
+      nRED_B = (float)redCountB;
+      nLLY_B = (float)bluCountB;
+      nMVV_B = (float)moveCountB;
+      nTRN_B = (float)turnCountB;
+      nREP_B = (float)repCountB;
+      nLIF_B = (float)lifCountB;
+      nLKDISTA_B = (float)lookCountB;
+      nTHICC_B = (float)thiccCountB;
+
+
+
+      //Debug.Log("thisA : " + thisA);
+      //Debug.Log("thisB : " + thisB);
+      thisA = null;
+      thisB = null;
+
+
+      // Code below controls how the number of sequences translate to numeric values for the traits.
+
+      redAllele1 = nRED_A / 8f;
+      redAllele2 = nRED_B / 8f;
+      redGene = (redAllele1 + redAllele2) / 2f;
+
+
+      greenAllele1 = nGRN_A / 8f;
+      greenAllele2 = nGRN_B / 8f;
+      greenGene = (greenAllele1 + greenAllele2) / 2f;
+
+      blueAllele1 = nLLY_A / 8f;
+      blueAllele2 = nLLY_B / 8f;
+      blueGene = (blueAllele1 + blueAllele2) / 2f;
+
+
+      moveAllele1 = nMVV_A * 8f;
+      moveAllele2 = nMVV_B * 8f;
+      moveForce = (moveAllele1 + moveAllele2) / 2f;
+
+
+      turnTorqueAllele1 = nTRN_A * 20f;
+      turnTorqueAllele2 = nTRN_B * 20f;
+      turnTorque = (turnTorqueAllele1 + turnTorqueAllele2) / 2f;
+
+      e2repAllele1 = Mathf.Pow(2, nREP_A);
+      e2repAllele2 = Mathf.Pow(2, nREP_B);
+
+
+      lookDistAllele1 = Mathf.Pow(2f, nLKDISTA_A);
+      lookDistAllele2 = Mathf.Pow(2f, nLKDISTA_B);
+      lookDistance = (lookDistAllele1 + lookDistAllele2) / 2f;
+
+      lifeLengthAllele1 = Mathf.Pow(2f, nLIF_A);
+      lifeLengthAllele2 = Mathf.Pow(2f, nLIF_B);
+      lifeLength = (lifeLengthAllele1 + lifeLengthAllele2) / 2f;
+
+      sizeAllele1 = nTHICC_A / 2f;
+      sizeAllele2 = nTHICC_B / 2f;
+      sizeGene = (sizeAllele1 + sizeAllele2) / 2f;
+
+      nGRN_A = 0; nGRN_B = 0; nRED_A = 0; nRED_B = 0;
+      nLLY_A = 0; nLLY_B = 0; nMVV_A = 0; nMVV_B = 0;
       nTRN_A = 0; nTRN_B = 0; nREP_A = 0; nREP_B = 0;
-      nLKDISTA_A = 0; nLKDISTA_B = 0; 
+      nLKDISTA_A = 0; nLKDISTA_B = 0;
       nLIF_A = 0; nLIF_B = 0;
-       nTHICC_A = 0; nTHICC_B = 0;
-
-    
-
-        firstTranslation = true;
-        translating = false;
-}while(translating == true);
-}
+      nTHICC_A = 0; nTHICC_B = 0;
 
 
-/* 
-—————————————————————————Codon List————————————————————————–––––|
-                                                                |
-Isoleucine	    I(Ile)	    ATT, ATC, ATA                       |
-Leucine 	    L(Leu)	    CTT, CTC, CTA, CTG, TTA, TTG        |
-Valine	        V(Val)	    GTT, GTC, GTA, GTG                  |
-Phenylalanine	F(Phe)	    TTT, TTC                            |
-Methionine  	M(Met)	    ATG                                 |
-Cysteine	    C(Cys)	    TGT, TGC                            |
-Alanine	        A(Ala)	    GCT, GCC, GCA, GCG                  |
-Glycine	        G(Gly)	    GGT, GGC, GGA, GGG                  |
-Proline	        P(Pro)	    CCT, CCC, CCA, CCG                  |
-Threonine	    T(Thr)	    ACT, ACC, ACA, ACG                  |
-Serine	        S(Ser)	    TCT, TCC, TCA, TCG, AGT, AGC        |
-Tyrosine	    Y(Tyr)	    TAT, TAC                            |
-Tryptophan	    W(Trp)	    TGG                                 |
-Glutamine	    Q(Gln)	    CAA, CAG                            |
-Asparagine	    N(Asn)	    AAT, AAC                            |
-Histidine	    H(His)	    CAT, CAC                            |
-Glutamic acid	E(Glu)	    GAA, GAG                            |
-Aspartic acid	D(Asp)	    GAT, GAC                            |
-Lysine	        K(Lys)	    AAA, AAG                            |
-Arginine	    R(Arg)	    CGT, CGC, CGA, CGG, AGA, AGG        |
-  codons	     	TAA, TAG, TGA                           |
-Start codon	    Start	ATG                                     |
-—————————————————————––––––––––––––––––––––—————————————————————|
-|—————————————————————————Codon Table————————————————————————–––|
 
-    2nd      A              T               C              G
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-   1st                                                                    3rd
-    A   |   AAA            ATA             ACA            AGA              A
-    A   |   AAT            ATT             ACT            AGT              T
-    A   |   AAC            ATC             ACC            AGC              C
-    A   |   AAG            ATG             ACG            AGG              G
+      firstTranslation = true;
+      translating = false;
+    } while (translating == true);
+  }
 
-    T   |   TAA            TTA             TCA            TGA              A
-    T   |   TAT            TTT             TCT            TGT              T
-    T   |   TAC            TTC             TCC            TGC              C
-    T   |   TAG            TTG             TCG            TGG              G
 
-    C   |   CAA            CTA             CCA            GGA              A
-    C   |   CAT            CTT             CCT            GGT              T
-    C   |   CAC            CTC             CCC            GGC              C
-    C   |   CAG            CTG             CCG            GGG              G
+  /* 
+  —————————————————————————Codon List————————————————————————–––––|
+                                                                  |
+  Isoleucine	    I(Ile)	    ATT, ATC, ATA                       |
+  Leucine 	    L(Leu)	    CTT, CTC, CTA, CTG, TTA, TTG        |
+  Valine	        V(Val)	    GTT, GTC, GTA, GTG                  |
+  Phenylalanine	F(Phe)	    TTT, TTC                            |
+  Methionine  	M(Met)	    ATG                                 |
+  Cysteine	    C(Cys)	    TGT, TGC                            |
+  Alanine	        A(Ala)	    GCT, GCC, GCA, GCG                  |
+  Glycine	        G(Gly)	    GGT, GGC, GGA, GGG                  |
+  Proline	        P(Pro)	    CCT, CCC, CCA, CCG                  |
+  Threonine	    T(Thr)	    ACT, ACC, ACA, ACG                  |
+  Serine	        S(Ser)	    TCT, TCC, TCA, TCG, AGT, AGC        |
+  Tyrosine	    Y(Tyr)	    TAT, TAC                            |
+  Tryptophan	    W(Trp)	    TGG                                 |
+  Glutamine	    Q(Gln)	    CAA, CAG                            |
+  Asparagine	    N(Asn)	    AAT, AAC                            |
+  Histidine	    H(His)	    CAT, CAC                            |
+  Glutamic acid	E(Glu)	    GAA, GAG                            |
+  Aspartic acid	D(Asp)	    GAT, GAC                            |
+  Lysine	        K(Lys)	    AAA, AAG                            |
+  Arginine	    R(Arg)	    CGT, CGC, CGA, CGG, AGA, AGG        |
+    codons	     	TAA, TAG, TGA                           |
+  Start codon	    Start	ATG                                     |
+  —————————————————————––––––––––––––––––––––—————————————————————|
+  |—————————————————————————Codon Table————————————————————————–––|
 
-    G   |   GAA            GTA             GCA            GGA              A
-    G   |   GAT            GTT             GCT            GGT              T
-    G   |   GAC            GTC             GCC            GGC              C
-    G   |   GAG            GTG             GCG            GGG              G
+      2nd      A              T               C              G
+  ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+     1st                                                                    3rd
+      A   |   AAA            ATA             ACA            AGA              A
+      A   |   AAT            ATT             ACT            AGT              T
+      A   |   AAC            ATC             ACC            AGC              C
+      A   |   AAG            ATG             ACG            AGG              G
 
-*/
+      T   |   TAA            TTA             TCA            TGA              A
+      T   |   TAT            TTT             TCT            TGT              T
+      T   |   TAC            TTC             TCC            TGC              C
+      T   |   TAG            TTG             TCG            TGG              G
+
+      C   |   CAA            CTA             CCA            GGA              A
+      C   |   CAT            CTT             CCT            GGT              T
+      C   |   CAC            CTC             CCC            GGC              C
+      C   |   CAG            CTG             CCG            GGG              G
+
+      G   |   GAA            GTA             GCA            GGA              A
+      G   |   GAT            GTT             GCT            GGT              T
+      G   |   GAC            GTC             GCC            GGC              C
+      G   |   GAG            GTG             GCG            GGG              G
+
+  */
 
 
 
