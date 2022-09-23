@@ -9,85 +9,9 @@ using System.Text.RegularExpressions;
 
 
 
-public struct GenoPhenoStruct {
-  public float redAllele1;
-  public float redAllele2;
-  public float redGene;
-  public float greenAllele1;
-  public float greenAllele2;
-  public float greenGene;
-  public float blueAllele1;
-  public float blueAllele2;
-  public float blueGene;
-  public float moveAllele1;
-  public float moveAllele2;
-  public float moveForce;
-  public float turnTorqueAllele1;
-  public float turnTorqueAllele2;
-  public float turnTorque;
-  public float e2repAllele1;
-  public float e2repAllele2;
-  public float energyToReproduce;
-  public float lifeLengthAllele1;
-  public float lifeLengthAllele2;
-  public float lifeLength;
-  GenoPhenoStruct(
-             float redAllele1,
-             float redAllele2,
-             float redGene,
-             float greenAllele1,
-             float greenAllele2,
-             float greenGene,
-             float blueAllele1,
-             float blueAllele2,
-             float blueGene,
-             float moveAllele1,
-             float moveAllele2,
-             float moveForce,
-             float turnTorqueAllele1,
-             float turnTorqueAllele2,
-             float turnTorque,
-             float e2repAllele1,
-             float e2repAllele2,
-             float energyToReproduce,
-             float lifeLengthAllele1,
-             float lifeLengthAllele2,
-             float lifeLength) {
-
-
-
-
-
-
-
-    this.redAllele1 = redAllele1;
-    this.redAllele2 = redAllele2;
-    this.redGene = redGene;
-    this.greenAllele1 = greenAllele1;
-    this.greenAllele2 = greenAllele2;
-    this.greenGene = greenGene;
-    this.blueAllele1 = blueAllele1;
-    this.blueAllele2 = blueAllele2;
-    this.blueGene = blueGene;
-    this.moveAllele1 = moveAllele1;
-    this.moveAllele2 = moveAllele2;
-    this.moveForce = moveForce;
-    this.turnTorqueAllele1 = turnTorqueAllele1;
-    this.turnTorqueAllele2 = turnTorqueAllele2;
-    this.turnTorque = turnTorque;
-    this.e2repAllele1 = e2repAllele1;
-    this.e2repAllele2 = e2repAllele2;
-    this.energyToReproduce = energyToReproduce;
-    this.lifeLengthAllele1 = lifeLengthAllele1;
-    this.lifeLengthAllele2 = lifeLengthAllele2;
-    this.lifeLength = lifeLength;
-  }
-}
-
 
 public class BlibGenome : MonoBehaviour {
 
-  GenoPhenoStruct genophenotypes_struct = new GenoPhenoStruct();
   int[] pois = new int[20] { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
   public float[] phenotype = new float[7];
   public initGenomeTest_blib initGenomeTest_blib;
@@ -98,13 +22,13 @@ public class BlibGenome : MonoBehaviour {
 
   public List<string> lineageID = new List<string>();
   public static List<BlibGenome> blib_genomes = new List<BlibGenome>();
-  public float greenAllele1, greenAllele2, greenGene,
-               redAllele1, redAllele2, redGene,
-               blueAllele1, blueAllele2, blueGene,
-               turnTorqueAllele1, turnTorqueAllele2, turnTorque,
-               e2repAllele1, e2repAllele2, energyToReproduce,
-               moveAllele1, moveAllele2, moveForce,
-               lifeLengthAllele1, lifeLengthAllele2, lifeLength;
+  public float greenAllele1, greenAllele2,
+               redAllele1, redAllele2,
+               blueAllele1, blueAllele2,
+               turnTorqueAllele1, turnTorqueAllele2,
+               e2repAllele1, e2repAllele2,
+               moveAllele1, moveAllele2,
+               lifeLengthAllele1, lifeLengthAllele2;
 
   //private string redSeq, greenSeq, blueSeq, moveSeq, turnSeq, repSeq, lifSeq;
   //Get relevant amino acid sequences from database.
@@ -195,40 +119,35 @@ public class BlibGenome : MonoBehaviour {
 
 
 
-  void Awake() {
-    blibControls = this.gameObject.GetComponent<BlibControls>();
 
-    Mutate();
+
+  void Start() {
+    chromoPairs = A.GetLength(0);
+    basePairs = A.GetLength(1);
+    blibControls = this.gameObject.GetComponent<BlibControls>();
+    if (mother != null) {
+      A = mother.A;
+      B = mother.B;
+    } else {
+      A = initGenomestatic.A_static;
+      B = initGenomestatic.B_static;
+    }
+
+
+    Array.Clear(A, 0, A.Length);
+    Array.Clear(B, 0, B.Length);
+
+    firstTranslation = false;
+    
+
+
+
+    
     TranslateGenome();
 
 
 
 
-  }
-
-  void Start() {
-    Debug.Log("struct_start" + " redGene" + genophenotypes_struct.redGene + " greenGene " + genophenotypes_struct.greenGene + " blueGene " + genophenotypes_struct.blueGene + " moveForce " + genophenotypes_struct.moveForce + " turnTorque " + genophenotypes_struct.turnTorque + " energyToReproduce " + genophenotypes_struct.energyToReproduce + " lifeLength" + genophenotypes_struct.lifeLength);
-    Array.Clear(A, 0, A.Length);
-    Array.Clear(B, 0, B.Length);
-
-    firstTranslation = false;
-
-
-
-
-    chromoPairs = A.GetLength(0);
-    basePairs = A.GetLength(1);
-
-
-
-
-    if (mother != null) {
-      A = mother.A;
-      B = mother.B;
-    } else if (Time.time < 1.0f) {
-      A = initGenomeTest_blib.A;
-      B = initGenomeTest_blib.B;
-    }
 
     tempS = null;
 
@@ -264,7 +183,7 @@ public class BlibGenome : MonoBehaviour {
 
 
 
-
+    TranslateGenome();
   }
 
 
@@ -368,7 +287,7 @@ public class BlibGenome : MonoBehaviour {
   void Update() {
     int mutationroll = UnityEngine.Random.Range(0, 4096 * 2);
 
-    if (mutationroll == 64) { mutate = true; }
+    if (mutationroll == -1) { mutate = true; }
     extA = A;
     extB = B;
     if (firstTranslation == false) {
@@ -376,7 +295,7 @@ public class BlibGenome : MonoBehaviour {
     }
     if (this.gameObject.GetComponent<BlibControls>().age > 0.5f) {
       if (mutate == true) {
-        Mutate();
+        // Mutate();
 
       }
     }
@@ -676,74 +595,75 @@ public class BlibGenome : MonoBehaviour {
 
     bool translating = true;
 
-    if (firstTranslation == false) { //Recombination
+    /* if(firstTranslation == false ){ //Recombination
+        
+         doConversion = false;
+        
+         numRecoms = UnityEngine.Random.Range(1, 16);
 
-      doConversion = false;
+         recoChromos = 9;
+         numRecoLoci = 19;
+        
 
-      numRecoms = UnityEngine.Random.Range(1, 16);
+        
+         whichChromo = UnityEngine.Random.Range(0,recoChromos);
 
-      recoChromos = 9;
-      numRecoLoci = 19;
+          recoStart_locus =  UnityEngine.Random.Range(0,numRecoLoci-1);
+         recoStart_site = sites[whichChromo, recoStart_locus];
+         
+         
+         recoEnd_locus =  UnityEngine.Random.Range(recoStart_locus, numRecoLoci);
+         recoEnd_site = sites[whichChromo, recoEnd_locus];
+        
 
+         recoLength = sites[whichChromo,recoEnd_locus]-sites[whichChromo,recoStart_locus];
+          
+          
+          recoBuffer_A = new string[recoLength];
+          recoBuffer_B = new string[recoLength];
+          donatorBuffer = new string[recoLength];
+          
+          int conversionDice;
+            int donator;
 
+        for(int n = 0; n < numRecoms; n++){
+             conversionDice = UnityEngine.Random.Range(0,4096);
+             donator = -1;
 
-      whichChromo = UnityEngine.Random.Range(0, recoChromos);
+            if(conversionDice == 64){
+            donator = UnityEngine.Random.Range(0,2);
+            doConversion = true;
+            }else{doConversion = false;}
 
-      recoStart_locus = UnityEngine.Random.Range(0, numRecoLoci - 1);
-      recoStart_site = sites[whichChromo, recoStart_locus];
-
-
-      recoEnd_locus = UnityEngine.Random.Range(recoStart_locus, numRecoLoci);
-      recoEnd_site = sites[whichChromo, recoEnd_locus];
-
-
-      recoLength = sites[whichChromo, recoEnd_locus] - sites[whichChromo, recoStart_locus];
-
-      /*
-      recoBuffer_A = new string[recoLength];
-      recoBuffer_B = new string[recoLength];
-      donatorBuffer = new string[recoLength];
-      */
-      int conversionDice;
-      int donator;
-
-      for (int n = 0; n < numRecoms; n++) {
-        conversionDice = UnityEngine.Random.Range(0, 4096);
-        donator = -1;
-
-        if (conversionDice == 64) {
-          donator = UnityEngine.Random.Range(0, 2);
-          doConversion = true;
-        } else { doConversion = false; }
-
-        for (int i = recoStart_site; i < recoEnd_site; i++) {
-          recoBuffer_A.Add(A[whichChromo, i]);
-          recoBuffer_B.Add(B[whichChromo, i]);
-        }
-
-        for (int i = recoStart_site; i < recoEnd_site; i++) {
-          if (doConversion == false) {
-            A[whichChromo, i] = recoBuffer_B[i - recoStart_site];
-            B[whichChromo, i] = recoBuffer_A[i - recoStart_site];
-          } else if (doConversion == true) {
-            if (donator == 0) {
-              B[whichChromo, i] = recoBuffer_A[i - recoStart_site];
-            } else if (donator == 1) {
-              A[whichChromo, i] = recoBuffer_B[i - recoStart_site];
+            for(int i = recoStart_site; i < recoEnd_site; i++){
+            recoBuffer_A.Add(A[whichChromo,i]);
+            recoBuffer_B.Add(B[whichChromo,i]);
             }
-          }
 
+            for (int i = recoStart_site; i < recoEnd_site; i++){
+                if(doConversion == false){
+                    A[whichChromo,i] = recoBuffer_B[i - recoStart_site];
+                    B[whichChromo,i] = recoBuffer_A[i - recoStart_site];
+                }else if(doConversion == true){
+                    if(donator == 0){
+                        B[whichChromo,i] = recoBuffer_A[i - recoStart_site];
+                     }else if(donator == 1){
+                        A[whichChromo,i] = recoBuffer_B[i - recoStart_site];
+                    }
+                }
+
+            }
+            recoBuffer_A.Clear();
+            recoBuffer_B.Clear();
         }
-        recoBuffer_A.Clear();
-        recoBuffer_B.Clear();
-      }
+            
 
+        
 
+    } 
+    */
 
-
-    }
-
-    do {
+    
       mutate = false;
       codon = new string[3] { "", "", "" };
       allelesA = "";
@@ -770,7 +690,7 @@ public class BlibGenome : MonoBehaviour {
       codonCount = 0;
       baseCount = 0;
       for (int i = 0; i < A.GetLength(0); i++) {
-        for (int j = 0; j < basePairs; j++) {
+        for (int j = 0; j < A.GetLength(1); j++) {
           if (i == 0 && j == 0) { allelesA = ""; allelesB = ""; thisAlleleA = ""; thisAlleleB = ""; }
 
           numBasesA += 1;
@@ -1180,51 +1100,43 @@ public class BlibGenome : MonoBehaviour {
 
 
 
-      //Debug.Log("thisA : " + thisA);
-      //Debug.Log("thisB : " + thisB);
+      Debug.Log("thisA : " + thisA);
+      Debug.Log("thisB : " + thisB);
       thisA = null;
       thisB = null;
 
-      genophenotypes_struct.redAllele1 = nRED_A / 12f;
-      genophenotypes_struct.redAllele2 = nRED_B / 12f;
-      genophenotypes_struct.redGene = Mathf.Clamp((genophenotypes_struct.redAllele1 + genophenotypes_struct.redAllele2) / 2.0f, 0.00f, 1.00f);
+      redAllele1 = nRED_A / 12f;
+      redAllele2 = nRED_B / 12f;
+      //redGene = Mathf.Clamp((redAllele1 + redAllele2) / 2.0f, 0.00f, 1.00f);
 
 
-      genophenotypes_struct.greenAllele1 = nGRN_A / 12f;
-      genophenotypes_struct.greenAllele2 = nGRN_B / 12f;
-      genophenotypes_struct.greenGene = Mathf.Clamp((genophenotypes_struct.greenAllele1 + genophenotypes_struct.greenAllele2) / 2.0f, 0.00f, 1.00f);
+      greenAllele1 = nGRN_A / 12f;
+      greenAllele2 = nGRN_B / 12f;
+      //greenGene = Mathf.Clamp((greenAllele1 + greenAllele2) / 2.0f, 0.00f, 1.00f);
 
-      genophenotypes_struct.blueAllele1 = nLLY_A / 12f;
-      genophenotypes_struct.blueAllele2 = nLLY_B / 12f;
-      genophenotypes_struct.blueGene = Mathf.Clamp((genophenotypes_struct.blueAllele1 + blueAllele2) / 2.0f, 0.00f, 1.00f);
+      blueAllele1 = nLLY_A / 12f;
+      blueAllele2 = nLLY_B / 12f;
+      //blueGene = Mathf.Clamp((blueAllele1 + blueAllele2) / 2.0f, 0.00f, 1.00f);
 
-      genophenotypes_struct.moveAllele1 = nMVV_A * 3f;
-      genophenotypes_struct.moveAllele2 = nMVV_B * 3f;
-      genophenotypes_struct.moveForce = (moveAllele1 + moveAllele2) / 2f;
+      moveAllele1 = nMVV_A * 3f;
+      moveAllele2 = nMVV_B * 3f;
+      //moveForce = (moveAllele1 + moveAllele2) / 2f;
 
-      genophenotypes_struct.turnTorqueAllele1 = nTRN_A * 6f;
-      genophenotypes_struct.turnTorqueAllele2 = nTRN_B * 6f;
-      genophenotypes_struct.turnTorque = (turnTorqueAllele1 + turnTorqueAllele2) / 2.0f;
+      turnTorqueAllele1 = nTRN_A * 6f;
+      turnTorqueAllele2 = nTRN_B * 6f;
+      //turnTorque = (turnTorqueAllele1 + turnTorqueAllele2) / 2.0f;
 
-      genophenotypes_struct.e2repAllele1 = 64f + Mathf.Pow(2f, nREP_A);
-      genophenotypes_struct.e2repAllele2 = 64f + Mathf.Pow(2f, nREP_B);
-      genophenotypes_struct.energyToReproduce = (e2repAllele1 + e2repAllele2) / 2.0f;
+      e2repAllele1 = 64f + Mathf.Pow(2f, nREP_A);
+      e2repAllele2 = 64f + Mathf.Pow(2f, nREP_B);
+      //energyToReproduce = (e2repAllele1 + e2repAllele2) / 2.0f;
 
-      genophenotypes_struct.lifeLengthAllele1 = 16f + Mathf.Pow(2f, nLIF_A);
-      genophenotypes_struct.lifeLengthAllele2 = 16f + Mathf.Pow(2f, nLIF_B);
-      genophenotypes_struct.lifeLength = (lifeLengthAllele1 + lifeLengthAllele2);
+      lifeLengthAllele1 = 16f + Mathf.Pow(2f, nLIF_A);
+      lifeLengthAllele2 = 16f + Mathf.Pow(2f, nLIF_B);
+      //lifeLength = (lifeLengthAllele1 + lifeLengthAllele2);
+    
 
 
 
-      genophenotypes_struct.redGene = redGene;
-      genophenotypes_struct.greenGene = greenGene;
-      genophenotypes_struct.blueGene = blueGene;
-      genophenotypes_struct.moveForce = moveForce;
-      genophenotypes_struct.turnTorque = turnTorque;
-      genophenotypes_struct.energyToReproduce = energyToReproduce;
-      genophenotypes_struct.lifeLength = lifeLength;
-
-      Debug.Log("struct_aftertranslate" + " redGene" + genophenotypes_struct.redGene + " greenGene " + genophenotypes_struct.greenGene + " blueGene " + genophenotypes_struct.blueGene + " moveForce " + genophenotypes_struct.moveForce + " turnTorque " + genophenotypes_struct.turnTorque + " energyToReproduce " + genophenotypes_struct.energyToReproduce + " lifeLength" + genophenotypes_struct.lifeLength);
 
 
 
@@ -1248,7 +1160,7 @@ public class BlibGenome : MonoBehaviour {
 
       firstTranslation = true;
       translating = false;
-    } while (translating == true);
+    
 
   }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 public class BlibSpawner : MonoBehaviour {
-
+  public initGenomeTest_blib initgen;
   public char[] linChars;
   public char[] initLineage;
   public List<char[]> initLineages = new List<char[]>();
@@ -51,6 +51,8 @@ public class BlibSpawner : MonoBehaviour {
       float y = (float)Random.Range(-boxSize / 3, boxSize / 3);
       GameObject thisBlib = Instantiate(blib, new Vector3(x, y, 0), Quaternion.identity);
       thisBlib.GetComponent<BlibGenome>().lineageID.Add(System.String.Join("", initLineages[i]));
+      //thisBlib.GetComponent<BlibGenome>().A = initgen.A;
+      //thisBlib.GetComponent<BlibGenome>().B = initgen.B;
       thisBlib.name = popLogger.GetName("blib");
       thisBlib.name = thisBlib.name.Replace("(Clone)", "");
       BlibControls thisBlibControls = thisBlib.GetComponent<BlibControls>();
@@ -58,7 +60,7 @@ public class BlibSpawner : MonoBehaviour {
       thisBlibControls.nutLevel = initProtein;
       thisBlibControls.age = Random.Range(0f, thisBlibControls.lifeLength * 0.8f);
       thisBlibControls.energy = Random.Range(thisBlibControls.energyToReproduce / 16f, thisBlibControls.energyToReproduce);
-      thisBlibControls.doInitDiversifier = true;
+      
 
     }
   }
@@ -92,6 +94,8 @@ public class BlibSpawner : MonoBehaviour {
       float y = (float)Random.Range(-boxSize / 3, boxSize / 3);
       GameObject thisBlib = Instantiate(blib, new Vector3(x, y, 0), Quaternion.identity);
       thisBlib.GetComponent<BlibControls>().energy = 100f;
+      //thisBlib.GetComponent<BlibGenome>().A = initgen.A;
+      //thisBlib.GetComponent<BlibGenome>().B = initgen.B;
       thisBlib.name = popLogger.GetName("blib");
       thisBlib.name = thisBlib.name.Replace("(Clone)", "");
 

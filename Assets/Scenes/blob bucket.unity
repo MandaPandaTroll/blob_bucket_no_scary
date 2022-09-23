@@ -4829,6 +4829,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1802033099 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5861536312715401572, guid: b4fd95410a7974669a7ac717eb2be2ee, type: 3}
+  m_PrefabInstance: {fileID: 1601855606}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4598dffbf2bfb4f328a7c8f41f8571cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1802033100 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5861536312715401571, guid: b4fd95410a7974669a7ac717eb2be2ee, type: 3}
@@ -5252,6 +5263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 039dfd508f8d1458cba1ed8a233b480b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initgen: {fileID: 1802033099}
   linChars: 
   initLineage: 
   initBlib: 2
@@ -5259,7 +5271,7 @@ MonoBehaviour:
   extraBlib: 1
   minBlib: 2
   blib: {fileID: 3468846596000450122, guid: 6d4cc741cc2fc4e00ad7702559757827, type: 3}
-  speedModifier_enabled: 1
+  speedModifier_enabled: 0
   speedModifier: 0
   initProtein: 8
 --- !u!4 &1883381884

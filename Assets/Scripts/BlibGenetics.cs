@@ -57,7 +57,9 @@ private List<string[]> rowData = new List<string[]>();
 
     
 
-    BlibControls sampledBlib;
+    GameObject sampledBlib;
+    BlibControls sampbctrl;
+    BlibGenome sampbgn;
 
     // Start is called before the first frame update
     void Start()
@@ -88,33 +90,34 @@ private List<string[]> rowData = new List<string[]>();
                 for (int i = 0; i < sampleSize; i++)
                 {   
                     sampler = UnityEngine.Random.Range(0,blibs.Length);
-                    sampledBlib = blibs[sampler].GetComponent<BlibControls>();
-                    
+                    sampledBlib = blibs[sampler];
+                    sampbctrl = sampledBlib.GetComponent<BlibControls>();
+                    sampbgn = sampledBlib.GetComponent<BlibGenome>();
                         
-                    intron1.Add(sampledBlib.introns[0,0]);
-                    intron2.Add(sampledBlib.introns[1,0]);
-                    intron3.Add(sampledBlib.introns[0,1]);
-                    intron4.Add(sampledBlib.introns[1,1]);
+                    intron1.Add(sampbctrl.introns[0,0]);
+                    intron2.Add(sampbctrl.introns[1,0]);
+                    intron3.Add(sampbctrl.introns[0,1]);
+                    intron4.Add(sampbctrl.introns[1,1]);
 
-                    moveAllele1.Add(sampledBlib.moveAllele1);
-                    moveAllele2.Add(sampledBlib.moveAllele2); 
+                    moveAllele1.Add(sampbgn.moveAllele1);
+                    moveAllele2.Add(sampbgn.moveAllele2); 
 
-                    redAllele1.Add(sampledBlib.redAllele1*10f);
-                    redAllele2.Add(sampledBlib.redAllele2*10f);
+                    redAllele1.Add(sampbgn.redAllele1*10f);
+                    redAllele2.Add(sampbgn.redAllele2*10f);
 
-                    greenAllele1.Add(sampledBlib.greenAllele1*10f);
-                    greenAllele2.Add(sampledBlib.greenAllele2*10f);
+                    greenAllele1.Add(sampbgn.greenAllele1*10f);
+                    greenAllele2.Add(sampbgn.greenAllele2*10f);
 
-                    blueAllele1.Add(sampledBlib.blueAllele1*10f);
-                    blueAllele2.Add(sampledBlib.blueAllele2*10f);
-                    LifeSpan.Add(sampledBlib.lifeLength);
-                    turnDice.Add(sampledBlib.turnDice);
-                    turnTorqueAllele1.Add(sampledBlib.turnTorqueAllele1);
-                    turnTorqueAllele2.Add(sampledBlib.turnTorqueAllele2);
-                    generation.Add(sampledBlib.generation);
-                    lookDistance.Add(sampledBlib.lookDistance);
-                    e2repA.Add(sampledBlib.e2repAllele1);
-                    e2repB.Add(sampledBlib.e2repAllele2);
+                    blueAllele1.Add(sampbgn.blueAllele1*10f);
+                    blueAllele2.Add(sampbgn.blueAllele2*10f);
+                    LifeSpan.Add(sampbctrl.lifeLength);
+                    turnDice.Add(sampbctrl.turnDice);
+                    turnTorqueAllele1.Add(sampbgn.turnTorqueAllele1);
+                    turnTorqueAllele2.Add(sampbgn.turnTorqueAllele2);
+                    generation.Add(sampbctrl.generation);
+                    lookDistance.Add(sampbctrl.lookDistance);
+                    e2repA.Add(sampbctrl.e2repAllele1);
+                    e2repB.Add(sampbctrl.e2repAllele2);
                     
                 }           
                 

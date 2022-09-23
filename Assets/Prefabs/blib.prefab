@@ -137,47 +137,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cb6b980343184eb3b8dc89fcd6f7389, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  genome: {fileID: -8578292840481247088}
+  genome_script: {fileID: -8578292840481247088}
   speciationDistance: 10
-  energyToReproduce: 512
-  e2repAllele1: 64
-  e2repAllele2: 64
-  geneticColor: {r: 0, g: 0, b: 0, a: 0}
+  energyToReproduce: 1088
+  e2repAllele1: 1088
+  e2repAllele2: 1088
+  geneticColor: {r: 0, g: 0.67058825, b: 0.007843138, a: 0}
   densityCo: 0.0001
   rDice: 0
   age: 0
-  energy: 0
+  energy: 100
   statAge: 0
-  moveAllele1: 150
-  moveAllele2: 150
-  moveForce: 150
-  turnTorque: 90.1477
-  turnTorqueAllele1: 90.1477
-  turnTorqueAllele2: 90.1477
+  moveAllele1: 60
+  moveAllele2: 60
+  moveForce: 60
+  turnTorque: 108
+  turnTorqueAllele1: 108
+  turnTorqueAllele2: 108
   redGene: 0
-  greenGene: 1
+  greenGene: 1.66667
   blueGene: 0
   redAllele1: 0
   redAllele2: 0
-  greenAllele1: 1
-  greenAllele2: 1
+  greenAllele1: 1.66667
+  greenAllele2: 1.66667
   blueAllele1: 0
   blueAllele2: 0
   initDiversity: 0
-  lifeLength: 100
+  lifeLength: 160
   turnDice: 63.34411
   lookDistance: 40
   generation: 0
   nutLevel: 0
   nutToReproduce: 32
-  m_phenotype:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
   doInitDiversifier: 0
   tempProtein: 0
 --- !u!114 &-8578292840481247088
@@ -206,25 +198,25 @@ MonoBehaviour:
   lineageID: []
   greenAllele1: 1
   greenAllele2: 1
-  greenGene: 0
+  greenGene: 1
   redAllele1: 0
   redAllele2: 0
   redGene: 0
   blueAllele1: 0
   blueAllele2: 0
   blueGene: 0
-  turnTorqueAllele1: 0
-  turnTorqueAllele2: 0
-  turnTorque: 0
-  e2repAllele1: 64
-  e2repAllele2: 64
-  energyToReproduce: 0
-  moveAllele1: 0
-  moveAllele2: 0
-  moveForce: 0
+  turnTorqueAllele1: 108
+  turnTorqueAllele2: 108
+  turnTorque: 108
+  e2repAllele1: 100
+  e2repAllele2: 100
+  energyToReproduce: 100
+  moveAllele1: 60
+  moveAllele2: 60
+  moveForce: 60
   lifeLengthAllele1: 100
   lifeLengthAllele2: 100
-  lifeLength: 0
+  lifeLength: 100
   mutate: 0
   numMutations: 1
   giveLocus:
