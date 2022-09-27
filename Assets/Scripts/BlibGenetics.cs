@@ -43,12 +43,12 @@ private List<string[]> rowData = new List<string[]>();
     public List <float> greenAllele2;
     public List <float> blueAllele1;
     public List <float> blueAllele2;
-    public List <float> LifeSpan;
+    public List <float> lifeLengthAllele1;
+    public List <float> lifeLengthAllele2;
 
     public List <float> turnDice;
     public List <float> turnTorqueAllele1;
     public List <float> turnTorqueAllele2;
-    public List <float> lookDistance;
 
     public List <float> e2repA;
     public List <float> e2repB;
@@ -110,12 +110,12 @@ private List<string[]> rowData = new List<string[]>();
 
                     blueAllele1.Add(sampbgn.blueAllele1*10f);
                     blueAllele2.Add(sampbgn.blueAllele2*10f);
-                    LifeSpan.Add(sampbctrl.lifeLength);
+                    lifeLengthAllele1.Add(sampbgn.lifeLengthAllele1);
+                    lifeLengthAllele2.Add(sampbgn.lifeLengthAllele2);
                     turnDice.Add(sampbctrl.turnDice);
                     turnTorqueAllele1.Add(sampbgn.turnTorqueAllele1);
                     turnTorqueAllele2.Add(sampbgn.turnTorqueAllele2);
                     generation.Add(sampbctrl.generation);
-                    lookDistance.Add(sampbctrl.lookDistance);
                     e2repA.Add(sampbctrl.e2repAllele1);
                     e2repB.Add(sampbctrl.e2repAllele2);
                     
@@ -146,7 +146,7 @@ private List<string[]> rowData = new List<string[]>();
             itCount += 1;
             string[] rowDataTemp;
         if (itCount == 1){
-            rowDataTemp = new string[23];
+            rowDataTemp = new string[24];
             rowDataTemp[0] ="time" ;
             rowDataTemp[1] ="species";
             rowDataTemp[2] ="sampleGroup";
@@ -163,11 +163,11 @@ private List<string[]> rowData = new List<string[]>();
             rowDataTemp[13] = "greenAllele2";
             rowDataTemp[14] = "blueAllele1";
             rowDataTemp[15] = "blueAllele2";
-            rowDataTemp[16] = "maxLifeLength";
-            rowDataTemp[17] = "turnDice";
-            rowDataTemp[18] = "turnTorqueAllele1";
-            rowDataTemp[19] = "turnTorqueAllele2";
-            rowDataTemp[20] = "lookDistance";
+            rowDataTemp[16] = "lifeLengthAllele1";
+            rowDataTemp[17] = "lifeLengthAllele2";
+            rowDataTemp[18] = "turnDice";
+            rowDataTemp[19] = "turnTorqueAllele1";
+            rowDataTemp[20] = "turnTorqueAllele2";
             rowDataTemp[21] = "e2repA";
             rowDataTemp[22] = "e2repB";
             rowData.Add(rowDataTemp);
@@ -176,7 +176,7 @@ private List<string[]> rowData = new List<string[]>();
 
         // You can add up the values in as many cells as you want.
         for(int i = 0; i < sampleSize; i++){
-            rowDataTemp = new string[23];
+            rowDataTemp = new string[24];
             rowDataTemp[0] = totalTime.ToString();
             rowDataTemp[1] = "blib";
             rowDataTemp[2] = sampleGroup.ToString();
@@ -193,11 +193,11 @@ private List<string[]> rowData = new List<string[]>();
             rowDataTemp[13] = greenAllele2[i].ToString();
             rowDataTemp[14] = blueAllele1[i].ToString();
             rowDataTemp[15] = blueAllele2[i].ToString();
-            rowDataTemp[16] = LifeSpan[i].ToString();
-            rowDataTemp[17] = turnDice[i].ToString();
-            rowDataTemp[18] = turnTorqueAllele1[i].ToString();
-            rowDataTemp[19] = turnTorqueAllele2[i].ToString();
-            rowDataTemp[20] = lookDistance[i].ToString();
+            rowDataTemp[16] = lifeLengthAllele1[i].ToString();
+            rowDataTemp[17] = lifeLengthAllele2[i].ToString();
+            rowDataTemp[18] = turnDice[i].ToString();
+            rowDataTemp[19] = turnTorqueAllele1[i].ToString();
+            rowDataTemp[20] = turnTorqueAllele2[i].ToString();
             rowDataTemp[21] = e2repA[i].ToString();
             rowDataTemp[22] = e2repB[i].ToString();
 
@@ -242,12 +242,12 @@ private List<string[]> rowData = new List<string[]>();
         greenAllele2.Clear();
         blueAllele1.Clear();
         blueAllele2.Clear();
-        LifeSpan.Clear();
+        lifeLengthAllele1.Clear();
+        lifeLengthAllele2.Clear();
         turnTorqueAllele1.Clear();
         turnTorqueAllele2.Clear();
         turnDice.Clear();
         generation.Clear();
-        lookDistance.Clear();
         e2repA.Clear();
         e2repB.Clear();
         sampleGroup += 1;

@@ -13,6 +13,17 @@ using System;
 public class BlibSatLogger : MonoBehaviour
 {
 
+/*
+byte[] asDNAbin = new byte [486*9];
+asDNAbin = DNAbin.GetDNAbin(testA);
+string bytestring = "";
+for(int v = 0; v < asDNAbin.Length; v++){
+bytestring += ","+((uint)asDNAbin[v]).ToString() ;
+}
+Debug.Log(bytestring);
+*/
+
+
 GameObject[] blibs;
 
     private List<string[]> rowData = new List<string[]>();
@@ -40,12 +51,14 @@ GameObject[] blibs;
     private List<string> B6 = new List<string>();
     private List<string> B7 = new List<string>();
     private List<string> B8 = new List<string>();
+    private List<string> testA = new List<string>();
+    private List<string> testB = new List<string>();
     
     private int itCount, sampler, sampleGroup, sampleSize;  
     float time, totalTime;
     public int maxSampleSize;
     public float sampleRate;
-
+    BlibGenome sampledGenome;
    
     string filename;
 
@@ -55,6 +68,7 @@ GameObject[] blibs;
         sat1.Clear();sat2.Clear();sat3.Clear();sat4.Clear();
         A0.Clear();A1.Clear();A2.Clear();A3.Clear();A4.Clear();A5.Clear();A6.Clear();A7.Clear();A8.Clear();
         B0.Clear();B1.Clear();B2.Clear();B3.Clear();B4.Clear();B5.Clear();B6.Clear();B7.Clear();B8.Clear();
+        testA.Clear();testB.Clear();
         unitName.Clear();
         Array.Clear(blibs,0,blibs.Length);
         itCount = 0;
@@ -88,10 +102,10 @@ GameObject[] blibs;
                         }
                         
                 for (int i = 0; i < sampleSize; i++)
-                {                                          
+                {       sampledGenome = null;                                   
                     sampler = UnityEngine.Random.Range(0,sampleSize);
                     BlibControls  sampledBlib = blibs[sampler].GetComponent<BlibControls>();
-                    BlibGenome sampledGenome = blibs[sampler].GetComponent<BlibGenome>();
+                    sampledGenome = blibs[sampler].GetComponent<BlibGenome>();
                     string[] nucleotides = new string[27];
                     string[] bases = new string[sampledGenome.A.GetLength(1)];
                     unitName.Add(sampledBlib.gameObject.name);
@@ -130,6 +144,7 @@ GameObject[] blibs;
                     }
                      sampleChrom = String.Join("", bases);
                     A0.Add(sampleChrom);
+                    sampleChrom = "";
 
                     for(int e = 0; e < 486; e++)
                     {
@@ -137,28 +152,28 @@ GameObject[] blibs;
                     }
                      sampleChrom = String.Join("", bases);
                     A1.Add(sampleChrom);
-
+                    sampleChrom = "";
                     for(int e = 0; e < 486; e++)
                     {
                         bases[e] = sampledGenome.A[2,e];
                     }
                      sampleChrom = String.Join("", bases);
                     A2.Add(sampleChrom);
-
+                    sampleChrom = "";
                     for(int e = 0; e < 486; e++)
                     {
                         bases[e] = sampledGenome.A[3,e];
                     }
                      sampleChrom = String.Join("", bases);
                     A3.Add(sampleChrom);
-
+                    sampleChrom = "";
                     for(int e = 0; e < 486; e++)
                     {
                         bases[e] = sampledGenome.A[4,e];
                     }
                      sampleChrom = String.Join("", bases);
                     A4.Add(sampleChrom);
-
+                    sampleChrom = "";
 
                     for(int e = 0; e < 486; e++)
                     {
@@ -166,7 +181,7 @@ GameObject[] blibs;
                     }
                      sampleChrom = String.Join("", bases);
                     A5.Add(sampleChrom);
-
+                    sampleChrom = "";
 
                     for(int e = 0; e < 486; e++)
                     {
@@ -174,21 +189,21 @@ GameObject[] blibs;
                     }
                      sampleChrom = String.Join("", bases);
                     A6.Add(sampleChrom);
-
+                    sampleChrom = "";
                     for(int e = 0; e < 486; e++)
                     {
                         bases[e] = sampledGenome.A[7,e];
                     }
                      sampleChrom = String.Join("", bases);
                     A7.Add(sampleChrom);
-
+                    sampleChrom = "";
                     for(int e = 0; e < 486; e++)
                     {
                         bases[e] = sampledGenome.A[8,e];
                     }
                      sampleChrom = String.Join("", bases);
                     A8.Add(sampleChrom);
-
+                    sampleChrom = "";
 
 
                     
@@ -198,35 +213,35 @@ GameObject[] blibs;
                     }
                      sampleChrom = String.Join("", bases);
                     B0.Add(sampleChrom);
-
+                    sampleChrom = "";
                     for(int e = 0; e < 486; e++)
                     {
                         bases[e] = sampledGenome.B[1,e];
                     }
                      sampleChrom = String.Join("", bases);
                     B1.Add(sampleChrom);
-
+                    sampleChrom = "";
                     for(int e = 0; e < 486; e++)
                     {
                         bases[e] = sampledGenome.B[2,e];
                     }
                      sampleChrom = String.Join("", bases);
                     B2.Add(sampleChrom);
-
+                    sampleChrom = "";
                     for(int e = 0; e < 486; e++)
                     {
                         bases[e] = sampledGenome.B[3,e];
                     }
                      sampleChrom = String.Join("", bases);
                     B3.Add(sampleChrom);
-
+                    sampleChrom = "";
                     for(int e = 0; e < 486; e++)
                     {
                         bases[e] = sampledGenome.B[4,e];
                     }
                      sampleChrom = String.Join("", bases);
                     B4.Add(sampleChrom);
-
+                    sampleChrom = "";
 
                     for(int e = 0; e < 486; e++)
                     {
@@ -234,7 +249,7 @@ GameObject[] blibs;
                     }
                      sampleChrom = String.Join("", bases);
                     B5.Add(sampleChrom);
-
+                    sampleChrom = "";
 
                     for(int e = 0; e < 486; e++)
                     {
@@ -242,22 +257,23 @@ GameObject[] blibs;
                     }
                      sampleChrom = String.Join("", bases);
                     B6.Add(sampleChrom);
-
+                    sampleChrom = "";
                     for(int e = 0; e < 486; e++)
                     {
                         bases[e] = sampledGenome.B[7,e];
                     }
                      sampleChrom = String.Join("", bases);
                     B7.Add(sampleChrom);
-
+                    sampleChrom = "";
                     for(int e = 0; e < 486; e++)
                     {
                         bases[e] = sampledGenome.B[8,e];
                     }
                      sampleChrom = String.Join("", bases);
                     B8.Add(sampleChrom);
-                    
-                    
+                    sampleChrom = "";
+                    testA.Add(sampledGenome.testA);
+                    testB.Add(sampledGenome.testB);
 
                 }
             }   Save();
@@ -276,7 +292,7 @@ GameObject[] blibs;
             string[] rowDataTemp;
         if (itCount == 1){
 
-            rowDataTemp = new string[26];
+            rowDataTemp = new string[28];
             rowDataTemp[0] ="time" ;
             rowDataTemp[1] ="name" ;
             rowDataTemp[2] = "sampleGroup";
@@ -304,6 +320,9 @@ GameObject[] blibs;
             rowDataTemp[23] = "B6";
             rowDataTemp[24] = "B7";
             rowDataTemp[25] = "B8";
+            rowDataTemp[26] = "testA";
+            rowDataTemp[27] = "testB";
+
             
 
             rowData.Add(rowDataTemp);
@@ -313,7 +332,7 @@ GameObject[] blibs;
         for(int i = 0; i < sampleSize; i++)
         {   
             
-            rowDataTemp = new string[26];
+            rowDataTemp = new string[28];
             rowDataTemp[0] = totalTime.ToString();
             rowDataTemp[1] = unitName[i];
             rowDataTemp[2] = sampleGroup.ToString();
@@ -342,7 +361,9 @@ GameObject[] blibs;
             rowDataTemp[23] = B6[i].ToString();
             rowDataTemp[24] = B7[i].ToString();
             rowDataTemp[25] = B8[i].ToString();
-            
+            rowDataTemp[26] = testA[i].ToString();
+            rowDataTemp[27] = testB[i].ToString();
+            WriteString(DNAbin.GetDNAbin(testA[i]));
             
             rowData.Add(rowDataTemp);
 
@@ -370,15 +391,16 @@ GameObject[] blibs;
         outStream.WriteLine(sb);
         outStream.Close();
         
-
+        
         sat1.Clear();sat2.Clear();sat3.Clear();sat4.Clear();
         A0.Clear();A1.Clear();A2.Clear();A3.Clear();A4.Clear();A5.Clear();A6.Clear();A7.Clear();A8.Clear();
         B0.Clear();B1.Clear();B2.Clear();B3.Clear();B4.Clear();B5.Clear();B6.Clear();B7.Clear();B8.Clear();
-        unitName.Clear();
+        unitName.Clear();testA.Clear();testB.Clear();
         Array.Clear(blibs,0,blibs.Length);
         time = 0f;
         sampleGroup += 1;
-
+        
+        
 
     }
 
@@ -394,6 +416,31 @@ GameObject[] blibs;
         return Application.dataPath +"/"+filename;
         #endif
     }
+
+    public void WriteString(byte[] input)
+   {
+        
+       string path = getPath();
+       //Write some text to the test.txt file
+       StreamWriter writer = new StreamWriter(path, true);
+       for(int i = 0; i < input.Length; i++){
+        writer.WriteLine(input[i]);
+       }
+       
+        writer.Close();
+       StreamReader reader = new StreamReader(path);
+       //Print the text from the file
+       Debug.Log(reader.ReadToEnd());
+       reader.Close();
+    }
+   public static void ReadString()
+   {
+       string path = Application.persistentDataPath + "/test.txt";
+       //Read the text from directly from the test.txt file
+       StreamReader reader = new StreamReader(path);
+       Debug.Log(reader.ReadToEnd());
+       reader.Close();
+   }
 }
 
 

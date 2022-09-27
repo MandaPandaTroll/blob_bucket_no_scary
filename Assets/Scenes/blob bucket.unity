@@ -1138,7 +1138,7 @@ MonoBehaviour:
   statTot: 0
   gridX: 0
   gridY: 0
-  cellScale: 32
+  cellScale: 8
   initConc: 16
   freeNutes: 0
   lockedNutes: 0
@@ -3085,7 +3085,7 @@ Transform:
   m_GameObject: {fileID: 1136253239}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2048, y: 2048, z: 1}
+  m_LocalScale: {x: 512, y: 512, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1855928353}
@@ -4524,11 +4524,11 @@ MonoBehaviour:
   greenAllele2: []
   blueAllele1: []
   blueAllele2: []
-  LifeSpan: []
+  lifeLengthAllele1: []
+  lifeLengthAllele2: []
   turnDice: []
   turnTorqueAllele1: []
   turnTorqueAllele2: []
-  lookDistance: []
   e2repA: []
   e2repB: []
 --- !u!114 &1626781029
@@ -5266,14 +5266,14 @@ MonoBehaviour:
   initgen: {fileID: 1802033099}
   linChars: 
   initLineage: 
-  initBlib: 2
+  initBlib: 512
   autoRespawn: 0
   extraBlib: 1
-  minBlib: 2
+  minBlib: 1
   blib: {fileID: 3468846596000450122, guid: 6d4cc741cc2fc4e00ad7702559757827, type: 3}
   speedModifier_enabled: 0
   speedModifier: 0
-  initProtein: 8
+  initProtein: 0
 --- !u!4 &1883381884
 Transform:
   m_ObjectHideFlags: 0

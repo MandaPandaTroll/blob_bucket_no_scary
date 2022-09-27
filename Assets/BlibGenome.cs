@@ -12,13 +12,14 @@ using System.Text.RegularExpressions;
 
 public class BlibGenome : MonoBehaviour {
 
-  int[] pois = new int[20] { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-  public float[] phenotype = new float[7];
-  public initGenomeTest_blib initGenomeTest_blib;
+
+
+  int[] pois = new int[80] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+
   public bool translocation_enabled;
   public bool duplication_enabled;
-  public string[,] A = new string[9, 486];
-  public string[,] B = new string[9, 486];
+
 
   public List<string> lineageID = new List<string>();
   public static List<BlibGenome> blib_genomes = new List<BlibGenome>();
@@ -28,21 +29,18 @@ public class BlibGenome : MonoBehaviour {
                turnTorqueAllele1, turnTorqueAllele2,
                e2repAllele1, e2repAllele2,
                moveAllele1, moveAllele2,
-               lifeLengthAllele1, lifeLengthAllele2;
+               lifeLengthAllele1, lifeLengthAllele2, trackerAllele1, trackerAllele2;
 
-  //private string redSeq, greenSeq, blueSeq, moveSeq, turnSeq, repSeq, lifSeq;
+  private string redSeq, greenSeq, blueSeq, moveSeq, turnSeq, repSeq, lifSeq, TRACKER;
   //Get relevant amino acid sequences from database.
-  string redSeq = GeneDatabase.red;
-  string greenSeq = GeneDatabase.green;
-  string blueSeq = GeneDatabase.blue;
-  string moveSeq = GeneDatabase.move;
-  string turnSeq = GeneDatabase.turnt;
-  string repSeq = GeneDatabase.rep;
-  string lifSeq = GeneDatabase.lifeL;
+  
+
   public bool mutate = false;
   public int numMutations;
   public string[] giveLocus = new string[27];
   public string[] receiveLocus = new string[27];
+  public string testA;
+   public string testB;
 
   BlibControls blibControls;
   public BlibGenome mother; //Could be used to debug if genome is being properly transferred to offspring.
@@ -52,7 +50,8 @@ public class BlibGenome : MonoBehaviour {
       nMVV_A, nMVV_B,
       nTRN_A, nTRN_B,
       nREP_A, nREP_B,
-      nLIF_A, nLIF_B;
+      nLIF_A, nLIF_B,
+      nTRACKER_A, nTRACKER_B;
 
   //Current chromosomal loci
   int[,] sites = new int[9, 19] {
@@ -66,7 +65,7 @@ public class BlibGenome : MonoBehaviour {
         };
   public string[,] extA, extB;
   //Chromosome A 
-  //public string[,] A = new string[9,486]
+  public string[,] A = new string[9,486];
   /*
       // 0: L0 ->                                                                                                                             27 | L1 ->                                                                                                                             54 | L2 ->                                                                                                                             81 | L3 ->                                                                                                                            108 | L4 ->                                                                                                                            135 | L5 ->                                                                                                                            162 | L6 ->                                                                                                                            189 | L7 ->                                                                                                                            216 | L8 ->                                                                                                                            243 | L9 ->                                                                                                                             270| L10 ->                                                                                                                            297| L11 ->                                                                                                                            324| L12 ->                                                                                                                           351 | L13 ->                                                                                                                           378 | L14 ->                                                                                                                           405 | L15 ->                                                                                                                           432 | L16 ->                                                                                                                           459 | L17 ->                                                                                                                           486 |
          {{"A", "T", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "T", "A", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "A", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "A", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "A", "G", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "G", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "A", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A"  },
@@ -89,8 +88,8 @@ public class BlibGenome : MonoBehaviour {
       */
 
   //Chromosome B
-  //public string[,] B = new string[9,486]
-  /*
+  public string[,] B = new string[9,486];
+  /*  
       // 0: L0 ->                                                                                                                             27 | L1 ->                                                                                                                             54 | L2 ->                                                                                                                             81 | L3 ->                                                                                                                            108 | L4 ->                                                                                                                            135 | L5 ->                                                                                                                            162 | L6 ->                                                                                                                            189 | L7 ->                                                                                                                            216 | L8 ->                                                                                                                            243 | L9 ->                                                                                                                             270| L10 ->                                                                                                                            297| L11 ->                                                                                                                            324| L12 ->                                                                                                                           351 | L13 ->                                                                                                                           378 | L14 ->                                                                                                                           405 | L15 ->                                                                                                                           432 | L16 ->                                                                                                                           459 | L17 ->                                                                                                                           486 |
          {{"A", "T", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "A", "G", "G", "T", "A", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "A", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "A", "A", "T", "G", "G", "T", "C", "G", "T", "A", "A", "T", "A", "A", "A", "T", "A", "G", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "G", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "A", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "T", "G", "G", "G", "T", "C", "G", "T", "G", "A", "G", "G", "A", "G", "A", "A", "T", "A", "A", "A", "A", "A", "A", "T", "G", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A"  },
       // 1: L0 ->                                                                                                                             27 | L1 ->                                                                                                                             54 | L2 ->                                                                                                                             81 | L3 ->                                                                                                                            108 | L4 ->                                                                                                                            135 | L5 ->                                                                                                                            162 | L6 ->                                                                                                                            189 | L7 ->                                                                                                                            216 | L8 ->                                                                                                                            243 | L9 ->                                                                                                                             270| L10 ->                                                                                                                            297| L11 ->                                                                                                                            324| L12 ->                                                                                                                           351 | L13 ->                                                                                                                           378 | L14 ->                                                                                                                           405 | L15 ->                                                                                                                           432 | L16 ->                                                                                                                           459 | L17 ->                                                                                                                           486 |
@@ -122,28 +121,38 @@ public class BlibGenome : MonoBehaviour {
 
 
   void Start() {
-    chromoPairs = A.GetLength(0);
-    basePairs = A.GetLength(1);
+    
+    chromoPairs = 9;
+    basePairs = 486;
     blibControls = this.gameObject.GetComponent<BlibControls>();
+
     if (mother != null) {
-      A = mother.A;
-      B = mother.B;
-    } else {
-      A = initGenomestatic.A_static;
-      B = initGenomestatic.B_static;
-    }
+      //Array.Clear(A, 0, A.Length);
+      //Array.Clear(B, 0, B.Length);
+      //A = mother.A;
+      //B = mother.B;
+    } //else {
+      //A = initGenomestatic.A_static;
+      //B = initGenomestatic.B_static;
+    //}
 
-
-    Array.Clear(A, 0, A.Length);
-    Array.Clear(B, 0, B.Length);
+        redSeq = GeneDatabase.red;
+        greenSeq = GeneDatabase.green;
+        blueSeq = GeneDatabase.blue;
+        moveSeq = GeneDatabase.move;
+        turnSeq = GeneDatabase.turnt;
+        repSeq = GeneDatabase.rep;
+        lifSeq = GeneDatabase.lifeL;
+        TRACKER = GeneDatabase.TRACKER;
+   
 
     firstTranslation = false;
     
 
 
 
+    Mutate();
     
-    TranslateGenome();
 
 
 
@@ -183,31 +192,25 @@ public class BlibGenome : MonoBehaviour {
 
 
 
-    TranslateGenome();
   }
 
 
-  public int loSite, cNum, locus;
-  private int AorB, mate_loSite, mate_cNum;
+  public List<string> giveSequenceA = new List<string>();
+  public List<string> giveSequenceB = new List<string>();
+  //public List<string> receiveSequenceA = new List<string>();
+  //public List<string> receiveSequenceB = new List<string>();
+  private int AorB;
+  BlibGenome mateGenome;
   void OnCollisionEnter2D(Collision2D col) {
-    if (col.gameObject.tag == "Prey") {
-
-      cNum = UnityEngine.Random.Range(0, A.GetLength(0));
-      AorB = UnityEngine.Random.Range(0, 2);
-      locus = UnityEngine.Random.Range(0, sites.GetLength(1) - 1);
-      loSite = sites[cNum, locus];
+    if (col.gameObject.tag == "prey" &&  blibControls.age > 5f && col.gameObject.GetComponent<BlibControls>().age > 5f) {
+       mateGenome = col.gameObject.GetComponent<BlibGenome>();
+      
+      
 
       int snpCountA = 0, snpCountB = 0;
       bool isEqual;
 
-      for (int i = 0; i < 27; i++) {
-        if (AorB == 0) {
-          giveLocus[i] = A[cNum, loSite + i];
-        } else {
-          giveLocus[i] = B[cNum, loSite + i];
-        }
-
-      }
+      
       /*
       string debugChar;
       if (AorB == 0){debugChar ="A";}else{debugChar = "B";}
@@ -215,7 +218,7 @@ public class BlibGenome : MonoBehaviour {
      // //Debug.Log("Chromosome: " + debugChar + ":" + cNum + " Locus: " + locus + " -> " + debugLocus);
      */
 
-      BlibGenome mateGenome = col.gameObject.GetComponent<BlibGenome>();
+      
 
 
 
@@ -240,8 +243,8 @@ public class BlibGenome : MonoBehaviour {
       }
 
       //Genetic distance calculations
-      float pairWiseA_squared = Mathf.Pow(((float)snpCountA / 1944.0f), 2.0f);
-      float pairWiseB_squared = Mathf.Pow(((float)snpCountA / 1944.0f), 2.0f);
+      float pairWiseA_squared = Mathf.Pow(((float)snpCountA / 486f*9f), 2.0f);
+      float pairWiseB_squared = Mathf.Pow(((float)snpCountA / 486f*9f), 2.0f);
 
       float pythagDist = Mathf.Sqrt(pairWiseA_squared + pairWiseB_squared);
       if (pythagDist > 0.01) {
@@ -249,30 +252,69 @@ public class BlibGenome : MonoBehaviour {
         // " Pythagorean distance (BP) = " + pythagDist);
       }
 
-
-      //Genetic recombination
+      
+      //exchange genetic material
+      
       if (pythagDist < 0.1f) {
+        
+        numRecoms = UnityEngine.Random.Range(0,3);
+        AorB = UnityEngine.Random.Range(0,2);
+         recoChromos = 9;
+         numRecoLoci = 19;
+        
 
-        receiveLocus = mateGenome.giveLocus;
-        mate_cNum = mateGenome.cNum;
-        mate_loSite = mateGenome.loSite;
+        
+         whichChromo = UnityEngine.Random.Range(0,recoChromos);
 
-        AorB = UnityEngine.Random.Range(0, 2);
+          recoStart_locus =  UnityEngine.Random.Range(0,numRecoLoci-1);
+         recoStart_site = sites[whichChromo, recoStart_locus];
+         
+         
+         recoEnd_locus =  UnityEngine.Random.Range(recoStart_locus, numRecoLoci);
+         recoEnd_site = sites[whichChromo, recoEnd_locus];
+        
 
-        if (AorB == 0) {
-          for (int i = 0; i < 27; i++) {
-            A[mate_cNum, mate_loSite + i] = receiveLocus[i];
-          }
-        }
+         recoLength = sites[whichChromo,recoEnd_locus]-sites[whichChromo,recoStart_locus];
+          
+            
 
-        if (AorB == 1) {
-          for (int i = 0; i < 27; i++) {
-            A[mate_cNum, mate_loSite + i] = receiveLocus[i];
-          }
+        for(int n = 0; n < numRecoms; n++){
+             
+
+            for(int i = recoStart_site; i < recoEnd_site; i++){
+            giveSequenceA.Add(A[whichChromo,i]);
+            giveSequenceB.Add(B[whichChromo,i]);
+            }
+
+            //Give what where?
+            int whereTo = UnityEngine.Random.Range(0,2);
+    
+                  if(whereTo == 0){ //A->A, B->B
+                    for (int i = recoStart_site; i < recoEnd_site; i++){
+                    
+                    mateGenome.A[whichChromo,i] = giveSequenceA[i - recoStart_site];
+                    mateGenome.B[whichChromo,i] = giveSequenceB[i - recoStart_site];
+                    }
+                }
+
+                  else if(whereTo == 1){ //A->B, B->A
+                    for (int i = recoStart_site; i < recoEnd_site; i++){
+                          
+                    mateGenome.B[whichChromo,i] = giveSequenceA[i - recoStart_site];
+                    mateGenome.A[whichChromo,i] = giveSequenceB[i - recoStart_site];
+                    }
+                }
+            
+            
+            giveSequenceA.Clear();
+            giveSequenceB.Clear();
         }
 
       }
 
+        
+
+    
     }
   }
 
@@ -287,17 +329,15 @@ public class BlibGenome : MonoBehaviour {
   void Update() {
     int mutationroll = UnityEngine.Random.Range(0, 4096 * 2);
 
-    if (mutationroll == -1) { mutate = true; }
+    if (mutationroll == 64) { mutate = true; }else{mutate = false;}
     extA = A;
     extB = B;
     if (firstTranslation == false) {
-      TranslateGenome();
+     // TranslateGenome();
     }
-    if (this.gameObject.GetComponent<BlibControls>().age > 0.5f) {
-      if (mutate == true) {
-        // Mutate();
 
-      }
+    if (this.gameObject.GetComponent<BlibControls>().age > 1.0f && mutate == true) {
+         Mutate();
     }
 
   }
@@ -449,12 +489,12 @@ public class BlibGenome : MonoBehaviour {
       }
     }
 
-
+    //Point mutations
     numMutations = pois[UnityEngine.Random.Range(0, pois.Length)];
     for (int i = 0; i < numMutations; i++) {
 
-      int index0 = UnityEngine.Random.Range(0, 8);
-      int index1 = UnityEngine.Random.Range(0, 485);
+      int index0 = UnityEngine.Random.Range(0, 9);
+      int index1 = UnityEngine.Random.Range(0, 486);
       int randBase = UnityEngine.Random.Range(0, 2);
       int pointTypeRoll = UnityEngine.Random.Range(1, 101);
       string pointType;
@@ -550,7 +590,7 @@ public class BlibGenome : MonoBehaviour {
     }
 
     mutate = false;
-
+    TranslateGenome();
   }
 
 
@@ -590,16 +630,39 @@ public class BlibGenome : MonoBehaviour {
   List<string> recoBuffer_A = new List<string>();
   List<string> recoBuffer_B = new List<string>();
   List<string> donatorBuffer = new List<string>();
-
+  
+  //public List<string> problemSites = new List<string>();
+  
   void TranslateGenome() {
-
+    //Debugging translation
+/*    
+    problemSites.Clear();
+    
+    
+    for (int p = 0; p < A.GetLength(0); p++){
+      for (int q = 0; q < A.GetLength(1); q++){
+          if(A[p,q] != "A" && A[p,q] != "T" && A[p,q]  != "C" && A[p,q]  != "G"){
+                problemSites.Add("A"+"("+p.ToString()+","+q.ToString()+")"+A[p,q]);
+                
+               }
+        }
+      }
+      for (int p = 0; p < B.GetLength(0); p++){
+      for (int q = 0; q < B.GetLength(1); q++){
+          if(B[p,q] != "A" && B[p,q] != "T" && B[p,q]  != "C" && B[p,q]  != "G"){
+                problemSites.Add("B"+"("+p.ToString()+","+q.ToString()+")"+B[p,q]);
+               }
+        }
+      }
+*/    
+    
     bool translating = true;
-
-    /* if(firstTranslation == false ){ //Recombination
+    
+     if(firstTranslation == false ){ //Recombination
         
          doConversion = false;
         
-         numRecoms = UnityEngine.Random.Range(1, 16);
+         numRecoms = UnityEngine.Random.Range(0, 4);
 
          recoChromos = 9;
          numRecoLoci = 19;
@@ -619,9 +682,7 @@ public class BlibGenome : MonoBehaviour {
          recoLength = sites[whichChromo,recoEnd_locus]-sites[whichChromo,recoStart_locus];
           
           
-          recoBuffer_A = new string[recoLength];
-          recoBuffer_B = new string[recoLength];
-          donatorBuffer = new string[recoLength];
+        
           
           int conversionDice;
             int donator;
@@ -661,7 +722,7 @@ public class BlibGenome : MonoBehaviour {
         
 
     } 
-    */
+    
 
     
       mutate = false;
@@ -683,12 +744,14 @@ public class BlibGenome : MonoBehaviour {
       nGRN_A = 0; nGRN_B = 0; nRED_A = 0; nRED_B = 0;
       nLLY_A = 0; nLLY_B = 0; nMVV_A = 0; nMVV_B = 0;
       nTRN_A = 0; nTRN_B = 0; nREP_A = 0; nREP_B = 0;
+      nTRACKER_A = 0; nTRACKER_B = 0;
 
 
       int numBasesA = 0;
       int numBasesB = 0;
       codonCount = 0;
       baseCount = 0;
+      tempS = "";
       for (int i = 0; i < A.GetLength(0); i++) {
         for (int j = 0; j < A.GetLength(1); j++) {
           if (i == 0 && j == 0) { allelesA = ""; allelesB = ""; thisAlleleA = ""; thisAlleleB = ""; }
@@ -867,7 +930,7 @@ public class BlibGenome : MonoBehaviour {
       codonCount = 0;
       baseCount = 0;
       for (int x = 0; x < B.GetLength(0); x++) {
-        for (int y = 0; y < basePairs; y++) {
+        for (int y = 0; y < B.GetLength(1); y++) {
           if (x == 0 && y == 0) { allelesB = ""; thisAlleleA = ""; thisAlleleB = ""; }
           numBasesB += 1;
 
@@ -1031,7 +1094,7 @@ public class BlibGenome : MonoBehaviour {
       //Debug.Log( "numBasesB = " + numBasesB + " nAllelesB = " + nAllelesB + " StopsB = " + stopB);
 
 
-
+      tempS = "";
       string thisA = allelesA;
       allelesA = null;
 
@@ -1057,6 +1120,8 @@ public class BlibGenome : MonoBehaviour {
 
       int lifCountA = Regex.Matches(thisA, lifSeq).Count;
 
+      int trackerCountA = Regex.Matches(thisA, TRACKER).Count;
+
       nGRN_A = (float)grnCountA;
       nRED_A = (float)redCountA;
       nLLY_A = (float)bluCountA;
@@ -1064,6 +1129,7 @@ public class BlibGenome : MonoBehaviour {
       nTRN_A = (float)turnCountA;
       nREP_A = (float)repCountA;
       nLIF_A = (float)lifCountA;
+      nTRACKER_A = (float)trackerCountA;
 
 
 
@@ -1090,6 +1156,8 @@ public class BlibGenome : MonoBehaviour {
 
       int lifCountB = Regex.Matches(thisB, lifSeq).Count;
 
+      int trackerCountB = Regex.Matches(thisB, TRACKER).Count;
+
       nGRN_B = (float)grnCountB;
       nRED_B = (float)redCountB;
       nLLY_B = (float)bluCountB;
@@ -1097,25 +1165,25 @@ public class BlibGenome : MonoBehaviour {
       nTRN_B = (float)turnCountB;
       nREP_B = (float)repCountB;
       nLIF_B = (float)lifCountB;
+      nTRACKER_B = (float)trackerCountB;
 
 
+      //Debug.Log("thisA : " + thisA);
+      //Debug.Log("thisB : " + thisB);
+      thisA = "";
+      thisB = "";
 
-      Debug.Log("thisA : " + thisA);
-      Debug.Log("thisB : " + thisB);
-      thisA = null;
-      thisB = null;
-
-      redAllele1 = nRED_A / 12f;
-      redAllele2 = nRED_B / 12f;
+      redAllele1 = nRED_A / 2f;
+      redAllele2 = nRED_B / 2f;
       //redGene = Mathf.Clamp((redAllele1 + redAllele2) / 2.0f, 0.00f, 1.00f);
 
 
-      greenAllele1 = nGRN_A / 12f;
-      greenAllele2 = nGRN_B / 12f;
+      greenAllele1 = nGRN_A / 6f;
+      greenAllele2 = nGRN_B / 6f;
       //greenGene = Mathf.Clamp((greenAllele1 + greenAllele2) / 2.0f, 0.00f, 1.00f);
 
-      blueAllele1 = nLLY_A / 12f;
-      blueAllele2 = nLLY_B / 12f;
+      blueAllele1 = nLLY_A / 2f;
+      blueAllele2 = nLLY_B / 2f;
       //blueGene = Mathf.Clamp((blueAllele1 + blueAllele2) / 2.0f, 0.00f, 1.00f);
 
       moveAllele1 = nMVV_A * 3f;
@@ -1126,14 +1194,16 @@ public class BlibGenome : MonoBehaviour {
       turnTorqueAllele2 = nTRN_B * 6f;
       //turnTorque = (turnTorqueAllele1 + turnTorqueAllele2) / 2.0f;
 
-      e2repAllele1 = 64f + Mathf.Pow(2f, nREP_A);
-      e2repAllele2 = 64f + Mathf.Pow(2f, nREP_B);
+      e2repAllele1 = 64f + Mathf.Pow(1.5f, nREP_A);
+      e2repAllele2 = 64f + Mathf.Pow(1.5f, nREP_B);
       //energyToReproduce = (e2repAllele1 + e2repAllele2) / 2.0f;
 
       lifeLengthAllele1 = 16f + Mathf.Pow(2f, nLIF_A);
       lifeLengthAllele2 = 16f + Mathf.Pow(2f, nLIF_B);
       //lifeLength = (lifeLengthAllele1 + lifeLengthAllele2);
     
+      trackerAllele1 = nTRACKER_A;
+      trackerAllele2 = nTRACKER_B;
 
 
 
@@ -1144,19 +1214,39 @@ public class BlibGenome : MonoBehaviour {
 
 
 
+string[] A0 = new string[486];
+string[] A1 = new string[486];
+string[] A2 = new string[486];
+string[] A3 = new string[486];
+string[] A4 = new string[486];
+string[] A5 = new string[486];
+string[] A6 = new string[486];
+string[] A7 = new string[486];
+string[] A8 = new string[486];
 
 
 
 
+string [] haploid_A;
 
+string[] tempchromo_A = new string[9];
+string[] tempchromo_B = new string[9];
+string[] tempBaseGather_A = new string[486];
+string[] tempBaseGather_B = new string[486];
 
+for(int i = 0; i < 9; i++){
+  
+  for(int j = 0; j < 486; j++){
+    tempBaseGather_A[j] = A[i,j];
+    tempBaseGather_B[j] = B[i,j];
 
-
-
-
-
-
-
+  }
+  tempchromo_A[i] = System.String.Join("",tempBaseGather_A);
+  tempchromo_B[i] = System.String.Join("",tempBaseGather_B);
+}
+  
+testA = System.String.Join("", tempchromo_A);
+testB = System.String.Join("", tempchromo_B);
 
       firstTranslation = true;
       translating = false;

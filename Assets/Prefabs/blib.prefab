@@ -137,7 +137,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cb6b980343184eb3b8dc89fcd6f7389, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  genome_script: {fileID: -8578292840481247088}
   speciationDistance: 10
   energyToReproduce: 1088
   e2repAllele1: 1088
@@ -184,39 +183,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f73fa7ead1e994b45a2af7503fb6aac4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  phenotype:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  initGenomeTest_blib: {fileID: 5861536312715401572, guid: b4fd95410a7974669a7ac717eb2be2ee, type: 3}
+  wholeGenomeA: 
+  wholeGenomeB: 
   translocation_enabled: 0
   duplication_enabled: 0
   lineageID: []
   greenAllele1: 1
   greenAllele2: 1
-  greenGene: 1
   redAllele1: 0
   redAllele2: 0
-  redGene: 0
   blueAllele1: 0
   blueAllele2: 0
-  blueGene: 0
   turnTorqueAllele1: 108
   turnTorqueAllele2: 108
-  turnTorque: 108
   e2repAllele1: 100
   e2repAllele2: 100
-  energyToReproduce: 100
   moveAllele1: 60
   moveAllele2: 60
-  moveForce: 60
   lifeLengthAllele1: 100
   lifeLengthAllele2: 100
-  lifeLength: 100
+  trackerAllele1: 0
+  trackerAllele2: 0
   mutate: 0
   numMutations: 1
   giveLocus:
@@ -275,10 +262,11 @@ MonoBehaviour:
   - 
   - 
   - 
+  testA: 
+  testB: 
   mother: {fileID: 0}
   chromoPairs: 0
   basePairs: 0
   randGenome: 0
-  loSite: 0
-  cNum: 0
-  locus: 0
+  giveSequenceA: []
+  giveSequenceB: []

@@ -35,7 +35,7 @@ public class BlibControls : MonoBehaviour {
      "G","A","A",  "C","G","T",  "T","G","A"},
 };
 
-  public BlibGenome genome_script;
+   BlibGenome genome_script;
 
   //Detector detector;
   //GameObject Alpha;
@@ -139,7 +139,7 @@ public class BlibControls : MonoBehaviour {
     
   }
   void Start() {
-
+      genome_script = gameObject.GetComponent<BlibGenome>();
     
 
     chromoPairs = 9;
@@ -309,13 +309,16 @@ public class BlibControls : MonoBehaviour {
   }
 
   void FixedUpdate() {
+    if(lifeLength <= 0){
+        lifeLength = 20f;
+    }
     tempNut = nutLevel;
 
     if (nutLevel < nutToReproduce) {
       posVal = m_nutgrid.GetValue(transform.position);
       if (posVal > 0) {
         nutLevel += 1;
-        m_nutgrid.SetValue(transform.position, (ushort)(posVal - 1));
+        m_nutgrid.SetValue(transform.position, (int)(posVal - 1));
 
         int feedTurn = Random.Range(0, (int)turnDice / 8);
         if (feedTurn == 1) {
@@ -325,12 +328,11 @@ public class BlibControls : MonoBehaviour {
     }
   }
   public bool doInitDiversifier = false;
+ 
   void LateUpdate() {
     speedModifier = blibSpawner.speedModifier;
     tempProtein = nutLevel;
-    if(lifeLength <= 0){
-        lifeLength = 20f;
-    }
+    
 
 
 
@@ -341,7 +343,7 @@ public class BlibControls : MonoBehaviour {
     
       redAllele1 = genome_script.redAllele1;
       redAllele2 = genome_script.redAllele2;
-
+      redGene = Mathf.Clamp((redAllele1 + redAllele2) / 2.0f, 0.00f, 1.00f);
       greenAllele1 = genome_script.greenAllele1;
       greenAllele2 = genome_script.greenAllele2;
 
@@ -367,9 +369,9 @@ public class BlibControls : MonoBehaviour {
 
       turnTorque = (turnTorqueAllele1 + turnTorqueAllele2) / 2.0f;
 
-      redGene = Mathf.Clamp((redAllele1 + redAllele2) / 2.0f, 0.00f, 1.00f);
+      
 
-      greenGene = Mathf.Clamp((greenAllele1 + greenAllele2) / 2.0f, 0.00f, 1.00f);
+      greenGene = Mathf.Clamp((greenAllele1 + greenAllele2), 0.00f, 1.00f);
 
       blueGene = Mathf.Clamp((blueAllele1 + blueAllele2) / 2.0f, 0.00f, 1.00f);
 
@@ -743,7 +745,8 @@ public class BlibControls : MonoBehaviour {
     string[,] tempStringA = genome_script.A;
     string[,] tempStringB = genome_script.B;
     GameObject daughter = Instantiate(this.gameObject);
-    daughter.GetComponent<BlibGenome>().mother = genome_script;
+    BlibGenome daughterGenome = daughter.GetComponent<BlibGenome>();
+    daughterGenome.mother = this.genome_script;
     BlibControls daughter_controls = daughter.GetComponent<BlibControls>();
     daughter_controls.generation = generation + 1;
     daughter_controls.age = 0f;
@@ -754,9 +757,9 @@ public class BlibControls : MonoBehaviour {
     }
 
 
-    daughter.GetComponent<BlibGenome>().lineageID.Add(System.String.Join("", daughterID));
-daughter.GetComponent<BlibGenome>().A = this.genome_script.A;
-daughter.GetComponent<BlibGenome>().B = this.genome_script.B;
+   daughterGenome.lineageID.Add(System.String.Join("", daughterID));
+   daughterGenome.A = tempStringA;
+   daughterGenome.B = tempStringB;
     //daughter.GetComponent<BlibGenome>().mutate = true;
     if (odd == true) {
       daughter_controls.nutLevel = tempNut + 1;

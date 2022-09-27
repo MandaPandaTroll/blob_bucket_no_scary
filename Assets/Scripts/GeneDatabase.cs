@@ -2,6 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+public class DNAbin{
+    public static byte   Adenosine = 0x88;
+    public static byte   Guanine = 0x48;
+    public static byte   Cytosine = 0x28;
+    public static byte   Thymine = 0x18;
+    public static byte unknown = 0x2;
+   
+
+    public static byte[] GetDNAbin(string input){
+      byte[] output = new byte[input.Length];
+      for(int i = 0; i < input.Length; i++){
+            switch(input[i]){
+
+            case 'A':
+            output[i] = Adenosine;
+            break;
+
+            case 'G':
+            output[i] = Guanine;
+            break;
+
+            case 'C':
+            output[i] = Cytosine;
+            break;
+
+            case 'T':
+            output[i] = Thymine;
+            break;
+
+            default:
+            output[i] = unknown;
+            break;
+      }
+
+      }
+      
+      
+      return(output);
+    }
+}
+
+
 public class GeneDatabase 
 {
 
@@ -127,9 +171,25 @@ THICC = ACT - CAT - ATT - TGT - TGT
         ––– - ––– - ––– - ––– - –––
     "A", "T", "G", "A", "C", "T", "C", "A", "T", "A", "T", "T", "T", "G", "T", "T", "G", "T", "T", "G", "A", "A", "A", "A", "A", "A", "A"
 
+
+
+
+
+TRACKER = ––– - ––– - ––– - ––– - ––– - ––– - –––
+          ––– - ––– - ––– - ––– - ––– - ––– - –––
+          ––– - ––– - ––– - ––– - ––– - ––– - –––
+          ––– - ––– - ––– - ––– - ––– - ––– - –––
+          ––– - ––– - ––– - ––– - ––– - ––– - –––
+          ––– - ––– - ––– - ––– - ––– - ––– - –––
+0                  1                 2                 3                 4                 5                 6
+"A", "C", "C", "C", "G", "C", "G", "C", "G", "T", "G", "C", "A", "A", "A", "G", "A", "A", "C", "G", "C"
+
+
 */
 
-public static string red = "RED", green = "GRN",  blue = "LLY", move = "MVV", turnt = "TRN", rep = "REP", lifeL = "LIF", lookD = "LKDISTA", thicc = "THICC";
+
+
+public static string red = "RED", green = "GRN",  blue = "LLY", move = "MVV", turnt = "TRN", rep = "REP", lifeL = "LIF", lookD = "LKDISTA", thicc = "THICC", TRACKER = "TRACKER";
 
 
  

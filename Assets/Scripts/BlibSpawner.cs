@@ -51,15 +51,15 @@ public class BlibSpawner : MonoBehaviour {
       float y = (float)Random.Range(-boxSize / 3, boxSize / 3);
       GameObject thisBlib = Instantiate(blib, new Vector3(x, y, 0), Quaternion.identity);
       thisBlib.GetComponent<BlibGenome>().lineageID.Add(System.String.Join("", initLineages[i]));
-      //thisBlib.GetComponent<BlibGenome>().A = initgen.A;
-      //thisBlib.GetComponent<BlibGenome>().B = initgen.B;
+      thisBlib.GetComponent<BlibGenome>().A = initGenomestatic.A_static;
+      thisBlib.GetComponent<BlibGenome>().B = initGenomestatic.B_static;
       thisBlib.name = popLogger.GetName("blib");
       thisBlib.name = thisBlib.name.Replace("(Clone)", "");
       BlibControls thisBlibControls = thisBlib.GetComponent<BlibControls>();
-      thisBlibControls.energy = 100f;
+      //thisBlibControls.energy = 100f;
       thisBlibControls.nutLevel = initProtein;
-      thisBlibControls.age = Random.Range(0f, thisBlibControls.lifeLength * 0.8f);
-      thisBlibControls.energy = Random.Range(thisBlibControls.energyToReproduce / 16f, thisBlibControls.energyToReproduce);
+      //thisBlibControls.age = Random.Range(0f, thisBlibControls.lifeLength * 0.8f);
+      //thisBlibControls.energy = Random.Range(thisBlibControls.energyToReproduce / 16f, thisBlibControls.energyToReproduce);
       
 
     }
@@ -93,9 +93,9 @@ public class BlibSpawner : MonoBehaviour {
       float x = (float)Random.Range(-boxSize / 3, boxSize / 3);
       float y = (float)Random.Range(-boxSize / 3, boxSize / 3);
       GameObject thisBlib = Instantiate(blib, new Vector3(x, y, 0), Quaternion.identity);
-      thisBlib.GetComponent<BlibControls>().energy = 100f;
-      //thisBlib.GetComponent<BlibGenome>().A = initgen.A;
-      //thisBlib.GetComponent<BlibGenome>().B = initgen.B;
+      
+      thisBlib.GetComponent<BlibGenome>().A = initGenomestatic.A_static;
+      thisBlib.GetComponent<BlibGenome>().B = initGenomestatic.B_static;
       thisBlib.name = popLogger.GetName("blib");
       thisBlib.name = thisBlib.name.Replace("(Clone)", "");
 
