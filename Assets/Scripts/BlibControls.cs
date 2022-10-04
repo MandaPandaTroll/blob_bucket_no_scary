@@ -669,7 +669,8 @@ public class BlibControls : MonoBehaviour {
   private string pointString;
   int tempNut;
   void Reproduce() {
-
+    
+    int mutationroll = UnityEngine.Random.Range(0, genome_script.final_mutsize);
     SatChunk = Random.Range(0, 4);
     SatIndex = Random.Range(0, 27);
     pointmutation = rndA.Next(0, 4);
@@ -760,7 +761,13 @@ public class BlibControls : MonoBehaviour {
    daughterGenome.lineageID.Add(System.String.Join("", daughterID));
    daughterGenome.A = tempStringA;
    daughterGenome.B = tempStringB;
-    //daughter.GetComponent<BlibGenome>().mutate = true;
+   daughterGenome.numMutations = 1;
+   if(mutationroll == 64){
+    daughterGenome.mutate = true;
+    genome_script.mutate = true;
+    
+   }
+    
     if (odd == true) {
       daughter_controls.nutLevel = tempNut + 1;
     } else { daughter_controls.nutLevel = tempNut; }

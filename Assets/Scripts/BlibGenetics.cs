@@ -102,14 +102,14 @@ private List<string[]> rowData = new List<string[]>();
                     moveAllele1.Add(sampbgn.moveAllele1);
                     moveAllele2.Add(sampbgn.moveAllele2); 
 
-                    redAllele1.Add(sampbgn.redAllele1*10f);
-                    redAllele2.Add(sampbgn.redAllele2*10f);
+                    redAllele1.Add(sampbgn.redAllele1);
+                    redAllele2.Add(sampbgn.redAllele2);
 
-                    greenAllele1.Add(sampbgn.greenAllele1*10f);
-                    greenAllele2.Add(sampbgn.greenAllele2*10f);
+                    greenAllele1.Add(sampbgn.greenAllele1);
+                    greenAllele2.Add(sampbgn.greenAllele2);
 
-                    blueAllele1.Add(sampbgn.blueAllele1*10f);
-                    blueAllele2.Add(sampbgn.blueAllele2*10f);
+                    blueAllele1.Add(sampbgn.blueAllele1);
+                    blueAllele2.Add(sampbgn.blueAllele2);
                     lifeLengthAllele1.Add(sampbgn.lifeLengthAllele1);
                     lifeLengthAllele2.Add(sampbgn.lifeLengthAllele2);
                     turnDice.Add(sampbctrl.turnDice);

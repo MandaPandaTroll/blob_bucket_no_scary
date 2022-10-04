@@ -4,6 +4,7 @@ using UnityEngine;
 
 
 public class BlibSpawner : MonoBehaviour {
+  public int initialMutations;
   public initGenomeTest_blib initgen;
   public char[] linChars;
   public char[] initLineage;
@@ -53,6 +54,8 @@ public class BlibSpawner : MonoBehaviour {
       thisBlib.GetComponent<BlibGenome>().lineageID.Add(System.String.Join("", initLineages[i]));
       thisBlib.GetComponent<BlibGenome>().A = initGenomestatic.A_static;
       thisBlib.GetComponent<BlibGenome>().B = initGenomestatic.B_static;
+      thisBlib.GetComponent<BlibGenome>().numMutations = initialMutations;
+
       thisBlib.name = popLogger.GetName("blib");
       thisBlib.name = thisBlib.name.Replace("(Clone)", "");
       BlibControls thisBlibControls = thisBlib.GetComponent<BlibControls>();

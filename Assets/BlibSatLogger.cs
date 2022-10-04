@@ -363,7 +363,7 @@ GameObject[] blibs;
             rowDataTemp[25] = B8[i].ToString();
             rowDataTemp[26] = testA[i].ToString();
             rowDataTemp[27] = testB[i].ToString();
-            WriteString(DNAbin.GetDNAbin(testA[i]));
+            
             
             rowData.Add(rowDataTemp);
 
@@ -417,30 +417,7 @@ GameObject[] blibs;
         #endif
     }
 
-    public void WriteString(byte[] input)
-   {
-        
-       string path = getPath();
-       //Write some text to the test.txt file
-       StreamWriter writer = new StreamWriter(path, true);
-       for(int i = 0; i < input.Length; i++){
-        writer.WriteLine(input[i]);
-       }
-       
-        writer.Close();
-       StreamReader reader = new StreamReader(path);
-       //Print the text from the file
-       Debug.Log(reader.ReadToEnd());
-       reader.Close();
-    }
-   public static void ReadString()
-   {
-       string path = Application.persistentDataPath + "/test.txt";
-       //Read the text from directly from the test.txt file
-       StreamReader reader = new StreamReader(path);
-       Debug.Log(reader.ReadToEnd());
-       reader.Close();
-   }
+   
 }
 
 

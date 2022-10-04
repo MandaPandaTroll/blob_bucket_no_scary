@@ -183,10 +183,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f73fa7ead1e994b45a2af7503fb6aac4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wholeGenomeA: 
-  wholeGenomeB: 
-  translocation_enabled: 0
-  duplication_enabled: 0
+  mutCount: 0
+  mutMultiplier: 5
+  translocation_enabled: 1
+  duplication_enabled: 1
   lineageID: []
   greenAllele1: 1
   greenAllele2: 1
@@ -270,3 +270,4 @@ MonoBehaviour:
   randGenome: 0
   giveSequenceA: []
   giveSequenceB: []
+  final_mutsize: 10000

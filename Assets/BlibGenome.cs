@@ -6,16 +6,43 @@ using UnityEngine;
 using System;
 using System.Text.RegularExpressions;
 
+/*
+Mutation rate of cyanobacteria (Krasovec 2017)
+4.4E-10 to 9.8E-10, per nucleotide per generation.
+
+I choose the mean of these values...
+base_u_blib = 7.1E-10 (u)
+
+blib nucleotides= 2*2*9*486 (one strand not simulated, but I'll use it in the calculation, cuz I feel like it) 
+= 17 496       (b)
+
+base_num_mutations per genome per generation = 7.1E-10 * 1.7496E4 
+= 1.242216E-5 (uG)
+
+= 1/24221.6 = 0.00001242216
+≈ 1/24000
+
+This is ridiculously low, so I think my computer would be very sad if i used that.
+
+maybe 1/2400 to 1/240 is a better value...
 
 
 
 
+
+
+
+
+*/
 public class BlibGenome : MonoBehaviour {
-
-
-
-  int[] pois = new int[80] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
+public int mutCount;
+int base_mutDice = 2400;
+public int mutMultiplier = 1;
+byte [] byteA;
+byte [] byteB;
+  char[] ABroll = new char[8]{'A','B','A','B','A','B','A','B'};
+  //int[] pois = new int[80] { 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+  int[] P_transversion = new int[10]{0,0,0,0,0,0,1,0,0,0};
 
   public bool translocation_enabled;
   public bool duplication_enabled;
@@ -121,11 +148,11 @@ public class BlibGenome : MonoBehaviour {
 
 
   void Start() {
-    
+    mutCount = 0;
     chromoPairs = 9;
     basePairs = 486;
     blibControls = this.gameObject.GetComponent<BlibControls>();
-
+    final_mutsize = base_mutDice / mutMultiplier;
     if (mother != null) {
       //Array.Clear(A, 0, A.Length);
       //Array.Clear(B, 0, B.Length);
@@ -151,7 +178,7 @@ public class BlibGenome : MonoBehaviour {
 
 
 
-    Mutate();
+  
     
 
 
@@ -322,26 +349,44 @@ public class BlibGenome : MonoBehaviour {
 
 
 
-
+public int final_mutsize;
 
 
   // Update is called once per frame
   void Update() {
-    int mutationroll = UnityEngine.Random.Range(0, 4096 * 2);
+    
+    
+    
 
-    if (mutationroll == 64) { mutate = true; }else{mutate = false;}
+   // (int)(mutMultiplier* 
+    //(lifeLengthAllele1+lifeLengthAllele2/2)   )
+      
+    //);
+
+    //if (mutationroll == 64) { mutate = true; }else{mutate = false;}
     extA = A;
     extB = B;
-    if (firstTranslation == false) {
-     // TranslateGenome();
+    
+    if(firstTranslation == false){
+      if(mutate == true){
+        
+        Mutate();
+      }else{TranslateGenome();}
     }
-
-    if (this.gameObject.GetComponent<BlibControls>().age > 1.0f && mutate == true) {
+    if (mutate == true && firstTranslation == true) {
+      numMutations = 1;
+        
          Mutate();
     }
 
   }
   void Mutate() {
+    mutate = false;
+    if(firstTranslation == true){numMutations = 1;}
+      
+    for (int q = 0; q < numMutations; q++) {
+      
+      mutCount+=1;
     string randChar = "A";
     AorB = UnityEngine.Random.Range(0, 2);
     int duplicationRoll = UnityEngine.Random.Range(0, 1024);
@@ -490,15 +535,142 @@ public class BlibGenome : MonoBehaviour {
     }
 
     //Point mutations
-    numMutations = pois[UnityEngine.Random.Range(0, pois.Length)];
-    for (int i = 0; i < numMutations; i++) {
+      
+      
+      
+    
 
+    string thisBase;
+    string newBase;
+
+    
+      char AorB_new = ABroll[UnityEngine.Random.Range(0,ABroll.Length)];
+      AorB = UnityEngine.Random.Range(0,2);
       int index0 = UnityEngine.Random.Range(0, 9);
       int index1 = UnityEngine.Random.Range(0, 486);
       int randBase = UnityEngine.Random.Range(0, 2);
-      int pointTypeRoll = UnityEngine.Random.Range(1, 101);
-      string pointType;
-      string pyrOrPur;
+      int pointTypeRoll = UnityEngine.Random.Range(0, 10);
+      int transversionRoll = P_transversion[UnityEngine.Random.Range(0,P_transversion.Length)];
+      //string pointType;
+      //string pyrOrPur;
+
+
+      //new point mutation code
+     switch(AorB_new){
+      case 'A':
+      thisBase = A[index0,index1];
+            switch(thisBase){
+              case "A":
+                  switch(transversionRoll){
+                    case 0:
+                    newBase = "G";
+                    A[index0,index1] = newBase;
+                    break;
+                    case 1:
+                    newBase = "T";
+                    A[index0,index1] = newBase;
+                    break;
+                  }
+              break;
+              case "G":
+              switch(transversionRoll){
+                    case 0:
+                    newBase = "A";
+                    A[index0,index1] = newBase;
+                    break;
+                    case 1:
+                    newBase = "T";
+                    A[index0,index1] = newBase;
+                    break;
+                  }
+              break;
+              case "C":
+              switch(transversionRoll){
+                    case 0:
+                    newBase = "T";
+                    A[index0,index1] = newBase;
+                    break;
+                    case 1:
+                    newBase = "G";
+                    A[index0,index1] = newBase;
+                    break;
+                  }
+              break;
+              case "T":
+              switch(transversionRoll){
+                    case 0:
+                    newBase = "C";
+                    A[index0,index1] = newBase;
+                    break;
+                    case 1:
+                    newBase = "A";
+                    A[index0,index1] = newBase;
+                    break;
+                  }
+              break;
+              }
+              
+      break;
+      case 'B':
+      thisBase = B[index0,index1];
+            switch(thisBase){
+              case "A":
+                  switch(transversionRoll){
+                    case 0:
+                    newBase = "G";
+                    B[index0,index1] = newBase;
+                    break;
+                    case 1:
+                    newBase = "T";
+                    B[index0,index1] = newBase;
+                    break;
+                  }
+              break;
+              case "G":
+              switch(transversionRoll){
+                    case 0:
+                    newBase = "A";
+                    B[index0,index1] = newBase;
+                    break;
+                    case 1:
+                    newBase = "T";
+                    B[index0,index1] = newBase;
+                    break;
+                  }
+              break;
+              case "C":
+              switch(transversionRoll){
+                    case 0:
+                    newBase = "T";
+                    B[index0,index1] = newBase;
+                    break;
+                    case 1:
+                    newBase = "G";
+                    B[index0,index1] = newBase;
+                    break;
+                  }
+              break;
+              case "T":
+              switch(transversionRoll){
+                    case 0:
+                    newBase = "C";
+                    B[index0,index1] = newBase;
+                    break;
+                    case 1:
+                    newBase = "A";
+                    B[index0,index1] = newBase;
+                    break;
+                  }
+              break;
+              }
+      break;
+     }
+
+
+
+      
+      //Old point mutation code
+      /*
       if (pointTypeRoll < 10) { pointType = "trv"; } else { pointType = "trt"; }
 
 
@@ -587,9 +759,12 @@ public class BlibGenome : MonoBehaviour {
 
         B[index0, index1] = randChar;
       }
+      */
     }
 
     mutate = false;
+    numMutations = 1;
+    final_mutsize = base_mutDice / mutMultiplier;
     TranslateGenome();
   }
 
@@ -725,7 +900,7 @@ public class BlibGenome : MonoBehaviour {
     
 
     
-      mutate = false;
+      //mutate = false;
       codon = new string[3] { "", "", "" };
       allelesA = "";
       allelesB = "";
@@ -1205,7 +1380,7 @@ public class BlibGenome : MonoBehaviour {
       trackerAllele1 = nTRACKER_A;
       trackerAllele2 = nTRACKER_B;
 
-
+      final_mutsize = base_mutDice / mutMultiplier;
 
 
 
@@ -1227,7 +1402,7 @@ string[] A8 = new string[486];
 
 
 
-string [] haploid_A;
+
 
 string[] tempchromo_A = new string[9];
 string[] tempchromo_B = new string[9];
