@@ -168,7 +168,7 @@ void Awake(){
 
         e2repAllele1 = genome.e2repAllele1;
         e2repAllele2 = genome.e2repAllele2;
-        energyToReproduce = maxEnergy/2.0f;
+        energyToReproduce = maxEnergy/4.0f;
 
         lookDistAllele1 = genome.lookDistAllele1;
         lookDistAllele2 = genome.lookDistAllele2;
@@ -600,7 +600,7 @@ void Awake(){
                 transform.localScale = newSize;
                 NH4_tox_lvl = (int)Mathf.Pow(2f,newSize.x);
                     maxEnergy = sigmoid*35000f;
-                energyToReproduce = maxEnergy /2.0f;
+                energyToReproduce = maxEnergy /4.0f;
                 maxHealth = Mathf.Round(Mathf.Pow(4, newSize.x+1f));
                     if (generation == 100|| generation == 200 || generation == 300 || generation == 400 || generation == 500 || generation == 600 || generation == 800 || generation == 1000)
                     {
@@ -663,7 +663,7 @@ void Awake(){
                 transform.localScale = newSize;
                 NH4_tox_lvl = (int)Mathf.Pow(2f,newSize.x);
                 maxEnergy = sigmoid*35000f;
-                energyToReproduce = maxEnergy /2.0f;
+                energyToReproduce = maxEnergy /4.0f;
                 maxHealth = Mathf.Round(Mathf.Pow(4, newSize.x+1f));
                 //Allometric scaling
                 basalMet = Mathf.Pow(rb.mass, 1f/3f);
@@ -708,7 +708,7 @@ void Awake(){
 
         e2repAllele1 = 1f + genome.e2repAllele1;
         e2repAllele2 = 1f + genome.e2repAllele2;
-        energyToReproduce = maxEnergy/2.0f;
+        energyToReproduce = maxEnergy/4.0f;
 
         lookDistAllele1 = 1f + genome.lookDistAllele1;
         lookDistAllele2 = 1f + genome.lookDistAllele2;

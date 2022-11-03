@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mutCount: 0
-  mutMultiplier: 5
+  mutMultiplier: 2
   translocation_enabled: 1
   duplication_enabled: 1
   lineageID: []

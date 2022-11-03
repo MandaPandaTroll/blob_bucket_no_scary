@@ -247,16 +247,16 @@ MonoBehaviour:
   alive: 1
   eaten: 0
   nom: 0
-  eCostCo: 20000
+  eCostCo: 200000
   maxHealth: 256
   currentHealth: 256
   speciationDistance: 0.5
-  energy: 4000
+  energy: 30000
   pEnergy: 0
   maxEnergy: 40000
   eCost: 0
   conjAge: 75
-  age: 0
+  age: 161.15532
   statAge: 0
   moveAllele1: 178.1948
   moveAllele2: 206.1074
@@ -295,7 +295,7 @@ MonoBehaviour:
   deadLayer: 9
   basalMet: 1
   protein: 0
-  proteinToReproduce: 128
+  proteinToReproduce: 32
   maxProtein: 0
   NH4: 0
   NH4_tox_lvl: 0
