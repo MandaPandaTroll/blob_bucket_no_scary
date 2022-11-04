@@ -340,7 +340,7 @@ public class BlibControls : MonoBehaviour {
     energyTick += Time.deltaTime;
     if (energyTick > 1.0f) {
         maxEnergy = energyToReproduce * 2f;
-        proteinCost = (int)Mathf.Round(genome_script.aminoAcidRatio*32);
+        proteinCost = (int)Mathf.Round(genome_script.aminoAcidRatio*4);
         if(nutLevel >= proteinCost){
           posVal = m_nutgrid.GetValue(transform.position);
           nutLevel += -1*proteinCost;
@@ -769,9 +769,9 @@ public class BlibControls : MonoBehaviour {
    daughterGenome.numMutations = 1;
    if(mutationroll == 64){
     daughterGenome.mutate = true;
-    genome_script.mutate = true;
     
-   }
+    
+   }else{daughterGenome.mutate = false;}
     
     if (odd == true) {
       daughter_controls.nutLevel = tempNut + 1;

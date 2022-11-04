@@ -1131,14 +1131,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autoReplenish: 0
-  autoRemove: 1
+  autoRemove: 0
   box: {fileID: 1136253243}
   diffRate: 1
   statNutes: 0
   statTot: 0
   gridX: 0
   gridY: 0
-  cellScale: 16
+  cellScale: 32
   initConc: 16
   freeNutes: 0
   lockedNutes: 0
@@ -3085,7 +3085,7 @@ Transform:
   m_GameObject: {fileID: 1136253239}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1024, y: 1024, z: 1}
+  m_LocalScale: {x: 2048, y: 2048, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1855928353}
@@ -4396,7 +4396,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1626781018}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06cb32b533397432d9858c9a9beb5ace, type: 3}
   m_Name: 
@@ -4430,7 +4430,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1626781018}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: daf9a9d19b7b743cca205737cf38c0c4, type: 3}
   m_Name: 
@@ -4467,7 +4467,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1626781018}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5de411488364a44adb8613d52a5fb0aa, type: 3}
   m_Name: 
@@ -4509,8 +4509,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 832c1004ad63f43e09eca36c265cbe5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSampleSize: 100
-  sampleRate: 50
+  maxSampleSize: 300
+  sampleRate: 10
   generation: 
   intron1: []
   intron2: []
@@ -4531,6 +4531,7 @@ MonoBehaviour:
   turnTorqueAllele2: []
   e2repA: []
   e2repB: []
+  exonRatio: []
 --- !u!114 &1626781029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5263,11 +5264,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 039dfd508f8d1458cba1ed8a233b480b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialMutations: 0
+  initialMutations: 8
   initgen: {fileID: 1802033099}
   linChars: 
   initLineage: 
-  initBlib: 1
+  initBlib: 64
   autoRespawn: 0
   extraBlib: 1
   minBlib: 1

@@ -52,6 +52,7 @@ private List<string[]> rowData = new List<string[]>();
 
     public List <float> e2repA;
     public List <float> e2repB;
+    public List <float> exonRatio;
 
     int sampleGroup;
 
@@ -118,6 +119,7 @@ private List<string[]> rowData = new List<string[]>();
                     generation.Add(sampbctrl.generation);
                     e2repA.Add(sampbctrl.e2repAllele1);
                     e2repB.Add(sampbctrl.e2repAllele2);
+                    exonRatio.Add(sampbgn.aminoAcidRatio);
                     
                 }           
                 
@@ -170,6 +172,7 @@ private List<string[]> rowData = new List<string[]>();
             rowDataTemp[20] = "turnTorqueAllele2";
             rowDataTemp[21] = "e2repA";
             rowDataTemp[22] = "e2repB";
+            rowDataTemp[23] = "exon_intron_ratio";
             rowData.Add(rowDataTemp);
         }
 
@@ -200,6 +203,7 @@ private List<string[]> rowData = new List<string[]>();
             rowDataTemp[20] = turnTorqueAllele2[i].ToString();
             rowDataTemp[21] = e2repA[i].ToString();
             rowDataTemp[22] = e2repB[i].ToString();
+            rowDataTemp[23] = exonRatio[i].ToString();
 
             
 
@@ -250,6 +254,7 @@ private List<string[]> rowData = new List<string[]>();
         generation.Clear();
         e2repA.Clear();
         e2repB.Clear();
+        exonRatio.Clear();
         sampleGroup += 1;
 
         Array.Clear(blibs,0,blibs.Length);

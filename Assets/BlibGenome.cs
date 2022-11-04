@@ -70,7 +70,7 @@ byte [] byteB;
   //Get relevant amino acid sequences from database.
   
 
-  public bool mutate = false;
+  public bool mutate;
   public int numMutations;
   public string[] giveLocus = new string[27];
   public string[] receiveLocus = new string[27];
@@ -158,6 +158,7 @@ string sensebaseB;
 
 
   void Start() {
+    firstTranslation = false;
     maxAminoAcids = 2f*2f*A.GetLength(0)*A.GetLength(1) / 3f;
     mutCount = 0;
     chromoPairs = 9;
@@ -184,7 +185,7 @@ string sensebaseB;
         TRACKER = GeneDatabase.TRACKER;
    
 
-    firstTranslation = false;
+    
     
 
 
@@ -379,13 +380,13 @@ public int final_mutsize;
     extB = B;
     
     if(firstTranslation == false){
-      if(mutate == true){
+      if(mutate == true && numMutations > 0){
         
         Mutate();
       }else{TranslateGenome();}
     }
     if (mutate == true && firstTranslation == true) {
-      numMutations = 1;
+      
         
          Mutate();
     }
@@ -400,8 +401,8 @@ public int final_mutsize;
       mutCount+=1;
     string randChar = "A";
     AorB = UnityEngine.Random.Range(0, 2);
-    int duplicationRoll = UnityEngine.Random.Range(0, 1024);
-    int transLocRoll = UnityEngine.Random.Range(0, 1024);
+    int duplicationRoll = UnityEngine.Random.Range(0, 2048);
+    int transLocRoll = UnityEngine.Random.Range(0, 2048);
 
     string[] triNu = new string[3];
     string[] tranString_origin = new string[27];
@@ -774,7 +775,7 @@ public int final_mutsize;
     }
 
     mutate = false;
-    numMutations = 1;
+    numMutations = 0;
     final_mutsize = base_mutDice / mutMultiplier;
     TranslateGenome();
   }
@@ -825,7 +826,7 @@ public int final_mutsize;
   //public List<string> problemSites = new List<string>();
   
   void TranslateGenome() {
-    
+    mutate = false;
     //Debugging translation
 /*    
     problemSites.Clear();
@@ -848,7 +849,7 @@ public int final_mutsize;
       }
 */    
     
-    bool translating = true;
+    
     
      if(firstTranslation == false ){ //Recombination
         
@@ -952,7 +953,7 @@ public int final_mutsize;
         
       }
     }
-    
+      firstTranslation = true;
       //mutate = false;
       codon = new string[3] { "", "", "" };
       
@@ -1862,7 +1863,7 @@ testA = System.String.Join("", tempchromo_A);
 testB = System.String.Join("", tempchromo_B);
 
       firstTranslation = true;
-      translating = false;
+      
     
 
   }

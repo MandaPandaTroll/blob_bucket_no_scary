@@ -183,6 +183,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f73fa7ead1e994b45a2af7503fb6aac4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalAminoAcids: 0
+  maxAminoAcids: 0
+  aminoAcidRatio: 0
+  aa_A: 
+  aa_antiA: 
+  aa_B: 
+  aa_antiB: 
   mutCount: 0
   mutMultiplier: 2
   translocation_enabled: 1

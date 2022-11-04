@@ -55,6 +55,7 @@ public class BlibSpawner : MonoBehaviour {
       thisBlib.GetComponent<BlibGenome>().A = initGenomestatic.A_static;
       thisBlib.GetComponent<BlibGenome>().B = initGenomestatic.B_static;
       thisBlib.GetComponent<BlibGenome>().numMutations = initialMutations;
+      thisBlib.GetComponent<BlibGenome>().mutate = true;
 
       thisBlib.name = popLogger.GetName("blib");
       thisBlib.name = thisBlib.name.Replace("(Clone)", "");
