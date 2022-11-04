@@ -35,7 +35,9 @@ maybe 1/2400 to 1/240 is a better value...
 
 */
 public class BlibGenome : MonoBehaviour {
-
+  public float totalAminoAcids;
+  public float maxAminoAcids;
+  public float aminoAcidRatio;
   public string aa_A;
   public string aa_antiA;
   public string aa_B;
@@ -156,7 +158,7 @@ string sensebaseB;
 
 
   void Start() {
-
+    maxAminoAcids = 2f*2f*A.GetLength(0)*A.GetLength(1) / 3f;
     mutCount = 0;
     chromoPairs = 9;
     basePairs = 486;
@@ -1706,7 +1708,8 @@ public int final_mutsize;
       string thisB = allelesB + antiallelesB;
       antiallelesB = null;
       allelesB = null;
-      
+      totalAminoAcids = (float)(thisA.Length + thisB.Length);
+      aminoAcidRatio = totalAminoAcids/maxAminoAcids;
 
       
       //debugAminoA.Add(thisGene);

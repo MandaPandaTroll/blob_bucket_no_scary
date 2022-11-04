@@ -11,7 +11,7 @@ using Unity.MLAgents;
 public class BlibControls : MonoBehaviour {
 
   RaycastHit2D rayResults;
-    
+     int proteinCost;
 
   CurriculumHandler curriculumHandler;
   public string[,] superSatellite = new string[4, 27] {
@@ -334,13 +334,18 @@ public class BlibControls : MonoBehaviour {
     tempProtein = nutLevel;
     
 
-
+//owowo
 
 
     energyTick += Time.deltaTime;
     if (energyTick > 1.0f) {
         maxEnergy = energyToReproduce * 2f;
-    
+        proteinCost = (int)Mathf.Round(genome_script.aminoAcidRatio*32);
+        if(nutLevel >= proteinCost){
+          posVal = m_nutgrid.GetValue(transform.position);
+          nutLevel += -1*proteinCost;
+        m_nutgrid.SetValue(transform.position, (int)(posVal + 1*proteinCost));
+        }
       redAllele1 = genome_script.redAllele1;
       redAllele2 = genome_script.redAllele2;
       redGene = Mathf.Clamp((redAllele1 + redAllele2) / 2.0f, 0.00f, 1.00f);
