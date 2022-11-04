@@ -35,6 +35,12 @@ maybe 1/2400 to 1/240 is a better value...
 
 */
 public class BlibGenome : MonoBehaviour {
+
+  public string aa_A;
+  public string aa_antiA;
+  public string aa_B;
+  public string aa_antiB;
+
 public int mutCount;
 int base_mutDice = 2400;
 public int mutMultiplier = 1;
@@ -141,13 +147,16 @@ byte [] byteB;
   int baseCount = 0;
   bool firstTranslation;
 
+public string[,] antisenseA = new string[9,486];
+  public string[,] antisenseB = new string[9,486];
 
-
-
+string sensebaseA;
+string sensebaseB;
 
 
 
   void Start() {
+
     mutCount = 0;
     chromoPairs = 9;
     basePairs = 486;
@@ -216,7 +225,7 @@ byte [] byteB;
 
 
     }
-
+    
 
 
   }
@@ -771,10 +780,15 @@ public int final_mutsize;
 
 
   string[] codon = new string[3];
+  string[] anticodon = new string[3];
   string allelesA = "";
   string allelesB = "";
+  string antiallelesA = "";
+  string antiallelesB = "";
   string thisAlleleA = "";
   string thisAlleleB = "";
+  string antithisAlleleA = "";
+  string antithisAlleleB = "";
 
   int nAllelesA = 0;
   string stopA = "";
@@ -809,6 +823,7 @@ public int final_mutsize;
   //public List<string> problemSites = new List<string>();
   
   void TranslateGenome() {
+    
     //Debugging translation
 /*    
     problemSites.Clear();
@@ -897,22 +912,69 @@ public int final_mutsize;
         
 
     } 
-    
-
+    //CREATE ANTISENSE STRANDS
+    for (int i = 0; i < A.GetLength(0); i++){
+      for (int j = 0; j < A.GetLength(1); j++){
+        sensebaseA = A[i,485-j];
+        sensebaseB = B[i,485-j];
+        switch (sensebaseA){
+          case "A":
+          antisenseA[i,j] = "T";
+          break;
+          case "T":
+          antisenseA[i,j] = "A";
+          break;
+          case "C":
+          antisenseA[i,j] = "G";
+          break;
+          case "G":
+          antisenseA[i,j] = "C";
+          break;
+        }
+        switch (sensebaseB){
+          case "A":
+          antisenseB[i,j] = "T";
+          break;
+          case "T":
+          antisenseB[i,j] = "A";
+          break;
+          case "C":
+          antisenseB[i,j] = "G";
+          break;
+          case "G":
+          antisenseB[i,j] = "C";
+          break;
+        }
+        
+        
+        
+      }
+    }
     
       //mutate = false;
       codon = new string[3] { "", "", "" };
+      
+
       allelesA = "";
       allelesB = "";
       thisAlleleA = "";
       thisAlleleB = "";
+
+      antiallelesA = "";
+      antiallelesB = "";
+     antithisAlleleA = "";
+     antithisAlleleB = "";
 
       nAllelesA = 0;
       stopA = "";
       nAllelesB = 0;
       stopB = "";
       isGene = false;
-
+      int numBasesA = 0;
+      int numBasesB = 0;
+      codonCount = 0;
+      baseCount = 0;
+      tempS = "";
 
 
 
@@ -922,11 +984,8 @@ public int final_mutsize;
       nTRACKER_A = 0; nTRACKER_B = 0;
 
 
-      int numBasesA = 0;
-      int numBasesB = 0;
-      codonCount = 0;
-      baseCount = 0;
-      tempS = "";
+      
+
       for (int i = 0; i < A.GetLength(0); i++) {
         for (int j = 0; j < A.GetLength(1); j++) {
           if (i == 0 && j == 0) { allelesA = ""; allelesB = ""; thisAlleleA = ""; thisAlleleB = ""; }
@@ -1099,11 +1158,16 @@ public int final_mutsize;
         }
       }
 
+    
+
+
+
       //Debug.Log("numBasesA = " + numBasesA + " nAllelesA = " + nAllelesA + " StopsA = " + stopA);
 
 
       codonCount = 0;
       baseCount = 0;
+      int chromsize = A.GetLength(1);
       for (int x = 0; x < B.GetLength(0); x++) {
         for (int y = 0; y < B.GetLength(1); y++) {
           if (x == 0 && y == 0) { allelesB = ""; thisAlleleA = ""; thisAlleleB = ""; }
@@ -1266,13 +1330,385 @@ public int final_mutsize;
         }
       }
 
+
+      //ANTISENSE READ
+
+
+      nAllelesA = 0;
+      stopA = "";
+      nAllelesB = 0;
+      stopB = "";
+      isGene = false;
+      numBasesA = 0;
+      numBasesB = 0;
+      codonCount = 0;
+      baseCount = 0;
+      tempS = "";
+
+      for (int i = 0; i < antisenseA.GetLength(0); i++) {
+        for (int j = 0; j < antisenseA.GetLength(1); j++) {
+          if (i == 0 && j == 0) { antiallelesA = ""; antiallelesB = ""; antithisAlleleA = ""; antithisAlleleB = ""; }
+
+          numBasesA += 1;
+
+
+          if (baseCount == 3) {
+
+
+
+
+
+            if (codon[0] == "A") {                     //A-
+
+              if (codon[1] == "A") {                     //AA-
+                if (codon[2] == "A") { tempS = "K"; }            //AAA
+                else if (codon[2] == "T") { tempS = ("N"); }      //AAT
+                else if (codon[2] == "C") { tempS = ("N"); }      //AAC
+                else if (codon[2] == "G") { tempS = ("K"); }      //AAG
+
+                if (isGene == true) { antithisAlleleA += tempS; }
+              } else if (codon[1] == "T") {              //AT-
+                if (codon[2] == "A") { tempS = ("I"); }           //ATA
+                else if (codon[2] == "T") { tempS = ("I"); }     //ATT
+                else if (codon[2] == "C") { tempS = ("I"); }     //ATC
+                else if (codon[2] == "G") {                    //ATG
+                  if (antithisAlleleA.Length > 0) { tempS = ("M"); }
+                  if (antithisAlleleA.Length == 0) { isGene = true; tempS = "<"; }
+
+                }
+
+                if (isGene == true) { antithisAlleleA += tempS; }
+              } else if (codon[1] == "C") {               //AC-
+                if (codon[2] == "A") { tempS = ("T"); }           //ACA
+                else if (codon[2] == "T") { tempS = ("T"); }     //ACT
+                else if (codon[2] == "C") { tempS = ("T"); }     //ACC
+                else if (codon[2] == "G") { tempS = ("T"); }     //ACG
+
+                if (isGene == true) { antithisAlleleA += tempS; }
+              } else if (codon[1] == "G") {               //AG-
+                if (codon[2] == "A") { tempS = ("R"); }           //AGA
+                else if (codon[2] == "T") { tempS = ("S"); }     //AGT
+                else if (codon[2] == "C") { tempS = ("S"); }     //AGC
+                else if (codon[2] == "G") { tempS = ("R"); }     //AGG
+
+                if (isGene == true) { antithisAlleleA += tempS; }
+              }
+            } else if (codon[0] == "T") {              //T-
+              if (codon[1] == "A") {                     //TA-
+                if (codon[2] == "A") {
+                  tempS = ">";
+                  antithisAlleleA += tempS;
+                  codonCount = 0;                         //TAA
+                  antiallelesA += antithisAlleleA;
+                  isGene = false;
+                  nAllelesA += 1;
+                  stopA += "-" + nAllelesA.ToString() + "TAA" + "-";
+                  antithisAlleleA = "";
+                  tempS = "";
+
+                } else if (codon[2] == "T") { tempS = ("Y"); }     //TAT
+                  else if (codon[2] == "C") { tempS = ("Y"); }     //TAC
+                  else if (codon[2] == "G")                      //TAG
+                  {
+                  tempS = ">";
+                  antithisAlleleA += tempS;
+                  codonCount = 0;
+                  isGene = false;
+                  antiallelesA += antithisAlleleA;
+                  nAllelesA += 1;
+                  stopA += "-" + nAllelesA.ToString() + "TAG" + "-";
+                  antithisAlleleA = "";
+                  tempS = "";
+                }
+                if (isGene == true) { antithisAlleleA += tempS; }
+              } else if (codon[1] == "T") {              //TT-
+                if (codon[2] == "A") { tempS = ("L"); }           //TTA
+                else if (codon[2] == "T") { tempS = ("F"); }     //TTT
+                else if (codon[2] == "C") { tempS = ("F"); }     //TTC
+                else if (codon[2] == "G") { tempS = ("L"); }     //TTG
+                if (isGene == true) { antithisAlleleA += tempS; }
+              } else if (codon[1] == "C") {               //TC-
+                if (codon[2] == "A") { tempS = ("S"); }           //TCA
+                else if (codon[2] == "T") { tempS = ("S"); }     //TCT
+                else if (codon[2] == "C") { tempS = ("S"); }     //TCC
+                else if (codon[2] == "G") { tempS = ("S"); }     //TCG
+                if (isGene == true) { antithisAlleleA += tempS; }
+              } else if (codon[1] == "G") {               //TG-
+                if (codon[2] == "A")                             //TGA
+                {
+                  tempS = ">"; antithisAlleleA += tempS;
+                  codonCount = 0;
+                  isGene = false;
+                  antiallelesA += antithisAlleleA;
+                  nAllelesA += 1;
+                  stopA += "-" + nAllelesA.ToString() + "TGA" + "-";
+                  antithisAlleleA = "";
+                  tempS = "";
+
+                } else if (codon[2] == "T") { tempS = ("C"); }     //TGT
+                  else if (codon[2] == "C") { tempS = ("C"); }     //TGC
+                  else if (codon[2] == "G") { tempS = ("W"); }     //TGG
+                if (isGene == true) { antithisAlleleA += tempS; }
+              }
+            } else if (codon[0] == "C") {               //C-
+              if (codon[1] == "A") {                     //CA-
+                if (codon[2] == "A") { tempS = ("Q"); }           //CAA
+                else if (codon[2] == "T") { tempS = ("H"); }     //CAT
+                else if (codon[2] == "C") { tempS = ("H"); }     //CAC
+                else if (codon[2] == "G") { tempS = ("Q"); }     //CAG
+                if (isGene == true) { antithisAlleleA += tempS; }
+              } else if (codon[1] == "T") {              //CT-
+                if (codon[2] == "A") { tempS = ("L"); }           //CTA
+                else if (codon[2] == "T") { tempS = ("L"); }     //CTT
+                else if (codon[2] == "C") { tempS = ("L"); }     //CTC
+                else if (codon[2] == "G") { tempS = ("L"); }     //CTG
+                if (isGene == true) { antithisAlleleA += tempS; }
+              } else if (codon[1] == "C") {               //CC-
+                if (codon[2] == "A") { tempS = ("P"); }           //CCA
+                else if (codon[2] == "T") { tempS = ("P"); }     //CCT
+                else if (codon[2] == "C") { tempS = ("P"); }     //CCC
+                else if (codon[2] == "G") { tempS = ("P"); }     //CCG
+                if (isGene == true) { antithisAlleleA += tempS; }
+              } else if (codon[1] == "G") {               //CG-
+                if (codon[2] == "A") { tempS = ("R"); }           //CGA
+                else if (codon[2] == "T") { tempS = ("R"); }     //CGT
+                else if (codon[2] == "C") { tempS = ("R"); }     //CGC
+                else if (codon[2] == "G") { tempS = ("R"); }     //CGG
+                if (isGene == true) { antithisAlleleA += tempS; }
+              }
+            } else if (codon[0] == "G") {              //G-
+              if (codon[1] == "A") {                     //GA-
+                if (codon[2] == "A") { tempS = ("E"); }           //GAA
+                else if (codon[2] == "T") { tempS = ("D"); }     //GAT
+                else if (codon[2] == "C") { tempS = ("D"); }     //GAC
+                else if (codon[2] == "G") { tempS = ("E"); }     //GAG
+                if (isGene == true) { antithisAlleleA += tempS; }
+              } else if (codon[1] == "T") {              //GT-
+                if (codon[2] == "A") { tempS = ("V"); }           //GTA
+                else if (codon[2] == "T") { tempS = ("V"); }     //GTT
+                else if (codon[2] == "C") { tempS = ("V"); }     //GTC
+                else if (codon[2] == "G") { tempS = ("V"); }     //GTG
+                if (isGene == true) { antithisAlleleA += tempS; }
+              } else if (codon[1] == "C") {               //GC-
+                if (codon[2] == "A") { tempS = ("A"); }           //GCA
+                else if (codon[2] == "T") { tempS = ("A"); }     //GCT
+                else if (codon[2] == "C") { tempS = ("A"); }     //GCC
+                else if (codon[2] == "G") { tempS = ("A"); }     //GCG
+                if (isGene == true) { antithisAlleleA += tempS; }
+              } else if (codon[1] == "G") {               //GG-
+                if (codon[2] == "A") { tempS = ("G"); }           //GGA
+                else if (codon[2] == "T") { tempS = ("G"); }     //GGT
+                else if (codon[2] == "C") { tempS = ("G"); }     //GGC
+                else if (codon[2] == "G") { tempS = ("G"); }     //GGG
+                if (isGene == true) { antithisAlleleA += tempS; }
+              }
+            }
+
+
+
+
+
+            codonCount += 1;
+            baseCount = 0;
+          }
+
+          codon[baseCount] = (antisenseA[i, j]);
+          baseCount += 1;
+        }
+      }
+
+    tempS = "";
+
+
+
+      //Debug.Log("numBasesA = " + numBasesA + " nAllelesA = " + nAllelesA + " StopsA = " + stopA);
+
+
+      codonCount = 0;
+      baseCount = 0;
+      
+      for (int x = 0; x < antisenseB.GetLength(0); x++) {
+        for (int y = 0; y < antisenseB.GetLength(1); y++) {
+          if (x == 0 && y == 0) { antiallelesB = ""; antithisAlleleA = ""; antithisAlleleB = ""; }
+          numBasesB += 1;
+
+          if (baseCount == 3) {
+
+
+
+
+            if (codon[0] == "A") {                     //A-
+
+              if (codon[1] == "A") {                     //AA-
+                if (codon[2] == "A") { tempS = "K"; }            //AAA
+                else if (codon[2] == "T") { tempS = ("N"); }      //AAT
+                else if (codon[2] == "C") { tempS = ("N"); }      //AAC
+                else if (codon[2] == "G") { tempS = ("K"); }      //AAG
+
+                if (isGene == true) { antithisAlleleB += tempS; }
+              } else if (codon[1] == "T") {              //AT-
+                if (codon[2] == "A") { tempS = ("I"); }           //ATA
+                else if (codon[2] == "T") { tempS = ("I"); }     //ATT
+                else if (codon[2] == "C") { tempS = ("I"); }     //ATC
+                if (codon[2] == "G") {                        //ATG
+                  if (antithisAlleleB.Length > 0) { tempS = ("M"); }
+                  if (antithisAlleleB.Length == 0) { isGene = true; tempS = "<"; }
+                }
+
+                if (isGene == true) { antithisAlleleB += tempS; }
+              } else if (codon[1] == "C") {               //AC-
+                if (codon[2] == "A") { tempS = ("T"); }           //ACA
+                else if (codon[2] == "T") { tempS = ("T"); }     //ACT
+                else if (codon[2] == "C") { tempS = ("T"); }     //ACC
+                else if (codon[2] == "G") { tempS = ("T"); }     //ACG
+
+                if (isGene == true) { antithisAlleleB += tempS; }
+              } else if (codon[1] == "G") {               //AG-
+                if (codon[2] == "A") { tempS = ("R"); }           //AGA
+                else if (codon[2] == "T") { tempS = ("S"); }     //AGT
+                else if (codon[2] == "C") { tempS = ("S"); }     //AGC
+                else if (codon[2] == "G") { tempS = ("R"); }     //AGG
+
+                if (isGene == true) { antithisAlleleB += tempS; }
+              }
+            } else if (codon[0] == "T") {              //T-
+              if (codon[1] == "A") {                     //TA-
+                if (codon[2] == "A") {
+                  tempS = ">";
+                  antithisAlleleB += tempS;
+                  codonCount = 0;                         //TAA
+                  antiallelesB += antithisAlleleB;
+                  nAllelesB += 1;
+                  stopB += "-" + nAllelesB.ToString() + "TAA" + "-";
+                  antithisAlleleB = "";
+
+                } else if (codon[2] == "T") { tempS = ("Y"); }     //TAT
+                  else if (codon[2] == "C") { tempS = ("Y"); }     //TAC
+                  else if (codon[2] == "G")                      //TAG
+                  {
+                  tempS = ">"; antithisAlleleB += tempS;
+                  codonCount = 0; isGene = false;
+                  antiallelesB += antithisAlleleB;
+                  nAllelesB += 1;
+                  stopB += "-" + nAllelesB.ToString() + "TAG" + "-";
+                  antithisAlleleB = "";
+
+                }
+                if (isGene == true) { antithisAlleleB += tempS; }
+              } else if (codon[1] == "T") {              //TT-
+                if (codon[2] == "A") { tempS = ("L"); }           //TTA
+                else if (codon[2] == "T") { tempS = ("F"); }     //TTT
+                else if (codon[2] == "C") { tempS = ("F"); }     //TTC
+                else if (codon[2] == "G") { tempS = ("L"); }     //TTG
+                if (isGene == true) { antithisAlleleB += tempS; }
+              } else if (codon[1] == "C") {               //TC-
+                if (codon[2] == "A") { tempS = ("S"); }           //TCA
+                else if (codon[2] == "T") { tempS = ("S"); }     //TCT
+                else if (codon[2] == "C") { tempS = ("S"); }     //TCC
+                else if (codon[2] == "G") { tempS = ("S"); }     //TCG
+                if (isGene == true) { antithisAlleleB += tempS; }
+              } else if (codon[1] == "G") {               //TG-
+                if (codon[2] == "A")                             //TGA
+                {
+                  tempS = ">"; antithisAlleleB += tempS;
+                  codonCount = 0; isGene = false;
+                  antiallelesB += antithisAlleleB;
+                  nAllelesB += 1;
+                  stopB += "-" + nAllelesB.ToString() + "TGA" + "-";
+                  antithisAlleleB = "";
+
+                } else if (codon[2] == "T") { tempS = ("C"); }     //TGT
+                  else if (codon[2] == "C") { tempS = ("C"); }     //TGC
+                  else if (codon[2] == "G") { tempS = ("W"); }     //TGG
+                if (isGene == true) { antithisAlleleB += tempS; }
+              }
+            } else if (codon[0] == "C") {               //C-
+              if (codon[1] == "A") {                     //CA-
+                if (codon[2] == "A") { tempS = ("Q"); }           //CAA
+                else if (codon[2] == "T") { tempS = ("H"); }     //CAT
+                else if (codon[2] == "C") { tempS = ("H"); }     //CAC
+                else if (codon[2] == "G") { tempS = ("Q"); }     //CAG
+                if (isGene == true) { antithisAlleleB += tempS; }
+              } else if (codon[1] == "T") {              //CT-
+                if (codon[2] == "A") { tempS = ("L"); }           //CTA
+                else if (codon[2] == "T") { tempS = ("L"); }     //CTT
+                else if (codon[2] == "C") { tempS = ("L"); }     //CTC
+                else if (codon[2] == "G") { tempS = ("L"); }     //CTG
+                if (isGene == true) { antithisAlleleB += tempS; }
+              } else if (codon[1] == "C") {               //CC-
+                if (codon[2] == "A") { tempS = ("P"); }           //CCA
+                else if (codon[2] == "T") { tempS = ("P"); }     //CCT
+                else if (codon[2] == "C") { tempS = ("P"); }     //CCC
+                else if (codon[2] == "G") { tempS = ("P"); }     //CCG
+                if (isGene == true) { antithisAlleleB += tempS; }
+              } else if (codon[1] == "G") {               //CG-
+                if (codon[2] == "A") { tempS = ("R"); }           //CGA
+                else if (codon[2] == "T") { tempS = ("R"); }     //CGT
+                else if (codon[2] == "C") { tempS = ("R"); }     //CGC
+                else if (codon[2] == "G") { tempS = ("R"); }     //CGG
+                if (isGene == true) { antithisAlleleB += tempS; }
+              }
+            } else if (codon[0] == "G") {              //G-
+              if (codon[1] == "A") {                     //GA-
+                if (codon[2] == "A") { tempS = ("E"); }           //GAA
+                else if (codon[2] == "T") { tempS = ("D"); }     //GAT
+                else if (codon[2] == "C") { tempS = ("D"); }     //GAC
+                else if (codon[2] == "G") { tempS = ("E"); }     //GAG
+                if (isGene == true) { antithisAlleleB += tempS; }
+              } else if (codon[1] == "T") {              //GT-
+                if (codon[2] == "A") { tempS = ("V"); }           //GTA
+                else if (codon[2] == "T") { tempS = ("V"); }     //GTT
+                else if (codon[2] == "C") { tempS = ("V"); }     //GTC
+                else if (codon[2] == "G") { tempS = ("V"); }     //GTG
+                if (isGene == true) { antithisAlleleB += tempS; }
+              } else if (codon[1] == "C") {               //GC-
+                if (codon[2] == "A") { tempS = ("A"); }           //GCA
+                else if (codon[2] == "T") { tempS = ("A"); }     //GCT
+                else if (codon[2] == "C") { tempS = ("A"); }     //GCC
+                else if (codon[2] == "G") { tempS = ("A"); }     //GCG
+                if (isGene == true) { antithisAlleleB += tempS; }
+              } else if (codon[1] == "G") {               //GG-
+                if (codon[2] == "A") { tempS = ("G"); }           //GGA
+                else if (codon[2] == "T") { tempS = ("G"); }     //GGT
+                else if (codon[2] == "C") { tempS = ("G"); }     //GGC
+                else if (codon[2] == "G") { tempS = ("G"); }     //GGG
+                if (isGene == true) { antithisAlleleB += tempS; }
+              }
+            }
+
+
+
+
+
+            codonCount += 1;
+            baseCount = 0;
+          }
+
+          codon[baseCount] = (antisenseB[x, y]);
+          baseCount += 1;
+        }
+      }
+    
       //Debug.Log( "numBasesB = " + numBasesB + " nAllelesB = " + nAllelesB + " StopsB = " + stopB);
 
 
       tempS = "";
-      string thisA = allelesA;
-      allelesA = null;
 
+    aa_A = allelesA;
+    aa_antiA = antiallelesA;
+    aa_B = allelesB;
+    aa_antiB = antiallelesB;
+
+
+      string thisA = allelesA + antiallelesA;
+      antiallelesA = null;
+      allelesA = null;
+      string thisB = allelesB + antiallelesB;
+      antiallelesB = null;
+      allelesB = null;
+      
+
+      
       //debugAminoA.Add(thisGene);
 
       int grnCountA = Regex.Matches(thisA, greenSeq).Count;
@@ -1308,8 +1744,7 @@ public int final_mutsize;
 
 
 
-      string thisB = allelesB;
-      allelesB = null;
+      
       //debugBminoB.Bdd(thisGene);
 
       int grnCountB = Regex.Matches(thisB, greenSeq).Count;

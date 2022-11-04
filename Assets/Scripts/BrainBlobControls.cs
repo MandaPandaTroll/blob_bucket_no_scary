@@ -667,7 +667,7 @@ void Awake(){
                 maxHealth = Mathf.Round(Mathf.Pow(4, newSize.x+1f));
                 //Allometric scaling
                 basalMet = Mathf.Pow(rb.mass, 1f/3f);
-                float protScale = 190f*Mathf.Pow((float)sizeGene,alloScaleFactor);
+                float protScale = 64f*Mathf.Pow((float)sizeGene,alloScaleFactor);
                 proteinToReproduce = (int)Mathf.Round(protScale);
                 maxProtein = proteinToReproduce*2;
                      

@@ -149,6 +149,7 @@
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectShape.cs" />
      <Compile Include="Assets/BlibGenome.cs" />
      <Compile Include="Assets/Scripts/BlubControls.cs" />
+     <Compile Include="Assets/BlibSatLogger_og.cs" />
      <None Include="Assets/CodeMonkey/README.txt" />
     <Reference Include="UnityEngine">
         <HintPath>/Applications/2021.3.8f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
