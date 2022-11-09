@@ -35,6 +35,7 @@ maybe 1/2400 to 1/240 is a better value...
 
 */
 public class BlibGenome : MonoBehaviour {
+  public float heteroZygosity;
   public float totalAminoAcids;
   public float maxAminoAcids;
   public float aminoAcidRatio;
@@ -57,7 +58,7 @@ byte [] byteB;
 
 
   public List<string> lineageID = new List<string>();
-  public static List<BlibGenome> blib_genomes = new List<BlibGenome>();
+
   public float greenAllele1, greenAllele2,
                redAllele1, redAllele2,
                blueAllele1, blueAllele2,
@@ -72,8 +73,7 @@ byte [] byteB;
 
   public bool mutate;
   public int numMutations;
-  public string[] giveLocus = new string[27];
-  public string[] receiveLocus = new string[27];
+
   public string testA;
    public string testB;
 
@@ -1017,7 +1017,7 @@ public int final_mutsize;
                 else if (codon[2] == "C") { tempS = ("I"); }     //ATC
                 else if (codon[2] == "G") {                    //ATG
                   if (thisAlleleA.Length > 0) { tempS = ("M"); }
-                  if (thisAlleleA.Length == 0) { isGene = true; tempS = "<"; }
+                  if (thisAlleleA.Length == 0) { isGene = true; tempS = "*"; }
 
                 }
 
@@ -1040,7 +1040,7 @@ public int final_mutsize;
             } else if (codon[0] == "T") {              //T-
               if (codon[1] == "A") {                     //TA-
                 if (codon[2] == "A") {
-                  tempS = ">";
+                  tempS = "*";
                   thisAlleleA += tempS;
                   codonCount = 0;                         //TAA
                   allelesA += thisAlleleA;
@@ -1054,7 +1054,7 @@ public int final_mutsize;
                   else if (codon[2] == "C") { tempS = ("Y"); }     //TAC
                   else if (codon[2] == "G")                      //TAG
                   {
-                  tempS = ">";
+                  tempS = "*";
                   thisAlleleA += tempS;
                   codonCount = 0;
                   isGene = false;
@@ -1080,7 +1080,7 @@ public int final_mutsize;
               } else if (codon[1] == "G") {               //TG-
                 if (codon[2] == "A")                             //TGA
                 {
-                  tempS = ">"; thisAlleleA += tempS;
+                  tempS = "*"; thisAlleleA += tempS;
                   codonCount = 0;
                   isGene = false;
                   allelesA += thisAlleleA;
@@ -1196,7 +1196,7 @@ public int final_mutsize;
                 else if (codon[2] == "C") { tempS = ("I"); }     //ATC
                 if (codon[2] == "G") {                        //ATG
                   if (thisAlleleB.Length > 0) { tempS = ("M"); }
-                  if (thisAlleleB.Length == 0) { isGene = true; tempS = "<"; }
+                  if (thisAlleleB.Length == 0) { isGene = true; tempS = "*"; }
                 }
 
                 if (isGene == true) { thisAlleleB += tempS; }
@@ -1218,7 +1218,7 @@ public int final_mutsize;
             } else if (codon[0] == "T") {              //T-
               if (codon[1] == "A") {                     //TA-
                 if (codon[2] == "A") {
-                  tempS = ">";
+                  tempS = "*";
                   thisAlleleB += tempS;
                   codonCount = 0;                         //TAA
                   allelesB += thisAlleleB;
@@ -1230,7 +1230,7 @@ public int final_mutsize;
                   else if (codon[2] == "C") { tempS = ("Y"); }     //TAC
                   else if (codon[2] == "G")                      //TAG
                   {
-                  tempS = ">"; thisAlleleB += tempS;
+                  tempS = "*"; thisAlleleB += tempS;
                   codonCount = 0; isGene = false;
                   allelesB += thisAlleleB;
                   nAllelesB += 1;
@@ -1254,7 +1254,7 @@ public int final_mutsize;
               } else if (codon[1] == "G") {               //TG-
                 if (codon[2] == "A")                             //TGA
                 {
-                  tempS = ">"; thisAlleleB += tempS;
+                  tempS = "*"; thisAlleleB += tempS;
                   codonCount = 0; isGene = false;
                   allelesB += thisAlleleB;
                   nAllelesB += 1;
@@ -1376,7 +1376,7 @@ public int final_mutsize;
                 else if (codon[2] == "C") { tempS = ("I"); }     //ATC
                 else if (codon[2] == "G") {                    //ATG
                   if (antithisAlleleA.Length > 0) { tempS = ("M"); }
-                  if (antithisAlleleA.Length == 0) { isGene = true; tempS = "<"; }
+                  if (antithisAlleleA.Length == 0) { isGene = true; tempS = "*"; }
 
                 }
 
@@ -1399,7 +1399,7 @@ public int final_mutsize;
             } else if (codon[0] == "T") {              //T-
               if (codon[1] == "A") {                     //TA-
                 if (codon[2] == "A") {
-                  tempS = ">";
+                  tempS = "*";
                   antithisAlleleA += tempS;
                   codonCount = 0;                         //TAA
                   antiallelesA += antithisAlleleA;
@@ -1413,7 +1413,7 @@ public int final_mutsize;
                   else if (codon[2] == "C") { tempS = ("Y"); }     //TAC
                   else if (codon[2] == "G")                      //TAG
                   {
-                  tempS = ">";
+                  tempS = "*";
                   antithisAlleleA += tempS;
                   codonCount = 0;
                   isGene = false;
@@ -1439,7 +1439,7 @@ public int final_mutsize;
               } else if (codon[1] == "G") {               //TG-
                 if (codon[2] == "A")                             //TGA
                 {
-                  tempS = ">"; antithisAlleleA += tempS;
+                  tempS = "*"; antithisAlleleA += tempS;
                   codonCount = 0;
                   isGene = false;
                   antiallelesA += antithisAlleleA;
@@ -1555,7 +1555,7 @@ public int final_mutsize;
                 else if (codon[2] == "C") { tempS = ("I"); }     //ATC
                 if (codon[2] == "G") {                        //ATG
                   if (antithisAlleleB.Length > 0) { tempS = ("M"); }
-                  if (antithisAlleleB.Length == 0) { isGene = true; tempS = "<"; }
+                  if (antithisAlleleB.Length == 0) { isGene = true; tempS = "*"; }
                 }
 
                 if (isGene == true) { antithisAlleleB += tempS; }
@@ -1577,7 +1577,7 @@ public int final_mutsize;
             } else if (codon[0] == "T") {              //T-
               if (codon[1] == "A") {                     //TA-
                 if (codon[2] == "A") {
-                  tempS = ">";
+                  tempS = "*";
                   antithisAlleleB += tempS;
                   codonCount = 0;                         //TAA
                   antiallelesB += antithisAlleleB;
@@ -1589,7 +1589,7 @@ public int final_mutsize;
                   else if (codon[2] == "C") { tempS = ("Y"); }     //TAC
                   else if (codon[2] == "G")                      //TAG
                   {
-                  tempS = ">"; antithisAlleleB += tempS;
+                  tempS = "*"; antithisAlleleB += tempS;
                   codonCount = 0; isGene = false;
                   antiallelesB += antithisAlleleB;
                   nAllelesB += 1;
@@ -1613,7 +1613,7 @@ public int final_mutsize;
               } else if (codon[1] == "G") {               //TG-
                 if (codon[2] == "A")                             //TGA
                 {
-                  tempS = ">"; antithisAlleleB += tempS;
+                  tempS = "*"; antithisAlleleB += tempS;
                   codonCount = 0; isGene = false;
                   antiallelesB += antithisAlleleB;
                   nAllelesB += 1;
@@ -1826,7 +1826,7 @@ public int final_mutsize;
 
 
 
-
+/*
 
 string[] A0 = new string[486];
 string[] A1 = new string[486];
@@ -1838,10 +1838,10 @@ string[] A6 = new string[486];
 string[] A7 = new string[486];
 string[] A8 = new string[486];
 
+*/
 
 
-
-
+float SNP_count = 0;
 
 string[] tempchromo_A = new string[9];
 string[] tempchromo_B = new string[9];
@@ -1853,11 +1853,14 @@ for(int i = 0; i < 9; i++){
   for(int j = 0; j < 486; j++){
     tempBaseGather_A[j] = A[i,j];
     tempBaseGather_B[j] = B[i,j];
-
+    if(A[i,j] != B[i,j]){
+      SNP_count +=1f;
+    }
   }
   tempchromo_A[i] = System.String.Join("",tempBaseGather_A);
   tempchromo_B[i] = System.String.Join("",tempBaseGather_B);
 }
+heteroZygosity = SNP_count/(9f*486f);
   
 testA = System.String.Join("", tempchromo_A);
 testB = System.String.Join("", tempchromo_B);
@@ -1868,7 +1871,18 @@ testB = System.String.Join("", tempchromo_B);
 
   }
 
-
+  void OnDestroy(){
+    this.blibControls = null;
+    mother = null;
+    A = null;
+    B = null;
+    extA = null;
+    extB = null;
+    antisenseA = null;
+    antisenseB = null;
+    aa_antiA = null;
+    aa_antiB = null;
+  }
 
 
 

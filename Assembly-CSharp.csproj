@@ -59,6 +59,7 @@
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Sensor/GridSensorComponent3D.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Debug/DebugChannelData.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/IEncoder.cs" />
+     <Compile Include="Assets/BlibSatLogger_og.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/Modifiers/PointModDiagonalFill.cs" />
      <Compile Include="Assets/Scripts/BlybGenetics.cs" />
      <Compile Include="Assets/Scripts/CamCntrl.cs" />
@@ -149,7 +150,6 @@
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectShape.cs" />
      <Compile Include="Assets/BlibGenome.cs" />
      <Compile Include="Assets/Scripts/BlubControls.cs" />
-     <Compile Include="Assets/BlibSatLogger_og.cs" />
      <None Include="Assets/CodeMonkey/README.txt" />
     <Reference Include="UnityEngine">
         <HintPath>/Applications/2021.3.8f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
@@ -832,6 +832,9 @@
     <Reference Include="UnityEngine.UI">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.EditorCoroutines.Editor">
+        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.EditorCoroutines.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.ML-Agents.CommunicatorObjects">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.ML-Agents.CommunicatorObjects.dll</HintPath>
     </Reference>
@@ -865,6 +868,9 @@
     <Reference Include="Unity.Barracuda.BurstBLAS">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.Barracuda.BurstBLAS.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.MemoryProfiler">
+        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.MemoryProfiler.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.2D.Tilemap.Editor">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
     </Reference>
@@ -885,6 +891,9 @@
     </Reference>
     <Reference Include="Unity.Burst.Editor">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.Burst.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.MemoryProfiler.Editor">
+        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.MemoryProfiler.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Sprite.Editor">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
@@ -933,6 +942,9 @@
     </Reference>
     <Reference Include="Unity.2D.SpriteShape.Editor">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.2D.SpriteShape.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.MemoryProfiler.Editor.MemoryProfilerModule">
+        <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.MemoryProfiler.Editor.MemoryProfilerModule.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Barracuda.Editor">
         <HintPath>/Users/Amanda/UnityProjects/blob bucket updated/Library/ScriptAssemblies/Unity.Barracuda.Editor.dll</HintPath>

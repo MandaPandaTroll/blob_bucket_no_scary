@@ -35,13 +35,14 @@ GameObject[] blibs;
     private List<string> aa_B = new List<string>();
     private List<string> aa_antiA = new List<string>();
     private List<string> aa_antiB = new List<string>();
-    
+
     
     private int itCount, sampler, sampleGroup, sampleSize;  
     float time, totalTime;
     public int maxSampleSize;
     public float sampleRate;
     BlibGenome sampledGenome;
+    BlibControls  sampledBlib;
    
     string filename;
 
@@ -55,6 +56,8 @@ GameObject[] blibs;
         filename = "blib_sats.csv";
         sampleGroup = 0;
         time = 0;
+
+        
     }
     string sampleChrom;
     // Update is called once per frame
@@ -84,10 +87,10 @@ GameObject[] blibs;
                 for (int i = 0; i < sampleSize; i++)
                 {       sampledGenome = null;                                   
                     sampler = UnityEngine.Random.Range(0,sampleSize);
-                    BlibControls  sampledBlib = blibs[sampler].GetComponent<BlibControls>();
+                    sampledBlib = blibs[sampler].GetComponent<BlibControls>();
                     sampledGenome = blibs[sampler].GetComponent<BlibGenome>();
-                    string[] nucleotides = new string[27];
-                    string[] bases = new string[sampledGenome.A.GetLength(1)];
+                    //string[] nucleotides = new string[27];
+                    //string[] bases = new string[sampledGenome.A.GetLength(1)];
                     unitName.Add(sampledBlib.gameObject.name);
                     aa_A.Add(sampledGenome.aa_A);
                     aa_antiA.Add(sampledGenome.aa_antiA);
@@ -171,8 +174,11 @@ GameObject[] blibs;
 
         StreamWriter outStream = System.IO.File.CreateText(filePath);
         outStream.WriteLine(sb);
+        outStream.Flush();
         outStream.Close();
-        
+        outStream.Dispose();
+        Resources.UnloadUnusedAssets();
+
         
         
         unitName.Clear();testA.Clear();testB.Clear();aa_A.Clear();aa_antiA.Clear();aa_B.Clear();aa_antiB.Clear();

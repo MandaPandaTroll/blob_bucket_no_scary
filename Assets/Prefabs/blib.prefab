@@ -183,6 +183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f73fa7ead1e994b45a2af7503fb6aac4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  heteroZygosity: 0
   totalAminoAcids: 0
   maxAminoAcids: 0
   aminoAcidRatio: 0
@@ -213,62 +214,6 @@ MonoBehaviour:
   trackerAllele2: 0
   mutate: 0
   numMutations: 1
-  giveLocus:
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  receiveLocus:
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
   testA: 
   testB: 
   mother: {fileID: 0}

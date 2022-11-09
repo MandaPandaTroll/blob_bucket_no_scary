@@ -885,4 +885,12 @@ public class BlibControls : MonoBehaviour {
   }
     
 
+        void OnDestroy()
+    {
+        genome_script = null;
+        
+    }
+
+
+
 }

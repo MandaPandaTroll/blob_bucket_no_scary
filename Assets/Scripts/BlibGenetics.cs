@@ -53,6 +53,7 @@ private List<string[]> rowData = new List<string[]>();
     public List <float> e2repA;
     public List <float> e2repB;
     public List <float> exonRatio;
+    float[] heteroZygosity;
 
     int sampleGroup;
 
@@ -65,7 +66,7 @@ private List<string[]> rowData = new List<string[]>();
     // Start is called before the first frame update
     void Start()
     {
-        
+        heteroZygosity = new float[maxSampleSize];
         itCount = 0;
         sampleGroup = 0;
         
@@ -120,6 +121,7 @@ private List<string[]> rowData = new List<string[]>();
                     e2repA.Add(sampbctrl.e2repAllele1);
                     e2repB.Add(sampbctrl.e2repAllele2);
                     exonRatio.Add(sampbgn.aminoAcidRatio);
+                    heteroZygosity[i] = sampbgn.heteroZygosity;
                     
                 }           
                 
@@ -148,9 +150,9 @@ private List<string[]> rowData = new List<string[]>();
             itCount += 1;
             string[] rowDataTemp;
         if (itCount == 1){
-            rowDataTemp = new string[24];
+            rowDataTemp = new string[25];
             rowDataTemp[0] ="time" ;
-            rowDataTemp[1] ="species";
+            rowDataTemp[1] ="name";
             rowDataTemp[2] ="sampleGroup";
             rowDataTemp[3] ="generation";
             rowDataTemp[4] = "intron1";
@@ -173,15 +175,16 @@ private List<string[]> rowData = new List<string[]>();
             rowDataTemp[21] = "e2repA";
             rowDataTemp[22] = "e2repB";
             rowDataTemp[23] = "exon_intron_ratio";
+            rowDataTemp[24] = "Heterozygosity";
             rowData.Add(rowDataTemp);
         }
 
 
         // You can add up the values in as many cells as you want.
         for(int i = 0; i < sampleSize; i++){
-            rowDataTemp = new string[24];
+            rowDataTemp = new string[25];
             rowDataTemp[0] = totalTime.ToString();
-            rowDataTemp[1] = "blib";
+            rowDataTemp[1] = "blib_" + i.ToString();
             rowDataTemp[2] = sampleGroup.ToString();
             rowDataTemp[3] = generation[i].ToString();
             rowDataTemp[4] = intron1[i].ToString();
@@ -204,6 +207,7 @@ private List<string[]> rowData = new List<string[]>();
             rowDataTemp[21] = e2repA[i].ToString();
             rowDataTemp[22] = e2repB[i].ToString();
             rowDataTemp[23] = exonRatio[i].ToString();
+            rowDataTemp[24] = heteroZygosity[i].ToString();
 
             
 
@@ -230,7 +234,9 @@ private List<string[]> rowData = new List<string[]>();
 
         StreamWriter outStream = System.IO.File.CreateText(filePath);
         outStream.WriteLine(sb);
+        outStream.Flush();
         outStream.Close();
+        outStream.Dispose();
         
 
         intron1.Clear();

@@ -1095,8 +1095,8 @@ public class BlobGenome : MonoBehaviour {
       blueGene = (blueAllele1 + blueAllele2) / 2f;
 
 
-      moveAllele1 = nMVV_A * 8f;
-      moveAllele2 = nMVV_B * 8f;
+      moveAllele1 = nMVV_A * 5f;
+      moveAllele2 = nMVV_B * 5f;
       moveForce = (moveAllele1 + moveAllele2) / 2f;
 
 

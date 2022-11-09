@@ -241,7 +241,7 @@ void Awake(){
         }
         if(tryAttack == true ||  tryConjugate == true  || tryReproduce == true || tryPhagocytise == true || excreting == true){
             if(energy >= 100.0f){
-                energy += -1f*(newSize.x);
+                energy += -0.25f*(newSize.x);
             }else if(energy < 100.0f){
                 tryAttack = false;  tryConjugate = false; tryReproduce = false; tryPhagocytise = false; excreting = false;
             }
@@ -251,10 +251,10 @@ void Awake(){
             if(excreting == true && NH4 > 0 && energy > 5f){
                 m_nutgrid.SetValue(transform.position, (int)(posval + NH4));
                 NH4 = 0;
-                energy += -5f;
+                energy += -1f;
             }
         NH4_Timer += Time.deltaTime;
-        if (NH4_Timer >= 3.0f && protein >= 1)
+        if (NH4_Timer >= 8.0f && protein >= 1)
         {
             NH4 +=1;
             protein += -1;
@@ -669,7 +669,7 @@ void Awake(){
                 basalMet = Mathf.Pow(rb.mass, 1f/3f);
                 float protScale = 64f*Mathf.Pow((float)sizeGene,alloScaleFactor);
                 proteinToReproduce = (int)Mathf.Round(protScale);
-                maxProtein = proteinToReproduce*2;
+                maxProtein = proteinToReproduce*4;
                      
 
 
