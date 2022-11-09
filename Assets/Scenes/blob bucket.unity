@@ -1139,7 +1139,7 @@ MonoBehaviour:
   gridX: 0
   gridY: 0
   cellScale: 8
-  initConc: 64
+  initConc: 32
   freeNutes: 0
   lockedNutes: 0
 --- !u!4 &314230637
