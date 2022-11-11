@@ -32,7 +32,7 @@ behaviors:
 
 
     # Trainer configurations common to all trainers
-    max_steps: 1.0e7
+    max_steps: 5.0e6
     time_horizon: 512
 
     summary_freq: 10000
@@ -82,7 +82,7 @@ behaviors:
 
 
     # Trainer configurations common to all trainers
-    max_steps: 1.0e7
+    max_steps: 5.0e6
     time_horizon: 512
 
     summary_freq: 10000

@@ -16,6 +16,7 @@ public class BlibSpawner : MonoBehaviour {
   public int minBlib;
   public GameObject blib;
   GameObject[] blibs;
+  BlibGenome thisGenome;
 
   GameObject box;
   int blibN;
@@ -51,11 +52,12 @@ public class BlibSpawner : MonoBehaviour {
       float x = (float)Random.Range(-boxSize / 3, boxSize / 3);
       float y = (float)Random.Range(-boxSize / 3, boxSize / 3);
       GameObject thisBlib = Instantiate(blib, new Vector3(x, y, 0), Quaternion.identity);
-      thisBlib.GetComponent<BlibGenome>().lineageID.Add(System.String.Join("", initLineages[i]));
-      thisBlib.GetComponent<BlibGenome>().A = initGenomestatic.A_static;
-      thisBlib.GetComponent<BlibGenome>().B = initGenomestatic.B_static;
-      thisBlib.GetComponent<BlibGenome>().numMutations = initialMutations;
-      thisBlib.GetComponent<BlibGenome>().mutate = true;
+      thisGenome = thisBlib.GetComponent<BlibGenome>();
+      thisGenome.lineageID.Add(System.String.Join("", initLineages[i]));
+      thisGenome.A = initGenomestatic.A_static;
+      thisGenome .B = initGenomestatic.B_static;
+      thisGenome.numMutations = initialMutations;
+      thisGenome.mutate = true;
 
       thisBlib.name = popLogger.GetName("blib");
       thisBlib.name = thisBlib.name.Replace("(Clone)", "");
@@ -97,13 +99,68 @@ public class BlibSpawner : MonoBehaviour {
       float x = (float)Random.Range(-boxSize / 3, boxSize / 3);
       float y = (float)Random.Range(-boxSize / 3, boxSize / 3);
       GameObject thisBlib = Instantiate(blib, new Vector3(x, y, 0), Quaternion.identity);
-      
-      thisBlib.GetComponent<BlibGenome>().A = initGenomestatic.A_static;
-      thisBlib.GetComponent<BlibGenome>().B = initGenomestatic.B_static;
+      thisGenome = thisBlib.GetComponent<BlibGenome>();
+      thisGenome.A = initGenomestatic.A_static;
+      thisGenome.B = initGenomestatic.B_static;
+      /*
+      string[,,] antis = createAntiSenseStrand(thisGenome);
+      for (int p = 0; p < thisGenome.A.GetLength(0); p++){
+        for (int q = 0; q < thisGenome.A.GetLength(1); q++){
+            thisGenome.antisenseA[p,q] = antis[0,p,q];
+            thisGenome.antisenseB[p,q] = antis[1,p,q];
+        }
+      }
+      */
       thisBlib.name = popLogger.GetName("blib");
       thisBlib.name = thisBlib.name.Replace("(Clone)", "");
 
     }
   }
-
+/*
+string[,,] createAntiSenseStrand(BlibGenome thisGenome){
+    string[,,] antis = new string[2,9,486];
+    
+    string sensebaseA;
+    string sensebaseB;
+    //CREATE ANTISENSE STRANDS
+    for (int i = 0; i < thisGenome.A.GetLength(0); i++){
+      for (int j = 0; j < thisGenome.A.GetLength(1); j++){
+        sensebaseA = thisGenome.A[i,485-j];
+        sensebaseB = thisGenome.B[i,485-j];
+        switch (sensebaseA){
+          case "A":
+          antis[0,i,j] = "T";
+          break;
+          case "T":
+          antis[0,i,j] = "A";
+          break;
+          case "C":
+          antis[0,i,j] = "G";
+          break;
+          case "G":
+          antis[0,i,j] = "C";
+          break;
+        }
+        switch (sensebaseB){
+          case "A":
+          antis[1,i,j] = "T";
+          break;
+          case "T":
+          antis[1,i,j] = "A";
+          break;
+          case "C":
+          antis[1,i,j] = "G";
+          break;
+          case "G":
+          antis[1,i,j] = "C";
+          break;
+        }
+        
+        
+        
+      }
+    }
+    return antis;
+  }
+  */
 }

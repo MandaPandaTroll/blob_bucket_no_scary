@@ -1139,7 +1139,7 @@ MonoBehaviour:
   gridX: 0
   gridY: 0
   cellScale: 8
-  initConc: 32
+  initConc: 64
   freeNutes: 0
   lockedNutes: 0
 --- !u!4 &314230637
@@ -3085,7 +3085,7 @@ Transform:
   m_GameObject: {fileID: 1136253239}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 256, y: 256, z: 1}
+  m_LocalScale: {x: 128, y: 128, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1855928353}
@@ -4363,13 +4363,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1626781018}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6191008007394d7789d102cba293fdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSampleSize: 1000
-  sampleRate: 250
+  maxSampleSize: 64
+  sampleRate: 50
 --- !u!114 &1626781024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4509,8 +4509,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 832c1004ad63f43e09eca36c265cbe5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSampleSize: 32
-  sampleRate: 50
+  maxSampleSize: 256
+  sampleRate: 10
   generation: 
   intron1: []
   intron2: []
@@ -5264,11 +5264,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 039dfd508f8d1458cba1ed8a233b480b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialMutations: 3
+  initialMutations: 5
   initgen: {fileID: 1802033099}
   linChars: 
   initLineage: 
-  initBlib: 64
+  initBlib: 16
   autoRespawn: 0
   extraBlib: 1
   minBlib: 1
