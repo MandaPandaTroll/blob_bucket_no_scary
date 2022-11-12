@@ -4548,7 +4548,7 @@ MonoBehaviour:
   blobN: 0
   blubN: 0
   blybN: 0
-  sampleRate: 50
+  sampleRate: 1
 --- !u!114 &1626781030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5264,11 +5264,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 039dfd508f8d1458cba1ed8a233b480b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialMutations: 5
+  initialMutations: 0
   initgen: {fileID: 1802033099}
   linChars: 
   initLineage: 
-  initBlib: 16
+  initBlib: 64
   autoRespawn: 0
   extraBlib: 1
   minBlib: 1

@@ -116,7 +116,7 @@ public class BlibSpawner : MonoBehaviour {
 
     }
   }
-/*
+/* 
 string[,,] createAntiSenseStrand(BlibGenome thisGenome){
     string[,,] antis = new string[2,9,486];
     
