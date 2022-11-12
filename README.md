@@ -4,9 +4,11 @@ organisms.
 
 To properly train the agents you need to write this(with your own run names and config files,or choose one that works, right now i'd recommend memtest.yaml) 
 in the terminal:
-Your python environment should be in the Py folder.
+
 
 mlagents-learn config/YOUR_CONFIG_FILE.yaml --time-scale=1 --run-id=YOUR_RUN_ID 
+
+Your python environment should be in the Py folder.
 
 The relevant prefabs to mess around with if you want to change the values of the organisms are blib, brainblob, brainblyb and brainblub. Which are all located in blob_bucket_updated/Assets/Prefabs. 
 
