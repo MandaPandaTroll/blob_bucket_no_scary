@@ -227,7 +227,7 @@ void Awake(){
         }
     if(alive == true)
     {   
-        if(energy < maxEnergy/32){
+        if(energy < maxEnergy/64){
             currentHealth += -0.1f;
         }
         if  ( age > lifeLength || deathDice == 1 || currentHealth <= 0 )
@@ -269,8 +269,8 @@ void Awake(){
                 }
 
             
-            if(energy > maxEnergy/2.00f && protein > 0 && currentHealth < maxHealth){
-                energy += -sizeGene;
+            if(energy > maxEnergy/4.00f && protein > 0 && currentHealth < maxHealth){
+                energy += -0.25f*sizeGene;
                 currentHealth += 1f;
                 protein += -1;
                 NH4 += 1;
@@ -293,7 +293,7 @@ void Awake(){
         
 
             if(tryReproduce == true){
-                if( energy >= energyToReproduce && protein >= proteinToReproduce ){
+                if( energy >= energyToReproduce && protein >= proteinToReproduce){
                 
                 Reproduce();
 
@@ -598,7 +598,7 @@ void Awake(){
                 sigmoid = sizeGene/ (1f+ Mathf.Exp(-k*(x)));
                 newSize = new Vector3(sigmoid,sigmoid,sigmoid);
                 transform.localScale = newSize;
-                NH4_tox_lvl = (int)Mathf.Pow(2f,newSize.x);
+                NH4_tox_lvl = (int)Mathf.Pow(3f,newSize.x);
                     maxEnergy = sigmoid*35000f;
                 energyToReproduce = maxEnergy /8.0f;
                 maxHealth = Mathf.Round(Mathf.Pow(4, newSize.x+1f));
@@ -666,10 +666,10 @@ void Awake(){
                 energyToReproduce = maxEnergy /8.0f;
                 maxHealth = Mathf.Round(Mathf.Pow(4, newSize.x+1f));
                 //Allometric scaling
-                basalMet = Mathf.Pow(rb.mass, 1f/3f);
+                basalMet = 0.5f*Mathf.Pow(rb.mass, 1f/3f);
                 float protScale = 32f*Mathf.Pow((float)sizeGene,alloScaleFactor);
                 proteinToReproduce = (int)Mathf.Round(protScale);
-                maxProtein = proteinToReproduce*4;
+                maxProtein = proteinToReproduce*8;
                      
 
 

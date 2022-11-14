@@ -1139,7 +1139,7 @@ MonoBehaviour:
   gridX: 0
   gridY: 0
   cellScale: 8
-  initConc: 64
+  initConc: 16
   freeNutes: 0
   lockedNutes: 0
 --- !u!4 &314230637
@@ -3085,7 +3085,7 @@ Transform:
   m_GameObject: {fileID: 1136253239}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 128, y: 128, z: 1}
+  m_LocalScale: {x: 512, y: 512, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1855928353}
@@ -5269,7 +5269,7 @@ MonoBehaviour:
   linChars: 
   initLineage: 
   initBlib: 64
-  autoRespawn: 0
+  autoRespawn: 1
   extraBlib: 1
   minBlib: 1
   blib: {fileID: 3468846596000450122, guid: 6d4cc741cc2fc4e00ad7702559757827, type: 3}
@@ -5309,7 +5309,7 @@ MonoBehaviour:
   blob: {fileID: 1711403674044451826, guid: 62f3ae1229ce147e085f49742d4f03cd, type: 3}
   initProtein: 0
   initEnergy: 0
-  autoRespawn: 0
+  autoRespawn: 1
 --- !u!114 &1883381886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5345,7 +5345,7 @@ MonoBehaviour:
   blyb: {fileID: 9185934289686911736, guid: b502b5fe1709f4524936c88a0c2bb425, type: 3}
   initProtein: 0
   initEnergy: 0
-  autoRespawn: 0
+  autoRespawn: 1
 --- !u!114 &1883381888
 MonoBehaviour:
   m_ObjectHideFlags: 0

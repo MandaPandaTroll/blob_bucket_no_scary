@@ -159,7 +159,7 @@ string sensebaseB;
 
   void Start() {
     firstTranslation = false;
-    maxAminoAcids = 2f*2f*A.GetLength(0)*A.GetLength(1) / 3f;
+    maxAminoAcids = (2f*2f*9f*486f)/3f;
     mutCount = 0;
     chromoPairs = 9;
     basePairs = 486;
@@ -230,7 +230,7 @@ string sensebaseB;
     }
     
 
-
+    if(mutate == true){Mutate();}else{TranslateGenome();}
   }
 
 
@@ -378,7 +378,7 @@ public int final_mutsize;
     //if (mutationroll == 64) { mutate = true; }else{mutate = false;}
     extA = A;
     extB = B;
-    
+    /*
     if(firstTranslation == false){
       if(mutate == true && numMutations > 0){
         
@@ -389,7 +389,7 @@ public int final_mutsize;
       
         
          Mutate();
-    }
+    }*/
 
   }
   void Mutate() {

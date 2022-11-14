@@ -309,9 +309,7 @@ public class BlibControls : MonoBehaviour {
   }
 
   void FixedUpdate() {
-    if(lifeLength <= 0){
-        lifeLength = 20f;
-    }
+   
     tempNut = nutLevel;
 
     if (nutLevel < nutToReproduce) {
@@ -340,11 +338,11 @@ public class BlibControls : MonoBehaviour {
     energyTick += Time.deltaTime;
     if (energyTick > 1.0f) {
         maxEnergy = energyToReproduce * 2f;
-        proteinCost = (int)Mathf.Round(genome_script.aminoAcidRatio*4);
-        if(nutLevel >= proteinCost){
+        proteinCost = (int)Mathf.Round(genome_script.aminoAcidRatio*2);
+        if(nutLevel >= proteinCost+1){
           posVal = m_nutgrid.GetValue(transform.position);
           nutLevel += -1*proteinCost;
-        m_nutgrid.SetValue(transform.position, (int)(posVal + 1*proteinCost));
+        m_nutgrid.SetValue(transform.position, (posVal + proteinCost));
         }
       redAllele1 = genome_script.redAllele1;
       redAllele2 = genome_script.redAllele2;
@@ -514,7 +512,7 @@ public class BlibControls : MonoBehaviour {
 
 
     }
-
+    /*
     if (booper.tag == "Prey_noDothis") {
       BlibControls mate;
       mate = booper.GetComponent<BlibControls>();
@@ -536,11 +534,11 @@ public class BlibControls : MonoBehaviour {
         introns[0, 1] = (introns[0, 1] - mate.introns[0, 1]) / 2.0f;
         introns[1, 1] = (introns[1, 1] - mate.introns[1, 1]) / 2.0f;
 
-        /*
+        
         redGene = Mathf.Clamp(((redAllele1 + redAllele2) / 2.0f), 0.00f, 1.00f);
         greenGene = Mathf.Clamp(((greenAllele1 + greenAllele2) / 2.0f), 0.00f, 1.00f);
         blueGene = Mathf.Clamp(((blueAllele1 + blueAllele2) / 2.0f), 0.00f, 1.00f);
-        */
+        
 
 
         geneticColor.r = redGene;
@@ -551,7 +549,7 @@ public class BlibControls : MonoBehaviour {
 
       }
     }
-
+    */
 
     ContactPoint2D contact = col.GetContact(0);
     Vector2 norm = contact.normal.normalized;
@@ -578,7 +576,7 @@ public class BlibControls : MonoBehaviour {
         contactor.energy += energy;
         energy = 0;
 
-        Destroy(gameObject, 0.2f);
+        Destroy(gameObject, 0.4f);
       } else {
         ContactPoint2D contact = col.GetContact(0);
         float thisDir = rb.rotation * Mathf.Deg2Rad;
@@ -601,7 +599,7 @@ public class BlibControls : MonoBehaviour {
         contactor.energy += energy;
         energy = 0;
 
-        Destroy(gameObject, 0.2f);
+        Destroy(gameObject, 0.4f);
       } else {
         ContactPoint2D contact = col.GetContact(0);
         float thisDir = rb.rotation * Mathf.Deg2Rad;
@@ -693,23 +691,18 @@ public class BlibControls : MonoBehaviour {
 
 
 
-    //Mutation
-    /*
-    moveForce = (moveAllele1 + moveAllele2) / 2.0f;
+
+    
+
+ 
+    introns[0, 0] += (float)rndA.Next(-1, 2);
+    introns[1, 0] += (float)rndA.Next(-1, 2);
+    introns[0, 1] += (float)rndA.Next(-1, 2);
+    introns[1, 1] += (float)rndA.Next(-1, 2);
 
 
-    turnTorque = (turnTorqueAllele1 + turnTorqueAllele2) / 2.0f;
-    turnDice += (float)rndA.Next(-1, 2) * rndA.Next(2);
-    introns[0, 0] += (float)rndA.Next(-1, 2) * rndA.Next(2);
-    introns[1, 0] += (float)rndA.Next(-1, 2) * rndA.Next(2);
-    introns[0, 1] += (float)rndA.Next(-1, 2) * rndA.Next(2);
-    introns[1, 1] += (float)rndA.Next(-1, 2) * rndA.Next(2);
-    lifeLength += (float)rndA.Next(-1, 2) * rndA.Next(2);
 
-    lookDistance += (float)rndA.Next(-1, 2) * rndA.Next(2);
-
-
-    */
+    
 
 
 
