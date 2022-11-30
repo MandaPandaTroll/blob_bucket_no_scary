@@ -25,7 +25,8 @@ Debug.Log(bytestring);
 
 
 GameObject[] blibs;
-
+    private long internal_fileSize;
+    public  long fileSize_MB;
     private List<string[]> rowData = new List<string[]>();
     private List<string> unitName = new List<string>();
     
@@ -45,7 +46,8 @@ GameObject[] blibs;
     BlibControls  sampledBlib;
    
     string filename;
-
+    int filenum;
+    string og_filename = "blib_sats";
     // Start is called before the first frame update
     void Start()
     {   blibs  = GameObject.FindGameObjectsWithTag("Prey");
@@ -53,7 +55,9 @@ GameObject[] blibs;
         unitName.Clear();testA.Clear();testB.Clear();aa_A.Clear();aa_antiA.Clear();aa_B.Clear();aa_antiB.Clear();
         Array.Clear(blibs,0,blibs.Length);
         itCount = 0;
-        filename = "blib_sats.csv";
+        filenum = 0;
+        internal_fileSize = fileSize_MB * 1000000;
+        filename =  og_filename + filenum.ToString() + ".csv";
         sampleGroup = 0;
         time = 0;
 
@@ -92,10 +96,10 @@ GameObject[] blibs;
                     //string[] nucleotides = new string[27];
                     //string[] bases = new string[sampledGenome.A.GetLength(1)];
                     unitName.Add(sampledBlib.gameObject.name);
-                    aa_A.Add(sampledGenome.aa_A);
-                    aa_antiA.Add(sampledGenome.aa_antiA);
-                    aa_B.Add(sampledGenome.aa_B);
-                    aa_antiB.Add(sampledGenome.aa_antiB);
+                    //aa_A.Add(sampledGenome.aa_A);
+                    //aa_antiA.Add(sampledGenome.aa_antiA);
+                    //aa_B.Add(sampledGenome.aa_B);
+                    //aa_antiB.Add(sampledGenome.aa_antiB);
                     testA.Add(sampledGenome.testA);
                     testB.Add(sampledGenome.testB);
 
@@ -116,17 +120,17 @@ GameObject[] blibs;
             string[] rowDataTemp;
         if (itCount == 1){
 
-            rowDataTemp = new string[10];
+            rowDataTemp = new string[6];
             rowDataTemp[0] ="time" ;
             rowDataTemp[1] ="name" ;
             rowDataTemp[2] = "sampleGroup";
             rowDataTemp[3] = "sample_number";
             rowDataTemp[4] = "testA";
             rowDataTemp[5] = "testB";
-            rowDataTemp[6] = "aa_A";
-            rowDataTemp[7] = "aa_antiA";
-            rowDataTemp[8] = "aa_B";
-            rowDataTemp[9] = "aa_antiB";
+            //rowDataTemp[6] = "aa_A";
+            //rowDataTemp[7] = "aa_antiA";
+            //rowDataTemp[8] = "aa_B";
+            //rowDataTemp[9] = "aa_antiB";
 
             
 
@@ -137,17 +141,17 @@ GameObject[] blibs;
         for(int i = 0; i < sampleSize; i++)
         {   
             
-            rowDataTemp = new string[10];
+            rowDataTemp = new string[6];
             rowDataTemp[0] = totalTime.ToString();
             rowDataTemp[1] = unitName[i];
             rowDataTemp[2] = sampleGroup.ToString();
             rowDataTemp[3] = i.ToString();
             rowDataTemp[4] = testA[i].ToString();
             rowDataTemp[5] = testB[i].ToString();
-            rowDataTemp[6] = aa_A[i].ToString();
-            rowDataTemp[7] = aa_antiA[i].ToString();
-            rowDataTemp[8] = aa_B[i].ToString();
-            rowDataTemp[9] = aa_antiB[i].ToString();
+            //rowDataTemp[6] = aa_A[i].ToString();
+            //rowDataTemp[7] = aa_antiA[i].ToString();
+            //rowDataTemp[8] = aa_B[i].ToString();
+            //rowDataTemp[9] = aa_antiB[i].ToString();
             
             
             rowData.Add(rowDataTemp);
@@ -168,17 +172,34 @@ GameObject[] blibs;
         
         for (int index = 0; index < length; index++)
             sb.AppendLine(string.Join(delimiter, output[index]));
+            
+
         
-        
+        filename = og_filename + filenum.ToString() + ".csv";
         string filePath = getPath();
 
-        StreamWriter outStream = System.IO.File.CreateText(filePath);
+        
+
+        StreamWriter outStream = File.CreateText(filePath);
+         
         outStream.WriteLine(sb);
+
+        
+
         outStream.Flush();
         outStream.Close();
         outStream.Dispose();
         Resources.UnloadUnusedAssets();
-
+        FileInfo fi = new FileInfo(filePath);  
+        long size = fi.Length;  
+        if(size > internal_fileSize){
+            filenum += 1;
+            filename = og_filename + filenum.ToString() + ".csv";
+            sb.Clear();
+            rowData.Clear();
+            itCount = 0;
+            
+        }
         
         
         unitName.Clear();testA.Clear();testB.Clear();aa_A.Clear();aa_antiA.Clear();aa_B.Clear();aa_antiB.Clear();

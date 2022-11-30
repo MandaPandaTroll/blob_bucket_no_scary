@@ -93,6 +93,7 @@
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Sensor/GridSensorComponentBase.cs" />
      <Compile Include="Assets/CurriculumHandler.cs" />
      <Compile Include="Assets/Scripts/nutGrid.cs" />
+     <Compile Include="Assets/Scripts/BoxSplitter.cs" />
      <Compile Include="Assets/Taster_blub.cs" />
      <Compile Include="Assets/Scripts/BlobSpawner.cs" />
      <Compile Include="Assets/CodeMonkey/Utils/UI_TextComplex.cs" />

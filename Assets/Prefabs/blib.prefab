@@ -192,7 +192,7 @@ MonoBehaviour:
   aa_B: 
   aa_antiB: 
   mutCount: 0
-  mutMultiplier: 8
+  mutMultiplier: 4
   translocation_enabled: 1
   duplication_enabled: 1
   lineageID: []

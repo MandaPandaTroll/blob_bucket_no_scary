@@ -338,7 +338,7 @@ public class BlibControls : MonoBehaviour {
     energyTick += Time.deltaTime;
     if (energyTick > 1.0f) {
         maxEnergy = energyToReproduce * 2f;
-        proteinCost = (int)Mathf.Round(genome_script.aminoAcidRatio*2);
+        proteinCost = (int)Mathf.Round(genome_script.aminoAcidRatio);
         if(nutLevel >= proteinCost+1){
           posVal = m_nutgrid.GetValue(transform.position);
           nutLevel += -1*proteinCost;
