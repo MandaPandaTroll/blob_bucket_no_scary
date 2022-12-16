@@ -369,7 +369,7 @@ public class Testing : MonoBehaviour
             // Debug.Log("totNutes = " + totNutes + " , countNutes = " + countNutes + " , grandNutes = " + grandNutes);
             if (autoReplenish == true)
             {
-                if (grandNutes < totNutes)
+                if (grandNutes < ((9*totNutes)/10))
                 {
                     freeNutes = nutgrid.GetSum();
                     grandNutes = freeNutes + lockedNutes;
@@ -407,7 +407,7 @@ public class Testing : MonoBehaviour
                         }
 
                     }
-
+    
 
                 }
 

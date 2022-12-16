@@ -165,15 +165,7 @@ string sensebaseB;
     basePairs = 486;
     blibControls = this.gameObject.GetComponent<BlibControls>();
     final_mutsize = base_mutDice / mutMultiplier;
-    if (mother != null) {
-      //Array.Clear(A, 0, A.Length);
-      //Array.Clear(B, 0, B.Length);
-      //A = mother.A;
-      //B = mother.B;
-    } //else {
-      //A = initGenomestatic.A_static;
-      //B = initGenomestatic.B_static;
-    //}
+    
 
         redSeq = GeneDatabase.red;
         greenSeq = GeneDatabase.green;
@@ -241,6 +233,8 @@ string sensebaseB;
   private int AorB;
   BlibGenome mateGenome;
   void OnCollisionEnter2D(Collision2D col) {
+
+   
     if (col.gameObject.tag == "prey" &&  blibControls.age > 5f && col.gameObject.GetComponent<BlibControls>().age > 5f) {
        mateGenome = col.gameObject.GetComponent<BlibGenome>();
       
@@ -294,9 +288,9 @@ string sensebaseB;
       
       //exchange genetic material
       
-      if (pythagDist < 0.1f) {
+      if (pythagDist < 0.4f && pythagDist > 0.001f) {
         
-        numRecoms = UnityEngine.Random.Range(0,3);
+        numRecoms = UnityEngine.Random.Range(0,64);
         AorB = UnityEngine.Random.Range(0,2);
          recoChromos = 9;
          numRecoLoci = 19;
@@ -385,11 +379,12 @@ public int final_mutsize;
         Mutate();
       }else{TranslateGenome();}
     }
+    */
     if (mutate == true && firstTranslation == true) {
       
         
          Mutate();
-    }*/
+    }
 
   }
   void Mutate() {
@@ -852,6 +847,21 @@ public int final_mutsize;
     
     
      if(firstTranslation == false ){ //Recombination
+     if (mother != null) {
+      //Array.Clear(A, 0, A.Length);
+      //Array.Clear(B, 0, B.Length);
+      A = mother.A;
+      B = mother.B;
+      int mutationroll = UnityEngine.Random.Range(0, final_mutsize);
+      if(mutationroll == 8){
+        mutate = true;
+      }else{
+        mutate = false;
+      }
+    } else {
+      A = initGenomestatic.A_static;
+      B = initGenomestatic.B_static;
+    }
         
          doConversion = false;
         
@@ -1792,8 +1802,8 @@ public int final_mutsize;
       //redGene = Mathf.Clamp((redAllele1 + redAllele2) / 2.0f, 0.00f, 1.00f);
 
 
-      greenAllele1 = nGRN_A / 6f;
-      greenAllele2 = nGRN_B / 6f;
+      greenAllele1 = nGRN_A / 32f;
+      greenAllele2 = nGRN_B / 32f;
       //greenGene = Mathf.Clamp((greenAllele1 + greenAllele2) / 2.0f, 0.00f, 1.00f);
 
       blueAllele1 = nLLY_A / 2f;

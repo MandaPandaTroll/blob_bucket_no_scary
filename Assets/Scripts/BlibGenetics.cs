@@ -29,6 +29,7 @@ private List<string[]> rowData = new List<string[]>();
    
 
     int sampler;
+    private List<string> unitName = new List<string>();
     public List <int> generation;
     public List <float> intron1;
     public List <float> intron2;
@@ -66,6 +67,7 @@ private List<string[]> rowData = new List<string[]>();
     // Start is called before the first frame update
     void Start()
     {
+        unitName.Clear();
         heteroZygosity = new float[maxSampleSize];
         itCount = 0;
         sampleGroup = 0;
@@ -122,6 +124,7 @@ private List<string[]> rowData = new List<string[]>();
                     e2repB.Add(sampbctrl.e2repAllele2);
                     exonRatio.Add(sampbgn.aminoAcidRatio);
                     heteroZygosity[i] = sampbgn.heteroZygosity;
+                    unitName.Add(sampledBlib.gameObject.name);
                     
                 }           
                 
@@ -184,7 +187,7 @@ private List<string[]> rowData = new List<string[]>();
         for(int i = 0; i < sampleSize; i++){
             rowDataTemp = new string[25];
             rowDataTemp[0] = totalTime.ToString();
-            rowDataTemp[1] = "blib_" + i.ToString();
+            rowDataTemp[1] = unitName[i];
             rowDataTemp[2] = sampleGroup.ToString();
             rowDataTemp[3] = generation[i].ToString();
             rowDataTemp[4] = intron1[i].ToString();
@@ -262,6 +265,7 @@ private List<string[]> rowData = new List<string[]>();
         e2repB.Clear();
         exonRatio.Clear();
         sampleGroup += 1;
+        unitName.Clear();
 
         Array.Clear(blibs,0,blibs.Length);
         time = 0f;

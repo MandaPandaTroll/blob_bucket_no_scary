@@ -13,7 +13,8 @@
             float e;
            
             Material mat;
-            private Rect windowRect = new Rect(20, 20, 2048, 512);
+            private Rect windowRect = new Rect(24, 24, 1896, 512);
+            float[] rectCoefficients = new float[4]{0.02f,0.02f,0.95f,0.4f};
 
             // A list of random values to draw
             private List<float> values;
@@ -33,12 +34,19 @@
             // List of Windows
             private bool showWindow0 = false;
            
-           
+           float[] newDimensions;
+           int[] screenDims;
             public TimeDisplay display;
             // Start is called before the first frame update
             void Start()
-            {
-
+            {   screenDims = new int[2]{Screen.width, Screen.height};
+                newDimensions = new float[4]{
+                    Mathf.Round(screenDims[0]*rectCoefficients[0]),
+                    Mathf.Round(screenDims[0]*rectCoefficients[1]),
+                    Mathf.Round(screenDims[0]*rectCoefficients[2]),
+                    Mathf.Round(screenDims[1]*rectCoefficients[3])
+                };
+                windowRect.Set(newDimensions[0],newDimensions[1],newDimensions[2],newDimensions[3]);
                 blibCount = (float)display.blibCount;
                 blobCount = (float)display.blobCount;
                 blybCount = (float)display.blybCount;
@@ -82,8 +90,15 @@
             int dbugCounter;
 
             float blubCount, blobCount, blybCount, blibCount;
+
+            void LateUpdate(){
+                if(screenDims[0] != Screen.width || screenDims[1] != Screen.height){
+                            ResizeRect();
+                }
+            }
             void Update()
             {
+                
                 dbugCounter +=1;
     
                 blibCount = (float)display.blibCount;
@@ -320,4 +335,18 @@
                     
                 }
             }
+
+            void ResizeRect(){
+                screenDims[0] = Screen.width;
+                screenDims[1] = Screen.height;
+                
+                    newDimensions[0] = Mathf.Round(screenDims[0]*rectCoefficients[0]);
+                    newDimensions[1] = Mathf.Round(screenDims[0]*rectCoefficients[1]);
+                    newDimensions[2] = Mathf.Round(screenDims[0]*rectCoefficients[2]);
+                    newDimensions[3] = Mathf.Round(screenDims[1]*rectCoefficients[3]);
+                    windowRect.Set(newDimensions[0],newDimensions[1],newDimensions[2],newDimensions[3]);
+            }
+                
+                
+            
         }

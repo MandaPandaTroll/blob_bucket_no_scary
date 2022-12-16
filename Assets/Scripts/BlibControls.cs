@@ -759,12 +759,12 @@ public class BlibControls : MonoBehaviour {
    daughterGenome.lineageID.Add(System.String.Join("", daughterID));
    daughterGenome.A = tempStringA;
    daughterGenome.B = tempStringB;
-   daughterGenome.numMutations = 1;
-   if(mutationroll == 64){
-    daughterGenome.mutate = true;
+   //daughterGenome.numMutations = 1;
+   //if(mutationroll == 64){
+    //daughterGenome.mutate = true;
     
     
-   }else{daughterGenome.mutate = false;}
+   //}else{daughterGenome.mutate = false;}
     
     if (odd == true) {
       daughter_controls.nutLevel = tempNut + 1;
