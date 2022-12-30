@@ -384,7 +384,15 @@ public class Testing : MonoBehaviour
                         int y = UnityEngine.Random.Range(minX,maxX);
                         int thisVal = nutgrid.GetValue(x,y);
                            nutgrid.SetValue(x, y,thisVal + (totNutes/64));
+                           
                     */
+                    int[] randPos = new int[2];
+                    randPos[0] = Random.Range(0,nutgrid.gridArray.GetLength(0));
+                    randPos[1] = Random.Range(0,nutgrid.gridArray.GetLength(1));
+                     int thisVal = nutgrid.GetValue(randPos[0], randPos[1]);
+                     nutgrid.SetValue(randPos[0], randPos[1], thisVal +(totNutes/10));
+                    /*
+
                     for (int x = 0; x < nutgrid.gridArray.GetLength(0); x++)
                     {
 
@@ -407,7 +415,7 @@ public class Testing : MonoBehaviour
                         }
 
                     }
-    
+                    */
 
                 }
 

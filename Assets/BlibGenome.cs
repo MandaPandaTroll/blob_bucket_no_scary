@@ -6,6 +6,9 @@ using UnityEngine;
 using System;
 using System.Text.RegularExpressions;
 
+
+
+
 /*
 Mutation rate of cyanobacteria (Krasovec 2017)
 4.4E-10 to 9.8E-10, per nucleotide per generation.
@@ -35,6 +38,9 @@ maybe 1/2400 to 1/240 is a better value...
 
 */
 public class BlibGenome : MonoBehaviour {
+  //string[] testcopy = new string[8]{"A","B","C","D","E","F","G","H"};
+  public float refSNP_A;
+  public float refSNP_B;
   public float heteroZygosity;
   public float totalAminoAcids;
   public float maxAminoAcids;
@@ -51,7 +57,7 @@ byte [] byteA;
 byte [] byteB;
   char[] ABroll = new char[8]{'A','B','A','B','A','B','A','B'};
   //int[] pois = new int[80] { 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-  int[] P_transversion = new int[10]{0,0,0,0,0,0,1,0,0,0};
+ static int[] P_transversion = new int[20]{-1,-1,-1,-1,-1,-1,1,-1,-1,-1,-1,-1,1,-1,-1,-1,-1,-1,-1,-1};
 
   public bool translocation_enabled;
   public bool duplication_enabled;
@@ -158,6 +164,14 @@ string sensebaseB;
 
 
   void Start() {
+    //string debugString = "";
+    //for(int i = 0; i < testcopy.Length;i++){
+    //  debugString += NucleotideCopy(testcopy[i]);
+
+    //}
+    //Debug.Log(debugString);
+    A = new string[9,486];
+    B = new string[9,486];
     firstTranslation = false;
     maxAminoAcids = (2f*2f*9f*486f)/3f;
     mutCount = 0;
@@ -165,7 +179,10 @@ string sensebaseB;
     basePairs = 486;
     blibControls = this.gameObject.GetComponent<BlibControls>();
     final_mutsize = base_mutDice / mutMultiplier;
-    
+    int mutationroll = UnityEngine.Random.Range(0, final_mutsize);
+      if(mutationroll == 1){
+        mutate = true;
+      }
 
         redSeq = GeneDatabase.red;
         greenSeq = GeneDatabase.green;
@@ -176,7 +193,7 @@ string sensebaseB;
         lifSeq = GeneDatabase.lifeL;
         TRACKER = GeneDatabase.TRACKER;
    
-
+      
     
     
 
@@ -222,7 +239,7 @@ string sensebaseB;
     }
     
 
-    if(mutate == true){Mutate();}else{TranslateGenome();}
+   //TranslateGenome();
   }
 
 
@@ -256,6 +273,19 @@ string sensebaseB;
 
 
       //A-Compare
+      for(int p = 0; p < (9*486); p++){
+        if(this.testA[p] != mateGenome.testA[p]){
+          snpCountA +=1;
+        }
+
+      //B-Compare
+        if(this.testB[p] != mateGenome.testB[p]){
+          snpCountB +=1;
+        }
+      }
+
+      /*
+      //A-Compare
       for (int i = 0; i < chromoPairs; i++) {
         for (int j = 0; j < basePairs; j++) {
           isEqual = System.String.Equals(this.A[i, j], mateGenome.A[i, j]);
@@ -274,10 +304,10 @@ string sensebaseB;
           }
         }
       }
-
+      */
       //Genetic distance calculations
       float pairWiseA_squared = Mathf.Pow(((float)snpCountA / 486f*9f), 2.0f);
-      float pairWiseB_squared = Mathf.Pow(((float)snpCountA / 486f*9f), 2.0f);
+      float pairWiseB_squared = Mathf.Pow(((float)snpCountB / 486f*9f), 2.0f);
 
       float pythagDist = Mathf.Sqrt(pairWiseA_squared + pairWiseB_squared);
       if (pythagDist > 0.01) {
@@ -287,10 +317,12 @@ string sensebaseB;
 
       
       //exchange genetic material
-      
-      if (pythagDist < 0.4f && pythagDist > 0.001f) {
+      bool derboug = true;
+      if (derboug == true) {
+      //if (pythagDist < 0.4f && pythagDist > 0.001f) {
         
-        numRecoms = UnityEngine.Random.Range(0,64);
+        numRecoms = UnityEngine.Random.Range(0,256);
+        AorB = -1;
         AorB = UnityEngine.Random.Range(0,2);
          recoChromos = 9;
          numRecoLoci = 19;
@@ -315,26 +347,27 @@ string sensebaseB;
              
 
             for(int i = recoStart_site; i < recoEnd_site; i++){
-            giveSequenceA.Add(A[whichChromo,i]);
-            giveSequenceB.Add(B[whichChromo,i]);
+            giveSequenceA.Add(NucleotideCopy(A[whichChromo,i]));
+            giveSequenceB.Add(NucleotideCopy(B[whichChromo,i]));
             }
 
             //Give what where?
-            int whereTo = UnityEngine.Random.Range(0,2);
+            int whereTo = -1;
+            whereTo = UnityEngine.Random.Range(0,2);
     
                   if(whereTo == 0){ //A->A, B->B
                     for (int i = recoStart_site; i < recoEnd_site; i++){
                     
-                    mateGenome.A[whichChromo,i] = giveSequenceA[i - recoStart_site];
-                    mateGenome.B[whichChromo,i] = giveSequenceB[i - recoStart_site];
+                    mateGenome.A[whichChromo,i] = NucleotideCopy(giveSequenceA[i - recoStart_site]);
+                    mateGenome.B[whichChromo,i] = NucleotideCopy(giveSequenceB[i - recoStart_site]);
                     }
                 }
 
                   else if(whereTo == 1){ //A->B, B->A
                     for (int i = recoStart_site; i < recoEnd_site; i++){
                           
-                    mateGenome.B[whichChromo,i] = giveSequenceA[i - recoStart_site];
-                    mateGenome.A[whichChromo,i] = giveSequenceB[i - recoStart_site];
+                    mateGenome.B[whichChromo,i] = NucleotideCopy(giveSequenceA[i - recoStart_site]);
+                    mateGenome.A[whichChromo,i] = NucleotideCopy(giveSequenceB[i - recoStart_site]);
                     }
                 }
             
@@ -384,17 +417,19 @@ public int final_mutsize;
       
         
          Mutate();
+    }else if (firstTranslation == false){
+      TranslateGenome();
     }
 
   }
   void Mutate() {
     mutate = false;
-    if(firstTranslation == true){numMutations = 1;}
+    
       
     for (int q = 0; q < numMutations; q++) {
       
       mutCount+=1;
-    string randChar = "A";
+    //string randChar = "A";
     AorB = UnityEngine.Random.Range(0, 2);
     int duplicationRoll = UnityEngine.Random.Range(0, 2048);
     int transLocRoll = UnityEngine.Random.Range(0, 2048);
@@ -409,7 +444,7 @@ public int final_mutsize;
 
     if (transLocRoll == 64 && translocation_enabled == true) {
       string[] oNu = new string[3];
-      string origin = "", destination = "";
+      //string origin = "", destination = "";
       int tAorB = UnityEngine.Random.Range(0, 2);
 
       int siteIndex_originI = UnityEngine.Random.Range(0, siteCroms);
@@ -420,46 +455,49 @@ public int final_mutsize;
       int siteIndex_destinationI = UnityEngine.Random.Range(0, siteCroms);
       int siteIndex_destinationJ = sites[siteIndex_destinationI, UnityEngine.Random.Range(0, siteLocs - 1)];
 
+      /*
+      public void CopyTo (int sourceIndex, char[] destination, int destinationIndex, int count);
+      */
 
-
-
+      
       if (AorB == 0) {
-        origin = "A";
+        //origin = "A";
 
         for (int i = 0; i < 27; i++) {
-          tranString_origin[i] = A[siteIndex_originI, siteIndex_originJ + i];
+          tranString_origin[i] = NucleotideCopy(A[siteIndex_originI, siteIndex_originJ + i]) ;
+          
         }
 
         if (tAorB == 0) {
-          destination = "A";
+          //destination = "A";
 
 
           for (int i = 0; i < 27; i++) {
-            tranString_destination[i] = A[siteIndex_destinationI, siteIndex_destinationJ + i];
+            tranString_destination[i] = NucleotideCopy(A[siteIndex_destinationI, siteIndex_destinationJ + i]);
           }
 
           //Replace destination
           for (int i = 0; i < 27; i++) {
-            A[siteIndex_destinationI, siteIndex_destinationJ + i] = tranString_origin[i];
+            A[siteIndex_destinationI, siteIndex_destinationJ + i] = NucleotideCopy(tranString_origin[i]);
           }
           //Replace origin
           for (int i = 0; i < 27; i++) {
-            A[siteIndex_originI, siteIndex_originJ + i] = tranString_destination[i];
+            A[siteIndex_originI, siteIndex_originJ + i] = NucleotideCopy(tranString_destination[i]);
           }
 
         } else {
-          destination = "B";
+          //destination = "B";
           for (int i = 0; i < 27; i++) {
-            tranString_destination[i] = B[siteIndex_destinationI, siteIndex_destinationJ + i];
+            tranString_destination[i] = NucleotideCopy(B[siteIndex_destinationI, siteIndex_destinationJ + i]);
           }
 
           //Replace destination
           for (int i = 0; i < 27; i++) {
-            B[siteIndex_destinationI, siteIndex_destinationJ + i] = tranString_origin[i];
+            B[siteIndex_destinationI, siteIndex_destinationJ + i] = NucleotideCopy(tranString_origin[i]);
           }
           //Replace origin
           for (int i = 0; i < 27; i++) {
-            A[siteIndex_originI, siteIndex_originJ + i] = tranString_destination[i];
+            A[siteIndex_originI, siteIndex_originJ + i] = NucleotideCopy(tranString_destination[i]);
           }
 
         }
@@ -467,40 +505,40 @@ public int final_mutsize;
 
 
       } else {
-        origin = "B";
+       // origin = "B";
         for (int i = 0; i < 27; i++) {
-          tranString_origin[i] = B[siteIndex_originI, siteIndex_originJ + i];
+          tranString_origin[i] = NucleotideCopy(B[siteIndex_originI, siteIndex_originJ + i]);
         }
 
         if (tAorB == 0) {
-          destination = "A";
+         // destination = "A";
           for (int i = 0; i < 27; i++) {
-            tranString_destination[i] = A[siteIndex_destinationI, siteIndex_destinationJ + i];
+            tranString_destination[i] = NucleotideCopy(A[siteIndex_destinationI, siteIndex_destinationJ + i]);
           }
 
           //Replace destination
           for (int i = 0; i < 27; i++) {
-            A[siteIndex_destinationI, siteIndex_destinationJ + i] = tranString_origin[i];
+            A[siteIndex_destinationI, siteIndex_destinationJ + i] = NucleotideCopy(tranString_origin[i]);
           }
 
           //Replace origin
           for (int i = 0; i < 27; i++) {
-            B[siteIndex_originI, siteIndex_originJ + i] = tranString_destination[i];
+            B[siteIndex_originI, siteIndex_originJ + i] = NucleotideCopy(tranString_destination[i]);
           }
 
         } else {
-          destination = "B";
+          //destination = "B";
 
           for (int i = 0; i < 27; i++) {
-            tranString_destination[i] = B[siteIndex_destinationI, siteIndex_destinationJ + i];
+            tranString_destination[i] = NucleotideCopy(B[siteIndex_destinationI, siteIndex_destinationJ + i]);
           }
           //Replace destination
           for (int i = 0; i < 27; i++) {
-            B[siteIndex_destinationI, siteIndex_destinationJ + i] = tranString_origin[i];
+            B[siteIndex_destinationI, siteIndex_destinationJ + i] = NucleotideCopy(tranString_origin[i]);
           }
           //Replace origin
           for (int i = 0; i < 27; i++) {
-            B[siteIndex_originI, siteIndex_originJ + i] = tranString_destination[i];
+            B[siteIndex_originI, siteIndex_originJ + i] = NucleotideCopy(tranString_destination[i]);
           }
 
         }
@@ -514,28 +552,28 @@ public int final_mutsize;
     if (duplicationRoll == 64 && duplication_enabled == true) {
 
       if (AorB == 0) {
-        triNu[0] = A[triIndex[0], triIndex[1]];
-        triNu[1] = A[triIndex[0], triIndex[1] + 1];
-        triNu[2] = A[triIndex[0], triIndex[1] + 2];
+        triNu[0] = NucleotideCopy(A[triIndex[0], triIndex[1]]);
+        triNu[1] = NucleotideCopy(A[triIndex[0], triIndex[1] + 1]);
+        triNu[2] = NucleotideCopy(A[triIndex[0], triIndex[1] + 2]);
 
-        string nextD = System.String.Join("", A[triIndex[0], triIndex[1] + 3] + A[triIndex[0], triIndex[1] + 4] + A[triIndex[0], triIndex[1] + 5]);
-        string thisD = System.String.Join("", triNu[0] + triNu[1] + triNu[2]);
+        //string nextD = System.String.Join("", A[triIndex[0], triIndex[1] + 3] + A[triIndex[0], triIndex[1] + 4] + A[triIndex[0], triIndex[1] + 5]);
+        //string thisD = System.String.Join("", triNu[0] + triNu[1] + triNu[2]);
 
-        A[triIndex[0], triIndex[1] + 3] = triNu[0];
-        A[triIndex[0], triIndex[1] + 4] = triNu[1];
-        A[triIndex[0], triIndex[1] + 5] = triNu[2];
+        A[triIndex[0], triIndex[1] + 3] = NucleotideCopy(triNu[0]);
+        A[triIndex[0], triIndex[1] + 4] = NucleotideCopy(triNu[1]);
+        A[triIndex[0], triIndex[1] + 5] = NucleotideCopy(triNu[2]);
         //Debug.Log("Duplication! : " + "[" + triIndex[0] + "," + triIndex[1] + "] " + thisD + "-" + nextD);
 
       } else {
-        triNu[0] = B[triIndex[0], triIndex[1]];
-        triNu[1] = B[triIndex[0], triIndex[1] + 1];
-        triNu[2] = B[triIndex[0], triIndex[1] + 2];
-        string nextD = System.String.Join("", B[triIndex[0], triIndex[1] + 3] + B[triIndex[0], triIndex[1] + 4] + B[triIndex[0], triIndex[1] + 5]);
-        string thisD = System.String.Join("", triNu[0] + triNu[1] + triNu[2]);
+        triNu[0] = NucleotideCopy(B[triIndex[0], triIndex[1]]);
+        triNu[1] = NucleotideCopy(B[triIndex[0], triIndex[1] + 1]);
+        triNu[2] = NucleotideCopy(B[triIndex[0], triIndex[1] + 2]);
+        //string nextD = System.String.Join("", B[triIndex[0], triIndex[1] + 3] + B[triIndex[0], triIndex[1] + 4] + B[triIndex[0], triIndex[1] + 5]);
+        //string thisD = System.String.Join("", triNu[0] + triNu[1] + triNu[2]);
 
-        B[triIndex[0], triIndex[1] + 3] = triNu[0];
-        B[triIndex[0], triIndex[1] + 4] = triNu[1];
-        B[triIndex[0], triIndex[1] + 5] = triNu[2];
+        B[triIndex[0], triIndex[1] + 3] = NucleotideCopy(triNu[0]);
+        B[triIndex[0], triIndex[1] + 4] = NucleotideCopy(triNu[1]);
+        B[triIndex[0], triIndex[1] + 5] = NucleotideCopy(triNu[2]);
         //Debug.Log("Duplication! : " + "[" + triIndex[0] + "," + triIndex[1] + "] " + thisD + "-" + nextD);
 
       }
@@ -557,7 +595,8 @@ public int final_mutsize;
       int index1 = UnityEngine.Random.Range(0, 486);
       int randBase = UnityEngine.Random.Range(0, 2);
       int pointTypeRoll = UnityEngine.Random.Range(0, 10);
-      int transversionRoll = P_transversion[UnityEngine.Random.Range(0,P_transversion.Length)];
+      int transversionRoll = 0;
+       transversionRoll = P_transversion[UnityEngine.Random.Range(0,P_transversion.Length)];
       //string pointType;
       //string pyrOrPur;
 
@@ -569,49 +608,49 @@ public int final_mutsize;
             switch(thisBase){
               case "A":
                   switch(transversionRoll){
-                    case 0:
+                    case -1:
                     newBase = "G";
-                    A[index0,index1] = newBase;
+                    A[index0,index1] = NucleotideCopy(newBase);
                     break;
                     case 1:
                     newBase = "T";
-                    A[index0,index1] = newBase;
+                    A[index0,index1] = NucleotideCopy(newBase);
                     break;
                   }
               break;
               case "G":
               switch(transversionRoll){
-                    case 0:
+                    case -1:
                     newBase = "A";
-                    A[index0,index1] = newBase;
+                    A[index0,index1] = NucleotideCopy(newBase);
                     break;
                     case 1:
                     newBase = "T";
-                    A[index0,index1] = newBase;
+                    A[index0,index1] = NucleotideCopy(newBase);
                     break;
                   }
               break;
               case "C":
               switch(transversionRoll){
-                    case 0:
+                    case -1:
                     newBase = "T";
-                    A[index0,index1] = newBase;
+                    A[index0,index1] = NucleotideCopy(newBase);
                     break;
                     case 1:
                     newBase = "G";
-                    A[index0,index1] = newBase;
+                    A[index0,index1] = NucleotideCopy(newBase);
                     break;
                   }
               break;
               case "T":
               switch(transversionRoll){
-                    case 0:
+                    case -1:
                     newBase = "C";
-                    A[index0,index1] = newBase;
+                    A[index0,index1] = NucleotideCopy(newBase);
                     break;
                     case 1:
                     newBase = "A";
-                    A[index0,index1] = newBase;
+                    A[index0,index1] = NucleotideCopy(newBase);
                     break;
                   }
               break;
@@ -623,49 +662,49 @@ public int final_mutsize;
             switch(thisBase){
               case "A":
                   switch(transversionRoll){
-                    case 0:
+                    case -1:
                     newBase = "G";
-                    B[index0,index1] = newBase;
+                    B[index0,index1] = NucleotideCopy(newBase);
                     break;
                     case 1:
                     newBase = "T";
-                    B[index0,index1] = newBase;
+                    B[index0,index1] = NucleotideCopy(newBase);
                     break;
                   }
               break;
               case "G":
               switch(transversionRoll){
-                    case 0:
+                    case -1:
                     newBase = "A";
-                    B[index0,index1] = newBase;
+                    B[index0,index1] = NucleotideCopy(newBase);
                     break;
                     case 1:
                     newBase = "T";
-                    B[index0,index1] = newBase;
+                    B[index0,index1] = NucleotideCopy(newBase);
                     break;
                   }
               break;
               case "C":
               switch(transversionRoll){
-                    case 0:
+                    case -1:
                     newBase = "T";
-                    B[index0,index1] = newBase;
+                    B[index0,index1] = NucleotideCopy(newBase);
                     break;
                     case 1:
                     newBase = "G";
-                    B[index0,index1] = newBase;
+                    B[index0,index1] = NucleotideCopy(newBase);
                     break;
                   }
               break;
               case "T":
               switch(transversionRoll){
-                    case 0:
+                    case -1:
                     newBase = "C";
-                    B[index0,index1] = newBase;
+                    B[index0,index1] = NucleotideCopy(newBase);
                     break;
                     case 1:
                     newBase = "A";
-                    B[index0,index1] = newBase;
+                    B[index0,index1] = NucleotideCopy(newBase);
                     break;
                   }
               break;
@@ -770,14 +809,15 @@ public int final_mutsize;
     }
 
     mutate = false;
-    numMutations = 0;
+    numMutations = UnityEngine.Random.Range(1,16);
     final_mutsize = base_mutDice / mutMultiplier;
+
     TranslateGenome();
   }
 
 
 
-  string[] codon = new string[3];
+  private string[] codon = new string[3];
   string[] anticodon = new string[3];
   string allelesA = "";
   string allelesB = "";
@@ -821,7 +861,12 @@ public int final_mutsize;
   //public List<string> problemSites = new List<string>();
   
   void TranslateGenome() {
-    mutate = false;
+    //mutate = false;
+
+    int mutationroll = UnityEngine.Random.Range(0, final_mutsize);
+      if(mutationroll == 1){
+        mutate = true;
+      }
     //Debugging translation
 /*    
     problemSites.Clear();
@@ -847,25 +892,41 @@ public int final_mutsize;
     
     
      if(firstTranslation == false ){ //Recombination
-     if (mother != null) {
-      //Array.Clear(A, 0, A.Length);
-      //Array.Clear(B, 0, B.Length);
-      A = mother.A;
-      B = mother.B;
-      int mutationroll = UnityEngine.Random.Range(0, final_mutsize);
-      if(mutationroll == 8){
-        mutate = true;
-      }else{
-        mutate = false;
+     firstTranslation = true;
+     if(mother == null){
+      if( blibControls.generation == 0){
+        for (int i = 0; i < 9; i++){
+          for (int j = 0; j < 486; j++){
+            A[i,j] = NucleotideCopy(initGenomestatic.A_static[i,j]);
+            B[i,j] = NucleotideCopy(initGenomestatic.B_static[i,j]);
+          }
+        }
+        
+      }else if(blibControls.generation > 0 && mother == null){
+        A = null;
+        B = null;
+        testA = null;
+        testB = null;
+        Destroy(gameObject);
       }
-    } else {
-      A = initGenomestatic.A_static;
-      B = initGenomestatic.B_static;
+      
+      
+    }else if(mother != null){
+      for (int i = 0; i < 9; i++){
+          for (int j = 0; j < 486; j++){
+            A[i,j] = NucleotideCopy(mother.A[i,j]);
+            B[i,j] = NucleotideCopy(mother.B[i,j]);
+          }
+        }
     }
+
+    
+
+
         
          doConversion = false;
         
-         numRecoms = UnityEngine.Random.Range(0, 4);
+         numRecoms = UnityEngine.Random.Range(32, 512);
 
          recoChromos = 9;
          numRecoLoci = 19;
@@ -891,28 +952,30 @@ public int final_mutsize;
             int donator;
 
         for(int n = 0; n < numRecoms; n++){
-             conversionDice = UnityEngine.Random.Range(0,4096);
+             conversionDice = UnityEngine.Random.Range(0,512);
              donator = -1;
 
-            if(conversionDice == 64){
+            if(conversionDice == 1){
+              donator = -1;
+
             donator = UnityEngine.Random.Range(0,2);
             doConversion = true;
             }else{doConversion = false;}
 
             for(int i = recoStart_site; i < recoEnd_site; i++){
-            recoBuffer_A.Add(A[whichChromo,i]);
-            recoBuffer_B.Add(B[whichChromo,i]);
+            recoBuffer_A.Add(NucleotideCopy(A[whichChromo,i]));
+            recoBuffer_B.Add(NucleotideCopy(B[whichChromo,i]));
             }
 
             for (int i = recoStart_site; i < recoEnd_site; i++){
                 if(doConversion == false){
-                    A[whichChromo,i] = recoBuffer_B[i - recoStart_site];
-                    B[whichChromo,i] = recoBuffer_A[i - recoStart_site];
+                    A[whichChromo,i] = NucleotideCopy(recoBuffer_B[i - recoStart_site]);
+                    B[whichChromo,i] = NucleotideCopy(recoBuffer_A[i - recoStart_site]);
                 }else if(doConversion == true){
                     if(donator == 0){
-                        B[whichChromo,i] = recoBuffer_A[i - recoStart_site];
+                        B[whichChromo,i] = NucleotideCopy(recoBuffer_A[i - recoStart_site]);
                      }else if(donator == 1){
-                        A[whichChromo,i] = recoBuffer_B[i - recoStart_site];
+                        A[whichChromo,i] = NucleotideCopy(recoBuffer_B[i - recoStart_site]);
                     }
                 }
 
@@ -963,7 +1026,7 @@ public int final_mutsize;
         
       }
     }
-      firstTranslation = true;
+     
       //mutate = false;
       codon = new string[3] { "", "", "" };
       
@@ -1180,7 +1243,7 @@ public int final_mutsize;
 
       codonCount = 0;
       baseCount = 0;
-      int chromsize = A.GetLength(1);
+      int chromsize = B.GetLength(1);
       for (int x = 0; x < B.GetLength(0); x++) {
         for (int y = 0; y < B.GetLength(1); y++) {
           if (x == 0 && y == 0) { allelesB = ""; thisAlleleA = ""; thisAlleleB = ""; }
@@ -1797,8 +1860,8 @@ public int final_mutsize;
       thisA = "";
       thisB = "";
 
-      redAllele1 = nRED_A / 2f;
-      redAllele2 = nRED_B / 2f;
+      redAllele1 = nRED_A / 16f;
+      redAllele2 = nRED_B / 16f;
       //redGene = Mathf.Clamp((redAllele1 + redAllele2) / 2.0f, 0.00f, 1.00f);
 
 
@@ -1806,8 +1869,8 @@ public int final_mutsize;
       greenAllele2 = nGRN_B / 32f;
       //greenGene = Mathf.Clamp((greenAllele1 + greenAllele2) / 2.0f, 0.00f, 1.00f);
 
-      blueAllele1 = nLLY_A / 2f;
-      blueAllele2 = nLLY_B / 2f;
+      blueAllele1 = nLLY_A / 16f;
+      blueAllele2 = nLLY_B / 16f;
       //blueGene = Mathf.Clamp((blueAllele1 + blueAllele2) / 2.0f, 0.00f, 1.00f);
 
       moveAllele1 = nMVV_A * 3f;
@@ -1822,10 +1885,10 @@ public int final_mutsize;
       e2repAllele2 = 64f + Mathf.Pow(1.5f, nREP_B);
       //energyToReproduce = (e2repAllele1 + e2repAllele2) / 2.0f;
 
-      lifeLengthAllele1 = 16f + Mathf.Pow(2f, nLIF_A);
-      lifeLengthAllele2 = 16f + Mathf.Pow(2f, nLIF_B);
+      lifeLengthAllele1 = 16f + Mathf.Pow(2f, nLIF_A)*((greenAllele1+greenAllele2)/2f);
+      lifeLengthAllele2 = 16f + Mathf.Pow(2f, nLIF_B)*((greenAllele1+greenAllele2)/2f);
       //lifeLength = (lifeLengthAllele1 + lifeLengthAllele2);
-    
+     
       trackerAllele1 = nTRACKER_A;
       trackerAllele2 = nTRACKER_B;
 
@@ -1861,22 +1924,37 @@ string[] tempBaseGather_B = new string[486];
 for(int i = 0; i < 9; i++){
   
   for(int j = 0; j < 486; j++){
-    tempBaseGather_A[j] = A[i,j];
-    tempBaseGather_B[j] = B[i,j];
-    if(A[i,j] != B[i,j]){
-      SNP_count +=1f;
-    }
+    tempBaseGather_A[j] = NucleotideCopy(A[i,j]);
+    tempBaseGather_B[j] = NucleotideCopy(B[i,j]);
+    
   }
   tempchromo_A[i] = System.String.Join("",tempBaseGather_A);
   tempchromo_B[i] = System.String.Join("",tempBaseGather_B);
 }
-heteroZygosity = SNP_count/(9f*486f);
+
   
 testA = System.String.Join("", tempchromo_A);
 testB = System.String.Join("", tempchromo_B);
 
+  float tempSNPA = 0;
+  float tempSNPB = 0;
+  for(int g = 0; g < 9*486;g++){
+    if(!String.Equals(initGenomestatic.referenceA[g],testA[g])){
+      tempSNPA += 1f;
+    }
+    if(!String.Equals(initGenomestatic.referenceB[g],testB[g])){
+      tempSNPB += 1f;
+    }
+    if(!String.Equals(testA[g], testB[g])){
+      SNP_count += 1.0f;
+    }
+  }
+  heteroZygosity = SNP_count/(9f*486f);
+    refSNP_A = tempSNPA;
+    refSNP_B = tempSNPB;
       firstTranslation = true;
       
+      InitializePheno();
     
 
   }
@@ -1895,6 +1973,34 @@ testB = System.String.Join("", tempchromo_B);
   }
 
 
+  void InitializePheno(){
+
+      blibControls.lifeLength = (lifeLengthAllele1 + lifeLengthAllele2)/2f;
+    
+      blibControls.energyToReproduce =128f+ (e2repAllele1 + e2repAllele2) / 2.0f;
+
+      blibControls.moveForce = (moveAllele1 + moveAllele2) / 2f;
+
+      blibControls.turnTorque = (turnTorqueAllele1 + turnTorqueAllele2) / 2.0f;
+
+      blibControls.redGene = Mathf.Clamp((redAllele1 + redAllele2) / 2.0f, 0.00f, 1.00f);
+
+      blibControls.greenGene = Mathf.Clamp((greenAllele1 + greenAllele2) / 2.0f, 0.00f, 1.00f);
+
+      blibControls.blueGene = Mathf.Clamp((blueAllele1 + blueAllele2) / 2.0f, 0.00f, 1.00f);
+      this.gameObject.GetComponent<SpriteRenderer>().color = new Color(Mathf.Clamp((redAllele1 + redAllele2) / 2.0f, 0.00f, 1.00f), Mathf.Clamp((greenAllele1 + greenAllele2) / 2.0f, 0.00f, 1.00f), Mathf.Clamp((blueAllele1 + blueAllele2) / 2.0f, 0.00f, 1.00f), 1f);
+
+
+  }
+
+  string NucleotideCopy(string input){
+    
+    char [] tempChar = new char[input.Length];
+    input.CopyTo(0,tempChar,0,input.Length);
+    string output = new string(tempChar);
+    
+    return output;
+  }
 
 
   /* 

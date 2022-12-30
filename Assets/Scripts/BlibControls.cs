@@ -56,7 +56,7 @@ public class BlibControls : MonoBehaviour {
   private float colorB;
   private float colorA = 1f;
 
-  public Color geneticColor;
+  private Color geneticColor;
   public float densityCo;
   Rigidbody2D rb;
   GameObject box;
@@ -100,7 +100,7 @@ public class BlibControls : MonoBehaviour {
   float boxLength;
   public int generation;
 
-  SpriteRenderer m_SpriteRenderer;
+  private SpriteRenderer m_SpriteRenderer;
 
 
   float energyTick;
@@ -163,7 +163,7 @@ public class BlibControls : MonoBehaviour {
 
 
 
-    m_SpriteRenderer = GetComponent<SpriteRenderer>();
+    m_SpriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
 
 
 
@@ -183,16 +183,16 @@ public class BlibControls : MonoBehaviour {
 
 
 
-  GetPheno();
+  //GetPheno();
     
 
 
-    geneticColor = new Color(redGene, greenGene, blueGene, 1f);
-    geneticColor.r = redGene;
-    geneticColor.g = greenGene;
-    geneticColor.b = blueGene;
+    //geneticColor = new Color(redGene, greenGene, blueGene, 1f);
+    //geneticColor.r = redGene;
+    //geneticColor.g = greenGene;
+    //geneticColor.b = blueGene;
 
-    m_SpriteRenderer.color = geneticColor;
+    m_SpriteRenderer.color = new Color(redGene, greenGene, blueGene, 1f);
 
 
     for (int i = 0; i < superSatellite.GetLength(0); i++) {
@@ -344,6 +344,8 @@ public class BlibControls : MonoBehaviour {
           nutLevel += -1*proteinCost;
         m_nutgrid.SetValue(transform.position, (posVal + proteinCost));
         }
+        //GetPheno();
+        /*
       redAllele1 = genome_script.redAllele1;
       redAllele2 = genome_script.redAllele2;
       redGene = Mathf.Clamp((redAllele1 + redAllele2) / 2.0f, 0.00f, 1.00f);
@@ -378,15 +380,15 @@ public class BlibControls : MonoBehaviour {
 
       blueGene = Mathf.Clamp((blueAllele1 + blueAllele2) / 2.0f, 0.00f, 1.00f);
 
-
+      */
         
       geneticColor = new Color(redGene, greenGene, blueGene, 1f);
       
 
       
-      m_SpriteRenderer.color = geneticColor;
+      m_SpriteRenderer.color = new Color(redGene, greenGene, blueGene, 1f);
       if (energy < maxEnergy) {
-        energy += 42f * greenGene + 16f * redGene;
+        energy += 32f * greenGene + 24f * redGene + 16*blueGene;
         if (energy > maxEnergy) { energy = maxEnergy; }
       }
       energyTick = 0.0f;
@@ -403,7 +405,7 @@ public class BlibControls : MonoBehaviour {
 
 
 
-    int dC = (int)((lifeLength * Mathf.Pow((4f * lifeLength / age), 2f)) - (16f * lifeLength));
+    int dC = (int)((lifeLength * Mathf.Pow((4f * lifeLength / age), 2f)) - (8f * lifeLength));
     deathDice = Random.Range(1, dC);
 
     age += Time.deltaTime;
@@ -419,7 +421,7 @@ public class BlibControls : MonoBehaviour {
 
     if (rAgeDice == 1 && energy >= energyToReproduce && nutLevel >= nutToReproduce) {
       
-        
+        /*
       redAllele1 = genome_script.redAllele1;
       redAllele2 = genome_script.redAllele2;
 
@@ -451,7 +453,7 @@ public class BlibControls : MonoBehaviour {
       greenGene = Mathf.Clamp((greenAllele1 + greenAllele2) / 2.0f, 0.00f, 1.00f);
 
       blueGene = Mathf.Clamp((blueAllele1 + blueAllele2) / 2.0f, 0.00f, 1.00f);
-        
+        */
 
       Reproduce();
 
@@ -647,7 +649,7 @@ public class BlibControls : MonoBehaviour {
 
   float energyMoveMod;
   void GoForward() {
-    if (energy < energyToReproduce / 16f) { energyMoveMod = 0; } else { energyMoveMod = 1f; }
+    if (energy < energyToReproduce / 32f) { energyMoveMod = 0; } else { energyMoveMod = 1f; }
     Vector2 origin = transform.position + transform.up;
     Vector2 direction = transform.up;
     float distance = 64f;
@@ -657,7 +659,7 @@ public class BlibControls : MonoBehaviour {
     }
 
     rb.AddForce((transform.up * moveForce * rb.mass * speedModifier) * energyMoveMod);
-    energy -= (moveForce / 1024f) * energyMoveMod;
+    energy -= (moveForce / 256) * energyMoveMod;
     int randTurner = Random.Range(0, (int)turnDice);
 
     if (randTurner == 0) {
@@ -695,10 +697,10 @@ public class BlibControls : MonoBehaviour {
     
 
  
-    introns[0, 0] += (float)rndA.Next(-1, 2);
-    introns[1, 0] += (float)rndA.Next(-1, 2);
-    introns[0, 1] += (float)rndA.Next(-1, 2);
-    introns[1, 1] += (float)rndA.Next(-1, 2);
+    introns[0, 0] += (float)rndA.Next(-2, 3);
+    introns[1, 0] += (float)rndA.Next(-2, 3);
+    introns[0, 1] += (float)rndA.Next(-2, 3);
+    introns[1, 1] += (float)rndA.Next(-2, 3);
 
 
 
@@ -708,22 +710,31 @@ public class BlibControls : MonoBehaviour {
 
 
 
-    geneticColor.r = redGene;
-    geneticColor.g = greenGene;
-    geneticColor.b = blueGene;
+    //geneticColor.r = redGene;
+    //geneticColor.g = greenGene;
+    //geneticColor.b = blueGene;
 
-    m_SpriteRenderer.color = geneticColor;
+   this.gameObject.GetComponent<SpriteRenderer>().color = new Color(redGene, greenGene, blueGene, 1f);
 
 
 
     energy = (energy / 2.0f);
-    bool odd = false;
-
+    //bool odd = false;
+    int quotient = 0; int remainder = 0; int daughterNutes = 0; int motherNutes = 0;
     if (nutLevel > 0) {
+      if(nutLevel == 1){
+        motherNutes = 1; daughterNutes = 0;
+      }
 
+      if(nutLevel > 1){
+        quotient = nutLevel/2;
+        remainder = nutLevel%2;
+        motherNutes = quotient+remainder;
+        daughterNutes = quotient;
+      }
+       
 
-
-      if (nutLevel == 1) {
+     /* if (nutLevel == 1) {
         odd = true;
         tempNut = 0;
       } else if (nutLevel > 1) {
@@ -736,13 +747,12 @@ public class BlibControls : MonoBehaviour {
           tempNut = (nutLevel - 1) / 2;
         }
 
-      }
+      }*/
       nutLevel = 0;
     }
 
 
-    string[,] tempStringA = genome_script.A;
-    string[,] tempStringB = genome_script.B;
+    
     GameObject daughter = Instantiate(this.gameObject);
     BlibGenome daughterGenome = daughter.GetComponent<BlibGenome>();
     daughterGenome.mother = this.genome_script;
@@ -754,23 +764,24 @@ public class BlibControls : MonoBehaviour {
     for (int i = 0; i < daughterID.Length; i++) {
       daughterID[i] = blibSpawner.linChars[UnityEngine.Random.Range(0, blibSpawner.linChars.Length)];
     }
-
-
+    
+    
    daughterGenome.lineageID.Add(System.String.Join("", daughterID));
-   daughterGenome.A = tempStringA;
-   daughterGenome.B = tempStringB;
+   //daughterGenome.A = this.gameObject.GetComponent<BlibGenome>().A.Clone() as string[,];
+   //daughterGenome.B = this.gameObject.GetComponent<BlibGenome>().B.Clone() as string[,];
+   
    //daughterGenome.numMutations = 1;
-   //if(mutationroll == 64){
-    //daughterGenome.mutate = true;
+   if(mutationroll == 1){
+    daughterGenome.mutate = true;
     
     
-   //}else{daughterGenome.mutate = false;}
+   }else{daughterGenome.mutate = false;}
     
-    if (odd == true) {
-      daughter_controls.nutLevel = tempNut + 1;
-    } else { daughter_controls.nutLevel = tempNut; }
+    
+      daughter_controls.nutLevel = daughterNutes;
+      nutLevel = motherNutes;
 
-    nutLevel = tempNut;
+    //nutLevel = tempNut;
 
 
 
@@ -813,14 +824,14 @@ public class BlibControls : MonoBehaviour {
 
 
 
-
+    /*
     geneticColor = new Color(redGene, greenGene, blueGene, 1f);
     geneticColor.r = redGene;
     geneticColor.g = greenGene;
     geneticColor.b = blueGene;
 
-    m_SpriteRenderer.color = geneticColor;
-
+    m_SpriteRenderer.color = new Color(redGene, greenGene, blueGene, 1f);;
+    */
     if (initDiversity != 0) {
       //Mutation
 
@@ -849,7 +860,7 @@ public class BlibControls : MonoBehaviour {
     doInitDiversifier = false;
   }
 
-  void GetPheno(){
+    void GetPheno(){
     redAllele1 = genome_script.redAllele1;
     redAllele2 = genome_script.redAllele2;
     redGene = Mathf.Clamp((redAllele1 + redAllele2) / 2.0f, 0.00f, 1.00f);
@@ -872,7 +883,7 @@ public class BlibControls : MonoBehaviour {
 
     e2repAllele1 = genome_script.e2repAllele1;
     e2repAllele2 = genome_script.e2repAllele2;
-    energyToReproduce = (e2repAllele1 + e2repAllele2) / 2.0f;
+    energyToReproduce = 128f + (e2repAllele1 + e2repAllele2) / 2.0f;
     lifeLength = (genome_script.lifeLengthAllele1 + genome_script.lifeLengthAllele2);
 
   }

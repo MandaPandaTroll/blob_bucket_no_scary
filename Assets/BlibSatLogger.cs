@@ -36,6 +36,9 @@ GameObject[] blibs;
     private List<string> aa_B = new List<string>();
     private List<string> aa_antiA = new List<string>();
     private List<string> aa_antiB = new List<string>();
+    private List<float> snpratA = new List<float>();
+    private List<float> snpratB = new List<float>();
+    private List<int> generation = new List<int>();
 
     
     private int itCount, sampler, sampleGroup, sampleSize;  
@@ -102,7 +105,9 @@ GameObject[] blibs;
                     //aa_antiB.Add(sampledGenome.aa_antiB);
                     testA.Add(sampledGenome.testA);
                     testB.Add(sampledGenome.testB);
-
+                    snpratA.Add(sampledGenome.refSNP_A);
+                    snpratB.Add(sampledGenome.refSNP_B);
+                    generation.Add(sampledBlib.generation);
                 }
             }   Save();
         }        
@@ -120,13 +125,16 @@ GameObject[] blibs;
             string[] rowDataTemp;
         if (itCount == 1){
 
-            rowDataTemp = new string[6];
+            rowDataTemp = new string[9];
             rowDataTemp[0] ="time" ;
             rowDataTemp[1] ="name" ;
             rowDataTemp[2] = "sampleGroup";
             rowDataTemp[3] = "sample_number";
             rowDataTemp[4] = "testA";
             rowDataTemp[5] = "testB";
+            rowDataTemp[6] = "divergence_ratio_A";
+            rowDataTemp[7] = "divergence_ratio_B";
+            rowDataTemp[8] = "generation";
             //rowDataTemp[6] = "aa_A";
             //rowDataTemp[7] = "aa_antiA";
             //rowDataTemp[8] = "aa_B";
@@ -141,13 +149,16 @@ GameObject[] blibs;
         for(int i = 0; i < sampleSize; i++)
         {   
             
-            rowDataTemp = new string[6];
+            rowDataTemp = new string[9];
             rowDataTemp[0] = totalTime.ToString();
             rowDataTemp[1] = unitName[i];
             rowDataTemp[2] = sampleGroup.ToString();
             rowDataTemp[3] = i.ToString();
             rowDataTemp[4] = testA[i].ToString();
             rowDataTemp[5] = testB[i].ToString();
+            rowDataTemp[6] = snpratA[i].ToString();
+            rowDataTemp[7] = snpratB[i].ToString();
+            rowDataTemp[8] = generation[i].ToString();
             //rowDataTemp[6] = aa_A[i].ToString();
             //rowDataTemp[7] = aa_antiA[i].ToString();
             //rowDataTemp[8] = aa_B[i].ToString();
@@ -202,7 +213,7 @@ GameObject[] blibs;
         }
         
         
-        unitName.Clear();testA.Clear();testB.Clear();aa_A.Clear();aa_antiA.Clear();aa_B.Clear();aa_antiB.Clear();
+        unitName.Clear();testA.Clear();testB.Clear();aa_A.Clear();aa_antiA.Clear();aa_B.Clear();aa_antiB.Clear();snpratA.Clear();snpratB.Clear();generation.Clear();
         Array.Clear(blibs,0,blibs.Length);
         time = 0f;
         sampleGroup += 1;

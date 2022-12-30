@@ -1138,8 +1138,8 @@ MonoBehaviour:
   statTot: 0
   gridX: 0
   gridY: 0
-  cellScale: 8
-  initConc: 16
+  cellScale: 4
+  initConc: 8
   freeNutes: 0
   lockedNutes: 0
 --- !u!4 &314230637
@@ -3210,7 +3210,7 @@ Transform:
   m_GameObject: {fileID: 1136253239}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 512, y: 512, z: 1}
+  m_LocalScale: {x: 256, y: 256, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1855928353}
@@ -4349,14 +4349,6 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5861536312715401571, guid: b4fd95410a7974669a7ac717eb2be2ee, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5861536312715401571, guid: b4fd95410a7974669a7ac717eb2be2ee, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5861536312715401571, guid: b4fd95410a7974669a7ac717eb2be2ee, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.96136624
       objectReference: {fileID: 0}
@@ -4496,7 +4488,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fileSize_MB: 128
   maxSampleSize: 1024
-  sampleRate: 100
+  sampleRate: 50
 --- !u!114 &1626781024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4675,7 +4667,7 @@ MonoBehaviour:
   blobN: 0
   blubN: 0
   blybN: 0
-  sampleRate: 50
+  sampleRate: 1
 --- !u!114 &1626781030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5391,11 +5383,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 039dfd508f8d1458cba1ed8a233b480b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialMutations: 1
+  initialMutations: 0
   initgen: {fileID: 1802033099}
   linChars: 
   initLineage: 
-  initBlib: 2
+  initBlib: 1
   autoRespawn: 0
   extraBlib: 1
   minBlib: 1
@@ -5430,13 +5422,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6bd4133b54884e9b85ea955802985c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initBlob: 2
+  initBlob: 0
   extraBlob: 1
   minBlob: 2
   blob: {fileID: 1711403674044451826, guid: 62f3ae1229ce147e085f49742d4f03cd, type: 3}
   initProtein: 0
   initEnergy: 0
-  autoRespawn: 1
+  autoRespawn: 0
 --- !u!114 &1883381886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5466,13 +5458,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e09c4ea668b25499390c530b02010ef1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initBlyb: 2
+  initBlyb: 0
   extraBlyb: 1
   minBlyb: 2
   blyb: {fileID: 9185934289686911736, guid: b502b5fe1709f4524936c88a0c2bb425, type: 3}
   initProtein: 0
   initEnergy: 0
-  autoRespawn: 1
+  autoRespawn: 0
 --- !u!114 &1883381888
 MonoBehaviour:
   m_ObjectHideFlags: 0

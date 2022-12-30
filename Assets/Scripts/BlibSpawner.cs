@@ -6,6 +6,8 @@ using UnityEngine;
 public class BlibSpawner : MonoBehaviour {
   public int initialMutations;
   public initGenomeTest_blib initgen;
+  private string[,] initA = new string[9,486];
+  private string[,] initB = new string[9,486];
   public char[] linChars;
   public char[] initLineage;
   public List<char[]> initLineages = new List<char[]>();
@@ -14,7 +16,7 @@ public class BlibSpawner : MonoBehaviour {
   public int extraBlib;
 
   public int minBlib;
-  public GameObject blib;
+  public  GameObject blib;
   GameObject[] blibs;
   BlibGenome thisGenome;
 
@@ -28,8 +30,22 @@ public class BlibSpawner : MonoBehaviour {
   public int initProtein;
 
   // Start is called before the first frame update
+
+  
   void Start() {
 
+    
+    string[,,] owo = initGenomestatic.GetInitGeno();
+    for(int i = 0; i < 9; i++){
+              for(int j = 0; j < 486; j++){
+                initA[i,j] = owo[0,i,j];
+                initB[i,j] = owo[1,i,j];
+              }
+    }
+    
+    //initA = (string[,])initGenomestatic.A_static.Clone();
+    //initB = (string[,])initGenomestatic.B_static.Clone();
+    
     linChars = new char[93];
     initLineage = new char[32];
     for (int i = 0; i < linChars.Length; i++) {
@@ -54,10 +70,13 @@ public class BlibSpawner : MonoBehaviour {
       GameObject thisBlib = Instantiate(blib, new Vector3(x, y, 0), Quaternion.identity);
       thisGenome = thisBlib.GetComponent<BlibGenome>();
       thisGenome.lineageID.Add(System.String.Join("", initLineages[i]));
-      thisGenome.A = initGenomestatic.A_static;
-      thisGenome .B = initGenomestatic.B_static;
+      //thisGenome.A = new string[9,486];
+      //thisGenome.B = new string[9,486];
+      //thisGenome.A = initB.Clone() as string[,];
+      //thisGenome .B = initB.Clone() as string[,];
       thisGenome.numMutations = initialMutations;
       thisGenome.mutate = true;
+      thisGenome.mother = null;
 
       thisBlib.name = popLogger.GetName("blib");
       thisBlib.name = thisBlib.name.Replace("(Clone)", "");
@@ -100,19 +119,20 @@ public class BlibSpawner : MonoBehaviour {
       float y = (float)Random.Range(-boxSize / 3, boxSize / 3);
       GameObject thisBlib = Instantiate(blib, new Vector3(x, y, 0), Quaternion.identity);
       thisGenome = thisBlib.GetComponent<BlibGenome>();
-      thisGenome.A = initGenomestatic.A_static;
-      thisGenome.B = initGenomestatic.B_static;
-      /*
-      string[,,] antis = createAntiSenseStrand(thisGenome);
-      for (int p = 0; p < thisGenome.A.GetLength(0); p++){
-        for (int q = 0; q < thisGenome.A.GetLength(1); q++){
-            thisGenome.antisenseA[p,q] = antis[0,p,q];
-            thisGenome.antisenseB[p,q] = antis[1,p,q];
-        }
-      }
-      */
+      
+      //thisGenome.A = new string[9,486];
+      //thisGenome.B = new string[9,486];
+      //thisGenome.A = initB.Clone() as string[,];
+      //thisGenome .B = initB.Clone() as string[,];
+      thisGenome.numMutations = initialMutations;
+      thisGenome.mutate = true;
+      thisGenome.mother = null;
+
       thisBlib.name = popLogger.GetName("blib");
       thisBlib.name = thisBlib.name.Replace("(Clone)", "");
+      BlibControls thisBlibControls = thisBlib.GetComponent<BlibControls>();
+      //thisBlibControls.energy = 100f;
+      thisBlibControls.nutLevel = initProtein;
 
     }
   }
