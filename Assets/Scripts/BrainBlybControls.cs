@@ -168,7 +168,7 @@ void Awake(){
 
         e2repAllele1 = genome.e2repAllele1;
         e2repAllele2 = genome.e2repAllele2;
-        energyToReproduce = maxEnergy/8.0f;
+        energyToReproduce = maxEnergy/2.0f;
 
         lookDistAllele1 = genome.lookDistAllele1;
         lookDistAllele2 = genome.lookDistAllele2;
@@ -227,7 +227,7 @@ void Awake(){
         }
     if(alive == true)
     {   
-        if(energy < maxEnergy/64){
+        if(energy < maxEnergy/256f){
             currentHealth += -0.1f;
         }
         if  ( age > lifeLength || deathDice == 1 || currentHealth <= 0 )
@@ -241,7 +241,7 @@ void Awake(){
         }
         if(tryAttack == true ||  tryConjugate == true  || tryReproduce == true || tryPhagocytise == true || excreting == true){
             if(energy >= 100.0f){
-                energy += -0.25f*(newSize.x);
+                energy += -0.01f*(newSize.x);
             }else if(energy < 100.0f){
                 tryAttack = false;  tryConjugate = false; tryReproduce = false; tryPhagocytise = false; excreting = false;
             }
@@ -264,13 +264,13 @@ void Awake(){
             //Ammonia toxicity
             if(NH4 >= NH4_tox_lvl){
 
-                currentHealth += -1f*(Mathf.Pow(2f,0.1f*NH4_excess)-1f);
+                currentHealth += 0.01f*NH4_excess;
                 
                 }
 
             
             if(energy > maxEnergy/4.00f && protein > 0 && currentHealth < maxHealth){
-                energy += -0.25f*sizeGene;
+                energy += -0.01f*sizeGene;
                 currentHealth += 1f;
                 protein += -1;
                 NH4 += 1;
@@ -298,7 +298,7 @@ void Awake(){
                 Reproduce();
 
                 }else if(energy >= 5f){
-                    energy += -0.5f;
+                    energy += -0.01f;
                 }
             }
 
@@ -598,9 +598,9 @@ void Awake(){
                 sigmoid = sizeGene/ (1f+ Mathf.Exp(-k*(x)));
                 newSize = new Vector3(sigmoid,sigmoid,sigmoid);
                 transform.localScale = newSize;
-                NH4_tox_lvl = (int)Mathf.Pow(3f,newSize.x);
+                NH4_tox_lvl = 16+(int)Mathf.Pow(8f,newSize.x);
                     maxEnergy = sigmoid*35000f;
-                energyToReproduce = maxEnergy /8.0f;
+                energyToReproduce = maxEnergy /4.0f;
                 maxHealth = Mathf.Round(Mathf.Pow(4, newSize.x+1f));
                     if (generation == 100|| generation == 200 || generation == 300 || generation == 400 || generation == 500 || generation == 600 || generation == 800 || generation == 1000)
                     {
@@ -661,15 +661,15 @@ void Awake(){
                 sigmoid = sizeGene/ (1f+ Mathf.Exp(-k*(x)));
                 newSize = new Vector3(sigmoid,sigmoid,sigmoid);
                 transform.localScale = newSize;
-                NH4_tox_lvl = (int)Mathf.Pow(2f,newSize.x);
+                NH4_tox_lvl = 16+(int)Mathf.Pow(8f,newSize.x);
                 maxEnergy = sigmoid*35000f;
-                energyToReproduce = maxEnergy /8.0f;
+                energyToReproduce = maxEnergy /4.0f;
                 maxHealth = Mathf.Round(Mathf.Pow(4, newSize.x+1f));
                 //Allometric scaling
-                basalMet = 0.5f*Mathf.Pow(rb.mass, 1f/3f);
-                float protScale = 32f*Mathf.Pow((float)sizeGene,alloScaleFactor);
+                basalMet = 0.05f*Mathf.Pow(rb.mass, 1f/3f);
+                float protScale = 16f*Mathf.Pow((float)sizeGene,alloScaleFactor);
                 proteinToReproduce = (int)Mathf.Round(protScale);
-                maxProtein = proteinToReproduce*8;
+                maxProtein = proteinToReproduce*16;
                      
 
 
@@ -708,7 +708,7 @@ void Awake(){
 
         e2repAllele1 = 1f + genome.e2repAllele1;
         e2repAllele2 = 1f + genome.e2repAllele2;
-        energyToReproduce = maxEnergy/8.0f;
+        energyToReproduce = maxEnergy/4.0f;
 
         lookDistAllele1 = 1f + genome.lookDistAllele1;
         lookDistAllele2 = 1f + genome.lookDistAllele2;

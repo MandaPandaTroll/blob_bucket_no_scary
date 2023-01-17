@@ -119,6 +119,7 @@
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/Constraints/DetectionConstraint3D.cs" />
      <Compile Include="Assets/Testing.cs" />
      <Compile Include="Assets/Scripts/BlubGenetics.cs" />
+     <Compile Include="Assets/camFollow.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/Constraints/DetectionConstraint2D.cs" />
      <Compile Include="Assets/CodeMonkey/Utils/UI_Bar.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/ShapeScanUtil.cs" />
@@ -130,6 +131,7 @@
      <Compile Include="Assets/BlobSatLogger.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/Modifiers/PointModDilation.cs" />
      <Compile Include="Assets/Scripts/BrainBlobControls.cs" />
+     <Compile Include="Assets/VisionTexturer.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Detection/Observable.cs" />
      <Compile Include="Assets/CodeMonkey/MonoBehaviours/ComponentActions.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Sensor/GridSensor.cs" />
@@ -152,6 +154,7 @@
      <Compile Include="Assets/BlibGenome.cs" />
      <Compile Include="Assets/Scripts/BlubControls.cs" />
      <None Include="Assets/CodeMonkey/README.txt" />
+     <None Include="Assets/Shaders etc/SHAD.shader" />
     <Reference Include="UnityEngine">
         <HintPath>/Applications/2021.3.8f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

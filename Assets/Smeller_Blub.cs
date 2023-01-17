@@ -5,14 +5,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Smeller_Blub : MonoBehaviour
 {
     
+    
     Vector2 here;
     Vector2 n0 = Vector2.zero;
-    Vector2[] preyPositions; 
+   public Vector2[] preyPositions; 
     Vector2[] matePositions;
-    Vector2[] blibPositions; 
+    public Vector2[] blibPositions; 
 
     
    
@@ -27,9 +29,10 @@ public class Smeller_Blub : MonoBehaviour
     int smellMask;
     
     float latestLookDistance;
-    float smellDistance;
+   public float smellDistance;
     BrainBlub Blub;
-   
+    public Vector2[] testAngles = new Vector2[16];
+    public float[] angles = new float[16];
    void Awake(){
        latestLookDistance = 1f;
        smellDistance = 1f;
@@ -59,18 +62,21 @@ public class Smeller_Blub : MonoBehaviour
     
         
     }
-
+   public Vector2 forward;
     // Update is called once per frame
-    void FizedUpdate()
+    void FixedUpdate()
     {
         latestLookDistance = Blub.latestLookDistance;
-        here = gameObject.transform.position;
+        
         smellDistance= latestLookDistance;
+        forward = new Vector2(transform.up.x,transform.up.y);
         Smell();
 
     }
-
+    float[] tempAngles = new float[16];
+    public Vector2[] debugPositions = new Vector2[16];
     void Smell(){
+        here = gameObject.transform.position;
         preyPositions = new Vector2[16]{n0,n0,n0,n0,n0,n0,n0,n0,n0,n0,n0,n0,n0,n0,n0,n0}; 
         matePositions     = new Vector2[16]{n0,n0,n0,n0,n0,n0,n0,n0,n0,n0,n0,n0,n0,n0,n0,n0}; 
         blibPositions     = new Vector2[16]{n0,n0,n0,n0,n0,n0,n0,n0,n0,n0,n0,n0,n0,n0,n0,n0};
@@ -119,26 +125,54 @@ public class Smeller_Blub : MonoBehaviour
                     }
                     
                     if(nPrey > 0){
-                        
+                        //Vector2[] newPos = new Vector2[16];
                         Vector2[] tempDist = new Vector2[16];
+                        Vector2[] relativepos = new Vector2[16];
+                        float[] relativeAngle = new float[16];
+                        //float dotProd;
                         for(int i = 0; i < 15; i++){
-                            tempDist[i] =  ( (preyPositions[i] - here)/smellDistance);
+                            if(preyPositions[i] != n0){
+                                relativepos[i] =  ( preyPositions[i] - (Vector2)gameObject.transform.position);
+                                //dotProd = relativepos[i].normalized.x*gameObject.transform.up.x + relativepos[i].normalized.y*gameObject.transform.up.y;
+                                //float multiMag = relativepos[i].normalized.magnitude*gameObject.transform.up.magnitude;
+                             relativeAngle[i] = ( Vector2.SignedAngle(transform.up,relativepos[i]))*Mathf.Deg2Rad;//Mathf.Acos((dotProd/multiMag)*Mathf.Deg2Rad);
+                             
+                           
+                            tempDist[i] = relativepos[i]/smellDistance;//rotate(relativepos[i],relativeAngle[i])/smellDistance;
+                            }else{tempDist[i] = preyPositions[i];}
+                            
+                           
+                            
+                            
+                            
+                            //angles[i] = Mathf.Atan2(relativepos.y, relativepos.x);
+                            
+                            //tempAngles[i] = transform.rotation.z+Mathf.Atan2(relativepos.y, relativepos.x) * Mathf.Rad2Deg;
+                            //newPos[i].x = relativepos.x*Mathf.Cos(tempAngles[i]) + -relativepos.y*Mathf.Sin(tempAngles[i]);
+                            //newPos[i].y = relativepos.x*Mathf.Sin(tempAngles[i]) + relativepos.y*Mathf.Cos(tempAngles[i]);
+                            //tempDist[i] =  preyPositions[i]/smellDistance;
+                            
+                            debugPositions[i] = tempDist[i];
                             
                         }
+                            
+                          //tempDist = tempDist.OrderBy((d) => d.magnitude).ToArray();
+                          //tempDist = tempDist.Where(e => e.sqrMagnitude != 0).ToArray();
+                          //preyPositions = tempDist;
                         
-                          tempDist = tempDist.OrderBy((d) => d.magnitude).ToArray();
-                          tempDist = tempDist.Where(e => e.sqrMagnitude != 0).ToArray();
-                          preyPositions = tempDist;
-
 
 
                     for(int i = 0; i < 8; i++){
-                        
-                            if(preyPositions[i] != n0){
-                            scaledPreyDistance[i] = (preyPositions[i]);
+                            
+                                    
+                               
+                        if(tempDist[i] != n0){
+                            scaledPreyDistance[i] = (tempDist[i]);
                             
                             }else{scaledPreyDistance[i] = n0;}
-                                
+                    
+                            
+                            
                             
                             
                         }
@@ -205,5 +239,11 @@ public class Smeller_Blub : MonoBehaviour
 
 
     }
+    public static Vector2 rotate(Vector2 v, float delta) { //By Boz0r, unity forums
+    return new Vector2(
+        v.x * Mathf.Cos(delta) - v.y * Mathf.Sin(delta),
+        v.x * Mathf.Sin(delta) + v.y * Mathf.Cos(delta)
+    );
+}
 
 }

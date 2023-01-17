@@ -51,7 +51,7 @@ smeller = gameObject.GetComponent<Smeller_Blyb>();
 }
 void Start() 
 {
-
+        happiness = 0;
     curriculumHandler = FindObjectOfType<CurriculumHandler>();
 
                 if(academySpeedModifier_enabled == true){
@@ -237,7 +237,17 @@ public override void OnActionReceived(ActionBuffers actionBuffers)
                 bctrl.tryReproduce = true;
             }
     }
-
+if(forwardSignal == 0){
+        fwdMag = 0;
+    }else
+     if(forwardSignal == 1){
+        fwdMag = -1f;
+     }
+     else
+     if(forwardSignal == 2){
+        fwdMag = 1f;
+     }
+    /*
     if(forwardSignal == 0)
     {
         fwdMag = -1.0f;
@@ -262,7 +272,7 @@ public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         fwdMag = 4.0f;
     }
-
+    */
 
 
     if(rotSignal == 0)

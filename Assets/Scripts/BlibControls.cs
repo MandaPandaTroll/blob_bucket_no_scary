@@ -388,7 +388,7 @@ public class BlibControls : MonoBehaviour {
       
       m_SpriteRenderer.color = new Color(redGene, greenGene, blueGene, 1f);
       if (energy < maxEnergy) {
-        energy += 32f * greenGene + 24f * redGene + 16*blueGene;
+        energy += 42f * greenGene + 32f * redGene + 16*blueGene;
         if (energy > maxEnergy) { energy = maxEnergy; }
       }
       energyTick = 0.0f;

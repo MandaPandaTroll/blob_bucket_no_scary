@@ -117,13 +117,13 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 5
-  m_AngularDrag: 2.5
+  m_LinearDrag: 10
+  m_AngularDrag: 5
   m_GravityScale: 0
   m_Material: {fileID: 0}
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 0
 --- !u!114 &3468846596000450123
 MonoBehaviour:
@@ -193,9 +193,9 @@ MonoBehaviour:
   aa_B: 
   aa_antiB: 
   mutCount: 0
-  mutMultiplier: 512
-  translocation_enabled: 0
-  duplication_enabled: 0
+  mutMultiplier: 64
+  translocation_enabled: 1
+  duplication_enabled: 1
   lineageID: []
   greenAllele1: 1
   greenAllele2: 1

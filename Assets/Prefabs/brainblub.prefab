@@ -1,84 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2883105240995575885
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1991358148081410169}
-  - component: {fileID: 6697205851034145599}
-  m_Layer: 0
-  m_Name: Camera
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1991358148081410169
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2883105240995575885}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2899908468288829815}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!20 &6697205851034145599
-Camera:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2883105240995575885}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
-  m_projectionMatrixMode: 1
-  m_GateFitMode: 2
-  m_FOVAxisMode: 0
-  m_SensorSize: {x: 36, y: 24}
-  m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 50
-  m_NormalizedViewPortRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 60
-  orthographic: 1
-  orthographic size: 50
-  m_Depth: -1
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 968
-  m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 1
-  m_TargetEye: 3
-  m_HDR: 0
-  m_AllowMSAA: 0
-  m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
-  m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
 --- !u!1 &2899908468288829811
 GameObject:
   m_ObjectHideFlags: 0
@@ -114,8 +35,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1991358148081410169}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -130,6 +51,7 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -200,12 +122,12 @@ Rigidbody2D:
   m_UseAutoMass: 1
   m_Mass: 0.7853982
   m_LinearDrag: 10
-  m_AngularDrag: 2.5
+  m_AngularDrag: 5
   m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: e64201313438943b593297091c58a445, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 0
 --- !u!114 &3889601855363302318
 MonoBehaviour:
@@ -243,16 +165,16 @@ MonoBehaviour:
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 0
-      BranchSizes: 0500000005000000
-    VectorActionSize: 0500000005000000
+      BranchSizes: 0300000005000000
+    VectorActionSize: 0300000005000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 5022602860645237092, guid: e7d9097e23bfe47a9821b1176e83c8b6, type: 3}
   m_InferenceDevice: 0
-  m_BehaviorType: 2
+  m_BehaviorType: 0
   m_BehaviorName: BrainBlub
-  TeamId: 0
+  TeamId: 2
   m_UseChildSensors: 1
   m_UseChildActuators: 1
   m_ObservableAttributeHandling: 0
@@ -318,18 +240,18 @@ MonoBehaviour:
   alive: 1
   eaten: 0
   nom: 0
-  eCostCo: 10000
+  eCostCo: 10000000
   speciationDistance: 0.5
-  energy: 50000
+  energy: 10000
   pEnergy: 0
   maxEnergy: 100000
   eCost: 0
   conjAge: 700
   age: 0
   statAge: 0
-  moveAllele1: 250
-  moveAllele2: 250
-  moveForce: 250
+  moveAllele1: 1024
+  moveAllele2: 1024
+  moveForce: 1024
   turnTorque: 256
   turnTorqueAllele1: 256
   turnTorqueAllele2: 256
@@ -338,7 +260,7 @@ MonoBehaviour:
   sizeGene: 5
   lookDistance: 300
   energyToReproduce: 80000
-  lifeLength: 1024
+  lifeLength: 256
   intron1: 100
   intron2: 100
   intron3: 100
@@ -356,9 +278,9 @@ MonoBehaviour:
   rDice: 0
   generation: 0
   deadLayer: 9
-  basalMet: 0.1
+  basalMet: 3
   protein: 0
-  proteinToReproduce: 2048
+  proteinToReproduce: 1024
   NH4: 0
   tempProtein: 0
   tempNH4: 0
@@ -374,6 +296,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3826df94a023446f5a317c8e70e59b22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  preyPositions: []
+  blibPositions: []
   scaledPreyDistance: []
   scaledMateDistance: []
   scaledBlibDistance: []
+  smellDistance: 0
+  testAngles:
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  forward: {x: 0, y: 0}
+  debugPositions:
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}

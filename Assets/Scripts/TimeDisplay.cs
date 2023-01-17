@@ -20,6 +20,8 @@ public class TimeDisplay : MonoBehaviour
     int gridX, gridY;
      int initConc;
      public float refreshRate;
+     
+     //int blibNutes, blobNutes, blybNutes, blubNutes, carcassNutes;
    
     // Start is called before the first frame update
     void Start()
@@ -41,6 +43,9 @@ public class TimeDisplay : MonoBehaviour
         public  int blubCount;
            
             float timeToDisplay;
+            int blibLocked, blobLocked, blybLocked, blubLocked, carcassLocked; 
+            int lockedNutes;
+            
     void FixedUpdate()
     {   
        
@@ -48,6 +53,8 @@ public class TimeDisplay : MonoBehaviour
         grandNutes = testing.statNutes;
         initConc = testing.initConc;
         camSpeed = camCntrl.camSpeed;
+
+        
         
          timeToDisplay = Mathf.Round(Time.time);
         tScale = Time.timeScale;
@@ -57,7 +64,7 @@ public class TimeDisplay : MonoBehaviour
              blobCount = GameObject.FindGameObjectsWithTag("Predator").Length;
              blybCount = GameObject.FindGameObjectsWithTag("Predator2").Length;
              blubCount = GameObject.FindGameObjectsWithTag("ApexPred").Length;
-        
+            
 
                     string timeString = timeToDisplay.ToString();
                     string blibString = blibCount.ToString();
@@ -68,18 +75,35 @@ public class TimeDisplay : MonoBehaviour
                     string timeScaleString = tScale.ToString();
                     string nuteString = ((float)grandNutes/(float)totNutes).ToString();
                     string expNuteString = initConc.ToString();
+                    lockedNutes = testing.lockedNutes;
+                    if(lockedNutes > 0){
+                        blibLocked = 100*testing.extBlibNutes/lockedNutes;
+                        blobLocked = 100*testing.extBlobNutes/lockedNutes;
+                        blybLocked = 100*testing.extBlybNutes/lockedNutes;
+                        blubLocked = 100*testing.extBlubNutes/lockedNutes;
+                    }else{ 
+                        blibLocked = 0;
+                        blobLocked = 0;
+                        blybLocked = 0;
+                        blubLocked = 0;
+                    }
+                   // string blibLockedString = testing.blibLocked.ToString();
+                   // string blobLockedString = testing.blobLocked.ToString();
+                   // string blybLockedString = testing.blybLocked.ToString();
+                   // string blubLockedString = testing.blubLocked.ToString();
                     
                  //Change the m_Text text to the message below
-                 m_Text.text = "t = " + timeString + "\n"  + 
-                 "Blibs = " + blibString + "\n" + 
-                 "Blobs = " + blobString + "\n" + 
-                 "Blybs = " + blybString + "\n" + 
-                 "Blubs = " + blubString + "\n" + 
+                 m_Text.text = "t = " + timeString + "     | Nutes %" + "\n"  + 
+                 "BlibN = " + blibString +" | "+ blibLocked+ "%" + "\n" + 
+                 "BlobN = " + blobString +" | "+ blobLocked+ "%" + "\n" +
+                 "BlybN = " + blybString +" | "+ blybLocked+ "%" + "\n" + 
+                 "BlubN = " + blubString +" | "+ blubLocked+ "%" + "\n" + 
                  "Nutes: "  +              "\n" + 
                  "Expected = "  + totNutes + "\n" + 
                  "Measured = "      + grandNutes     + "\n" + 
                  "Free = "      + testing.freeNutes     + "\n" + 
                  "Locked = "    + testing.lockedNutes    + "\n" + 
+                 
                  "measured/expected = " + nuteString    + "\n" + 
                  
                  "camSpeed = " + camSpeedString + "\n" + 

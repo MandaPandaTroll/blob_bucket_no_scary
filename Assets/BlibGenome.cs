@@ -51,7 +51,7 @@ public class BlibGenome : MonoBehaviour {
   public string aa_antiB;
 
 public int mutCount;
-int base_mutDice = 2400;
+int base_mutDice = 24000;
 public int mutMultiplier = 1;
 byte [] byteA;
 byte [] byteB;
@@ -1975,7 +1975,7 @@ testB = System.String.Join("", tempchromo_B);
 
   void InitializePheno(){
 
-      blibControls.lifeLength = (lifeLengthAllele1 + lifeLengthAllele2)/2f;
+      blibControls.lifeLength = (lifeLengthAllele1 + lifeLengthAllele2);
     
       blibControls.energyToReproduce =128f+ (e2repAllele1 + e2repAllele2) / 2.0f;
 

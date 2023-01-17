@@ -11,6 +11,7 @@ using System.Linq;
 public class BrainBlub : Agent
 {
 
+//int[] throttle = new int [4];
 
 float happiness = 0;
     float e;
@@ -173,6 +174,9 @@ sensor.AddObservation(bctrl.age/bctrl.lifeLength);
 
 
 for (int i = 0; i < 8; i++){
+    if(scaledPreyDistance[i] == null){
+        scaledPreyDistance[i] = new Vector2(0,0);
+    }
 sensor.AddObservation(scaledPreyDistance[i]);
 sensor.AddObservation(scaledMateDistance[i]);
 sensor.AddObservation(scaledBlibDistance[i]);
@@ -237,9 +241,33 @@ hasReproduced = bctrl.hasReproduced;
     //Control signals from decisions
     forwardSignal = actionBuffers.DiscreteActions[0];
     rotSignal = actionBuffers.DiscreteActions[1];
-    float fwdMag = 0;
+
+    //throttle[0] = actionBuffers.DiscreteActions[1];
+    //throttle[1] = actionBuffers.DiscreteActions[2];
+    //throttle[2] = actionBuffers.DiscreteActions[3];
+    //throttle[3] = actionBuffers.DiscreteActions[4];
+    //int moveSign = 0;
+    
+    //if(throttle[0] == 0){moveSign = -1;}
+    //else if(throttle[0] == 1){ moveSign = 1;}
+
+    
+    
+    float fwdMag = 0;//(1f/7f)*(float)(moveSign *(throttle[1] + 2*throttle[2] + 2*2*throttle[3]));;
+    
     float rotMag = 0;
 
+    if(forwardSignal == 0){
+        fwdMag = 0;
+    }else
+     if(forwardSignal == 1){
+        fwdMag = -1f;
+     }
+     else
+     if(forwardSignal == 2){
+        fwdMag = 1f;
+     }
+    /*
     if(forwardSignal == 0)
     {
         fwdMag = -1.0f;
@@ -264,7 +292,7 @@ hasReproduced = bctrl.hasReproduced;
     {
         fwdMag = 4.0f;
     }
-
+    */
 
 
     if(rotSignal == 0)

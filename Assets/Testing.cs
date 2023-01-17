@@ -38,7 +38,7 @@ public class Testing : MonoBehaviour
 
     float[,] perlMap;
 
-
+    public float blibLocked, blobLocked, blybLocked, blubLocked;
 
 
 
@@ -110,7 +110,7 @@ public class Testing : MonoBehaviour
     }
 
     int blibNutes, blobNutes, blybNutes, blubNutes, carcassNutes;
-
+    public int extBlibNutes, extBlobNutes, extBlybNutes, extBlubNutes, extCarcassNutes;
 
     int[,] kernel;
 
@@ -151,6 +151,7 @@ public class Testing : MonoBehaviour
             {
                 blibNutes += blibs[i].GetComponent<BlibControls>().nutLevel;
             }
+            extBlibNutes =  blibNutes;
             System.Array.Clear(blibs, 0, blibs.Length);
 
             for (int i = 0; i < blobs.Length; i++)
@@ -158,6 +159,7 @@ public class Testing : MonoBehaviour
                 blobNutes += blobs[i].GetComponent<BrainBlobControls>().protein;
                 blobNutes += blobs[i].GetComponent<BrainBlobControls>().NH4;
             }
+            extBlobNutes =  blobNutes;
             System.Array.Clear(blobs, 0, blobs.Length);
 
             for (int i = 0; i < blybs.Length; i++)
@@ -165,12 +167,14 @@ public class Testing : MonoBehaviour
                 blybNutes += blybs[i].GetComponent<BrainBlybControls>().protein;
                 blybNutes += blybs[i].GetComponent<BrainBlybControls>().NH4;
             }
+            extBlybNutes =  blybNutes;
             System.Array.Clear(blybs, 0, blybs.Length);
             for (int i = 0; i < blubs.Length; i++)
-            {
+            {   
                 blubNutes += blubs[i].GetComponent<BrainBlubControls>().protein;
                 blubNutes += blubs[i].GetComponent<BrainBlubControls>().NH4;
             }
+            extBlubNutes =  blubNutes;
             System.Array.Clear(blubs, 0, blubs.Length);
             for (int i = 0; i < carcasses.Length; i++)
             {
@@ -190,10 +194,14 @@ public class Testing : MonoBehaviour
                     carcassNutes += carcasses[i].GetComponent<BrainBlubControls>().NH4;
                 }
             }
+            extCarcassNutes =  carcassNutes;
             System.Array.Clear(carcasses, 0, carcasses.Length);
 
-
+            
             lockedNutes = blibNutes + blobNutes + blybNutes + blubNutes + carcassNutes;
+            
+            
+        
             blibNutes = 0; blobNutes = 0; blybNutes = 0; blubNutes = 0; carcassNutes = 0;
 
 
