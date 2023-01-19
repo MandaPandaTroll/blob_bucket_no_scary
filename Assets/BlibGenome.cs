@@ -38,6 +38,9 @@ maybe 1/2400 to 1/240 is a better value...
 
 */
 public class BlibGenome : MonoBehaviour {
+  List <int[]> dynamicGeneLocations = new List<int[]>();
+ public bool evolveMutationRate_enabled = false;
+ public bool dynamicGeneDuplication_enabled = false;
   //string[] testcopy = new string[8]{"A","B","C","D","E","F","G","H"};
   public float refSNP_A;
   public float refSNP_B;
@@ -164,6 +167,10 @@ string sensebaseB;
 
 
   void Start() {
+    if(mutMultiplier < 0){
+      mutMultiplier = 0;
+    }
+    dynamicGeneLocations.Clear();
     //string debugString = "";
     //for(int i = 0; i < testcopy.Length;i++){
     //  debugString += NucleotideCopy(testcopy[i]);
@@ -254,8 +261,14 @@ string sensebaseB;
    
     if (col.gameObject.tag == "prey" &&  blibControls.age > 5f && col.gameObject.GetComponent<BlibControls>().age > 5f) {
        mateGenome = col.gameObject.GetComponent<BlibGenome>();
+       if(evolveMutationRate_enabled == true){
+        int sumMutMult = mutMultiplier+mateGenome.mutMultiplier;
+      mutMultiplier = sumMutMult/2;
+       }
       
-      
+      if(mutMultiplier < 0){
+      mutMultiplier = 0;
+    }
 
       int snpCountA = 0, snpCountB = 0;
       bool isEqual;
@@ -424,10 +437,16 @@ public int final_mutsize;
   }
   void Mutate() {
     mutate = false;
-    
+    if(mutMultiplier < 0){
+      mutMultiplier = 0;
+    }
       
     for (int q = 0; q < numMutations; q++) {
+      if(evolveMutationRate_enabled == true){
+        mutMultiplier += UnityEngine.Random.Range(-1,2)*UnityEngine.Random.Range(0,2);
+      }
       
+
       mutCount+=1;
     //string randChar = "A";
     AorB = UnityEngine.Random.Range(0, 2);
@@ -440,9 +459,112 @@ public int final_mutsize;
     int siteCroms = sites.GetLength(0);
     int siteLocs = sites.GetLength(1);
 
+
+     //Proper-ish gene duplication
+    if(dynamicGeneDuplication_enabled == true){
+     
+    int whichOrigin = UnityEngine.Random.Range(0,dynamicGeneLocations.Count);
+    int whichDestination = UnityEngine.Random.Range(0,dynamicGeneLocations.Count);
+    
+    int originLength;
+    
+    int originSense; int originSet; int originChrom; int originSite_start; int originSite_end;
+    int destinationSense; int destinationSet; int destinationChrom; int destinationSite_start; int destinationSite_end;
+
+    originSense       = dynamicGeneLocations[whichOrigin][0];
+    originSet         = dynamicGeneLocations[whichOrigin][1];
+    originChrom       = dynamicGeneLocations[whichOrigin][2];
+    originSite_start  = dynamicGeneLocations[whichOrigin][3];
+    originSite_end    = dynamicGeneLocations[whichOrigin][4];
+
+    originLength = originSite_end-originSite_start;
+
+    destinationSense       = UnityEngine.Random.Range(0,2);
+    destinationSet         = UnityEngine.Random.Range(0,2);
+    destinationChrom       = UnityEngine.Random.Range(0,9);
+    
+    destinationSite_start  = UnityEngine.Random.Range(0,485-originLength);
+    destinationSite_end    = destinationSite_start+originLength;
+
+    
+    string[] originSequence = new string[originLength];
+
+    int s = 0;
+    List<string[,]> tempArray = new List<string[,]>();
+    switch(originSense){
+      case 0:
+        switch(originSet){
+          case 0:
+          tempArray.Add(A);
+          break;
+
+          case 1:
+          tempArray.Add(B);
+          break;
+      }
+      break;
+
+      case 1:
+        switch(originSet){
+          case 0:
+          tempArray.Add(antisenseA);
+          break;
+
+          case 1:
+          tempArray.Add(antisenseB);
+          break;
+        }
+
+      break;
+
+    }
+
+    switch(destinationSense){
+      case 0:
+        switch(destinationSet){
+          case 0:
+          tempArray.Add(A);
+          break;
+          case 1:
+          tempArray.Add(B);
+          break;
+        }
+      break;
+      case 1:
+        switch(destinationSet){
+          case 0:
+          tempArray.Add(antisenseA);
+          break;
+          case 1:
+          tempArray.Add(antisenseB);
+          break;
+        }
+      break;
+    }
+
+
+
+    for (int i = originSite_start; i < originSite_end; i++){
+      originSequence[s] = NucleotideCopy(tempArray[0][originChrom,i]);
+      s +=1;
+    }
+    s = 0;
+  for(int i = destinationSite_start; i < destinationSite_end; i++){
+      tempArray[1][destinationChrom,i] = NucleotideCopy(originSequence[s]);
+      s += 1;
+  }
+  s = 0;
+  tempArray.Clear();
+    }
+    
+    
+  
+
+    
+
     int[] triIndex = new int[2] { UnityEngine.Random.Range(0, chromoPairs), UnityEngine.Random.Range(3, basePairs - 6) };
 
-    if (transLocRoll == 64 && translocation_enabled == true) {
+    if (transLocRoll == 1 && translocation_enabled == true) {
       string[] oNu = new string[3];
       //string origin = "", destination = "";
       int tAorB = UnityEngine.Random.Range(0, 2);
@@ -1062,6 +1184,8 @@ public int final_mutsize;
 
       
 
+      int[] tempDynamicGeneLocation = new int[5]; //[sense/antisense, ch. set, ch num, start, end]
+      dynamicGeneLocations.Clear();
       for (int i = 0; i < A.GetLength(0); i++) {
         for (int j = 0; j < A.GetLength(1); j++) {
           if (i == 0 && j == 0) { allelesA = ""; allelesB = ""; thisAlleleA = ""; thisAlleleB = ""; }
@@ -1090,7 +1214,13 @@ public int final_mutsize;
                 else if (codon[2] == "C") { tempS = ("I"); }     //ATC
                 else if (codon[2] == "G") {                    //ATG
                   if (thisAlleleA.Length > 0) { tempS = ("M"); }
-                  if (thisAlleleA.Length == 0) { isGene = true; tempS = "*"; }
+                  if (thisAlleleA.Length == 0) { 
+                    isGene = true; tempS = "*";
+                  tempDynamicGeneLocation[0] = 0;  
+                  tempDynamicGeneLocation[1] = 0; 
+                  tempDynamicGeneLocation[2] = i;
+                  tempDynamicGeneLocation[3] = j;
+                  }
 
                 }
 
@@ -1122,6 +1252,8 @@ public int final_mutsize;
                   stopA += "-" + nAllelesA.ToString() + "TAA" + "-";
                   thisAlleleA = "";
                   tempS = "";
+                  tempDynamicGeneLocation[4] = j;
+                  dynamicGeneLocations.Add(tempDynamicGeneLocation);
 
                 } else if (codon[2] == "T") { tempS = ("Y"); }     //TAT
                   else if (codon[2] == "C") { tempS = ("Y"); }     //TAC
@@ -1136,6 +1268,8 @@ public int final_mutsize;
                   stopA += "-" + nAllelesA.ToString() + "TAG" + "-";
                   thisAlleleA = "";
                   tempS = "";
+                  tempDynamicGeneLocation[4] = j;
+                  dynamicGeneLocations.Add(tempDynamicGeneLocation);
                 }
                 if (isGene == true) { thisAlleleA += tempS; }
               } else if (codon[1] == "T") {              //TT-
@@ -1161,6 +1295,8 @@ public int final_mutsize;
                   stopA += "-" + nAllelesA.ToString() + "TGA" + "-";
                   thisAlleleA = "";
                   tempS = "";
+                  tempDynamicGeneLocation[4] = j;
+                  dynamicGeneLocations.Add(tempDynamicGeneLocation);
 
                 } else if (codon[2] == "T") { tempS = ("C"); }     //TGT
                   else if (codon[2] == "C") { tempS = ("C"); }     //TGC
@@ -1269,7 +1405,12 @@ public int final_mutsize;
                 else if (codon[2] == "C") { tempS = ("I"); }     //ATC
                 if (codon[2] == "G") {                        //ATG
                   if (thisAlleleB.Length > 0) { tempS = ("M"); }
-                  if (thisAlleleB.Length == 0) { isGene = true; tempS = "*"; }
+                  if (thisAlleleB.Length == 0) { isGene = true; tempS = "*";
+                  tempDynamicGeneLocation[0] = 0;  
+                  tempDynamicGeneLocation[1] = 1; 
+                  tempDynamicGeneLocation[2] = x;
+                  tempDynamicGeneLocation[3] = y;
+                  }
                 }
 
                 if (isGene == true) { thisAlleleB += tempS; }
@@ -1298,6 +1439,8 @@ public int final_mutsize;
                   nAllelesB += 1;
                   stopB += "-" + nAllelesB.ToString() + "TAA" + "-";
                   thisAlleleB = "";
+                  tempDynamicGeneLocation[4] = y;
+                  dynamicGeneLocations.Add(tempDynamicGeneLocation);
 
                 } else if (codon[2] == "T") { tempS = ("Y"); }     //TAT
                   else if (codon[2] == "C") { tempS = ("Y"); }     //TAC
@@ -1333,6 +1476,8 @@ public int final_mutsize;
                   nAllelesB += 1;
                   stopB += "-" + nAllelesB.ToString() + "TGA" + "-";
                   thisAlleleB = "";
+                  tempDynamicGeneLocation[4] = y;
+                  dynamicGeneLocations.Add(tempDynamicGeneLocation);
 
                 } else if (codon[2] == "T") { tempS = ("C"); }     //TGT
                   else if (codon[2] == "C") { tempS = ("C"); }     //TGC
@@ -1449,7 +1594,12 @@ public int final_mutsize;
                 else if (codon[2] == "C") { tempS = ("I"); }     //ATC
                 else if (codon[2] == "G") {                    //ATG
                   if (antithisAlleleA.Length > 0) { tempS = ("M"); }
-                  if (antithisAlleleA.Length == 0) { isGene = true; tempS = "*"; }
+                  if (antithisAlleleA.Length == 0) { isGene = true; tempS = "*";
+                    tempDynamicGeneLocation[0] = 1;  
+                    tempDynamicGeneLocation[1] = 0; 
+                    tempDynamicGeneLocation[2] = i;
+                    tempDynamicGeneLocation[3] = j;
+                   }
 
                 }
 
@@ -1481,6 +1631,8 @@ public int final_mutsize;
                   stopA += "-" + nAllelesA.ToString() + "TAA" + "-";
                   antithisAlleleA = "";
                   tempS = "";
+                  tempDynamicGeneLocation[4] = j;
+                  dynamicGeneLocations.Add(tempDynamicGeneLocation);
 
                 } else if (codon[2] == "T") { tempS = ("Y"); }     //TAT
                   else if (codon[2] == "C") { tempS = ("Y"); }     //TAC
@@ -1495,6 +1647,8 @@ public int final_mutsize;
                   stopA += "-" + nAllelesA.ToString() + "TAG" + "-";
                   antithisAlleleA = "";
                   tempS = "";
+                  tempDynamicGeneLocation[4] = j;
+                  dynamicGeneLocations.Add(tempDynamicGeneLocation);
                 }
                 if (isGene == true) { antithisAlleleA += tempS; }
               } else if (codon[1] == "T") {              //TT-
@@ -1520,6 +1674,8 @@ public int final_mutsize;
                   stopA += "-" + nAllelesA.ToString() + "TGA" + "-";
                   antithisAlleleA = "";
                   tempS = "";
+                  tempDynamicGeneLocation[4] = j;
+                  dynamicGeneLocations.Add(tempDynamicGeneLocation);
 
                 } else if (codon[2] == "T") { tempS = ("C"); }     //TGT
                   else if (codon[2] == "C") { tempS = ("C"); }     //TGC
@@ -1628,7 +1784,12 @@ public int final_mutsize;
                 else if (codon[2] == "C") { tempS = ("I"); }     //ATC
                 if (codon[2] == "G") {                        //ATG
                   if (antithisAlleleB.Length > 0) { tempS = ("M"); }
-                  if (antithisAlleleB.Length == 0) { isGene = true; tempS = "*"; }
+                  if (antithisAlleleB.Length == 0) { isGene = true; tempS = "*"; 
+                    tempDynamicGeneLocation[0] = 1;  
+                    tempDynamicGeneLocation[1] = 1; 
+                    tempDynamicGeneLocation[2] = x;
+                    tempDynamicGeneLocation[3] = y;
+                  }
                 }
 
                 if (isGene == true) { antithisAlleleB += tempS; }
@@ -1657,6 +1818,8 @@ public int final_mutsize;
                   nAllelesB += 1;
                   stopB += "-" + nAllelesB.ToString() + "TAA" + "-";
                   antithisAlleleB = "";
+                  tempDynamicGeneLocation[4] = y;
+                  dynamicGeneLocations.Add(tempDynamicGeneLocation);
 
                 } else if (codon[2] == "T") { tempS = ("Y"); }     //TAT
                   else if (codon[2] == "C") { tempS = ("Y"); }     //TAC
@@ -1668,6 +1831,8 @@ public int final_mutsize;
                   nAllelesB += 1;
                   stopB += "-" + nAllelesB.ToString() + "TAG" + "-";
                   antithisAlleleB = "";
+                  tempDynamicGeneLocation[4] = y;
+                  dynamicGeneLocations.Add(tempDynamicGeneLocation);
 
                 }
                 if (isGene == true) { antithisAlleleB += tempS; }
@@ -1692,6 +1857,8 @@ public int final_mutsize;
                   nAllelesB += 1;
                   stopB += "-" + nAllelesB.ToString() + "TGA" + "-";
                   antithisAlleleB = "";
+                  tempDynamicGeneLocation[4] = y;
+                  dynamicGeneLocations.Add(tempDynamicGeneLocation);
 
                 } else if (codon[2] == "T") { tempS = ("C"); }     //TGT
                   else if (codon[2] == "C") { tempS = ("C"); }     //TGC
@@ -1844,7 +2011,7 @@ public int final_mutsize;
       int lifCountB = Regex.Matches(thisB, lifSeq).Count;
 
       int trackerCountB = Regex.Matches(thisB, TRACKER).Count;
-
+    
       nGRN_B = (float)grnCountB;
       nRED_B = (float)redCountB;
       nLLY_B = (float)bluCountB;
@@ -1977,7 +2144,7 @@ testB = System.String.Join("", tempchromo_B);
 
       blibControls.lifeLength = (lifeLengthAllele1 + lifeLengthAllele2);
     
-      blibControls.energyToReproduce =128f+ (e2repAllele1 + e2repAllele2) / 2.0f;
+      blibControls.energyToReproduce =128f+ (1f+aminoAcidRatio)*(e2repAllele1 + e2repAllele2) / 2.0f;
 
       blibControls.moveForce = (moveAllele1 + moveAllele2) / 2f;
 

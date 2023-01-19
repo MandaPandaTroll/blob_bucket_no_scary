@@ -159,7 +159,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -800, y: -382}
+  m_AnchoredPosition: {x: -800, y: -357}
   m_SizeDelta: {x: 300, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &62203843
@@ -175,6 +175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   refreshRate: 1
+  popLogger: {fileID: 1626781029}
   blibCount: 0
   blobCount: 0
   blybCount: 0
@@ -1807,16 +1808,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 415939121d4a24cfe96a4728064886db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoReplenish: 0
-  autoRemove: 0
+  autoReplenish: 1
+  autoRemove: 1
   box: {fileID: 1136253243}
-  diffRate: 1
+  diffRate: 2
   statNutes: 0
   statTot: 0
   gridX: 0
   gridY: 0
   cellScale: 8
-  initConc: 64
+  initConc: 32
   freeNutes: 0
   lockedNutes: 0
   blibLocked: 0
@@ -4742,7 +4743,7 @@ Transform:
   m_GameObject: {fileID: 1136253239}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 128, y: 128, z: 1}
+  m_LocalScale: {x: 512, y: 512, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1855928353}
@@ -6484,6 +6485,8 @@ MonoBehaviour:
   blubN: 0
   blybN: 0
   sampleRate: 1
+  genSum: 0
+  meanGeneration: 0
 --- !u!114 &1626781030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7595,7 +7598,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 039dfd508f8d1458cba1ed8a233b480b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialMutations: 16
+  initialMutations: 0
   initgen: {fileID: 1802033099}
   linChars: 
   initLineage: 

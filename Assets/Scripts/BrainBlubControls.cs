@@ -108,7 +108,7 @@ System.Random rndA = new System.Random();
     // Start is called before the first frame update
     void Start()
     {
-        age = 0;
+        age = 0.0001f;
         rCount = 0;
         eaten = false;
         alive = true;

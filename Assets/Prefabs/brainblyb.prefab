@@ -128,7 +128,7 @@ Rigidbody2D:
   m_Material: {fileID: 6200000, guid: e64201313438943b593297091c58a445, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!114 &1173073905067008166
 MonoBehaviour:
@@ -256,7 +256,7 @@ MonoBehaviour:
   maxEnergy: 40000
   eCost: 0
   conjAge: 75
-  age: 241.29135
+  age: 343.22226
   statAge: 0
   moveAllele1: 178.1948
   moveAllele2: 206.1074

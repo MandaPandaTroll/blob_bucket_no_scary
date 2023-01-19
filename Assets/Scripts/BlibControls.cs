@@ -326,8 +326,12 @@ public class BlibControls : MonoBehaviour {
     }
   }
   public bool doInitDiversifier = false;
- 
+  
+
+
+  public Vector2 scaledPos = new Vector2(0,0);
   void LateUpdate() {
+    
     speedModifier = blibSpawner.speedModifier;
     tempProtein = nutLevel;
     
@@ -337,6 +341,7 @@ public class BlibControls : MonoBehaviour {
 
     energyTick += Time.deltaTime;
     if (energyTick > 1.0f) {
+      scaledPos = CustomMethods.ScaledPos(transform.position);
         maxEnergy = energyToReproduce * 2f;
         proteinCost = (int)Mathf.Round(genome_script.aminoAcidRatio);
         if(nutLevel >= proteinCost+1){
@@ -385,10 +390,10 @@ public class BlibControls : MonoBehaviour {
       geneticColor = new Color(redGene, greenGene, blueGene, 1f);
       
 
-      
+      float redModifier = 1f + ((scaledPos.x+scaledPos.y)/2.0f);
       m_SpriteRenderer.color = new Color(redGene, greenGene, blueGene, 1f);
       if (energy < maxEnergy) {
-        energy += 42f * greenGene + 32f * redGene + 16*blueGene;
+        energy += 42f * greenGene + 42f * redGene*redModifier + 16*blueGene;
         if (energy > maxEnergy) { energy = maxEnergy; }
       }
       energyTick = 0.0f;

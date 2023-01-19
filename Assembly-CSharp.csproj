@@ -153,6 +153,7 @@
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectShape.cs" />
      <Compile Include="Assets/BlibGenome.cs" />
      <Compile Include="Assets/Scripts/BlubControls.cs" />
+     <Compile Include="Assets/Scripts/CustomMethods.cs" />
      <None Include="Assets/CodeMonkey/README.txt" />
      <None Include="Assets/Shaders etc/SHAD.shader" />
     <Reference Include="UnityEngine">

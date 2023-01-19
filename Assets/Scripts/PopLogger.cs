@@ -63,7 +63,8 @@ private List<string[]> rowData = new List<string[]>();
         */
         
     }
-
+ public int genSum = 0;
+ public float meanGeneration;
     // Update is called once per frame
     void LateUpdate()
     {
@@ -74,12 +75,17 @@ private List<string[]> rowData = new List<string[]>();
         
         
             if (time >= sampleRate){
-
+                genSum = 0;
                 blibN  = FindObjectsOfType<BlibControls>().Length;
                 blobN  = FindObjectsOfType<BrainBlobControls>().Length;
                 blybN  = FindObjectsOfType<BrainBlybControls>().Length;
                 blubN  = FindObjectsOfType<BrainBlubControls>().Length;
+                var blibs = GameObject.FindGameObjectsWithTag("Prey");
 
+                foreach(GameObject blib in blibs){
+                    genSum += blib.GetComponent<BlibControls>().generation;
+                }
+                meanGeneration = (float)genSum / (float)blibN;
                 /*
                 if (isGenSamp == true){
                     meanHeterozygosity_blib = genSamp.meanHeterozygosity_blib;

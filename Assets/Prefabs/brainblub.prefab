@@ -127,7 +127,7 @@ Rigidbody2D:
   m_Material: {fileID: 6200000, guid: e64201313438943b593297091c58a445, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!114 &3889601855363302318
 MonoBehaviour:
@@ -145,6 +145,7 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 1024
+  testScaledPos: {x: 0, y: 0}
   nomLim: 1
   thisRay: {fileID: 0}
   latestLookDistance: 0
@@ -319,6 +320,23 @@ MonoBehaviour:
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
+  angles:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
   forward: {x: 0, y: 0}
   debugPositions:
   - {x: 0, y: 0}

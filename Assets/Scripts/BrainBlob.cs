@@ -49,9 +49,11 @@ void Awake(){
 genome = this.gameObject.GetComponent<BlobGenome>();
 bctrl = gameObject.GetComponent<BrainBlobControls>();
 smeller = gameObject.GetComponent<Smeller_Blob>();
+rb = gameObject.GetComponent<Rigidbody2D>();
 }
 void Start() 
 {
+    rb = gameObject.GetComponent<Rigidbody2D>();
     happiness = 0;
     curriculumHandler = FindObjectOfType<CurriculumHandler>();
 
@@ -59,7 +61,7 @@ void Start()
                                 speedModifier = curriculumHandler.GetBloybSpeedModifier();
                     }else{speedModifier = 1.0f;}
     box = GameObject.Find("box");
-    rb = GetComponent<Rigidbody2D>();
+   
     
     energy = bctrl.energy;
     protein = bctrl.protein;
@@ -103,10 +105,10 @@ float scaledSmellDistance = 0;
 
 
 
-    Vector2[] scaledPreyDistance; 
-    Vector2[] scaledMateDistance; 
-    Vector2[] scaledApexPredDistance; 
-    Vector2[] scaledCompetitorDistance;
+    Vector2[] scaledPreyDistance = new Vector2[9]; 
+    Vector2[] scaledMateDistance = new Vector2[9]; 
+    Vector2[] scaledApexPredDistance = new Vector2[9]; 
+    Vector2[] scaledCompetitorDistance = new Vector2[9];
 
 
 const int NUM_BUMP_TYPES = (int)BumperType.LastBumper;
@@ -144,11 +146,30 @@ protein = bctrl.protein;
 if(ObsAge <0f )
 {ObsAge = 0f;}
 
+for(int i = 0; i < 8; i++){
+    
+    if(CustomMethods.isNaN_V2(smeller.scaledPreyDistance[i]) == true){
+    scaledPreyDistance[i] = new Vector2 (0,0);
+    }else{scaledPreyDistance[i] = smeller.scaledPreyDistance[i];}
 
-scaledPreyDistance = smeller.scaledPreyDistance;
-scaledMateDistance = smeller.scaledMateDistance;
-scaledApexPredDistance = smeller.scaledApexPredDistance;
-scaledCompetitorDistance = smeller.scaledCompetitorDistance;
+    if(CustomMethods.isNaN_V2(smeller.scaledMateDistance[i]) == true){
+    scaledMateDistance[i] = new Vector2 (0,0);
+    }else{scaledMateDistance[i] = smeller.scaledMateDistance[i];}
+
+    if(CustomMethods.isNaN_V2(smeller.scaledApexPredDistance[i]) == true){
+    scaledApexPredDistance[i] = new Vector2 (0,0);
+    }else{scaledApexPredDistance[i] = smeller.scaledApexPredDistance[i];}
+
+    if(CustomMethods.isNaN_V2(smeller.scaledCompetitorDistance[i]) == true){
+    scaledCompetitorDistance[i] = new Vector2 (0,0);
+    }else{scaledCompetitorDistance[i] = smeller.scaledCompetitorDistance[i];}
+}
+
+
+//scaledPreyDistance = smeller.scaledPreyDistance;
+//scaledMateDistance = smeller.scaledMateDistance;
+//scaledApexPredDistance = smeller.scaledApexPredDistance;
+//scaledCompetitorDistance = smeller.scaledCompetitorDistance;
 
  v = transform.InverseTransformDirection(rb.velocity/64.0f);
  angV = rb.angularVelocity/1000.0f;

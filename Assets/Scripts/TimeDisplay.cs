@@ -20,6 +20,7 @@ public class TimeDisplay : MonoBehaviour
     int gridX, gridY;
      int initConc;
      public float refreshRate;
+    public PopLogger popLogger;
      
      //int blibNutes, blobNutes, blybNutes, blubNutes, carcassNutes;
    
@@ -107,7 +108,8 @@ public class TimeDisplay : MonoBehaviour
                  "measured/expected = " + nuteString    + "\n" + 
                  
                  "camSpeed = " + camSpeedString + "\n" + 
-                 "timeScale = " + timeScaleString+"x" ;
+                 "timeScale = " + timeScaleString+"x" + "\n" +
+                 "meanGeneration_blib = " + popLogger.meanGeneration;
                  
                  time = 0f;
 

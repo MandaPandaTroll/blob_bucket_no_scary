@@ -42,6 +42,8 @@ public class Testing : MonoBehaviour
 
 
 
+
+
     void OnGUI()
     {
 
@@ -50,7 +52,7 @@ public class Testing : MonoBehaviour
     }
     private void Awake()
     {
-
+        
         kernel = new int[3, 3]{
                 {0,0,0},
                 {0,0,0},
@@ -62,7 +64,8 @@ public class Testing : MonoBehaviour
         gridY = (int)(box.localScale.y / cellScale);
         perlDimX = box.localScale.x / cellScale;
         perlDimY = box.localScale.y / cellScale;
-
+        CustomMethods.boxdims.x = box.localScale.x/2.0f;
+        CustomMethods.boxdims.y = box.localScale.y/2.0f;
         perlMap = new float[gridX, gridY];
 
 

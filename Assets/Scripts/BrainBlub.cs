@@ -11,6 +11,8 @@ using System.Linq;
 public class BrainBlub : Agent
 {
 
+ public Vector2 testScaledPos = new Vector2(0,0);   
+Vector2 n0 = Vector2.zero;
 //int[] throttle = new int [4];
 
 float happiness = 0;
@@ -43,6 +45,12 @@ bctrl = gameObject.GetComponent<BrainBlubControls>();
 e = Mathf.Log(1);
 float d = 0;
 float distFunc = 1.0f - Mathf.Pow( ((Mathf.Pow(e,3f*d)-Mathf.Pow(e,-3f*d))/(Mathf.Pow(e,3f*d)-Mathf.Pow(e,-3f*d))),2f );
+
+    scaledPreyDistance     = new Vector2[9]{n0,n0,n0,n0,n0,n0,n0,n0,n0}; 
+    scaledMateDistance     = new Vector2[9]{n0,n0,n0,n0,n0,n0,n0,n0,n0};
+    scaledBlibDistance     = new Vector2[9]{n0,n0,n0,n0,n0,n0,n0,n0,n0};
+
+
 
 }
 void Start() 
@@ -157,9 +165,23 @@ if(closestX.Count >= 1000 || closestY.Count >= 1000){
     
 }
 */
-scaledPreyDistance = smeller.scaledPreyDistance;
-scaledMateDistance = smeller.scaledMateDistance;
-scaledBlibDistance = smeller.scaledBlibDistance;
+for(int i = 0; i < 8; i++){
+    
+    if(CustomMethods.isNaN_V2(smeller.scaledPreyDistance[i]) == true){
+    scaledPreyDistance[i] = new Vector2 (0,0);
+    }else{scaledPreyDistance[i] = smeller.scaledPreyDistance[i];}
+
+    if(CustomMethods.isNaN_V2(smeller.scaledMateDistance[i]) == true){
+    scaledMateDistance[i] = new Vector2 (0,0);
+    }else{scaledMateDistance[i] = smeller.scaledMateDistance[i];}
+
+    if(CustomMethods.isNaN_V2(smeller.scaledBlibDistance[i]) == true){
+    scaledBlibDistance[i] = new Vector2 (0,0);
+    }else{scaledBlibDistance[i] = smeller.scaledBlibDistance[i];}
+}
+//scaledPreyDistance = smeller.scaledPreyDistance;
+//scaledMateDistance = smeller.scaledMateDistance;
+//scaledBlibDistance = smeller.scaledBlibDistance;
 
  v = rb.velocity.magnitude/1000.0f;
  angV = rb.angularVelocity/1000.0f;
@@ -174,9 +196,7 @@ sensor.AddObservation(bctrl.age/bctrl.lifeLength);
 
 
 for (int i = 0; i < 8; i++){
-    if(scaledPreyDistance[i] == null){
-        scaledPreyDistance[i] = new Vector2(0,0);
-    }
+    
 sensor.AddObservation(scaledPreyDistance[i]);
 sensor.AddObservation(scaledMateDistance[i]);
 sensor.AddObservation(scaledBlibDistance[i]);
@@ -434,8 +454,14 @@ hasReproduced = bctrl.hasReproduced;
     }
 
 
-
-
-
+/*
+  bool isNaN(Vector2 input){
+    if (input.x != input.x || input.y != input.y){
+        return true;
+    }else{
+        return false;
+    }
+}
+*/
 
 }

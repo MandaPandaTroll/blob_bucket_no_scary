@@ -56,6 +56,9 @@ private List<string[]> rowData = new List<string[]>();
     public List <float> exonRatio;
     float[] heteroZygosity;
 
+    private List<float> xpos = new List<float>();
+    private List<float> ypos = new List<float>();
+
     int sampleGroup;
 
     
@@ -125,6 +128,8 @@ private List<string[]> rowData = new List<string[]>();
                     exonRatio.Add(sampbgn.aminoAcidRatio);
                     heteroZygosity[i] = sampbgn.heteroZygosity;
                     unitName.Add(sampledBlib.gameObject.name);
+                    xpos.Add(sampbctrl.scaledPos.x);
+                    ypos.Add(sampbctrl.scaledPos.y);
                     
                 }           
                 
@@ -153,7 +158,7 @@ private List<string[]> rowData = new List<string[]>();
             itCount += 1;
             string[] rowDataTemp;
         if (itCount == 1){
-            rowDataTemp = new string[25];
+            rowDataTemp = new string[27];
             rowDataTemp[0] ="time" ;
             rowDataTemp[1] ="name";
             rowDataTemp[2] ="sampleGroup";
@@ -179,13 +184,15 @@ private List<string[]> rowData = new List<string[]>();
             rowDataTemp[22] = "e2repB";
             rowDataTemp[23] = "exon_intron_ratio";
             rowDataTemp[24] = "Heterozygosity";
+            rowDataTemp[25] = "xpos";
+            rowDataTemp[26] = "ypos";
             rowData.Add(rowDataTemp);
         }
 
 
         // You can add up the values in as many cells as you want.
         for(int i = 0; i < sampleSize; i++){
-            rowDataTemp = new string[25];
+            rowDataTemp = new string[27];
             rowDataTemp[0] = totalTime.ToString();
             rowDataTemp[1] = unitName[i];
             rowDataTemp[2] = sampleGroup.ToString();
@@ -211,6 +218,8 @@ private List<string[]> rowData = new List<string[]>();
             rowDataTemp[22] = e2repB[i].ToString();
             rowDataTemp[23] = exonRatio[i].ToString();
             rowDataTemp[24] = heteroZygosity[i].ToString();
+            rowDataTemp[25] = xpos[i].ToString();
+            rowDataTemp[26] = ypos[i].ToString();
 
             
 
@@ -266,6 +275,7 @@ private List<string[]> rowData = new List<string[]>();
         exonRatio.Clear();
         sampleGroup += 1;
         unitName.Clear();
+        xpos.Clear(); ypos.Clear();
 
         Array.Clear(blibs,0,blibs.Length);
         time = 0f;
