@@ -356,8 +356,8 @@ string sensebaseB;
       
       //exchange genetic material
       bool derboug = true;
-      if(derboug == true){
-      //if (pythagDist < 0.1f && pythagDist > 0.001f) {
+      //if(derboug == true){
+      if (pythagDist < 0.1f && pythagDist > 0.001f) {
         //CreateGamete();
 
         for(int i = 0; i < 9; i++){
@@ -971,7 +971,7 @@ public int final_mutsize;
     }
 
     mutate = false;
-    numMutations = UnityEngine.Random.Range(1,16);
+    numMutations = UnityEngine.Random.Range(1,2);
     final_mutsize = base_mutDice / mutMultiplier;
     
     TranslateGenome();
@@ -1124,7 +1124,7 @@ public int final_mutsize;
             int donator;
 
         for(int n = 0; n < numRecoms; n++){
-             conversionDice = UnityEngine.Random.Range(0,512);
+             conversionDice = UnityEngine.Random.Range(0,2048);
              donator = -1;
 
             if(conversionDice == 1){
@@ -2078,8 +2078,8 @@ public int final_mutsize;
       thisA = "";
       thisB = "";
 
-      redAllele1 = nRED_A / 16f;
-      redAllele2 = nRED_B / 16f;
+      redAllele1 = nRED_A / 32f;
+      redAllele2 = nRED_B / 32f;
       //redGene = Mathf.Clamp((redAllele1 + redAllele2) / 2.0f, 0.00f, 1.00f);
 
 
@@ -2087,8 +2087,8 @@ public int final_mutsize;
       greenAllele2 = nGRN_B / 32f;
       //greenGene = Mathf.Clamp((greenAllele1 + greenAllele2) / 2.0f, 0.00f, 1.00f);
 
-      blueAllele1 = nLLY_A / 16f;
-      blueAllele2 = nLLY_B / 16f;
+      blueAllele1 = nLLY_A / 32f;
+      blueAllele2 = nLLY_B / 32f;
       //blueGene = Mathf.Clamp((blueAllele1 + blueAllele2) / 2.0f, 0.00f, 1.00f);
 
       moveAllele1 = nMVV_A * 3f;
@@ -2103,8 +2103,8 @@ public int final_mutsize;
       e2repAllele2 = 64f + Mathf.Pow(1.5f, nREP_B);
       //energyToReproduce = (e2repAllele1 + e2repAllele2) / 2.0f;
 
-      lifeLengthAllele1 = 16f + Mathf.Pow(2f, nLIF_A)*((greenAllele1+greenAllele2)/2f);
-      lifeLengthAllele2 = 16f + Mathf.Pow(2f, nLIF_B)*((greenAllele1+greenAllele2)/2f);
+      lifeLengthAllele1 = 16f + Mathf.Pow(2f, nLIF_A);
+      lifeLengthAllele2 = 16f + Mathf.Pow(2f, nLIF_B);
       //lifeLength = (lifeLengthAllele1 + lifeLengthAllele2);
      
       trackerAllele1 = nTRACKER_A;
@@ -2211,7 +2211,7 @@ testB = System.String.Join("", tempchromo_B);
 
   void InitializePheno(){
 
-      blibControls.lifeLength = (lifeLengthAllele1 + lifeLengthAllele2);
+      blibControls.lifeLength = ((lifeLengthAllele1 + lifeLengthAllele2)/2.0f);
     
       blibControls.energyToReproduce =128f+ (1f+aminoAcidRatio)*(e2repAllele1 + e2repAllele2) / 2.0f;
 

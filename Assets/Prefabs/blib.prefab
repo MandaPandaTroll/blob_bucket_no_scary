@@ -186,7 +186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   evolveMutationRate_enabled: 0
-  dynamicGeneDuplication_enabled: 0
+  dynamicGeneDuplication_enabled: 1
   allowSelfing: 0
   refSNP_A: 0
   refSNP_B: 0
@@ -199,9 +199,9 @@ MonoBehaviour:
   aa_B: 
   aa_antiB: 
   mutCount: 0
-  mutMultiplier: 64
-  translocation_enabled: 1
-  duplication_enabled: 1
+  mutMultiplier: 16
+  translocation_enabled: 0
+  duplication_enabled: 0
   lineageID: []
   greenAllele1: 1
   greenAllele2: 1

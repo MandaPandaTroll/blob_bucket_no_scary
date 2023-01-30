@@ -58,6 +58,7 @@ private List<string[]> rowData = new List<string[]>();
 
     private List<float> xpos = new List<float>();
     private List<float> ypos = new List<float>();
+    private List<float> velocity = new List<float>();
 
     int sampleGroup;
 
@@ -130,6 +131,7 @@ private List<string[]> rowData = new List<string[]>();
                     unitName.Add(sampledBlib.gameObject.name);
                     xpos.Add(sampbctrl.scaledPos.x);
                     ypos.Add(sampbctrl.scaledPos.y);
+                    velocity.Add(sampbctrl.gameObject.GetComponent<Rigidbody2D>().velocity.magnitude);
                     
                 }           
                 
@@ -158,7 +160,7 @@ private List<string[]> rowData = new List<string[]>();
             itCount += 1;
             string[] rowDataTemp;
         if (itCount == 1){
-            rowDataTemp = new string[27];
+            rowDataTemp = new string[28];
             rowDataTemp[0] ="time" ;
             rowDataTemp[1] ="name";
             rowDataTemp[2] ="sampleGroup";
@@ -186,13 +188,14 @@ private List<string[]> rowData = new List<string[]>();
             rowDataTemp[24] = "Heterozygosity";
             rowDataTemp[25] = "xpos";
             rowDataTemp[26] = "ypos";
+            rowDataTemp[27] = "velocity";
             rowData.Add(rowDataTemp);
         }
 
 
         // You can add up the values in as many cells as you want.
         for(int i = 0; i < sampleSize; i++){
-            rowDataTemp = new string[27];
+            rowDataTemp = new string[28];
             rowDataTemp[0] = totalTime.ToString();
             rowDataTemp[1] = unitName[i];
             rowDataTemp[2] = sampleGroup.ToString();
@@ -220,6 +223,7 @@ private List<string[]> rowData = new List<string[]>();
             rowDataTemp[24] = heteroZygosity[i].ToString();
             rowDataTemp[25] = xpos[i].ToString();
             rowDataTemp[26] = ypos[i].ToString();
+            rowDataTemp[27] = velocity[i].ToString();
 
             
 
@@ -276,6 +280,7 @@ private List<string[]> rowData = new List<string[]>();
         sampleGroup += 1;
         unitName.Clear();
         xpos.Clear(); ypos.Clear();
+        velocity.Clear();
 
         Array.Clear(blibs,0,blibs.Length);
         time = 0f;

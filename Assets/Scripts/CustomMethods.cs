@@ -27,5 +27,12 @@ public static Vector2 ScaledPos(Vector2 position){
 }
 
 public static Vector2 boxdims = new Vector2(1f,1f);
+public static int[] gridDims = new int[2];
+
+public static float ScaledSigmoid(float input,float slope){
+
+    float output = 1.0f/(1+(Mathf.Pow(2f,-input*Mathf.Pow(2f,1f+slope)+Mathf.Pow(2f,slope))));
+    return output;
+}
 
 }

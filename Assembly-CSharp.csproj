@@ -45,6 +45,7 @@
      <Compile Include="Assets/Scripts/Detector.cs" />
      <Compile Include="Assets/Scripts/Graph.cs" />
      <Compile Include="Assets/BlybSatLogger.cs" />
+     <Compile Include="Assets/NutrientTexturer.cs" />
      <Compile Include="Assets/CodeMonkey/Utils/World_Mesh.cs" />
      <Compile Include="Assets/BlobGenome.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Debug/GridBufferDrawer.cs" />

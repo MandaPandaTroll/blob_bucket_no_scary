@@ -154,7 +154,10 @@ public class BlibControls : MonoBehaviour {
 
     int codonCount = 0;
     rb = gameObject.GetComponent<Rigidbody2D>();
+    
 
+
+        transform.Rotate(0,0,UnityEngine.Random.Range(-180f,180f),Space.Self);
 
 
     posVal = 0;
@@ -391,11 +394,11 @@ public class BlibControls : MonoBehaviour {
       geneticColor = new Color(redGene, greenGene, blueGene, 1f);
       
 
-       redModifier = (scaledPos.x*2.0f)-1f;
-       greenModifier = (-scaledPos.x*2.0f) +1f;
+       redModifier = CustomMethods.ScaledSigmoid(scaledPos.x,3f);
+       greenModifier = -CustomMethods.ScaledSigmoid(scaledPos.x,3f)+1f;
       m_SpriteRenderer.color = new Color(redGene, greenGene, blueGene, 1f);
       if (energy < maxEnergy) {
-        energy += 42f * greenGene + 42f * redGene*redModifier + 16*blueGene;
+        energy += 64f * greenGene*greenModifier + 64f * redGene*redModifier + 16*blueGene;
         if (energy > maxEnergy) { energy = maxEnergy; }
       }
       energyTick = 0.0f;
@@ -902,6 +905,6 @@ public class BlibControls : MonoBehaviour {
         
     }
 
-
+  
 
 }

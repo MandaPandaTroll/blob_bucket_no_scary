@@ -21,6 +21,8 @@ public class TimeDisplay : MonoBehaviour
      int initConc;
      public float refreshRate;
     public PopLogger popLogger;
+
+    int days, hrs, mins, secs;
      
      //int blibNutes, blobNutes, blybNutes, blubNutes, carcassNutes;
    
@@ -47,17 +49,29 @@ public class TimeDisplay : MonoBehaviour
             int blibLocked, blobLocked, blybLocked, blubLocked, carcassLocked; 
             int lockedNutes;
             
-    void FixedUpdate()
+    void Update()
     {   
        
         totNutes = testing.statTot;
         grandNutes = testing.statNutes;
         initConc = testing.initConc;
         camSpeed = camCntrl.camSpeed;
+        
+        var tim = Time.time;
+        var d = Mathf.Floor(tim/(3600*24));
+        tim = tim - (d*3600*24);
+        var h = Mathf.Floor(tim/3600);
+        tim = tim - (h*3600);
+        var m = Mathf.Floor(tim/60);
+        var s = tim - (m*60);
+        days = (int)d;
+        hrs = (int)h;
+        mins = (int)m;
+        secs = (int)s;
 
         
-        
          timeToDisplay = Mathf.Round(Time.time);
+         
         tScale = Time.timeScale;
         time += Time.deltaTime;
         if(time >= refreshRate){
@@ -67,7 +81,7 @@ public class TimeDisplay : MonoBehaviour
              blubCount = GameObject.FindGameObjectsWithTag("ApexPred").Length;
             
 
-                    string timeString = timeToDisplay.ToString();
+                    string timeString = days+":"+hrs+":"+mins+":"+secs;
                     string blibString = blibCount.ToString();
                     string blobString = blobCount.ToString();
                     string blybString = blybCount.ToString();
