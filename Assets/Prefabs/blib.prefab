@@ -169,6 +169,8 @@ MonoBehaviour:
   nutLevel: 0
   nutToReproduce: 64
   doInitDiversifier: 0
+  redModifier: 0
+  greenModifier: 0
   scaledPos: {x: 0, y: 0}
   tempProtein: 0
 --- !u!114 &-8578292840481247088
@@ -183,8 +185,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f73fa7ead1e994b45a2af7503fb6aac4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  evolveMutationRate_enabled: 1
-  dynamicGeneDuplication_enabled: 1
+  evolveMutationRate_enabled: 0
+  dynamicGeneDuplication_enabled: 0
+  allowSelfing: 0
   refSNP_A: 0
   refSNP_B: 0
   heteroZygosity: 0
@@ -227,3 +230,4 @@ MonoBehaviour:
   giveSequenceA: []
   giveSequenceB: []
   final_mutsize: 10000
+  has2Gametes: 0

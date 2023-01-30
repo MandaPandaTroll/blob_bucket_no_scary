@@ -17,7 +17,7 @@ public class BlybSpawner : MonoBehaviour
     public float initEnergy;
 
   GameObject box;
-
+  Vector2 boxDims;
   public bool autoRespawn;
 
     // Start is called before the first frame update
@@ -25,10 +25,12 @@ public class BlybSpawner : MonoBehaviour
     {   
         box = GameObject.Find("box");
         boxSize = box.transform.localScale.x;
+        boxDims.x = box.transform.localScale.x;
+        boxDims.y = box.transform.localScale.y;
 
         for(int i = 0; i < initBlyb; i++){
-        float x = (float)Random.Range(-boxSize/3,boxSize/3);
-        float y = (float)Random.Range(-boxSize/3,boxSize/3);
+        float x = (float)Random.Range(-boxDims.x/3,boxDims.x/3);
+        float y = (float)Random.Range(-boxDims.y/3,boxDims.y/3);
        Instantiate(blyb, new Vector3(x, y, 0), Quaternion.identity);
        BrainBlybControls bctrl = blyb.GetComponent<BrainBlybControls>();
        bctrl.protein = initProtein;
@@ -55,8 +57,8 @@ void LateUpdate()
   void extraSpawn()
   {
         for(int i = 0; i < extraBlyb; i++){
-        float x = (float)Random.Range(-boxSize/3,boxSize/3);
-        float y = (float)Random.Range(-boxSize/3,boxSize/3);
+        float x = (float)Random.Range(-boxDims.x/3,boxDims.x/3);
+        float y = (float)Random.Range(-boxDims.y/3,boxDims.y/3);
        Instantiate(blyb, new Vector3(x, y, 0), Quaternion.identity);
        BrainBlybControls bctrl = blyb.GetComponent<BrainBlybControls>();
        bctrl.protein = 0;

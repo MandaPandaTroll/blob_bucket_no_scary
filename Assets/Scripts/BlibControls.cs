@@ -326,7 +326,8 @@ public class BlibControls : MonoBehaviour {
     }
   }
   public bool doInitDiversifier = false;
-  
+  public float redModifier;
+  public float greenModifier;
 
 
   public Vector2 scaledPos = new Vector2(0,0);
@@ -390,7 +391,8 @@ public class BlibControls : MonoBehaviour {
       geneticColor = new Color(redGene, greenGene, blueGene, 1f);
       
 
-      float redModifier = 1f + ((scaledPos.x+scaledPos.y)/2.0f);
+       redModifier = (scaledPos.x*2.0f)-1f;
+       greenModifier = (-scaledPos.x*2.0f) +1f;
       m_SpriteRenderer.color = new Color(redGene, greenGene, blueGene, 1f);
       if (energy < maxEnergy) {
         energy += 42f * greenGene + 42f * redGene*redModifier + 16*blueGene;

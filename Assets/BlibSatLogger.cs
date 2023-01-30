@@ -41,6 +41,8 @@ GameObject[] blibs;
     private List<int> generation = new List<int>();
     private List<float> xpos = new List<float>();
     private List<float> ypos = new List<float>();
+    private List<float> mutMultiplier = new List<float>();
+
 
     
     private int itCount, sampler, sampleGroup, sampleSize;  
@@ -114,6 +116,7 @@ GameObject[] blibs;
                     generation.Add(sampledBlib.generation);
                     xpos.Add(sampledBlib.scaledPos.x);
                     ypos.Add(sampledBlib.scaledPos.y);
+                    mutMultiplier.Add(sampledGenome.mutMultiplier);
                     
                     
                 }
@@ -140,7 +143,7 @@ GameObject[] blibs;
             string[] rowDataTemp;
         if (itCount == 1){
 
-            rowDataTemp = new string[11];
+            rowDataTemp = new string[12];
             rowDataTemp[0] ="time" ;
             rowDataTemp[1] ="name" ;
             rowDataTemp[2] = "sampleGroup";
@@ -152,6 +155,7 @@ GameObject[] blibs;
             rowDataTemp[8] = "generation";
             rowDataTemp[9] = "xpos";
             rowDataTemp[10] = "ypos";
+            rowDataTemp[11] = "mutMultiplier";
             //rowDataTemp[6] = "aa_A";
             //rowDataTemp[7] = "aa_antiA";
             //rowDataTemp[8] = "aa_B";
@@ -166,7 +170,7 @@ GameObject[] blibs;
         for(int i = 0; i < sampleSize; i++)
         {   
             
-            rowDataTemp = new string[11];
+            rowDataTemp = new string[12];
             rowDataTemp[0] = totalTime.ToString();
             rowDataTemp[1] = unitName[i];
             rowDataTemp[2] = sampleGroup.ToString();
@@ -178,6 +182,7 @@ GameObject[] blibs;
             rowDataTemp[8] = generation[i].ToString();
             rowDataTemp[9] = xpos[i].ToString();
             rowDataTemp[10] = ypos[i].ToString();
+            rowDataTemp[11] = mutMultiplier[i].ToString();
             //rowDataTemp[6] = aa_A[i].ToString();
             //rowDataTemp[7] = aa_antiA[i].ToString();
             //rowDataTemp[8] = aa_B[i].ToString();
@@ -233,7 +238,7 @@ GameObject[] blibs;
         
         
         unitName.Clear();testA.Clear();testB.Clear();aa_A.Clear();aa_antiA.Clear();aa_B.Clear();aa_antiB.Clear();snpratA.Clear();snpratB.Clear();generation.Clear();
-        xpos.Clear(); ypos.Clear();
+        xpos.Clear(); ypos.Clear();mutMultiplier.Clear();
         Array.Clear(blibs,0,blibs.Length);
         time = 0f;
         sampleGroup += 1;

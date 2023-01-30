@@ -109,6 +109,7 @@
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectDetector2D.cs" />
      <Compile Include="Assets/Scripts/TrainingPreySpawner.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Encoding/DistanceNormalization.cs" />
+     <Compile Include="Assets/Scripts/CustomMethods.cs" />
      <Compile Include="Assets/Smeller_Blub.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Debug/ChannelLabel.cs" />
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/Basic/Detection/IDetector.cs" />
@@ -153,7 +154,6 @@
      <Compile Include="Assets/mBaske_sensor/Scripts/Sensors/Grid/GameObject/Detection/GameObjectShape.cs" />
      <Compile Include="Assets/BlibGenome.cs" />
      <Compile Include="Assets/Scripts/BlubControls.cs" />
-     <Compile Include="Assets/Scripts/CustomMethods.cs" />
      <None Include="Assets/CodeMonkey/README.txt" />
      <None Include="Assets/Shaders etc/SHAD.shader" />
     <Reference Include="UnityEngine">

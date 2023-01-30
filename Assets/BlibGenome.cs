@@ -41,6 +41,8 @@ public class BlibGenome : MonoBehaviour {
   List <int[]> dynamicGeneLocations = new List<int[]>();
  public bool evolveMutationRate_enabled = false;
  public bool dynamicGeneDuplication_enabled = false;
+
+ public bool allowSelfing = false;
   //string[] testcopy = new string[8]{"A","B","C","D","E","F","G","H"};
   public float refSNP_A;
   public float refSNP_B;
@@ -52,6 +54,13 @@ public class BlibGenome : MonoBehaviour {
   public string aa_antiA;
   public string aa_B;
   public string aa_antiB;
+
+ public string[,] offspringGenomeA = new string[9,486];
+ public string[,] offspringGenomeB = new string[9,486];
+  public string[,] producedGamete = new string[9,486];
+public string[,] receivedGamete = new string[9,486];
+
+public List <string[,]> gametes = new List<string[,]>();
 
 public int mutCount;
 int base_mutDice = 24000;
@@ -171,6 +180,7 @@ string sensebaseB;
       mutMultiplier = 0;
     }
     dynamicGeneLocations.Clear();
+    gametes.Clear();
     //string debugString = "";
     //for(int i = 0; i < testcopy.Length;i++){
     //  debugString += NucleotideCopy(testcopy[i]);
@@ -179,6 +189,10 @@ string sensebaseB;
     //Debug.Log(debugString);
     A = new string[9,486];
     B = new string[9,486];
+    producedGamete = new string[9,486];
+    receivedGamete = new string[9,486];
+    offspringGenomeA = new string[9,486];
+    offspringGenomeB = new string[9,486];
     firstTranslation = false;
     maxAminoAcids = (2f*2f*9f*486f)/3f;
     mutCount = 0;
@@ -260,6 +274,7 @@ string sensebaseB;
 
    
     if (col.gameObject.tag == "prey" &&  blibControls.age > 5f && col.gameObject.GetComponent<BlibControls>().age > 5f) {
+      
        mateGenome = col.gameObject.GetComponent<BlibGenome>();
        if(evolveMutationRate_enabled == true){
         int sumMutMult = mutMultiplier+mateGenome.mutMultiplier;
@@ -270,7 +285,7 @@ string sensebaseB;
       mutMultiplier = 0;
     }
 
-      int snpCountA = 0, snpCountB = 0;
+      int snpCountA = 0, snpCountB = 0, snpCountAB = 0, snpCountBA = 0;
       bool isEqual;
 
       
@@ -297,6 +312,19 @@ string sensebaseB;
         }
       }
 
+            //AB-Compare
+      for(int p = 0; p < (9*486); p++){
+        if(this.testA[p] != mateGenome.testB[p]){
+          snpCountAB +=1;
+        }
+
+      //BA-Compare
+        if(this.testB[p] != mateGenome.testA[p]){
+          snpCountBA +=1;
+        }
+      }
+     int[] snps = new int[4]{snpCountA,snpCountB,snpCountAB,snpCountBA};
+     Array.Sort(snps);
       /*
       //A-Compare
       for (int i = 0; i < chromoPairs; i++) {
@@ -319,21 +347,26 @@ string sensebaseB;
       }
       */
       //Genetic distance calculations
-      float pairWiseA_squared = Mathf.Pow(((float)snpCountA / 486f*9f), 2.0f);
-      float pairWiseB_squared = Mathf.Pow(((float)snpCountB / 486f*9f), 2.0f);
+      float pairWise1_squared = Mathf.Pow(((float)snps[0] / 486f*9f), 2.0f);
+      float pairWise2_squared = Mathf.Pow(((float)snps[1] / 486f*9f), 2.0f);
 
-      float pythagDist = Mathf.Sqrt(pairWiseA_squared + pairWiseB_squared);
-      if (pythagDist > 0.01) {
-        // //Debug.Log("SNP-A = " + snpCountA + ", SNP-B = " + snpCountB + " PWA = " + pairWiseA_squared + " PWB = " + pairWiseB_squared +
-        // " Pythagorean distance (BP) = " + pythagDist);
-      }
+      float pythagDist = Mathf.Sqrt(pairWise1_squared + pairWise2_squared);
+     
 
       
       //exchange genetic material
       bool derboug = true;
-      if (derboug == true) {
-      //if (pythagDist < 0.4f && pythagDist > 0.001f) {
+      if(derboug == true){
+      //if (pythagDist < 0.1f && pythagDist > 0.001f) {
+        //CreateGamete();
+
+        for(int i = 0; i < 9; i++){
+          for(int j = 0; j < 486; j++){
+            receivedGamete[i,j] = NucleotideCopy(mateGenome.producedGamete[i,j]);
+          }
+        }
         
+        has2Gametes = true;
         numRecoms = UnityEngine.Random.Range(0,256);
         AorB = -1;
         AorB = UnityEngine.Random.Range(0,2);
@@ -388,9 +421,11 @@ string sensebaseB;
             giveSequenceA.Clear();
             giveSequenceB.Clear();
         }
-
+        
+        
       }
-
+      
+      
         
 
     
@@ -432,8 +467,12 @@ public int final_mutsize;
          Mutate();
     }else if (firstTranslation == false){
       TranslateGenome();
+      
     }
 
+    if(has2Gametes == true){
+      CreateZygote();
+    }
   }
   void Mutate() {
     mutate = false;
@@ -452,6 +491,7 @@ public int final_mutsize;
     AorB = UnityEngine.Random.Range(0, 2);
     int duplicationRoll = UnityEngine.Random.Range(0, 2048);
     int transLocRoll = UnityEngine.Random.Range(0, 2048);
+    
 
     string[] triNu = new string[3];
     string[] tranString_origin = new string[27];
@@ -459,9 +499,9 @@ public int final_mutsize;
     int siteCroms = sites.GetLength(0);
     int siteLocs = sites.GetLength(1);
 
-
+    int geneDuplicationRoll = UnityEngine.Random.Range(0,4096);
      //Proper-ish gene duplication
-    if(dynamicGeneDuplication_enabled == true){
+    if(dynamicGeneDuplication_enabled == true && geneDuplicationRoll == 1){
      
     int whichOrigin = UnityEngine.Random.Range(0,dynamicGeneLocations.Count);
     int whichDestination = UnityEngine.Random.Range(0,dynamicGeneLocations.Count);
@@ -933,7 +973,7 @@ public int final_mutsize;
     mutate = false;
     numMutations = UnityEngine.Random.Range(1,16);
     final_mutsize = base_mutDice / mutMultiplier;
-
+    
     TranslateGenome();
   }
 
@@ -984,7 +1024,9 @@ public int final_mutsize;
   
   void TranslateGenome() {
     //mutate = false;
-
+    if( final_mutsize < 0){
+      final_mutsize = 0;
+    }
     int mutationroll = UnityEngine.Random.Range(0, final_mutsize);
       if(mutationroll == 1){
         mutate = true;
@@ -1021,6 +1063,11 @@ public int final_mutsize;
           for (int j = 0; j < 486; j++){
             A[i,j] = NucleotideCopy(initGenomestatic.A_static[i,j]);
             B[i,j] = NucleotideCopy(initGenomestatic.B_static[i,j]);
+
+            offspringGenomeA[i,j] = NucleotideCopy(initGenomestatic.A_static[i,j]);
+            offspringGenomeB[i,j] = NucleotideCopy(initGenomestatic.B_static[i,j]);
+            //producedGamete[i,j] = NucleotideCopy(initGenomestatic.A_static[i,j]);
+            
           }
         }
         
@@ -1038,6 +1085,9 @@ public int final_mutsize;
           for (int j = 0; j < 486; j++){
             A[i,j] = NucleotideCopy(mother.A[i,j]);
             B[i,j] = NucleotideCopy(mother.B[i,j]);
+            //offspringGenomeA[i,j] = NucleotideCopy(mother.offspringGenomeA[i,j]);
+            //offspringGenomeA[i,j] = NucleotideCopy(mother.offspringGenomeB[i,j]);
+            //producedGamete[i,j] = NucleotideCopy(mother.offspringGenomeA[i,j]);
           }
         }
     }
@@ -1093,6 +1143,7 @@ public int final_mutsize;
                 if(doConversion == false){
                     A[whichChromo,i] = NucleotideCopy(recoBuffer_B[i - recoStart_site]);
                     B[whichChromo,i] = NucleotideCopy(recoBuffer_A[i - recoStart_site]);
+                    
                 }else if(doConversion == true){
                     if(donator == 0){
                         B[whichChromo,i] = NucleotideCopy(recoBuffer_A[i - recoStart_site]);
@@ -2059,6 +2110,7 @@ public int final_mutsize;
       trackerAllele1 = nTRACKER_A;
       trackerAllele2 = nTRACKER_B;
 
+      
       final_mutsize = base_mutDice / mutMultiplier;
 
 
@@ -2094,6 +2146,7 @@ for(int i = 0; i < 9; i++){
     tempBaseGather_A[j] = NucleotideCopy(A[i,j]);
     tempBaseGather_B[j] = NucleotideCopy(B[i,j]);
     
+    
   }
   tempchromo_A[i] = System.String.Join("",tempBaseGather_A);
   tempchromo_B[i] = System.String.Join("",tempBaseGather_B);
@@ -2120,9 +2173,25 @@ testB = System.String.Join("", tempchromo_B);
     refSNP_A = tempSNPA;
     refSNP_B = tempSNPB;
       firstTranslation = true;
-      
+
+      int[] fromWhich = new int[9];
+    for(int i = 0; i < 9; i++){
+      fromWhich[i] = UnityEngine.Random.Range(0,2);
+    }
+    for(int i = 0; i < 9; i++){
+      if(fromWhich[i] == 0){
+        for(int j = 0; j < 486; j++){
+          producedGamete[i,j] = NucleotideCopy(A[i,j]);
+        }
+      }else if(fromWhich[i] == 1){
+        for(int j = 0; j < 486; j++){
+          producedGamete[i,j] = NucleotideCopy(B[i,j]);
+        }
+      }
+    }
       InitializePheno();
-    
+      
+      
 
   }
 
@@ -2156,8 +2225,8 @@ testB = System.String.Join("", tempchromo_B);
 
       blibControls.blueGene = Mathf.Clamp((blueAllele1 + blueAllele2) / 2.0f, 0.00f, 1.00f);
       this.gameObject.GetComponent<SpriteRenderer>().color = new Color(Mathf.Clamp((redAllele1 + redAllele2) / 2.0f, 0.00f, 1.00f), Mathf.Clamp((greenAllele1 + greenAllele2) / 2.0f, 0.00f, 1.00f), Mathf.Clamp((blueAllele1 + blueAllele2) / 2.0f, 0.00f, 1.00f), 1f);
-
-
+      //CreateGamete();
+      
   }
 
   string NucleotideCopy(string input){
@@ -2222,9 +2291,126 @@ testB = System.String.Join("", tempchromo_B);
       G   |   GAG            GTG             GCG            GGG              G
 
   */
+  void CreateGamete(){
+    
+    /*
+      int originLength;
+    
+    int originSense = 0; int originSet; int originChrom; int originSite_start; int originSite_end;
+    int destinationChrom; int destinationSite_start = 0; int destinationSite_end = 0;
+    
+    
+   int numGenes = dynamicGeneLocations.Count;
+   Debug.Log(numGenes);
+     //Gene recombination for offspring
+    List<string[,]> originList = new List<string[,]>();
+    
+     for(int q = 0; q < dynamicGeneLocations.Count/4; q++){
+      
+     
+    
+    //int whichDestination = UnityEngine.Random.Range(0,dynamicGeneLocations.Count);
+    
+    
 
+    
+    originSet         = dynamicGeneLocations[UnityEngine.Random.Range(0,2)][1];
+    originChrom       = dynamicGeneLocations[q][2];
+    originSite_start  = dynamicGeneLocations[q][3];
+    originSite_end    = dynamicGeneLocations[q][4];
 
+    originLength = originSite_end-originSite_start;
+    
+    
+    
+    
+    destinationChrom       = originChrom;
+    
+    destinationSite_start  = originSite_start;
+    destinationSite_end    = originSite_start + originLength;
 
+    
+    string[] originSequence = new string[originLength];
+
+    int s = 0;
+
+    if(originSet == 0){
+      originList.Add(A);
+    }else if(originSet == 1){
+    originList.Add(B);
+    }
+    
+
+    
+        
+      
+      
+    for (int i = originSite_start; i < originSite_end; i++){
+      originSequence[s] = NucleotideCopy(originList[0][originChrom,i]);
+      s +=1;
+    }
+    s = 0;
+    for(int i = destinationSite_start; i < destinationSite_end; i++){
+      producedGamete[destinationChrom,i] = NucleotideCopy(originSequence[s]);
+      
+      s += 1;
+    }
+    
+    
+    s = 0;
+    originList.Clear();
+    
+    }
+    
+    */
+
+    CreateZygote();
+  }
+public bool has2Gametes;
+  void CreateZygote(){
+    
+    int whichSet = UnityEngine.Random.Range(0,2);
+
+ 
+     
+    
+    
+  
+      if( allowSelfing == true && has2Gametes == false){
+      for(int i = 0; i < 9; i++){
+        for(int j = 0; j < 486; j++){
+          receivedGamete[i,j] = NucleotideCopy(producedGamete[i,j]);
+        }
+      }
+      has2Gametes = true;
+    }
+
+      
+
+      if(has2Gametes == true){
+        if(whichSet == 0){
+      for(int i = 0; i < 9; i++){
+        for(int j = 0; j < 486; j++){
+          offspringGenomeA[i,j] = NucleotideCopy(producedGamete[i,j]);
+          offspringGenomeB[i,j] = NucleotideCopy(receivedGamete[i,j]);
+        }
+      }
+    }
+    if(whichSet == 1){
+      for(int i = 0; i < 9; i++){
+        for(int j = 0; j < 486; j++){
+          offspringGenomeB[i,j] = NucleotideCopy(producedGamete[i,j]);
+          offspringGenomeA[i,j] = NucleotideCopy(receivedGamete[i,j]);
+        }
+      }
+    }
+      }
+      
+    
+    
+
+  }
+  
 }
 
 

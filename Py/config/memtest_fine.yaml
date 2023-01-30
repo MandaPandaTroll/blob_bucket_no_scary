@@ -6,12 +6,12 @@ behaviors:
       # Hyperparameters common to PPO and SAC
       batch_size: 256
       buffer_size: 8192
-      learning_rate: 1.0e-3
+      learning_rate: 1.0e-4
       learning_rate_schedule: linear
 
       # PPO-specific hyperparameters
       # Replaces the "PPO-specific hyperparameters" section above
-      beta: 1.0e-2
+      beta: 1.0e-3
       epsilon: 0.2
 
       lambd: 0.925
@@ -21,7 +21,7 @@ behaviors:
     network_settings:
       conditioning_type: none
       vis_encode_type: resnet
-      normalize: false
+      normalize: true
       hidden_units: 128
       num_layers: 3
       memory:
@@ -32,8 +32,8 @@ behaviors:
 
 
     # Trainer configurations common to all trainers
-    max_steps: 1.0e7
-    time_horizon: 512
+    max_steps: 1.0e6
+    time_horizon: 1024
 
     summary_freq: 10000
     keep_checkpoints: 5
@@ -53,7 +53,7 @@ behaviors:
       curiosity:
         strength: 0.05
         gamma: 0.95
-        learning_rate: 1.0e-3
+        learning_rate: 1.0e-4
 
   BrainBlyb:
     trainer_type: ppo
@@ -62,12 +62,12 @@ behaviors:
       # Hyperparameters common to PPO and SAC
       batch_size: 256
       buffer_size: 8192
-      learning_rate: 1.0e-3
+      learning_rate: 1.0e-4
       learning_rate_schedule: linear
 
       # PPO-specific hyperparameters
       # Replaces the "PPO-specific hyperparameters" section above
-      beta: 1.0e-2
+      beta: 1.0e-3
       epsilon: 0.2
 
       lambd: 0.925
@@ -77,7 +77,7 @@ behaviors:
     network_settings:
       conditioning_type: none
       vis_encode_type: resnet
-      normalize: false
+      normalize: true
       hidden_units: 128
       num_layers: 3
       memory:
@@ -88,8 +88,8 @@ behaviors:
 
 
     # Trainer configurations common to all trainers
-    max_steps: 1.0e7
-    time_horizon: 512
+    max_steps: 1.0e6
+    time_horizon: 1024
 
     summary_freq: 10000
     keep_checkpoints: 5
@@ -122,7 +122,7 @@ behaviors:
 
       # PPO-specific hyperparameters
       # Replaces the "PPO-specific hyperparameters" section above
-      beta: 1.0e-2
+      beta: 1.0e-3
       epsilon: 0.2
 
       lambd: 0.925
@@ -131,7 +131,7 @@ behaviors:
     # Configuration of the neural network (common to PPO/SAC)
     network_settings:
       vis_encode_type: resnet
-      normalize: false
+      normalize: true
       hidden_units: 128
       num_layers: 2
 
@@ -142,8 +142,8 @@ behaviors:
 
 
     # Trainer configurations common to all trainers
-    max_steps: 1.0e7
-    time_horizon: 512
+    max_steps: 1.0e6
+    time_horizon: 1024
 
     summary_freq: 10000
     keep_checkpoints: 5
@@ -163,4 +163,4 @@ behaviors:
       curiosity:
         strength: 0.05
         gamma: 0.95
-        learning_rate: 1.0e-3
+        learning_rate: 1.0e-4

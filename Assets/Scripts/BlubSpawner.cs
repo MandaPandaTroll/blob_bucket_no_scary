@@ -12,6 +12,7 @@ public class BlubSpawner : MonoBehaviour
   GameObject[] blubs;
   GameObject box;
  float boxSize;
+ Vector2 boxDims;
   int blubN;
   public bool autoRespawn;
   public int minBlub;
@@ -21,10 +22,12 @@ public class BlubSpawner : MonoBehaviour
     {   
         box = GameObject.Find("box");
          boxSize = box.transform.localScale.x;
+         boxDims.x = box.transform.localScale.x;
+        boxDims.y = box.transform.localScale.y;
 
         for(int i = 0; i < initBlub; i++){
-        float x = (float)Random.Range(-boxSize/3,boxSize/3);
-        float y = (float)Random.Range(-boxSize/3,boxSize/3);
+        float x = (float)Random.Range(-boxDims.x/3,boxDims.x/3);
+        float y = (float)Random.Range(-boxDims.y/3,boxDims.y/3);
        Instantiate(blub, new Vector3(x, y, 0), Quaternion.identity);
        blub.GetComponent<BrainBlubControls>().protein=0;
         }
@@ -48,8 +51,8 @@ void LateUpdate()
   void extraSpawn()
   {
         for(int i = 0; i < extraBlub; i++){
-        float x = (float)Random.Range(-boxSize/3,boxSize/3);
-        float y = (float)Random.Range(-boxSize/3,boxSize/3);
+        float x = (float)Random.Range(-boxDims.x/3,boxDims.x/3);
+        float y = (float)Random.Range(-boxDims.y/3,boxDims.y/3);
        Instantiate(blub, new Vector3(x, y, 0), Quaternion.identity);
        blub.GetComponent<BrainBlubControls>().protein=0;
   }

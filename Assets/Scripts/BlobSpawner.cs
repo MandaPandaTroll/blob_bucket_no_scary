@@ -17,7 +17,7 @@ public class BlobSpawner : MonoBehaviour
   public float initEnergy;
 
   GameObject box;
-
+  Vector2 boxDims;
   public bool autoRespawn;
 
     // Start is called before the first frame update
@@ -25,10 +25,11 @@ public class BlobSpawner : MonoBehaviour
     {   
         box = GameObject.Find("box");
         boxSize = box.transform.localScale.x;
-
+        boxDims.x = box.transform.localScale.x;
+        boxDims.y = box.transform.localScale.y;
         for(int i = 0; i < initBlob; i++){
-        float x = (float)Random.Range(-boxSize/3,boxSize/3);
-        float y = (float)Random.Range(-boxSize/3,boxSize/3);
+        float x = (float)Random.Range(-boxDims.x/3,boxDims.x/3);
+        float y = (float)Random.Range(-boxDims.y/3,boxDims.y/3);
        Instantiate(blob, new Vector3(x, y, 0), Quaternion.identity);
        BrainBlobControls bctrl = blob.GetComponent<BrainBlobControls>();
        bctrl.protein = initProtein;
@@ -55,8 +56,8 @@ void LateUpdate()
   void extraSpawn()
   {boxSize = box.transform.localScale.x;
         for(int i = 0; i < extraBlob; i++){
-        float x = (float)Random.Range(-boxSize/3,boxSize/3);
-        float y = (float)Random.Range(-boxSize/3,boxSize/3);
+        float x = (float)Random.Range(-boxDims.x/3,boxDims.x/3);
+        float y = (float)Random.Range(-boxDims.y/3,boxDims.y/3);
        Instantiate(blob, new Vector3(x, y, 0), Quaternion.identity);
        BrainBlobControls bctrl = blob.GetComponent<BrainBlobControls>();
        bctrl.protein = 0;

@@ -23,6 +23,7 @@ public class BlibSpawner : MonoBehaviour {
   GameObject box;
   int blibN;
   float boxSize;
+  Vector2 boxDims;
   PopLogger popLogger;
   public bool speedModifier_enabled;
   public float speedModifier;
@@ -55,7 +56,9 @@ public class BlibSpawner : MonoBehaviour {
     popLogger = GameObject.Find("StatisticsHandler").GetComponent<PopLogger>();
 
     box = GameObject.Find("box");
-    boxSize = box.transform.localScale.x;
+    
+    boxDims.x = box.transform.localScale.x;
+    boxDims.y = box.transform.localScale.y;
     blib.name = "blib";
     for (int i = 0; i < initBlib; i++) {
 
@@ -65,8 +68,8 @@ public class BlibSpawner : MonoBehaviour {
       }
       initLineages.Add(initLineage);
 
-      float x = (float)Random.Range(-boxSize / 3, boxSize / 3);
-      float y = (float)Random.Range(-boxSize / 3, boxSize / 3);
+      float x = (float)Random.Range(-boxDims.x / 3, boxDims.x / 3);
+      float y = (float)Random.Range(-boxDims.y / 3, boxDims.y / 3);
       GameObject thisBlib = Instantiate(blib, new Vector3(x, y, 0), Quaternion.identity);
       thisGenome = thisBlib.GetComponent<BlibGenome>();
       thisGenome.lineageID.Add(System.String.Join("", initLineages[i]));
@@ -115,8 +118,8 @@ public class BlibSpawner : MonoBehaviour {
   void extraSpawn() {
 
     for (int i = 0; i < extraBlib; i++) {
-      float x = (float)Random.Range(-boxSize / 3, boxSize / 3);
-      float y = (float)Random.Range(-boxSize / 3, boxSize / 3);
+      float x = (float)Random.Range(-boxDims.x / 3, boxDims.x / 3);
+      float y = (float)Random.Range(-boxDims.y / 3, boxDims.y / 3);
       GameObject thisBlib = Instantiate(blib, new Vector3(x, y, 0), Quaternion.identity);
       thisGenome = thisBlib.GetComponent<BlibGenome>();
       
