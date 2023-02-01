@@ -174,8 +174,9 @@ string sensebaseA;
 string sensebaseB;
 
 
-
+public float recomCooldown = 0;
   void Start() {
+    recomCooldown = 0;
     if(mutMultiplier < 0){
       mutMultiplier = 0;
     }
@@ -272,7 +273,7 @@ string sensebaseB;
   BlibGenome mateGenome;
   void OnCollisionEnter2D(Collision2D col) {
 
-   
+   if(recomCooldown <= 0){
     if (col.gameObject.tag == "prey" &&  blibControls.age > 5f && col.gameObject.GetComponent<BlibControls>().age > 5f) {
       
        mateGenome = col.gameObject.GetComponent<BlibGenome>();
@@ -428,8 +429,10 @@ string sensebaseB;
       
         
 
-    
+    recomCooldown = 5f;
     }
+   }
+    
   }
 
 
@@ -442,6 +445,11 @@ public int final_mutsize;
   // Update is called once per frame
   void Update() {
     
+    if(recomCooldown > 0){
+      recomCooldown += -Time.deltaTime;
+    }else if(recomCooldown < 0){
+      recomCooldown = 0;
+    }
     
     
 
@@ -1098,7 +1106,7 @@ public int final_mutsize;
         
          doConversion = false;
         
-         numRecoms = UnityEngine.Random.Range(32, 512);
+         numRecoms = UnityEngine.Random.Range(32, 64);
 
          recoChromos = 9;
          numRecoLoci = 19;

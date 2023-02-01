@@ -595,7 +595,7 @@ public class BlibControls : MonoBehaviour {
         Vector2 norm = contact.normal;
 
 
-        rb.AddForce(contact.normal * moveForce * 5f);
+        rb.AddForce(contact.normal * moveForce);
 
         rb.AddTorque((norm.y + norm.x) * Mathf.Rad2Deg);
       }
@@ -618,7 +618,7 @@ public class BlibControls : MonoBehaviour {
         Vector2 norm = contact.normal;
 
 
-        rb.AddForce(contact.normal * moveForce * 5f);
+        rb.AddForce(contact.normal * moveForce);
 
         rb.AddTorque((norm.y + norm.x) * Mathf.Rad2Deg);
 
@@ -633,7 +633,7 @@ public class BlibControls : MonoBehaviour {
       Vector2 norm = contact.normal;
 
 
-      rb.AddForce(contact.normal * moveForce * 5f);
+      rb.AddForce(contact.normal * moveForce);
 
       rb.AddTorque((norm.y + norm.x) * Mathf.Rad2Deg);
     }
@@ -669,7 +669,7 @@ public class BlibControls : MonoBehaviour {
     }
 
     rb.AddForce((transform.up * moveForce * rb.mass * speedModifier) * energyMoveMod);
-    energy -= (moveForce / 256) * energyMoveMod;
+    energy -= (moveForce / 512) * energyMoveMod;
     int randTurner = Random.Range(0, (int)turnDice);
 
     if (randTurner == 0) {

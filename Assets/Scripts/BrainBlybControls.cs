@@ -534,50 +534,41 @@ void Awake(){
                     //Reproduction
 
                     energy = (energy/2.0f);
-                    bool odd_protein = false;
-                    bool odd_NH4 = false;
+
+                    int quotient = 0; int remainder = 0; int daughterNutes = 0; int motherNutes = 0;
+                    int quotient_NH4 = 0; int remainder_NH4 = 0; int daughterNutes_NH4 = 0; int motherNutes_NH4= 0;
+    if (protein > 0) {
+      if(protein == 1){
+        motherNutes = 1; daughterNutes = 0;
+      }
+
+      if(protein > 1){
+        quotient = protein/2;
+        remainder = protein%2;
+        motherNutes = quotient+remainder;
+        daughterNutes = quotient;
+      }
                     
-                if(protein > 0){
 
+    }
 
+    if (NH4 > 0) {
+      if(NH4 == 1){
+        motherNutes_NH4 = 1; daughterNutes_NH4 = 0;
+      }
 
-                    if(protein == 1){
-                        odd_protein = true;
-                        tempProtein = 0;
-                    }else if (protein > 1){
-
-                        if(protein % 2 == 0){
-                        odd_protein = false;
-                        tempProtein = (protein/2);
-                        }
-                        else{
-                        odd_protein = true;
-                        tempProtein = (protein -1 )/2;}
-                        
-                    }
-                    protein = 0;
-                }
-
-                if(NH4 > 0){
-
-
-
-                    if(NH4 == 1){
-                        odd_NH4 = true;
-                        tempNH4 = 0;
-                    }else if (protein > 1){
-
-                        if(protein % 2 == 0){
-                        odd_NH4 = false;
-                        tempNH4 = (NH4/2);
-                        }
-                        else{
-                        odd_NH4 = true;
-                        tempNH4 = (NH4 -1 )/2;}
-                        
-                    }
-                    NH4 = 0;
-                }
+      if(NH4 > 1){
+        quotient_NH4 = NH4/2;
+        remainder_NH4 = NH4%2;
+        motherNutes_NH4 = quotient_NH4+remainder_NH4;
+        daughterNutes_NH4 = quotient_NH4;
+      }
+                    
+        protein = 0;
+        NH4 = 0;
+    }
+                    
+               
                 /*
                     bool odd = false;
                     int remainder = 0;
@@ -628,17 +619,11 @@ void Awake(){
                     
                     
                      daughter.GetComponent<BlybGenome>().mutate = true;
-                    if(odd_protein == true){
-                        daughter_controls.protein = tempProtein +1;
-                    }else{daughter_controls.protein = tempProtein;}
-                    
-                    protein = tempProtein;
 
-                    if(odd_NH4 == true){
-                        daughter_controls.NH4 = tempNH4 +1;
-                    }else{daughter_controls.NH4 = tempNH4;}
-                    
-                    NH4 = tempNH4;
+                     daughter_controls.protein = daughterNutes;
+                    daughter_controls.NH4 = daughterNutes_NH4;
+                    protein = motherNutes;
+                    NH4 = motherNutes_NH4;
 
 
                     rCount += 1;

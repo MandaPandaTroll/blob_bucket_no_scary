@@ -10,6 +10,8 @@ There is some inexplicable loss of nutrients, which means that nutrients must be
 
 public class Testing : MonoBehaviour
 {
+
+     System.Random rndA = new System.Random();
     public bool spawnAllInCenter;
     public bool autoReplenish;
     public bool autoRemove;
@@ -40,10 +42,10 @@ public class Testing : MonoBehaviour
 
     public float blibLocked, blobLocked, blybLocked, blubLocked;
 
+    public int spawnRangeDivider;
 
-
-
-
+    public int numRandomMiddle;
+    public int spawndivider;
     void OnGUI()
     {
 
@@ -96,8 +98,11 @@ public class Testing : MonoBehaviour
 
             }
         }else if(spawnAllInCenter == true){
-
-            nutgrid.SetValue(Vector3.zero,numCells*initConc);
+            for(int i = 0; i < numRandomMiddle; i++){
+            nutgrid.SetValue(new Vector3(UnityEngine.Random.Range(-(box.localScale.x/2f)/spawnRangeDivider,(box.localScale.x/2f))/spawnRangeDivider,UnityEngine.Random.Range((-box.localScale.y/2f)/spawnRangeDivider,(box.localScale.y/2f))/spawnRangeDivider,0f),(numCells*initConc/(numRandomMiddle))/spawndivider);
+            }
+            
+            
             
         }
         
@@ -136,9 +141,10 @@ public class Testing : MonoBehaviour
     GameObject[] blubs;
     GameObject[] carcasses;
     public bool diffusionEnabled;
-    private void FixedUpdate()
+    public int diffusionLimit;
+    private void Update()
     {
-
+        
 
 
 
@@ -147,6 +153,7 @@ public class Testing : MonoBehaviour
         diffusionTimer += Time.deltaTime;
         if (diffusionTimer >= diffRate)
         {
+            System.Array.Clear(kernel,0,kernel.Length);
             newArray = nutgrid.gridArray;
             blibNutes = 0; blobNutes = 0; blybNutes = 0; blubNutes = 0; carcassNutes = 0;
 
@@ -230,25 +237,128 @@ public class Testing : MonoBehaviour
             int[] thereVals  = new int [8];
             int hereval;
            if(diffusionEnabled == true) {
+            gridWidth = nutgrid.gridArray.GetLength(0);
+            gridHeight = nutgrid.gridArray.GetLength(1);
 
-            int dirs = UnityEngine.Random.Range(1,5);
+            int dirs = UnityEngine.Random.Range(-2,3);
 
-            if(dirs == 1){
-            for (int x = nutgrid.gridArray.GetLength(0)-2; x > 1 ; x--)
-            {
-                for (int y = nutgrid.gridArray.GetLength(1)-2; y > 1; y--)
-                {
+            for(int x = 1; x < gridWidth-2; x++){
+                for(int y = 1; y < gridHeight-2; y++){
+
+                    kernel = GetKernelSmall(x,y);
                     
+                    hereval = kernel[1,1];
 
-                    kernel[0, 2] = nutgrid.GetValue(x - 1, y + 1);  // Top left
-                    kernel[1, 2] = nutgrid.GetValue(x + 0, y + 1);  // Top center
-                    kernel[2, 2] = nutgrid.GetValue(x + 1, y + 1);  // Top right
-                    kernel[0, 1] = nutgrid.GetValue(x - 1, y + 0);  // Mid left
-                    kernel[1, 1] = nutgrid.GetValue(x + 0, y + 0);  // Current pixel
-                    kernel[2, 1] = nutgrid.GetValue(x + 1, y + 0);  // Mid right
-                    kernel[0, 0] = nutgrid.GetValue(x - 1, y - 1);  // Low left
-                    kernel[1, 0] = nutgrid.GetValue(x + 0, y - 1);  // Low center
-                    kernel[2, 0] = nutgrid.GetValue(x + 1, y - 1);  // Low right
+                  
+                    int maxValue = -1;
+                    
+                    int maxFirstIndex = -1;
+                    int maxSecondIndex = -1;
+
+
+
+                    
+                    int value = -1;
+                    dirs = rndA.Next(1,5);
+                 switch(dirs){
+                case 1:
+                for (int i = 0; i < kernel.GetLength(0)-1; i++){
+                    for (int j = 0; j < kernel.GetLength(1)-1; j++) {
+                         value = kernel[i, j];
+
+                        if (value > maxValue ) {
+                            maxFirstIndex = i;
+                        maxSecondIndex = j;
+
+                        maxValue = value;
+                            }
+                    }
+                 }
+                break;
+                case 2:
+                for (int i = kernel.GetLength(0)-1; i > 0; i--){
+                        for (int j = 0; j < kernel.GetLength(1)-1; j++) {
+                     value = kernel[i, j];
+
+                    if (value > maxValue) {
+                        maxFirstIndex = i;
+                        maxSecondIndex = j;
+
+                        maxValue = value;
+                            }
+                    }
+                 }
+                 break;
+
+                 case 3:
+                for (int i = 0; i < kernel.GetLength(0)-1; i++){
+                        for (int j = kernel.GetLength(1)-1; j > 0; j--) {
+                     value = kernel[i, j];
+
+                    if (value > maxValue) {
+                        maxFirstIndex = i;
+                        maxSecondIndex = j;
+
+                        maxValue = value;
+                            }
+                    }
+                 }
+                break;
+
+                case 4:
+                for (int i = kernel.GetLength(0)-1; i > 0; i--){
+                        for (int j = kernel.GetLength(1)-1; j > 0 ; j--) {
+                     value = kernel[i, j];
+
+                    if (value > maxValue) {
+                        maxFirstIndex = i;
+                        maxSecondIndex = j;
+
+                        maxValue = value;
+                            }
+                    }
+                 }
+                break;
+                
+            }
+                 
+                 
+                    int deltaval = maxValue - hereval;
+                    int moveAmount = 0;
+                gridWidth = nutgrid.gridArray.GetLength(0);
+                gridHeight = nutgrid.gridArray.GetLength(1);
+                    if(hereval < maxValue && maxValue > diffusionLimit /*&& x < gridWidth && y < gridHeight && x > 0 && y > 0*/){
+                        if(deltaval > 0 && deltaval <= 1){
+                            moveAmount = 1;
+                        }
+                        else if(deltaval > 1 && deltaval <= 2){
+                            moveAmount = 1;
+                        }else if(deltaval > 2 && deltaval <= 4){
+                            moveAmount = 2;
+                        }else if(deltaval > 4 && deltaval <= 8){
+                            moveAmount = 4;
+                        }else if(deltaval > 8 && deltaval <= 16){
+                            moveAmount = 8;
+                        }else if(deltaval > 16){
+                            moveAmount = 16;
+                        }
+                        if(moveAmount > 0){
+                        moveAmount = rndA.Next(1,moveAmount);
+                        nutgrid.SetValue(maxFirstIndex+x-1,maxSecondIndex+y-1,maxValue-moveAmount);
+                            nutgrid.SetValue(x,y,hereval+moveAmount);
+                        }
+                        
+                        
+                            
+                            System.Array.Clear(kernel,0,kernel.Length);
+                            
+                    }
+
+                }
+            }
+            for(int x = gridWidth-2; x > 1; x--){
+                for(int y = gridHeight-2; y > 1; y--){
+                    kernel = GetKernelSmall(x,y);
                     
 
                     hereval = kernel[1,1];
@@ -263,7 +373,7 @@ public class Testing : MonoBehaviour
 
                     
  
-                    dirs = UnityEngine.Random.Range(1,5);
+                    dirs = rndA.Next(1,5);
                  switch(dirs){
                 case 1:
                 for (int i = 0; i < kernel.GetLength(0)-1; i++){
@@ -331,8 +441,11 @@ public class Testing : MonoBehaviour
                     int moveAmount = 0;
                 gridWidth = nutgrid.gridArray.GetLength(0);
                 gridHeight = nutgrid.gridArray.GetLength(1);
-                    if(hereval < maxValue && maxValue > 1 /*&& x < gridWidth && y < gridHeight && x > 0 && y > 0*/){
-                        if(deltaval > 1 && deltaval <= 2){
+                    if(hereval < maxValue && maxValue > diffusionLimit /*&& x < gridWidth && y < gridHeight && x > 0 && y > 0*/){
+                        if(deltaval > 0 && deltaval <= 1){
+                            moveAmount = 1;
+                        }
+                        else if(deltaval > 1 && deltaval <= 2){
                             moveAmount = 1;
                         }else if(deltaval > 2 && deltaval <= 4){
                             moveAmount = 2;
@@ -343,32 +456,23 @@ public class Testing : MonoBehaviour
                         }else if(deltaval > 16){
                             moveAmount = 16;
                         }
-                        
-                            nutgrid.SetValue(maxFirstIndex+x-1,maxSecondIndex+y-1,maxValue-moveAmount);
+                        if(moveAmount > 0){
+                        moveAmount = rndA.Next(1,moveAmount);
+                        nutgrid.SetValue(maxFirstIndex+x-1,maxSecondIndex+y-1,maxValue-moveAmount);
                             nutgrid.SetValue(x,y,hereval+moveAmount);
+                        }
+                        
+                        
+                            
+                            System.Array.Clear(kernel,0,kernel.Length);
                             
                     }
-
+                    
                 }
             }
-            }
-
-            if(dirs == 2){
-            for (int x = 1; x < nutgrid.gridArray.GetLength(0)-2 ; x++)
-            {
-                for (int y = nutgrid.gridArray.GetLength(1)-2; y > 1; y--)
-                {
-                    
-
-                    kernel[0, 2] = nutgrid.GetValue(x - 1, y + 1);  // Top left
-                    kernel[1, 2] = nutgrid.GetValue(x + 0, y + 1);  // Top center
-                    kernel[2, 2] = nutgrid.GetValue(x + 1, y + 1);  // Top right
-                    kernel[0, 1] = nutgrid.GetValue(x - 1, y + 0);  // Mid left
-                    kernel[1, 1] = nutgrid.GetValue(x + 0, y + 0);  // Current pixel
-                    kernel[2, 1] = nutgrid.GetValue(x + 1, y + 0);  // Mid right
-                    kernel[0, 0] = nutgrid.GetValue(x - 1, y - 1);  // Low left
-                    kernel[1, 0] = nutgrid.GetValue(x + 0, y - 1);  // Low center
-                    kernel[2, 0] = nutgrid.GetValue(x + 1, y - 1);  // Low right
+            for(int x = gridWidth-2; x > 1; x--){
+                for(int y = 1; y < gridHeight-2; y++){
+                    kernel = GetKernelSmall(x,y);
                     
 
                     hereval = kernel[1,1];
@@ -383,7 +487,7 @@ public class Testing : MonoBehaviour
 
                     
  
-                    dirs = UnityEngine.Random.Range(1,5);
+                    dirs = rndA.Next(1,5);
                  switch(dirs){
                 case 1:
                 for (int i = 0; i < kernel.GetLength(0)-1; i++){
@@ -447,34 +551,42 @@ public class Testing : MonoBehaviour
             }
                  
                  
-                    
+                    int deltaval = maxValue - hereval;
+                    int moveAmount = 0;
                 gridWidth = nutgrid.gridArray.GetLength(0);
                 gridHeight = nutgrid.gridArray.GetLength(1);
-                    if(hereval < maxValue && maxValue > 1 /*&& x < gridWidth && y < gridHeight && x > 0 && y > 0*/){
-                            nutgrid.SetValue(maxFirstIndex+x-1,maxSecondIndex+y-1,maxValue-1);
-                            nutgrid.SetValue(x,y,hereval+1);
+                    if(hereval < maxValue && maxValue > diffusionLimit /*&& x < gridWidth && y < gridHeight && x > 0 && y > 0*/){
+                        if(deltaval > 0 && deltaval <= 1){
+                            moveAmount = 1;
+                        }
+                        else if(deltaval > 1 && deltaval <= 2){
+                            moveAmount = 1;
+                        }else if(deltaval > 2 && deltaval <= 4){
+                            moveAmount = 2;
+                        }else if(deltaval > 4 && deltaval <= 8){
+                            moveAmount = 4;
+                        }else if(deltaval > 8 && deltaval <= 16){
+                            moveAmount = 8;
+                        }else if(deltaval > 16){
+                            moveAmount = 16;
+                        }
+                        if(moveAmount > 0){
+                        moveAmount = rndA.Next(1,moveAmount);
+                        nutgrid.SetValue(maxFirstIndex+x-1,maxSecondIndex+y-1,maxValue-moveAmount);
+                            nutgrid.SetValue(x,y,hereval+moveAmount);
+                        }
+                        
+                        
+                            
+                            System.Array.Clear(kernel,0,kernel.Length);
                             
                     }
 
                 }
             }
-            }
-            if(dirs == 3){
-                    for (int x = nutgrid.gridArray.GetLength(0)-2; x > 1 ; x--)
-            {
-                for (int y = 1; y < nutgrid.gridArray.GetLength(1)-2; y++)
-                {
-                    
-
-                    kernel[0, 2] = nutgrid.GetValue(x - 1, y + 1);  // Top left
-                    kernel[1, 2] = nutgrid.GetValue(x + 0, y + 1);  // Top center
-                    kernel[2, 2] = nutgrid.GetValue(x + 1, y + 1);  // Top right
-                    kernel[0, 1] = nutgrid.GetValue(x - 1, y + 0);  // Mid left
-                    kernel[1, 1] = nutgrid.GetValue(x + 0, y + 0);  // Current pixel
-                    kernel[2, 1] = nutgrid.GetValue(x + 1, y + 0);  // Mid right
-                    kernel[0, 0] = nutgrid.GetValue(x - 1, y - 1);  // Low left
-                    kernel[1, 0] = nutgrid.GetValue(x + 0, y - 1);  // Low center
-                    kernel[2, 0] = nutgrid.GetValue(x + 1, y - 1);  // Low right
+            for(int x = 1; x < gridWidth-2; x++){
+                for(int y = gridHeight-2; y > 1; y--){
+                    kernel = GetKernelSmall(x,y);
                     
 
                     hereval = kernel[1,1];
@@ -489,7 +601,7 @@ public class Testing : MonoBehaviour
 
                     
  
-                    dirs = UnityEngine.Random.Range(1,5);
+                    dirs = rndA.Next(1,5);
                  switch(dirs){
                 case 1:
                 for (int i = 0; i < kernel.GetLength(0)-1; i++){
@@ -553,130 +665,46 @@ public class Testing : MonoBehaviour
             }
                  
                  
-                    
+                    int deltaval = maxValue - hereval;
+                    int moveAmount = 0;
                 gridWidth = nutgrid.gridArray.GetLength(0);
                 gridHeight = nutgrid.gridArray.GetLength(1);
-                    if(hereval < maxValue && maxValue > 1 /*&& x < gridWidth && y < gridHeight && x > 0 && y > 0*/){
-                            nutgrid.SetValue(maxFirstIndex+x-1,maxSecondIndex+y-1,maxValue-1);
-                            nutgrid.SetValue(x,y,hereval+1);
+                    if(hereval < maxValue && maxValue > diffusionLimit /*&& x < gridWidth && y < gridHeight && x > 0 && y > 0*/){
+                        if(deltaval > 0 && deltaval <= 1){
+                            moveAmount = 1;
+                        }
+                        else if(deltaval > 1 && deltaval <= 2){
+                            moveAmount = 1;
+                        }else if(deltaval > 2 && deltaval <= 4){
+                            moveAmount = 2;
+                        }else if(deltaval > 4 && deltaval <= 8){
+                            moveAmount = 4;
+                        }else if(deltaval > 8 && deltaval <= 16){
+                            moveAmount = 8;
+                        }else if(deltaval > 16){
+                            moveAmount = 16;
+                        }
+                        if(moveAmount > 0){
+                        moveAmount = rndA.Next(1,moveAmount);
+                        nutgrid.SetValue(maxFirstIndex+x-1,maxSecondIndex+y-1,maxValue-moveAmount);
+                            nutgrid.SetValue(x,y,hereval+moveAmount);
+                        }
+                        
+                        
+                            
+                            System.Array.Clear(kernel,0,kernel.Length);
                             
                     }
 
                 }
             }
-            }
+            
+         
 
-            if(dirs == 4){
-                for (int x = 1; x < nutgrid.gridArray.GetLength(0)-2 ; x++)
-            {
-                for (int y = 1; y < nutgrid.gridArray.GetLength(1)-2; y++)
-                {
-                    
-
-                    kernel[0, 2] = nutgrid.GetValue(x - 1, y + 1);  // Top left
-                    kernel[1, 2] = nutgrid.GetValue(x + 0, y + 1);  // Top center
-                    kernel[2, 2] = nutgrid.GetValue(x + 1, y + 1);  // Top right
-                    kernel[0, 1] = nutgrid.GetValue(x - 1, y + 0);  // Mid left
-                    kernel[1, 1] = nutgrid.GetValue(x + 0, y + 0);  // Current pixel
-                    kernel[2, 1] = nutgrid.GetValue(x + 1, y + 0);  // Mid right
-                    kernel[0, 0] = nutgrid.GetValue(x - 1, y - 1);  // Low left
-                    kernel[1, 0] = nutgrid.GetValue(x + 0, y - 1);  // Low center
-                    kernel[2, 0] = nutgrid.GetValue(x + 1, y - 1);  // Low right
-                    
-
-                    hereval = kernel[1,1];
-
-                  
-                    int maxValue = -1;
-                    
-                    int maxFirstIndex = -1;
-                    int maxSecondIndex = -1;
-
-
-
-                    
- 
-                    dirs = UnityEngine.Random.Range(1,5);
-                 switch(dirs){
-                case 1:
-                for (int i = 0; i < kernel.GetLength(0)-1; i++){
-                        for (int j = 0; j < kernel.GetLength(1)-1; j++) {
-                    int value = kernel[i, j];
-
-                    if (value > maxValue) {
-                        maxFirstIndex = i;
-                        maxSecondIndex = j;
-
-                        maxValue = value;
-                            }
-                    }
-                 }
-                break;
-                case 2:
-                for (int i = kernel.GetLength(0)-1; i > 0; i--){
-                        for (int j = 0; j < kernel.GetLength(1)-1; j++) {
-                    int value = kernel[i, j];
-
-                    if (value > maxValue) {
-                        maxFirstIndex = i;
-                        maxSecondIndex = j;
-
-                        maxValue = value;
-                            }
-                    }
-                 }
-                 break;
-
-                 case 3:
-                for (int i = 0; i < kernel.GetLength(0)-1; i++){
-                        for (int j = kernel.GetLength(1)-1; j > 0; j--) {
-                    int value = kernel[i, j];
-
-                    if (value > maxValue) {
-                        maxFirstIndex = i;
-                        maxSecondIndex = j;
-
-                        maxValue = value;
-                            }
-                    }
-                 }
-                break;
-
-                case 4:
-                for (int i = kernel.GetLength(0)-1; i > 0; i--){
-                        for (int j = kernel.GetLength(1)-1; j > 0 ; j--) {
-                    int value = kernel[i, j];
-
-                    if (value > maxValue) {
-                        maxFirstIndex = i;
-                        maxSecondIndex = j;
-
-                        maxValue = value;
-                            }
-                    }
-                 }
-                break;
-                
-            }
-                 
-                 
-                    
-                gridWidth = nutgrid.gridArray.GetLength(0);
-                gridHeight = nutgrid.gridArray.GetLength(1);
-                    if(hereval < maxValue && maxValue > 1 /*&& x < gridWidth && y < gridHeight && x > 0 && y > 0*/){
-                            nutgrid.SetValue(maxFirstIndex+x-1,maxSecondIndex+y-1,maxValue-1);
-                            nutgrid.SetValue(x,y,hereval+1);
-                            
-                    }
-
-                }
-            }
-            }
-
-            //nutgrid.gridArray = newArray;
         }
+        
             // freeNutes = 0;
-
+//nutgrid.gridArray = newArray;
             /*
             for (int x = 1; x< nutgrid.gridArray.GetLength(0)-1;x++){
             for(int y = 1; y < nutgrid.gridArray.GetLength(1)-1; y++){
@@ -753,8 +781,8 @@ public class Testing : MonoBehaviour
                     int maxY = nutgrid.gridArray.GetLength(1) + (nutgrid.gridArray.GetLength(1)/4);
 
 
-                        int x = UnityEngine.Random.Range(minX,maxX);
-                        int y = UnityEngine.Random.Range(minX,maxX);
+                        int x = System.Random.Next(minX,maxX);
+                        int y = System.Random.Next(minX,maxX);
                         int thisVal = nutgrid.GetValue(x,y);
                            nutgrid.SetValue(x, y,thisVal + (totNutes/64));
                            
@@ -838,6 +866,37 @@ public class Testing : MonoBehaviour
     }
 
 
+
+
+public int[,] GetKernelFull(int x, int y){
+    int[,] internalKernel = new int[3,3];
+
+    internalKernel[0, 2] = nutgrid.GetValue(x - 1, y + 1);  // Top left
+    internalKernel[1, 2] = nutgrid.GetValue(x + 0, y + 1);  // Top center
+    internalKernel[2, 2] = nutgrid.GetValue(x + 1, y + 1);  // Top right
+    internalKernel[0, 1] = nutgrid.GetValue(x - 1, y + 0);  // Mid left
+    internalKernel[1, 1] = nutgrid.GetValue(x + 0, y + 0);  // Current pixel
+    internalKernel[2, 1] = nutgrid.GetValue(x + 1, y + 0);  // Mid right
+    internalKernel[0, 0] = nutgrid.GetValue(x - 1, y - 1);  // Low left
+    internalKernel[1, 0] = nutgrid.GetValue(x + 0, y - 1);  // Low center
+    internalKernel[2, 0] = nutgrid.GetValue(x + 1, y - 1);  // Low right
+    return internalKernel;
+}
+
+public int[,] GetKernelSmall(int x, int y){
+    int[,] internalKernel = new int[3,3];
+
+    internalKernel[0, 2] = 0;                               // Top left
+    internalKernel[1, 2] = nutgrid.GetValue(x + 0, y + 1);  // Top center
+    internalKernel[2, 2] = 0;                               // Top right
+    internalKernel[0, 1] = nutgrid.GetValue(x - 1, y + 0);  // Mid left
+    internalKernel[1, 1] = nutgrid.GetValue(x + 0, y + 0);  // Current pixel
+    internalKernel[2, 1] = nutgrid.GetValue(x + 1, y + 0);  // Mid right
+    internalKernel[0, 0] =0;                                // Low left
+    internalKernel[1, 0] = nutgrid.GetValue(x + 0, y - 1);  // Low center
+    internalKernel[2, 0] = 0;                               // Low right
+    return internalKernel;
+}
 
 
 

@@ -227,6 +227,7 @@ MonoBehaviour:
   chromoPairs: 0
   basePairs: 0
   randGenome: 0
+  recomCooldown: 0
   giveSequenceA: []
   giveSequenceB: []
   final_mutsize: 10000

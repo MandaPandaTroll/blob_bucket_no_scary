@@ -35,9 +35,9 @@ Gradient gradient;
 
         alphaKey = new GradientAlphaKey[2];
 
-        alphaKey[0].alpha = 1.0f;
+        alphaKey[0].alpha = 0.5f;
         alphaKey[0].time = 0.0f;
-        alphaKey[1].alpha = 1.0f;
+        alphaKey[1].alpha = 0.5f;
         alphaKey[1].time = 1.0f;
         
         
@@ -51,8 +51,13 @@ Gradient gradient;
       dims[1] = gridContainer.gridY;
       float widthQuot = (float)Screen.width/dims[0];
        float heightQout = (float)Screen.height/dims[1];
+
+      float newDim = newDim = 1024f/dims[0];
+       
+        
+       
       wtoh = (float)(dims[0])/(float)(dims[1]);
-        img.GetComponent<RectTransform>().sizeDelta = new Vector2( dims[0], dims[1]);
+        img.GetComponent<RectTransform>().sizeDelta = new Vector2( dims[0]*gridContainer.cellScale, dims[1]*gridContainer.cellScale);
          // Create a new 2x2 texture ARGB32 (32 bit with alpha) and no mipmaps
          //for(int i = 0; i <63; i ++){
             //previousX[i] = 0;
@@ -62,7 +67,7 @@ Gradient gradient;
                  //rendTex.height = dims[1];
                   for(int i= 0; i < dims[0]; i++){
                     for(int j= 0; j < dims[1]; j++){
-                    texture.SetPixel(i, j, new Color(1f,1f,1f,1.0f));
+                    texture.SetPixel(i, j, new Color(1f,1f,1f,0.5f));
                     }
                 }
          
@@ -75,7 +80,7 @@ Gradient gradient;
 
    Texture2D texture; 
    
-  float textureRefreshRate = 1f;
+  public float textureRefreshRate = 1f;
   float timePassed = 0;
   float scaledVal = 0;
     float wtoh;
@@ -101,7 +106,7 @@ Gradient gradient;
         for(int i = 0;i < dims[0];i++){
           for(int j = 0;j < dims[1];j++){
             tempval = (float)m_nutgrid.GetValue(i,j)*10f;
-            scaledVal =  Mathf.Clamp01((1f/4f)*(Mathf.Log10((float)tempval/(float)maxVal))+1f);
+            scaledVal =  Mathf.Clamp01((1f/6f)*(Mathf.Log10((float)tempval/(float)maxVal))+1f);
             tempCol = gradient.Evaluate(scaledVal);
             texture.SetPixel(i,j,tempCol);
           }
