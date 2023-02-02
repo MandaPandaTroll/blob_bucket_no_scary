@@ -1,7 +1,7 @@
-using System.Collections;
+
 using System.Collections.Generic;
 using UnityEngine;
-using CodeMonkey.Utils;
+
 using System.Linq;
 
 
@@ -46,6 +46,7 @@ public class Testing : MonoBehaviour
 
     public int numRandomMiddle;
     public int spawndivider;
+    public bool spawnInCorners;
     void OnGUI()
     {
 
@@ -75,7 +76,22 @@ public class Testing : MonoBehaviour
         int numCells = gridX*gridY;
         nutgrid = new nutGrid((int)gridX, (int)gridY, cellScale, new Vector3(-box.localScale.x / 2.0f, -box.localScale.y / 2.0f));
 
-        if(spawnAllInCenter == false){
+        if(spawnAllInCenter == true){
+            float spawnRange_x = ((box.localScale.x/2f)-(float)cellScale)/spawnRangeDivider;
+            float spawnRange_y = ((box.localScale.y/2f)-(float)cellScale)/spawnRangeDivider;
+            for(int i = 0; i < numRandomMiddle; i++){
+            nutgrid.SetValue(new Vector3(UnityEngine.Random.Range(-spawnRange_x,spawnRange_x),UnityEngine.Random.Range(-spawnRange_y,spawnRange_y),0f),(numCells*initConc/(numRandomMiddle))/spawndivider);
+            }
+            
+            
+            
+        }else if(spawnInCorners == true){
+            nutgrid.SetValue(1,1,((numCells*initConc)/4)/spawndivider);
+            nutgrid.SetValue(gridX-1,1,((numCells*initConc)/4)/spawndivider);
+            nutgrid.SetValue(1,gridY-1,((numCells*initConc)/4)/spawndivider);
+            nutgrid.SetValue(gridX-1,gridY-1,((numCells*initConc)/4)/spawndivider);
+        }
+        else{
             for (int x = 0; x < nutgrid.gridArray.GetLength(0); x++)
         {
             for (int y = 0; y < nutgrid.gridArray.GetLength(1); y++)
@@ -97,13 +113,6 @@ public class Testing : MonoBehaviour
             }
 
             }
-        }else if(spawnAllInCenter == true){
-            for(int i = 0; i < numRandomMiddle; i++){
-            nutgrid.SetValue(new Vector3(UnityEngine.Random.Range(-(box.localScale.x/2f)/spawnRangeDivider,(box.localScale.x/2f))/spawnRangeDivider,UnityEngine.Random.Range((-box.localScale.y/2f)/spawnRangeDivider,(box.localScale.y/2f))/spawnRangeDivider,0f),(numCells*initConc/(numRandomMiddle))/spawndivider);
-            }
-            
-            
-            
         }
         
 
@@ -142,6 +151,7 @@ public class Testing : MonoBehaviour
     GameObject[] carcasses;
     public bool diffusionEnabled;
     public int diffusionLimit;
+    int dirCounter = 0;
     private void Update()
     {
         
@@ -153,6 +163,7 @@ public class Testing : MonoBehaviour
         diffusionTimer += Time.deltaTime;
         if (diffusionTimer >= diffRate)
         {
+            
             System.Array.Clear(kernel,0,kernel.Length);
             newArray = nutgrid.gridArray;
             blibNutes = 0; blobNutes = 0; blybNutes = 0; blubNutes = 0; carcassNutes = 0;
@@ -241,11 +252,11 @@ public class Testing : MonoBehaviour
             gridHeight = nutgrid.gridArray.GetLength(1);
 
             int dirs = UnityEngine.Random.Range(-2,3);
+            if(dirCounter == 0){
+                for(int x = 1; x < gridWidth-2; x++){
+                    for(int y = 1; y < gridHeight-2; y++){
 
-            for(int x = 1; x < gridWidth-2; x++){
-                for(int y = 1; y < gridHeight-2; y++){
-
-                    kernel = GetKernelSmall(x,y);
+                    kernel = GetKernelFull(x,y);
                     
                     hereval = kernel[1,1];
 
@@ -339,9 +350,12 @@ public class Testing : MonoBehaviour
                             moveAmount = 4;
                         }else if(deltaval > 8 && deltaval <= 16){
                             moveAmount = 8;
-                        }else if(deltaval > 16){
+                        }else if(deltaval > 16 && deltaval <= 32){
                             moveAmount = 16;
+                        }else if(deltaval > 32){
+                            moveAmount = 32;
                         }
+                        
                         if(moveAmount > 0){
                         moveAmount = rndA.Next(1,moveAmount);
                         nutgrid.SetValue(maxFirstIndex+x-1,maxSecondIndex+y-1,maxValue-moveAmount);
@@ -355,10 +369,12 @@ public class Testing : MonoBehaviour
                     }
 
                 }
-            }
-            for(int x = gridWidth-2; x > 1; x--){
+                }
+                dirCounter = 1;
+            }else if(dirCounter == 1){
+                for(int x = gridWidth-2; x > 1; x--){
                 for(int y = gridHeight-2; y > 1; y--){
-                    kernel = GetKernelSmall(x,y);
+                    kernel = GetKernelFull(x,y);
                     
 
                     hereval = kernel[1,1];
@@ -453,8 +469,10 @@ public class Testing : MonoBehaviour
                             moveAmount = 4;
                         }else if(deltaval > 8 && deltaval <= 16){
                             moveAmount = 8;
-                        }else if(deltaval > 16){
+                        }else if(deltaval > 16 && deltaval <= 32){
                             moveAmount = 16;
+                        }else if(deltaval > 32){
+                            moveAmount = 32;
                         }
                         if(moveAmount > 0){
                         moveAmount = rndA.Next(1,moveAmount);
@@ -470,9 +488,11 @@ public class Testing : MonoBehaviour
                     
                 }
             }
-            for(int x = gridWidth-2; x > 1; x--){
+                dirCounter = 2;
+            }else if(dirCounter == 2){
+                for(int x = gridWidth-2; x > 1; x--){
                 for(int y = 1; y < gridHeight-2; y++){
-                    kernel = GetKernelSmall(x,y);
+                    kernel = GetKernelFull(x,y);
                     
 
                     hereval = kernel[1,1];
@@ -567,8 +587,10 @@ public class Testing : MonoBehaviour
                             moveAmount = 4;
                         }else if(deltaval > 8 && deltaval <= 16){
                             moveAmount = 8;
-                        }else if(deltaval > 16){
+                        }else if(deltaval > 16 && deltaval <= 32){
                             moveAmount = 16;
+                        }else if(deltaval > 32){
+                            moveAmount = 32;
                         }
                         if(moveAmount > 0){
                         moveAmount = rndA.Next(1,moveAmount);
@@ -584,9 +606,11 @@ public class Testing : MonoBehaviour
 
                 }
             }
-            for(int x = 1; x < gridWidth-2; x++){
+                dirCounter = 3;
+            }else if(dirCounter == 3){
+                for(int x = 1; x < gridWidth-2; x++){
                 for(int y = gridHeight-2; y > 1; y--){
-                    kernel = GetKernelSmall(x,y);
+                    kernel = GetKernelFull(x,y);
                     
 
                     hereval = kernel[1,1];
@@ -673,16 +697,18 @@ public class Testing : MonoBehaviour
                         if(deltaval > 0 && deltaval <= 1){
                             moveAmount = 1;
                         }
-                        else if(deltaval > 1 && deltaval <= 2){
+                        else if(deltaval > 1 && deltaval <= 4){
                             moveAmount = 1;
-                        }else if(deltaval > 2 && deltaval <= 4){
+                        }else if(deltaval > 2 && deltaval <= 8){
                             moveAmount = 2;
-                        }else if(deltaval > 4 && deltaval <= 8){
+                        }else if(deltaval > 4 && deltaval <= 16){
                             moveAmount = 4;
-                        }else if(deltaval > 8 && deltaval <= 16){
+                        }else if(deltaval > 8 && deltaval <= 32){
                             moveAmount = 8;
-                        }else if(deltaval > 16){
+                        }else if(deltaval > 16 && deltaval <= 64){
                             moveAmount = 16;
+                        }else if(deltaval > 64){
+                            moveAmount = 32;
                         }
                         if(moveAmount > 0){
                         moveAmount = rndA.Next(1,moveAmount);
@@ -698,6 +724,12 @@ public class Testing : MonoBehaviour
 
                 }
             }
+                dirCounter = 0;
+            }
+            
+            
+            
+            
             
          
 
@@ -898,7 +930,10 @@ public int[,] GetKernelSmall(int x, int y){
     return internalKernel;
 }
 
+//public void writeNutesFile( int[,] ingrid){
+//new StreamWriter
 
+//}
 
 }
 

@@ -167,7 +167,7 @@ MonoBehaviour:
   lookDistance: 40
   generation: 0
   nutLevel: 0
-  nutToReproduce: 64
+  nutToReproduce: 16
   doInitDiversifier: 0
   redModifier: 0
   greenModifier: 0

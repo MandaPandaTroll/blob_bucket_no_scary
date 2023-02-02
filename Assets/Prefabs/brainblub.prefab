@@ -144,7 +144,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 1024
+  MaxStep: 0
   testScaledPos: {x: 0, y: 0}
   nomLim: 1
   thisRay: {fileID: 0}
@@ -281,7 +281,7 @@ MonoBehaviour:
   deadLayer: 9
   basalMet: 3
   protein: 0
-  proteinToReproduce: 1024
+  proteinToReproduce: 128
   NH4: 0
   tempProtein: 0
   tempNH4: 0
